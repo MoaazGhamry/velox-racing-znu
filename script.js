@@ -1062,7 +1062,7 @@ document.addEventListener('DOMContentLoaded', () => {
           entry.target.classList.add('active');
         }
       });
-    }, { threshold: 0.15, rootMargin: '-10% 0px -25% 0px' });
+    }, { threshold: 0, rootMargin: '-49% 0px -49% 0px' });
 
     subBlocks.forEach(block => subObserver.observe(block));
   }
