@@ -1136,16 +1136,35 @@ document.addEventListener('DOMContentLoaded', () => {
   const submitBtn = document.getElementById('submitBtn');
 
   if (contactForm && formSuccess && submitBtn) {
-    contactForm.addEventListener('submit', e => {
+    contactForm.addEventListener('submit', async e => {
       e.preventDefault();
       submitBtn.disabled = true;
       submitBtn.style.opacity = '0.75';
       submitBtn.textContent = currentLang === 'ar' ? 'جارِ الإرسال...' : 'Transmitting...';
-      setTimeout(() => {
-        submitBtn.style.display = 'none';
-        formSuccess.style.display = 'block';
-        contactForm.reset();
-      }, 1200);
+      const formData = new FormData(contactForm);
+      const data = Object.fromEntries(formData.entries());
+
+      try {
+        const response = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        });
+        
+        if (response.ok) {
+          submitBtn.style.display = 'none';
+          formSuccess.style.display = 'block';
+          contactForm.reset();
+        } else {
+          submitBtn.textContent = 'Error. Try Again.';
+          submitBtn.disabled = false;
+          submitBtn.style.opacity = '1';
+        }
+      } catch (error) {
+        submitBtn.textContent = 'Network Error.';
+        submitBtn.disabled = false;
+        submitBtn.style.opacity = '1';
+      }
     });
   }
 
@@ -1166,4 +1185,18 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+
 });
+
+// 18. Service Worker Registration for PWA
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/service-worker.js')
+      .then(registration => {
+        console.log('PWA ServiceWorker registered with scope:', registration.scope);
+      })
+      .catch(error => {
+        console.error('PWA ServiceWorker registration failed:', error);
+      });
+  });
+}

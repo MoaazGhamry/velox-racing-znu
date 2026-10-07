@@ -1,0 +1,22 @@
+{
+  "name": "VELOX Racing Team ZNU",
+  "short_name": "VELOX",
+  "description": "Zagazig National University Official Motorsport Racing Team - Formula Student UK",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#0B0B0E",
+  "theme_color": "#E10600",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "velox_cropped.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "velox_cropped.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
