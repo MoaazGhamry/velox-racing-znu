@@ -1,0 +1,1253 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" dir="ltr">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="VELOX Racing Team — Zagazig National University's Formula Student engineering team. Designing and fabricating Chassis VX-01 from scratch to compete in Formula Student UK at Silverstone Circuit." />
+  <meta name="keywords"
+    content="VELOX Racing Team, Formula Student UK, Zagazig National University, Silverstone Circuit, Chassis VX-01, Formula Student Egypt, Mechatronics Racing" />
+  <meta name="author" content="VELOX Formula Student Team" />
+  <meta name="theme-color" content="#070709" />
+
+  <title>VELOX Racing Team | Zagazig National University — Formula Student UK</title>
+
+  <!-- OpenGraph Metadata -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="VELOX Racing Team | Zagazig National University" />
+  <meta property="og:description"
+    content="From Zero to Silverstone — We are building Zagazig National University's first Formula Student race car for Formula Student UK." />
+  <meta property="og:image" content="velox_car_render.jpg" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="VeloxLogoWeb.png" />
+  <link rel="apple-touch-icon" href="VeloxLogoWeb.png" />
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Structured Data Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SportsTeam",
+    "name": "VELOX Racing Team",
+    "alternateName": "فريق فيلوكس للسباقات",
+    "sport": "Formula Student Motorsport",
+    "parentOrganization": {
+      "@type": "CollegeOrUniversity",
+      "name": "Zagazig National University",
+      "department": "Faculty of Engineering — Mechatronics Engineering"
+    },
+    "location": {
+      "@type": "Place",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Zagazig",
+        "addressCountry": "Egypt"
+      }
+    },
+    "email": "velox.racing.znu@gmail.com"
+  }
+  </script>
+</head>
+
+<body>
+  <!-- ========================================================================
+       ULTRA-MINIMAL PRELOADER (VELOX EMBLEM LAUNCH SEQUENCE)
+       ======================================================================== -->
+  <div class="site-preloader" id="sitePreloader" aria-hidden="true">
+    <div class="preloader-simple-box">
+      <img src="VeloxLogoWeb.png" alt="VELOX" class="preloader-simple-logo" id="preloaderLogo" onerror="this.src='VeloxForWeb.png'" />
+      <div class="preloader-simple-track">
+        <div class="preloader-simple-bar" id="preloaderBar"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Accessibility Skip Link -->
+  <a class="skip-link" href="#car" data-i18n="nav.skipLink">Skip to main content</a>
+
+  <!-- ========================================================================
+       NAVBAR (SIMPLIFIED, MINIMAL, ZERO EMOJIS)
+       ======================================================================== -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <!-- Brand Lockup -->
+      <a href="#home" class="nav-brand" aria-label="VELOX Racing Team Home">
+        <img src="VeloxLogoWeb.png" alt="VELOX Crest" class="nav-logo-mark" onerror="this.src='VeloxForWeb_dark.png'" />
+        <div class="nav-brand-text">
+          <span class="nav-brand-title">
+            <span>VELOX</span>
+            <span class="nav-status-dot" title="Live System Active"></span>
+          </span>
+          <span class="nav-brand-sub" data-i18n="nav.brandSub">ZNU RACING</span>
+        </div>
+      </a>
+
+      <!-- Minimal 5 Core Navigation Links -->
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#home" class="nav-link active" data-i18n="nav.home">Home</a></li>
+        <li><a href="#car" class="nav-link" data-i18n="nav.car">Chassis VX-01</a></li>
+        <li><a href="#competition" class="nav-link" data-i18n="nav.competition">Silverstone UK</a></li>
+        <li><a href="#subsystems" class="nav-link" data-i18n="nav.subsystems">Engineering</a></li>
+        <li><a href="#sponsors" class="nav-link" data-i18n="nav.sponsors">Partners</a></li>
+      </ul>
+
+      <!-- Controls: Language Toggle, Theme Toggle & Action CTA -->
+      <div class="nav-controls">
+        <!-- Language Switcher (Clean Pill with SVG Globe, Zero Emoji) -->
+        <button class="control-toggle-btn" id="langToggleBtn" type="button" aria-label="Switch Language">
+          <span class="icon-svg">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+          </span>
+          <span>AR</span>
+        </button>
+
+        <!-- Theme Switcher (Clean Pill with SVG Sun/Moon, Zero Emoji) -->
+        <button class="control-toggle-btn" id="themeToggleBtn" type="button" aria-label="Switch Theme">
+          <span class="icon-svg">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+          </span>
+          <span>Theme</span>
+        </button>
+
+        <!-- Action CTA -->
+        <a href="#contact" class="btn btn-primary nav-cta-join" data-i18n="nav.ctaJoin">Join The Build</a>
+
+        <!-- Mobile Menu Hamburger -->
+        <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu" aria-expanded="false">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ========================================================================
+       HERO SECTION: WIDESCREEN PANORAMIC COCKPIT (USES ALL SCREEN)
+       ======================================================================== -->
+  <section class="hero" id="home">
+    <!-- Ambient Waving Flag Video in Background (lff.mp4, Tinted & Blended) -->
+    <div class="hero-ambient-flag-layer" aria-hidden="true">
+      <video class="hero-ambient-flag-video" id="ambientFlagVideo" autoplay muted loop playsinline preload="auto">
+        <source src="lff.mp4" type="video/mp4" />
+      </video>
+    </div>
+
+    <!-- Main Widescreen Panoramic Grid -->
+    <div class="hero-panoramic-container">
+      <div class="hero-panoramic-grid">
+        <!-- Col 1: High-Impact Typography & Mission -->
+        <div class="hero-intel-col">
+          <!-- Status Sector Badge -->
+          <div class="hero-badge">
+            <span class="tag-dot"></span>
+            <span data-i18n="hero.badge">ZAGAZIG NATIONAL UNIVERSITY &bull; FORMULA STUDENT UK &bull; CONCEPT &amp; DYNAMICS</span>
+          </div>
+
+          <!-- Hero Headline -->
+          <h1 class="hero-title" data-i18n="hero.title">
+            FROM ZERO TO SILVERSTONE.<br />
+            WE ARE <span class="text-red">BUILDING</span> THE FUTURE.
+          </h1>
+
+          <!-- Hero Subtitle -->
+          <p class="hero-subtitle" data-i18n="hero.subtitle">
+            A student-led engineering revolution at <strong>Zagazig National University</strong>. We are designing and
+            fabricating Chassis VX-01 from scratch to represent Egypt at Silverstone Circuit, UK. No car was handed to us &mdash;
+            we are engineering every single part.
+          </p>
+
+          <!-- Action Buttons (Zero Emojis) -->
+          <div class="hero-cta">
+            <a href="#contact" class="btn btn-primary" data-i18n="hero.cta.join">
+              <span>Join The Build Crew</span>
+              <span class="btn-arrow">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </span>
+            </a>
+            <button class="btn btn-outline" id="playMainFilmBtn" type="button" data-i18n="hero.cta.film">
+              <span class="icon-svg" style="width:13px; height:13px;">
+                <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"></polygon></svg>
+              </span>
+              <span>Watch Launch Film</span>
+            </button>
+            <a href="#sponsors" class="btn btn-outline" data-i18n="hero.cta.sponsor">
+              <span>Sponsor Our Build</span>
+            </a>
+          </div>
+
+          <!-- Academic Patronage Badge Strip -->
+          <div class="hero-patronage-bar">
+            <span class="hero-patron-badge">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span data-i18n="hero.affil.title">Official Academic Patronage</span>
+            </span>
+            <div class="hero-patron-logos">
+              <img src="logo_uni.png" alt="ZNU Crest" class="hero-patron-logo-img" onerror="this.src='znu_logo_light.png'" title="Zagazig National University" />
+              <img src="logo_eng.png" alt="Engineering Faculty" class="hero-patron-logo-img" title="Faculty of Engineering" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Col 2: Interactive Chassis VX-01 Digital Twin HUD Display -->
+        <div class="hero-hud-col">
+          <div class="hero-hud-card">
+            <!-- HUD Top Data Bar -->
+            <div class="hud-top-bar">
+              <span data-i18n="hero.hudChassisTitle">CHASSIS VX-01 // CAD DIGITAL TWIN</span>
+              <div class="hud-live-indicator">
+                <span class="hud-live-dot"></span>
+                <span data-i18n="hero.hudStage">FABRICATION STAGE</span>
+              </div>
+            </div>
+
+            <!-- Visual Viewport with Pulsing Hotspots -->
+            <div class="hud-viewport-stage">
+              <img src="velox_car_render.jpg" alt="VELOX Formula Student VX-01 Race Car Digital Twin" class="hud-render-img"
+                onerror="this.src='velox.jpeg'" />
+
+              <!-- Interactive Radar Hotspot Nodes -->
+              <div class="hud-radar-node node-front-aero" title="Front Aero Package (185 N Downforce)">
+                <div class="hud-radar-ping"></div>
+                <div class="hud-radar-dot"></div>
+              </div>
+
+              <div class="hud-radar-node node-chassis-core" title="4130 Chromoly Spaceframe (Torsional Rigidity 2,400 Nm/deg)">
+                <div class="hud-radar-ping"></div>
+                <div class="hud-radar-dot"></div>
+              </div>
+
+              <div class="hud-radar-node node-rear-aero" title="Rear Multi-Element Carbon Wing & Diffuser">
+                <div class="hud-radar-ping"></div>
+                <div class="hud-radar-dot"></div>
+              </div>
+            </div>
+
+            <!-- Bottom Telemetry Chips -->
+            <div class="hud-telemetry-strip">
+              <div class="hud-telemetry-chip">
+                <span class="hud-chip-label" data-i18n="hero.hudChipAero">Aero Downforce</span>
+                <span class="hud-chip-val text-red" data-i18n="hero.hudChipAeroVal">185 N @ 70km/h</span>
+              </div>
+              <div class="hud-telemetry-chip">
+                <span class="hud-chip-label" data-i18n="hero.hudChipMass">Target Mass</span>
+                <span class="hud-chip-val" data-i18n="hero.hudChipMassVal">&lt; 198 KG DRY</span>
+              </div>
+              <div class="hud-telemetry-chip">
+                <span class="hud-chip-label" data-i18n="hero.hudChipAccel">Acceleration</span>
+                <span class="hud-chip-val text-red" data-i18n="hero.hudChipAccelVal">&lt; 3.8s (0-100)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Widescreen Build Ticker Dock Spanning Full Width (Above The Fold) -->
+    <div class="hero-build-ticker-wrapper">
+      <div class="hero-build-ticker">
+        <div class="ticker-item">
+          <span class="ticker-badge amber" data-i18n="hero.ticker.status">IN ACTIVE BUILD</span>
+          <span class="ticker-lbl" data-i18n="hero.ticker.statusSub">Chassis &amp; Subsystems</span>
+        </div>
+        <div class="ticker-item">
+          <span class="ticker-val" style="color: var(--text-primary);">7</span>
+          <span class="ticker-lbl" data-i18n="hero.ticker.subsystems">DISCIPLINES</span>
+        </div>
+        <div class="ticker-item">
+          <span class="ticker-val text-red" data-i18n="hero.tickerSilverstone">SILVERSTONE</span>
+          <span class="ticker-lbl" data-i18n="hero.ticker.targetSub">Concept &amp; Dynamics</span>
+        </div>
+        <div class="ticker-item">
+          <span class="ticker-badge green" data-i18n="hero.ticker.recruitment">OPEN RECRUITMENT</span>
+          <span class="ticker-lbl" data-i18n="hero.ticker.recruitmentSub">Apply to Join Us</span>
+        </div>
+      </div>
+
+      <!-- Animated Swipe / Scroll Down Telemetry Cue -->
+      <a href="#about" class="hero-scroll-cue" id="heroScrollCue" aria-label="Scroll down to paddock">
+        <div class="scroll-cue-track">
+          <div class="scroll-cue-pulse"></div>
+        </div>
+        <span class="scroll-cue-label">
+          <span data-i18n="hero.scrollCue">SWIPE / SCROLL TO EXPLORE</span>
+        </span>
+        <div class="scroll-cue-arrow">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- HIGH-SPEED RACING LASER DIVIDER -->
+  <div class="racing-laser-divider" aria-hidden="true"></div>
+
+  <!-- FORMAL MOTORSPORT DIVIDER -->
+  <div class="formal-section-divider" aria-hidden="true">
+    <div class="divider-line"></div>
+    <div class="divider-badge">
+      <span class="divider-dot"></span>
+      <span class="divider-text" data-i18n="divider.text">ZNU RACING DIVISION &bull; FORMULA STUDENT UK &bull; SILVERSTONE PIT LANE</span>
+      <span class="divider-dot"></span>
+    </div>
+    <div class="divider-line"></div>
+  </div>
+
+  <!-- MOTIVATIONAL RECRUITMENT BANNER (CLEAN & MINIMAL, KINETIC REVEAL) -->
+  <div class="container">
+    <div class="recruitment-highlight-card kinetic-reveal" id="motivationalCard">
+      <div class="rh-text">
+        <h3 data-i18n="banner.title">WE DON’T JUST DREAM. WE BUILD.</h3>
+        <p data-i18n="banner.desc">
+          Are you a ZNU student passionate about welding, computational fluid dynamics (CFD), embedded software, or motorsport media?
+          We are actively recruiting students to construct Egypt’s premier Formula Student race car.
+        </p>
+      </div>
+      <a href="#contact" class="btn btn-primary" data-i18n="banner.btn">
+        <span>Apply to Join The Crew Now</span>
+        <span class="btn-arrow">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </span>
+      </a>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       SECTION 01: ABOUT VELOX & THE MISSION
+       ======================================================================== -->
+  <section class="section" id="about">
+    <div class="container">
+      <div class="section-header">
+        <div class="racing-section-tag">
+          <span class="tag-dot"></span>
+          <span data-i18n="about.tag">SECTOR 01 &bull; WHO WE ARE</span>
+        </div>
+        <h2 class="section-title" data-i18n="about.title">About <span class="text-red">VELOX Racing Team</span></h2>
+        <p class="section-desc" data-i18n="about.desc">
+          Born in the mechatronics engineering halls of Zagazig National University, VELOX is a passionate student team
+          engineering Egypt’s next-generation Formula Student single-seater prototype from scratch.
+        </p>
+      </div>
+
+      <div class="about-grid">
+        <div class="about-text">
+          <p class="about-lead" data-i18n="about.lead">
+            <strong>VELOX</strong> &mdash; from Latin for <em>&ldquo;swift, agile, rapid&rdquo;</em> &mdash; represents our
+            dedication to building a competitive racing prototype from zero through relentless technical execution and student teamwork.
+          </p>
+          <p data-i18n="about.p1">
+            Formula Student UK is the world’s most prestigious collegiate engineering competition, organized by the
+            <strong>Institution of Mechanical Engineers (IMechE)</strong> at Silverstone Circuit. We are entering both
+            the Concept Class (Design, Cost, Business) and Dynamics Class.
+          </p>
+          <p data-i18n="about.p2">
+            Our team brings together over 35 ambitious students from <strong>Zagazig National University</strong>.
+            From laser-notched chromoly tube welding and aerodynamics CFD to ECU telemetry and sponsorship management,
+            every part is engineered by students.
+          </p>
+
+          <div class="about-values">
+            <div class="value-card">
+              <div class="value-card-head">
+                <span class="icon-svg text-red">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>
+                </span>
+                <h4 data-i18n="about.v1.title">Fabricated From Zero</h4>
+              </div>
+              <p data-i18n="about.v1.desc">No car was given to us. Every bracket, tube, and composite wing is designed and fabricated by students.</p>
+            </div>
+
+            <div class="value-card">
+              <div class="value-card-head">
+                <span class="icon-svg text-red">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                </span>
+                <h4 data-i18n="about.v2.title">Aerodynamic Science</h4>
+              </div>
+              <p data-i18n="about.v2.desc">CFD-optimized wings developed in ANSYS Fluent to generate cornering grip at Silverstone.</p>
+            </div>
+
+            <div class="value-card">
+              <div class="value-card-head">
+                <span class="icon-svg text-red">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                </span>
+                <h4 data-i18n="about.v3.title">Multidisciplinary Crew</h4>
+              </div>
+              <p data-i18n="about.v3.desc">Cross-discipline teamwork bridging mechanical design, embedded coding, and business pitch logic.</p>
+            </div>
+
+            <div class="value-card">
+              <div class="value-card-head">
+                <span class="icon-svg text-red">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path><line x1="4" y1="22" x2="4" y2="15"></line></svg>
+                </span>
+                <h4 data-i18n="about.v4.title">National Representation</h4>
+              </div>
+              <p data-i18n="about.v4.desc">Proudly raising the Egyptian flag and the Zagazig National University crest on the Silverstone grid.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="about-visual">
+          <!-- ZNU Card -->
+          <div class="about-uni-card">
+            <div class="uni-logo-wrapper">
+              <img src="logo_uni.png" alt="Zagazig National University Crest" class="about-uni-logo"
+                onerror="this.src='znu_logo_light.png'" />
+            </div>
+            <div class="about-uni-info">
+              <h3 data-i18n="about.znuCardTitle">Zagazig National University</h3>
+              <p data-i18n="about.znuCardMajor">Faculty of Engineering &bull; Mechatronics Major</p>
+              <span class="uni-badge" data-i18n="about.znuCardPatron">Academic Home &amp; Official Patron</span>
+            </div>
+          </div>
+
+          <!-- Academic Alliance Card -->
+          <div class="alliance-crest-card">
+            <div class="alliance-header">
+              <span class="tag-dot"></span>
+              <span data-i18n="about.allianceTitle">THE ENGINEERING ALLIANCE TRIANGLE</span>
+            </div>
+            <div class="alliance-trio">
+              <div class="trio-item">
+                <img src="logo_uni.png" alt="ZNU" class="trio-logo" onerror="this.src='znu_logo_light.png'" />
+                <span data-i18n="about.allianceZnu">ZNU ACADEMIA</span>
+              </div>
+              <div class="trio-connection"><div class="conn-line"></div></div>
+              <div class="trio-item">
+                <img src="VeloxLogoWeb.png" alt="VELOX Team" class="trio-logo" />
+                <span class="text-red" data-i18n="about.allianceVelox">VELOX RACING</span>
+              </div>
+              <div class="trio-connection"><div class="conn-line"></div></div>
+              <div class="trio-item">
+                <img src="logo_eng.png" alt="Faculty of Engineering" class="trio-logo" />
+                <span data-i18n="about.allianceLab">MECHATRONICS LAB</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Formula Card -->
+          <div class="about-uni-card">
+            <div class="about-uni-info">
+              <h3 data-i18n="about.bmTitle">Formula Student UK Benchmark</h3>
+              <p data-i18n="about.bmDesc">Evaluated by Formula 1 technical directors and motorsport engineers at Silverstone Circuit, UK.</p>
+              <div style="display: flex; gap: 16px; margin-top: 10px;">
+                <div><strong class="text-red">120+</strong> <small style="color:var(--text-muted);" data-i18n="about.bmUniv">Universities</small></div>
+                <div><strong class="text-red">30+</strong> <small style="color:var(--text-muted);" data-i18n="about.bmNations">Nations</small></div>
+                <div><strong class="text-red">1,000</strong> <small style="color:var(--text-muted);" data-i18n="about.bmPoints">Max Points</small></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       SECTION 02: THE MACHINE — CHASSIS VX-01 DIGITAL TWIN & IN-BUILD STATUS
+       ======================================================================== -->
+  <section class="section section-dark" id="car">
+    <div class="container">
+      <div class="section-header">
+        <div class="racing-section-tag">
+          <span class="tag-dot"></span>
+          <span data-i18n="car.tag">CHASSIS VX-01 &bull; ACTIVE DIGITAL TWIN &amp; FABRICATION</span>
+        </div>
+        <h2 class="section-title" data-i18n="car.title">Chassis <span class="text-red">VX-01</span> Blueprint &amp; Build Status</h2>
+        <p class="section-desc" data-i18n="car.desc">
+          Our single-seater formula car is currently under active fabrication. Explore the technical digital twin and CAD architecture below.
+        </p>
+      </div>
+
+      <!-- Blueprint Showcase -->
+      <div class="technical-blueprint-showcase">
+        <div class="blueprint-frame">
+          <div class="blueprint-meta-header">
+            <div class="bm-left">
+              <span class="bm-tag" data-i18n="blueprint.tag">IMechE FORMULA STUDENT UK // TECHNICAL SPECIFICATION</span>
+              <span class="bm-title" data-i18n="blueprint.title">CHASSIS VX-01 &bull; DIGITAL TWIN ARCHITECTURE</span>
+            </div>
+            <div class="bm-right">
+              <span class="bm-code" data-i18n="blueprint.cadDoc">CAD DOC: ZNU-VX01-FS26</span>
+              <span class="bm-status" data-i18n="blueprint.status">BUILD STATUS: IN FABRICATION</span>
+            </div>
+          </div>
+
+          <div class="schematic-canvas-display">
+            <div class="schematic-header-bar">
+              <span class="sh-item"><span data-i18n="blueprint.classLabel">CLASS:</span> <strong data-i18n="blueprint.classVal">FS CONCEPT &amp; DYNAMICS</strong></span>
+              <span class="sh-item"><span data-i18n="blueprint.entryLabel">ENTRY:</span> <strong data-i18n="blueprint.entryVal">VELOX RACING // ZNU</strong></span>
+              <span class="sh-item"><span data-i18n="blueprint.venueLabel">VENUE:</span> <strong data-i18n="blueprint.venueVal">SILVERSTONE WING PITLANE</strong></span>
+            </div>
+
+            <!-- Car Graphic -->
+            <div class="schematic-car-image-wrap">
+              <img src="velox_car_render.jpg" alt="VELOX Formula Student VX-01 Race Car Digital Twin in Wind Tunnel"
+                class="schematic-car-image" onerror="this.src='velox.jpeg'" />
+            </div>
+
+            <!-- Interactive Hotspot Nodes -->
+            <div class="schematic-telemetry-nodes">
+              <div class="schematic-node node-aero-front" tabindex="0" role="button" aria-label="Front Aero Package">
+                <div class="node-pulse"></div>
+                <div class="node-callout">
+                  <span class="callout-code" data-i18n="callout.sub1Code">SUB-01 // FRONT AERO PACKAGE</span>
+                  <h4 data-i18n="callout.sub1Title">Multi-Element Carbon Wing &amp; Splitter</h4>
+                  <p data-i18n="callout.sub1Desc">CFD-optimized multi-tier carbon fiber wing with adjustable gurney flaps delivering 185 N downforce at 70 km/h.</p>
+                </div>
+              </div>
+
+              <div class="schematic-node node-chassis" tabindex="0" role="button" aria-label="Chassis Monocoque">
+                <div class="node-pulse"></div>
+                <div class="node-callout">
+                  <span class="callout-code" data-i18n="callout.sub2Code">SUB-02 // CHASSIS &amp; COCKPIT</span>
+                  <h4 data-i18n="callout.sub2Title">4130 Chromoly Spaceframe</h4>
+                  <p data-i18n="callout.sub2Desc">Laser-notched TIG welded chromoly tubular frame paired with carbon shear panels, exceeding 2,400 Nm/deg torsional stiffness.</p>
+                </div>
+              </div>
+
+              <div class="schematic-node node-powertrain" tabindex="0" role="button" aria-label="Powertrain">
+                <div class="node-pulse"></div>
+                <div class="node-callout">
+                  <span class="callout-code" data-i18n="callout.sub3Code">SUB-03 // POWERTRAIN &amp; INTAKE</span>
+                  <h4 data-i18n="callout.sub3Title">Dyno-Tuned Power Unit &amp; 3D Intake</h4>
+                  <p data-i18n="callout.sub3Desc">Single-cylinder racing engine with 20mm restrictor, selective laser sintering (SLS) 3D-printed intake plenum, and Drexler LSD.</p>
+                </div>
+              </div>
+
+              <div class="schematic-node node-aero-rear" tabindex="0" role="button" aria-label="Suspension & Rear Aero">
+                <div class="node-pulse"></div>
+                <div class="node-callout">
+                  <span class="callout-code" data-i18n="callout.sub4Code">SUB-04 // SUSPENSION &amp; REAR AERO</span>
+                  <h4 data-i18n="callout.sub4Title">Pushrod Kinematics &amp; Tri-Wing</h4>
+                  <p data-i18n="callout.sub4Desc">Unequal double A-arms with Öhlins TTX25 dampers, CNC 7075-T6 aluminum uprights, and rear diffuser ground effect.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="schematic-footer-bar">
+              <span class="sf-mono" data-i18n="blueprint.footerRigidity">// TORSIONAL RIGIDITY: 2,400 Nm/deg</span>
+              <span class="sf-mono" data-i18n="blueprint.footerMass">// TARGET MASS: 198 KG DRY</span>
+              <span class="sf-mono" data-i18n="blueprint.footerLateral">// PEAK LATERAL: 1.85 G</span>
+              <span class="sf-mono" data-i18n="blueprint.footerRestrictor">// RESTRICTOR: 20 MM AIR INLET</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Spec Grid -->
+      <div class="car-specs-grid">
+        <div class="spec-card highlight-card">
+          <div class="spec-value" data-i18n="car.spec1.val">&lt; 3.8s</div>
+          <div class="spec-label" data-i18n="car.spec1.lbl">0 — 100 km/h Design Target</div>
+          <div class="spec-sub" data-i18n="car.spec1.sub">Optimized gearing &amp; launch control</div>
+        </div>
+        <div class="spec-card">
+          <div class="spec-value" data-i18n="car.spec2.val">&lt; 198 kg</div>
+          <div class="spec-label" data-i18n="car.spec2.lbl">Chassis Target Mass</div>
+          <div class="spec-sub" data-i18n="car.spec2.sub">Lightweight 4130 tubular spaceframe</div>
+        </div>
+        <div class="spec-card">
+          <div class="spec-value" data-i18n="car.spec3.val">185 N</div>
+          <div class="spec-label" data-i18n="car.spec3.lbl">Aero Downforce @ 70km/h</div>
+          <div class="spec-sub" data-i18n="car.spec3.sub">Multi-element carbon wing package</div>
+        </div>
+        <div class="spec-card">
+          <div class="spec-value" data-i18n="car.spec4.val">CAN-Bus</div>
+          <div class="spec-label" data-i18n="car.spec4.lbl">Live Telemetry DAQ</div>
+          <div class="spec-sub" data-i18n="car.spec4.sub">Real-time pit-wall sensor streaming</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       SECTION 03: FORMULA STUDENT UK — CONCEPT & DYNAMICS CLASS
+       ======================================================================== -->
+  <section class="section" id="competition">
+    <div class="container">
+      <div class="section-header">
+        <div class="racing-section-tag">
+          <span class="tag-dot"></span>
+          <span data-i18n="comp.tag">THE TARGET &bull; SILVERSTONE CIRCUIT UK</span>
+        </div>
+        <h2 class="section-title" data-i18n="comp.title">Formula Student <span class="text-red">UK</span> Competition</h2>
+        <p class="section-desc" data-i18n="comp.desc">
+          VELOX is participating in <strong>Concept Class &amp; Dynamics Class</strong> at Silverstone Circuit.
+          Formula Student UK evaluates both engineering design theory and on-track vehicle performance.
+        </p>
+      </div>
+
+      <!-- Silverstone Countdown with F1 Start Lights Animation -->
+      <div class="competition-hero-card">
+        <div class="comp-hero-inner">
+          <div class="comp-meta-strip">
+            <span class="comp-badge-pill" data-i18n="comp.badge">FORMULA STUDENT UK</span>
+            <span class="comp-location" data-i18n="comp.location">Silverstone Circuit &bull; Northamptonshire, United Kingdom</span>
+            <span class="comp-dates" data-i18n="comp.dates">Silverstone Wing Paddock // July 2027</span>
+          </div>
+          <h3 data-i18n="comp.cdHeading">The Road to Silverstone 2026/2027</h3>
+          <p data-i18n="comp.cdDesc">
+            Formula Student UK, organized by the Institution of Mechanical Engineers (IMechE), brings together over 100
+            premier collegiate engineering teams. Teams are rigorously judged across static design presentations and
+            wheel-to-wheel dynamic trials on the iconic Silverstone tarmac.
+          </p>
+
+          <div class="countdown-card">
+            <!-- F1 Grand Prix Starting Lights -->
+            <div class="f1-start-lights" aria-hidden="true">
+              <div class="f1-light-lamps">
+                <div class="f1-lamp"><span class="f1-red-bulb"></span></div>
+                <div class="f1-lamp"><span class="f1-red-bulb"></span></div>
+                <div class="f1-lamp"><span class="f1-red-bulb"></span></div>
+                <div class="f1-lamp"><span class="f1-red-bulb"></span></div>
+                <div class="f1-lamp"><span class="f1-red-bulb"></span></div>
+              </div>
+            </div>
+
+            <div class="cd-title">
+              <span class="tag-dot"></span>
+              <span data-i18n="comp.cdTitle">COUNTDOWN TO FORMULA STUDENT UK &bull; SILVERSTONE GREEN FLAG</span>
+              <span class="tag-dot"></span>
+            </div>
+            <div class="countdown-grid" id="countdownGrid">
+              <div class="cd-block">
+                <div class="cd-flip-card">
+                  <span class="cd-number" id="cd-days">--</span>
+                </div>
+                <span class="cd-label" data-i18n="comp.days">Days</span>
+              </div>
+              <div class="cd-colon">:</div>
+              <div class="cd-block">
+                <div class="cd-flip-card">
+                  <span class="cd-number" id="cd-hours">--</span>
+                </div>
+                <span class="cd-label" data-i18n="comp.hours">Hours</span>
+              </div>
+              <div class="cd-colon">:</div>
+              <div class="cd-block">
+                <div class="cd-flip-card">
+                  <span class="cd-number" id="cd-mins">--</span>
+                </div>
+                <span class="cd-label" data-i18n="comp.mins">Minutes</span>
+              </div>
+              <div class="cd-colon">:</div>
+              <div class="cd-block">
+                <div class="cd-flip-card">
+                  <span class="cd-number" id="cd-secs">--</span>
+                </div>
+                <span class="cd-label" data-i18n="comp.secs">Seconds</span>
+              </div>
+            </div>
+            <div class="cd-subtext" data-i18n="comp.cdVenue">Event Venue: Silverstone Pit Straight &bull; Formula Student UK Championship</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Comprehensive 1,000-Point Scoring System Breakdown -->
+      <div class="events-grid">
+        <div class="events-col">
+          <h4 class="event-col-title">
+            <span data-i18n="comp.static.title">Static Events &amp; Engineering Evaluation</span>
+            <span class="text-red" data-i18n="scoring.staticTotal">(325 Points // 32.5%)</span>
+          </h4>
+          <div class="scored-event">
+            <div class="se-header">
+              <span data-i18n="comp.event.design.title">Engineering Design Report</span>
+              <span class="se-pts" data-i18n="scoring.pts150">150 pts</span>
+            </div>
+            <p data-i18n="comp.event.design.desc">Defending every calculation, CAD geometry, FEA stress contour, and CFD flow model before Formula 1 judges.</p>
+          </div>
+          <div class="scored-event">
+            <div class="se-header">
+              <span data-i18n="comp.event.cost.title">Cost &amp; Manufacturing Analysis</span>
+              <span class="se-pts" data-i18n="scoring.pts100">100 pts</span>
+            </div>
+            <p data-i18n="comp.event.cost.desc">Comprehensive Bill of Materials (BOM), tooling trade-offs, and mass-production feasibility report.</p>
+          </div>
+          <div class="scored-event">
+            <div class="se-header">
+              <span data-i18n="comp.event.business.title">Business Logic Presentation</span>
+              <span class="se-pts" data-i18n="scoring.pts75">75 pts</span>
+            </div>
+            <p data-i18n="comp.event.business.desc">Pitching the race car prototype as a scalable commercial motorsport enterprise to corporate investors.</p>
+          </div>
+        </div>
+
+        <div class="events-col">
+          <h4 class="event-col-title">
+            <span data-i18n="comp.dynamic.title">Dynamics Class On-Track Trials</span>
+            <span class="text-red" data-i18n="scoring.dynamicTotal">(675 Points // 67.5%)</span>
+          </h4>
+          <div class="scored-event highlight-event">
+            <div class="se-header">
+              <span data-i18n="comp.event.endurance.title">Endurance &amp; Fuel Efficiency</span>
+              <span class="se-pts" data-i18n="scoring.pts375">375 pts</span>
+            </div>
+            <p data-i18n="comp.event.endurance.desc">The ultimate 22-kilometer punishing circuit race testing thermal reliability and powertrain fuel economy.</p>
+          </div>
+          <div class="scored-event">
+            <div class="se-header">
+              <span data-i18n="comp.event.sprint.title">Sprint / Autocross Qualifying</span>
+              <span class="se-pts" data-i18n="scoring.pts125">125 pts</span>
+            </div>
+            <p data-i18n="comp.event.sprint.desc">Single-lap flying shoot-out testing maximum handling agility, cornering grip, and driver precision.</p>
+          </div>
+          <div class="scored-event">
+            <div class="se-header">
+              <span data-i18n="comp.event.accel.title">Acceleration Sprint (75m)</span>
+              <span class="se-pts" data-i18n="scoring.pts100">100 pts</span>
+            </div>
+            <p data-i18n="comp.event.accel.desc">Standing start straight-line drag proving launch control, traction algorithm, and engine torque delivery.</p>
+          </div>
+          <div class="scored-event">
+            <div class="se-header">
+              <span data-i18n="comp.event.skidpad.title">Skid Pad (Figure-8)</span>
+              <span class="se-pts" data-i18n="scoring.pts75">75 pts</span>
+            </div>
+            <p data-i18n="comp.event.skidpad.desc">Constant-radius handling pad testing steady-state lateral G-force generation and roll stiffness.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Roadmap -->
+      <div class="journey-roadmap">
+        <h3 class="roadmap-heading" data-i18n="comp.roadmap.heading">The Road Map to Silverstone Grid</h3>
+        <div class="roadmap-steps">
+          <div class="step-card in-progress">
+            <div class="step-check">01</div>
+            <span class="step-tag" data-i18n="comp.step1.tag">Phase 1 &bull; Active Stage</span>
+            <h4 data-i18n="comp.step1.title">Team Formation &amp; Core Recruitment</h4>
+            <p data-i18n="comp.step1.desc">Recruiting student engineers across Zagazig National University, onboarding divisions, and studying IMechE regulations.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-check">02</div>
+            <span class="step-tag" data-i18n="comp.step2.tag">Phase 2 &bull; Next Phase</span>
+            <h4 data-i18n="comp.step2.title">CAD Modelling &amp; Aerodynamics</h4>
+            <p data-i18n="comp.step2.desc">Initiating 3D digital chassis packaging, torsional FEA calculations, and ANSYS Fluent wind tunnel aerodynamic models.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-check">03</div>
+            <span class="step-tag" data-i18n="comp.step3.tag">Phase 3 &bull; Pipeline</span>
+            <h4 data-i18n="comp.step3.title">Procurement &amp; Fabrication</h4>
+            <p data-i18n="comp.step3.desc">Chromoly tubing preparation, precision TIG welding, and CNC 7075-T6 suspension upright machining.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-check">04</div>
+            <span class="step-tag" data-i18n="comp.step4.tag">Phase 4 &bull; Target</span>
+            <h4 data-i18n="comp.step4.title">Engine Calibration &amp; Telemetry Trials</h4>
+            <p data-i18n="comp.step4.desc">Engine dyno tuning, MoTeC ECU launch calibration, driver ergometric fitting, and shakedown testing.</p>
+          </div>
+          <div class="step-card victory-step">
+            <div class="step-check">05</div>
+            <span class="step-tag" data-i18n="comp.step5.tag">Phase 5 &bull; The Goal</span>
+            <h4 data-i18n="comp.step5.title">Silverstone Grid UK Debut</h4>
+            <p data-i18n="comp.step5.desc">Scrutineering tech inspections, concept design defense, and wheel-to-wheel Silverstone UK dynamic runs!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       SECTION 04: THE 7 ENGINEERING SUBSYSTEMS
+       ======================================================================== -->
+  <section class="section section-dark" id="subsystems">
+    <div class="container">
+      <div class="section-header">
+        <div class="racing-section-tag">
+          <span class="tag-dot"></span>
+          <span data-i18n="sub.tag">DISCIPLINES &bull; 7 CORE SUBSYSTEMS</span>
+        </div>
+        <h2 class="section-title" data-i18n="sub.title">Multidisciplinary <span class="text-red">Engineering</span> Subsystems</h2>
+        <p class="section-desc" data-i18n="sub.desc">
+          Building a Formula Student race car requires the synchronized synergy of 7 specialized engineering divisions.
+        </p>
+      </div>
+
+      <div class="engineering-editorial-section" id="engineeringSection">
+        <div class="engineering-sticky-sidebar">
+          <span class="sticky-code-tag" data-i18n="subsystems.stickyTag">// TECHNICAL SECTORS</span>
+          <div class="rolling-numeral-container">
+            <div class="rolling-numeral-stroke" id="rollingNumeral">01</div>
+            <div class="rolling-numeral-caption" data-i18n="subsystems.activeDiscipline">ACTIVE DISCIPLINE</div>
+          </div>
+        </div>
+
+        <div class="engineering-subsystems-list">
+          <!-- 01 Aero -->
+          <div class="subsystem-editorial-block active" data-num="01">
+            <div class="subsystem-block-header">
+              <span class="subsystem-num-inline" data-i18n="sub.aero.num">01 // AERODYNAMICS</span>
+              <h3 class="subsystem-title" data-i18n="sub.aero.title">Aerodynamics &amp; Downforce Package</h3>
+              <p class="subsystem-lead" data-i18n="sub.aero.lead">
+                Validated in ANSYS Fluent CFD, generating cornering downforce while managing cooling flow into the sidepod radiators.
+              </p>
+            </div>
+            <div class="subsystem-tech-rows">
+              <div class="tech-row"><span data-i18n="sub.aero.t1">Multi-Element Carbon Front &amp; Rear Wings</span><span class="tech-id">01</span></div>
+              <div class="tech-row"><span data-i18n="sub.aero.t2">Ground-Effect Venturi Tunnels &amp; Diffusers</span><span class="tech-id">02</span></div>
+              <div class="tech-row"><span data-i18n="sub.aero.t3">Full-Vehicle Mesh CFD Simulation (18.7M Elements)</span><span class="tech-id">03</span></div>
+              <div class="tech-row"><span data-i18n="sub.aero.t4">Active DRS Drag Reduction Wing Slot</span><span class="tech-id">04</span></div>
+            </div>
+          </div>
+
+          <!-- 02 Chassis -->
+          <div class="subsystem-editorial-block" data-num="02">
+            <div class="subsystem-block-header">
+              <span class="subsystem-num-inline" data-i18n="sub.chassis.num">02 // CHASSIS</span>
+              <h3 class="subsystem-title" data-i18n="sub.chassis.title">Chassis &amp; Monocoque Structures</h3>
+              <p class="subsystem-lead" data-i18n="sub.chassis.lead">
+                Lightweight 4130 chromoly tubular spaceframe engineered for peak torsional stiffness and maximum impact survivability.
+              </p>
+            </div>
+            <div class="subsystem-tech-rows">
+              <div class="tech-row"><span data-i18n="sub.chassis.t1">Laser-Notched 4130 Chromoly Steel Frame</span><span class="tech-id">01</span></div>
+              <div class="tech-row"><span data-i18n="sub.chassis.t2">Torsional Rigidity Exceeding 2,400 Nm/deg</span><span class="tech-id">02</span></div>
+              <div class="tech-row"><span data-i18n="sub.chassis.t3">FIA Aluminum Honeycomb Impact Attenuator</span><span class="tech-id">03</span></div>
+              <div class="tech-row"><span data-i18n="sub.chassis.t4">Custom Vac-Bagged Carbon Fiber Seat Shell</span><span class="tech-id">04</span></div>
+            </div>
+          </div>
+
+          <!-- 03 Powertrain -->
+          <div class="subsystem-editorial-block" data-num="03">
+            <div class="subsystem-block-header">
+              <span class="subsystem-num-inline" data-i18n="sub.power.num">03 // POWERTRAIN</span>
+              <h3 class="subsystem-title" data-i18n="sub.power.title">Powertrain &amp; Thermal Management</h3>
+              <p class="subsystem-lead" data-i18n="sub.power.lead">
+                High-revving racing engine optimized for rapid throttle response under strict 20mm restrictor rules with Drexler LSD.
+              </p>
+            </div>
+            <div class="subsystem-tech-rows">
+              <div class="tech-row"><span data-i18n="sub.power.t1">3D Printed SLS Intake Manifold &amp; Restrictor</span><span class="tech-id">01</span></div>
+              <div class="tech-row"><span data-i18n="sub.power.t2">Drexler Motorsport Limited Slip Differential</span><span class="tech-id">02</span></div>
+              <div class="tech-row"><span data-i18n="sub.power.t3">Custom High-Efficiency Aluminum Radiator</span><span class="tech-id">03</span></div>
+              <div class="tech-row"><span data-i18n="sub.power.t4">Pneumatic Paddle Shifter &amp; Quickshifter</span><span class="tech-id">04</span></div>
+            </div>
+          </div>
+
+          <!-- 04 Suspension -->
+          <div class="subsystem-editorial-block" data-num="04">
+            <div class="subsystem-block-header">
+              <span class="subsystem-num-inline" data-i18n="sub.susp.num">04 // SUSPENSION</span>
+              <h3 class="subsystem-title" data-i18n="sub.susp.title">Suspension &amp; Vehicle Kinematics</h3>
+              <p class="subsystem-lead" data-i18n="sub.susp.lead">
+                Double-wishbone pushrod suspension system with Öhlins TTX25 adjustable dampers and CNC 7075-T6 aluminum uprights.
+              </p>
+            </div>
+            <div class="subsystem-tech-rows">
+              <div class="tech-row"><span data-i18n="sub.susp.t1">Double Wishbone Pushrod Geometry</span><span class="tech-id">01</span></div>
+              <div class="tech-row"><span data-i18n="sub.susp.t2">Öhlins TTX25 2-Way Adjustable Dampers</span><span class="tech-id">02</span></div>
+              <div class="tech-row"><span data-i18n="sub.susp.t3">CNC 7075-T6 Billet Uprights &amp; Bellcranks</span><span class="tech-id">03</span></div>
+              <div class="tech-row"><span data-i18n="sub.susp.t4">Hoosier 18.0 x 6.0-10 R25B Slicks</span><span class="tech-id">04</span></div>
+            </div>
+          </div>
+
+          <!-- 05 Telemetry -->
+          <div class="subsystem-editorial-block" data-num="05">
+            <div class="subsystem-block-header">
+              <span class="subsystem-num-inline" data-i18n="sub.telem.num">05 // TELEMETRY</span>
+              <h3 class="subsystem-title" data-i18n="sub.telem.title">Electronics, DAQ &amp; Pit Wall Telemetry</h3>
+              <p class="subsystem-lead" data-i18n="sub.telem.lead">
+                MoTeC M130 ECU, custom Power Distribution Module (PDM), CAN-bus network, and live 900MHz wireless telemetry streaming.
+              </p>
+            </div>
+            <div class="subsystem-tech-rows">
+              <div class="tech-row"><span data-i18n="sub.telem.t1">Motorsport Grade Raychem Type-55 Wiring</span><span class="tech-id">01</span></div>
+              <div class="tech-row"><span data-i18n="sub.telem.t2">Live Wireless 900MHz Pit-Wall Data Stream</span><span class="tech-id">02</span></div>
+              <div class="tech-row"><span data-i18n="sub.telem.t3">Wheel Speed, Suspension Travel &amp; Brake Sensors</span><span class="tech-id">03</span></div>
+              <div class="tech-row"><span data-i18n="sub.telem.t4">Driver HUD &amp; Programmable Shift Lights</span><span class="tech-id">04</span></div>
+            </div>
+          </div>
+
+          <!-- 06 Ergonomics -->
+          <div class="subsystem-editorial-block" data-num="06">
+            <div class="subsystem-block-header">
+              <span class="subsystem-num-inline" data-i18n="sub.ctrl.num">06 // CONTROLS</span>
+              <h3 class="subsystem-title" data-i18n="sub.ctrl.title">Driver Ergonomics &amp; Pedal Box</h3>
+              <p class="subsystem-lead" data-i18n="sub.ctrl.lead">
+                Adjustable CNC pedal box with balance bar bias adjuster, quick-release steering wheel, and FIA 5-second emergency egress compliance.
+              </p>
+            </div>
+            <div class="subsystem-tech-rows">
+              <div class="tech-row"><span data-i18n="sub.ctrl.t1">Adjustable Dual-Cylinder Brake Bias System</span><span class="tech-id">01</span></div>
+              <div class="tech-row"><span data-i18n="sub.ctrl.t2">Carbon Fiber Steering Wheel with Shift Paddles</span><span class="tech-id">02</span></div>
+              <div class="tech-row"><span data-i18n="sub.ctrl.t3">FIA Compliant 5-Second Egress Safety Clearance</span><span class="tech-id">03</span></div>
+              <div class="tech-row"><span data-i18n="sub.ctrl.t4">Custom Expandable Bead Foam Driver Seat</span><span class="tech-id">04</span></div>
+            </div>
+          </div>
+
+          <!-- 07 Operations -->
+          <div class="subsystem-editorial-block" data-num="07">
+            <div class="subsystem-block-header">
+              <span class="subsystem-num-inline" data-i18n="sub.ops.num">07 // OPERATIONS</span>
+              <h3 class="subsystem-title" data-i18n="sub.ops.title">Business Operations &amp; Media Logistics</h3>
+              <p class="subsystem-lead" data-i18n="sub.ops.lead">
+                Financial budgeting, supply chain procurement, sponsorship partnerships, international transport logistics to the UK, and public relations.
+              </p>
+            </div>
+            <div class="subsystem-tech-rows">
+              <div class="tech-row"><span data-i18n="sub.ops.t1">Comprehensive Cost &amp; Manufacturing Report (CBOM)</span><span class="tech-id">01</span></div>
+              <div class="tech-row"><span data-i18n="sub.ops.t2">Business Logic Presentation Pitch to Investors</span><span class="tech-id">02</span></div>
+              <div class="tech-row"><span data-i18n="sub.ops.t3">Sponsorship Acquisition &amp; Brand Media</span><span class="tech-id">03</span></div>
+              <div class="tech-row"><span data-i18n="sub.ops.t4">UK Carnet &amp; Silverstone Paddock Logistics</span><span class="tech-id">04</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Development Progress & Project Milestones -->
+      <div class="dev-progress">
+        <div class="dev-header">
+          <h3 data-i18n="dev.title">Chassis VX-01 Project Milestones &amp; Targets</h3>
+          <span class="dev-status-badge" data-i18n="dev.phase">Stage: Active Recruitment &amp; Architecture Setup</span>
+        </div>
+        <div class="progress-bars">
+          <div class="progress-item">
+            <div class="progress-labels"><span data-i18n="dev.b1">Team Formation &amp; Student Recruitment</span><span>85%</span></div>
+            <div class="progress-track"><div class="progress-fill" data-width="85"></div></div>
+          </div>
+          <div class="progress-item">
+            <div class="progress-labels"><span data-i18n="dev.b2">IMechE Technical Rulebook Analysis</span><span>75%</span></div>
+            <div class="progress-track"><div class="progress-fill" data-width="75"></div></div>
+          </div>
+          <div class="progress-item">
+            <div class="progress-labels"><span data-i18n="dev.b3">CAD Conceptual Packaging &amp; Spaceframe Architecture</span><span>40%</span></div>
+            <div class="progress-track"><div class="progress-fill" data-width="40"></div></div>
+          </div>
+          <div class="progress-item">
+            <div class="progress-labels"><span data-i18n="dev.b4">Sponsorship Outreach &amp; Industry Partnerships</span><span>30%</span></div>
+            <div class="progress-track"><div class="progress-fill" data-width="30"></div></div>
+          </div>
+          <div class="progress-item">
+            <div class="progress-labels"><span data-i18n="dev.b5">Workshop Tooling &amp; Safety Compliance</span><span>20%</span></div>
+            <div class="progress-track"><div class="progress-fill" data-width="20"></div></div>
+          </div>
+          <div class="progress-item">
+            <div class="progress-labels"><span data-i18n="dev.b6">Chassis Fabrication &amp; Physical Assembly (Upcoming Target)</span><span>0%</span></div>
+            <div class="progress-track"><div class="progress-fill" data-width="0"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       SECTION 05: SPONSORS & OFFICIAL BACKERS
+       ======================================================================== -->
+  <section class="section" id="sponsors">
+    <div class="container">
+      <div class="section-header center">
+        <div class="racing-section-tag">
+          <span class="tag-dot"></span>
+          <span data-i18n="sponsors.tag">OUR PARTNERS &bull; ACADEMIC &amp; CORPORATE</span>
+        </div>
+        <h2 class="section-title" data-i18n="sponsors.title">Supported By <span class="text-red">Visionary Partners</span></h2>
+        <p class="section-desc" style="margin-inline: auto;" data-i18n="sponsors.desc">
+          We are grateful to our university patrons and corporate backers who empower us to build Egypt’s formula race car.
+        </p>
+      </div>
+
+      <div class="academic-sponsor">
+        <div class="academic-sponsor-header">
+          <span class="tag-dot"></span>
+          <h3 data-i18n="sponsors.acadHeader">Academic Institutions &amp; Official Patrons</h3>
+          <span class="tag-dot"></span>
+        </div>
+
+        <div class="academic-logos">
+          <!-- ZNU -->
+          <div class="academic-logo-card">
+            <div class="academic-logo-ring">
+              <img src="logo_uni.png" alt="Zagazig National University Crest" class="academic-img"
+                onerror="this.src='znu_logo_light.png'" />
+            </div>
+            <h4 data-i18n="sponsors.znuTitle">Zagazig National University</h4>
+            <p data-i18n="sponsors.znuDesc">Institutional Patron &amp; Primary Academic Backer</p>
+            <span class="univ-tag" data-i18n="sponsors.znuLoc">Zagazig, Sharkia, Egypt</span>
+          </div>
+
+          <!-- VELOX -->
+          <div class="academic-logo-card center-team-card">
+            <div class="academic-logo-ring">
+              <img src="VeloxLogoWeb.png" alt="VELOX Team Crest" class="academic-img" />
+            </div>
+            <h4 data-i18n="sponsors.veloxTitle">VELOX Racing Team</h4>
+            <p data-i18n="sponsors.veloxDesc">Faculty of Engineering Motorsport Division</p>
+            <span class="univ-tag text-red" data-i18n="sponsors.veloxBadge">Formula Student UK Entry</span>
+          </div>
+
+          <!-- Faculty of Engineering -->
+          <div class="academic-logo-card">
+            <div class="academic-logo-ring">
+              <img src="logo_eng.png" alt="Faculty of Engineering Crest" class="academic-img" />
+            </div>
+            <h4 data-i18n="sponsors.engTitle">Faculty of Engineering</h4>
+            <p data-i18n="sponsors.engDesc">Mechatronics Engineering Department &amp; Workshops</p>
+            <span class="univ-tag" data-i18n="sponsors.engLoc">Engineering Innovation</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sponsorship Tiers -->
+      <div class="sponsor-tiers">
+        <div class="sponsor-tier">
+          <h3 class="tier-title gold" data-i18n="sponsors.tierGold">Gold Partners &bull; Prime Livery Placement</h3>
+          <div class="sponsor-row">
+            <div class="sponsor-slot sponsor-slot-lg">
+              <div class="sponsor-placeholder">
+                <span data-i18n="sponsors.slotGold1">Title / Gold Technical Partner</span>
+                <small data-i18n="sponsors.slotGold1Sub">Front &amp; Rear Wing Endplate Livery</small>
+              </div>
+            </div>
+            <div class="sponsor-slot sponsor-slot-lg">
+              <div class="sponsor-placeholder">
+                <span data-i18n="sponsors.slotGold2">Gold Industry Partner</span>
+                <small data-i18n="sponsors.slotGold2Sub">Sidepod Main Body Branding</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="sponsor-tier">
+          <h3 class="tier-title silver" data-i18n="sponsors.tierSilver">Silver Partners &bull; Hardware &amp; Material Suppliers</h3>
+          <div class="sponsor-row">
+            <div class="sponsor-slot sponsor-slot-md">
+              <div class="sponsor-placeholder"><span data-i18n="sponsors.slotSilver1">Telemetry &amp; Electronics Partner</span></div>
+            </div>
+            <div class="sponsor-slot sponsor-slot-md">
+              <div class="sponsor-placeholder"><span data-i18n="sponsors.slotSilver2">Composite &amp; Carbon Fiber Supplier</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="sponsor-tier">
+          <h3 class="tier-title bronze" data-i18n="sponsors.tierBronze">Bronze Partners &bull; Team Equipment &amp; Tooling</h3>
+          <div class="sponsor-row sponsor-row-sm">
+            <div class="sponsor-slot sponsor-slot-sm"><div class="sponsor-placeholder"><span data-i18n="sponsors.slotBronze1">CNC Machining</span></div></div>
+            <div class="sponsor-slot sponsor-slot-sm"><div class="sponsor-placeholder"><span data-i18n="sponsors.slotBronze2">Rapid 3D Prototyping</span></div></div>
+            <div class="sponsor-slot sponsor-slot-sm"><div class="sponsor-placeholder"><span data-i18n="sponsors.slotBronze3">Motorsport Lubricants</span></div></div>
+            <div class="sponsor-slot sponsor-slot-sm"><div class="sponsor-placeholder"><span data-i18n="sponsors.slotBronze4">Workshop Tooling</span></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="become-sponsor-cta">
+        <div class="bsc-content">
+          <h3 data-i18n="sponsors.ctaTitle">Elevate Your Brand at Silverstone Circuit</h3>
+          <p data-i18n="sponsors.ctaDesc">
+            Formula Student UK attracts the world's most innovative automotive, aerospace, and motorsport executives.
+            By partnering with VELOX Racing Team, your company directly invests in high-caliber engineering talent and
+            enjoys international brand exposure on the global racing stage.
+          </p>
+          <div class="sponsor-benefits">
+            <div class="benefit">
+              <span class="icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+              <span data-i18n="sponsors.b1">Livery Placement on VX-01</span>
+            </div>
+            <div class="benefit">
+              <span class="icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+              <span data-i18n="sponsors.b2">Silverstone Paddock Branding</span>
+            </div>
+            <div class="benefit">
+              <span class="icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+              <span data-i18n="sponsors.b3">Direct Recruitment Pipeline to Top ZNU Talent</span>
+            </div>
+            <div class="benefit">
+              <span class="icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+              <span data-i18n="sponsors.b4">VIP Passes to Silverstone Events</span>
+            </div>
+            <div class="benefit">
+              <span class="icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"></polyline></svg></span>
+              <span data-i18n="sponsors.b5">Digital &amp; Media Press Releases</span>
+            </div>
+          </div>
+          <a href="#contact" class="btn btn-primary">
+            <span data-i18n="sponsors.btn">Inquire About Partnership Packages</span>
+            <span class="btn-arrow">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       SECTION 06: CONTACT & PIT WALL RADIO
+       ======================================================================== -->
+  <section class="section section-dark" id="contact">
+    <div class="container">
+      <div class="section-header">
+        <div class="racing-section-tag">
+          <span class="tag-dot"></span>
+          <span data-i18n="contact.tag">PIT WALL RADIO &bull; TRANSMIT INQUIRY</span>
+        </div>
+        <h2 class="section-title" data-i18n="contact.title">Contact <span class="text-red">VELOX Racing Team</span></h2>
+        <p class="section-desc" data-i18n="contact.desc">
+          Whether you want to sponsor our build, apply to join the engineering crew, or collaborate with us — send your transmission to our pit wall.
+        </p>
+      </div>
+
+      <div class="contact-layout">
+        <div class="contact-info">
+          <div class="contact-block">
+            <h4 data-i18n="contact.hqTitle">Paddock Headquarters</h4>
+            <p data-i18n="contact.hqDesc">
+              Zagazig National University<br />
+              Faculty of Engineering &mdash; Mechatronics Department<br />
+              Zagazig, Sharkia Governorate, Egypt
+            </p>
+          </div>
+
+          <div class="contact-block">
+            <h4 data-i18n="contact.commTitle">Official Communications</h4>
+            <p><span data-i18n="contact.emailPrefix">Email:</span> <a href="mailto:velox.racing.znu@gmail.com" class="text-red">velox.racing.znu@gmail.com</a></p>
+            <p data-i18n="contact.commUniv">University: Zagazig National University (ZNU)</p>
+          </div>
+
+          <div class="contact-block">
+            <h4 data-i18n="contact.socialTitle">Paddock Socials</h4>
+            <div class="social-links">
+              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="social-btn" data-i18n="contact.socialLi">LinkedIn</a>
+              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="social-btn" data-i18n="contact.socialIg">Instagram</a>
+              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="social-btn" data-i18n="contact.socialFb">Facebook</a>
+              <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="social-btn" data-i18n="contact.socialYt">YouTube</a>
+            </div>
+          </div>
+        </div>
+
+        <form class="contact-form" id="contactForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="contactName" data-i18n="contact.lblFullName">Full Name</label>
+              <input type="text" id="contactName" name="name" placeholder="Ahmed Hassan" data-i18n-ph="contact.phName" required />
+            </div>
+            <div class="form-group">
+              <label for="contactEmail" data-i18n="contact.lblEmail">Email Address</label>
+              <input type="email" id="contactEmail" name="email" placeholder="name@domain.com" required />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="contactSubject" data-i18n="contact.lblDept">Inquiry Department</label>
+            <select id="contactSubject" name="subject" required>
+              <option value="" data-i18n="contact.optDefault">Select Department...</option>
+              <option value="join" data-i18n="contact.optJoin">Student Recruitment — Join The Build Crew</option>
+              <option value="sponsor" data-i18n="contact.optSponsor">Corporate Sponsorship &amp; Partnerships</option>
+              <option value="technical" data-i18n="contact.optTech">Technical Suppliers &amp; Tooling</option>
+              <option value="media" data-i18n="contact.optMedia">Media, Press &amp; Public Relations</option>
+              <option value="general" data-i18n="contact.optGeneral">General Support</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="contactMessage" data-i18n="contact.lblMsg">Message / Proposal</label>
+            <textarea id="contactMessage" name="message" rows="5"
+              placeholder="Tell us about yourself, your university major, or your sponsorship proposal..." data-i18n-ph="contact.phMsg" required></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-full" id="submitBtn">
+            <span data-i18n="contact.submit">Transmit Message to Pit Wall</span>
+            <span class="btn-arrow">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </span>
+          </button>
+
+          <div class="form-success" id="formSuccess" data-i18n="contact.success">
+            Message transmitted successfully to velox.racing.znu@gmail.com! We will contact you soon.
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- FORMAL FOOTER DIVIDER -->
+  <div class="formal-section-divider" aria-hidden="true">
+    <div class="divider-line"></div>
+    <div class="divider-badge">
+      <span class="divider-dot"></span>
+      <span class="divider-text" data-i18n="footer.dividerText">FORMULA STUDENT UK &bull; ZAGAZIG NATIONAL UNIVERSITY &bull; VELOX RACING</span>
+      <span class="divider-dot"></span>
+    </div>
+    <div class="divider-line"></div>
+  </div>
+
+  <!-- ========================================================================
+       FOOTER
+       ======================================================================== -->
+  <footer class="footer">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <img src="VeloxLogoWeb.png" alt="VELOX Racing Team" class="footer-logo" />
+        <p>
+          <span data-i18n="footer.desc1">VELOX Formula Student Racing Team.</span><br />
+          <span data-i18n="footer.desc2">Faculty of Engineering &bull; Zagazig National University.</span><br />
+          <span data-i18n="footer.contactLabel">Official Contact:</span> <a href="mailto:velox.racing.znu@gmail.com" class="text-red">velox.racing.znu@gmail.com</a>
+        </p>
+      </div>
+
+      <div class="footer-links">
+        <h5 data-i18n="footer.quickLinksTitle">Quick Links</h5>
+        <ul>
+          <li><a href="#home" data-i18n="nav.home">Home</a></li>
+          <li><a href="#about" data-i18n="nav.about">About</a></li>
+          <li><a href="#car" data-i18n="nav.car">Chassis VX-01</a></li>
+          <li><a href="#competition" data-i18n="nav.competition">Formula Student</a></li>
+          <li><a href="#subsystems" data-i18n="nav.subsystems">Subsystems</a></li>
+          <li><a href="#sponsors" data-i18n="nav.sponsors">Sponsors</a></li>
+          <li><a href="#contact" data-i18n="nav.contact">Contact</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-logos">
+        <h5 data-i18n="footer.affiliatedTitle">Affiliated With</h5>
+        <div class="footer-uni-logos">
+          <div class="footer-uni-card">
+            <img src="logo_uni.png" alt="ZNU Crest" class="footer-uni-logo" onerror="this.src='znu_logo_light.png'" />
+            <span class="footer-uni-name" data-i18n="footer.uniZnu">Zagazig National University</span>
+          </div>
+          <div class="footer-uni-card">
+            <img src="logo_eng.png" alt="Faculty of Engineering" class="footer-uni-logo" />
+            <span class="footer-uni-name" data-i18n="footer.uniEng">Engineering Faculty</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p data-i18n="footer.copy">&copy; 2026/2027 VELOX Racing Team &bull; Zagazig National University. All rights reserved.</p>
+      <p data-i18n="footer.sub">Engineered From Zero &bull; Powered by Student Ambition.</p>
+    </div>
+  </footer>
+
+  <!-- ========================================================================
+       CINEMA VIDEO MODAL
+       ======================================================================== -->
+  <div class="video-modal-backdrop" id="videoModal" role="dialog" aria-modal="true" aria-label="Official Launch Film">
+    <div class="video-modal-dialog">
+      <div class="video-modal-header">
+        <div class="video-modal-title">
+          <span class="tag-dot"></span>
+          <span data-i18n="modal.filmTitle">VELOX FORMULA STUDENT &mdash; OFFICIAL SILVERSTONE LAUNCH FILM</span>
+        </div>
+        <button class="video-modal-close" id="closeVideoModal" aria-label="Close modal">&times;</button>
+      </div>
+      <div class="video-modal-body">
+        <video id="modalVideoPlayer" src="ad.mp4" controls playsinline preload="metadata">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript Application Logic -->
+  <script src="script.js"></script>
+</body>
+
+</html>
