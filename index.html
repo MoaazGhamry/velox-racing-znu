@@ -16,10 +16,10 @@
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
 
   <!-- Shared Style with Cache Buster -->
-  <link rel="stylesheet" href="style.css?v=2.5" />
+  <link rel="stylesheet" href="style.css?v=2.6" />
 
   <!-- Localization Engine -->
-  <script src="i18n.js?v=2.5"></script>
+  <script src="i18n.js?v=2.6"></script>
 </head>
 <body>
 
@@ -175,25 +175,50 @@
 
         <div class="reel-container">
           <div class="cinema-player" id="cinemaPlayer">
-            <!-- Main Video: Lazy-loaded with poster, preload none for zero initial load weight -->
+            <!-- Main Video: Preload metadata, optimized H.264 Faststart stream -->
             <video
               id="adVideo"
               class="cinema-video"
               data-src="ad.mp4"
               playsinline
-              preload="none"
+              preload="metadata"
               poster="velox_car_render.jpg"
               loop>
             </video>
-
-            <!-- Loading Spinner (Shown during lazy-loading and buffering) -->
-            <div class="cinema-spinner" id="cinemaSpinner" aria-label="Loading video"></div>
 
             <!-- Big Center Play Button Overlay -->
             <div class="cinema-play-overlay" id="videoPlayOverlay" aria-label="Play video" role="button" tabindex="0">
               <div class="cinema-play-btn" id="cinemaPlayBtn">
                 <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
               </div>
+              <span class="cinema-play-label" data-i18n="reel.ready">Watch High-Definition Reel</span>
+            </div>
+
+            <!-- Smart Cinematic Loader & Pre-Buffering Overlay -->
+            <div class="cinema-loader-overlay" id="cinemaLoaderOverlay" aria-live="polite">
+              <div class="cinema-loader-card">
+                <div class="cinema-loader-spinner">
+                  <div class="spinner-ring"></div>
+                  <div class="spinner-ring-inner"></div>
+                </div>
+                <div class="cinema-loader-info">
+                  <h4 class="cinema-loader-title" id="cinemaLoaderTitle" data-i18n="reel.loadingTitle">Preparing High-Definition Reel...</h4>
+                  <p class="cinema-loader-sub" id="cinemaLoaderSub" data-i18n="reel.loadingSub">Buffering stream for smooth 60 FPS playback</p>
+                </div>
+                <div class="cinema-loader-progress-wrap">
+                  <div class="cinema-loader-bar" id="cinemaLoaderBar"></div>
+                </div>
+                <div class="cinema-loader-meta">
+                  <span class="cinema-loader-pct" id="cinemaLoaderPct">0%</span>
+                  <span class="cinema-loader-status" id="cinemaLoaderStatus">Pre-buffering frames...</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Live Non-Intrusive Mid-Playback Buffering Pill -->
+            <div class="cinema-buffering-pill" id="cinemaBufferingPill">
+              <span class="buffering-dot"></span>
+              <span data-i18n="reel.buffering">Buffering stream...</span>
             </div>
 
             <!-- Minimalist Bottom Controls Bar (Strictly Icons, No Words, No Chips) -->
@@ -348,7 +373,6 @@
     const adVideo = document.getElementById('adVideo');
     const cinemaPlayer = document.getElementById('cinemaPlayer');
     const videoOverlay = document.getElementById('videoPlayOverlay');
-    const cinemaSpinner = document.getElementById('cinemaSpinner');
     const playToggleBtn = document.getElementById('videoPlayToggleBtn');
     const playIconSvg = document.getElementById('playIconSvg');
     const pauseIconSvg = document.getElementById('pauseIconSvg');
@@ -361,9 +385,13 @@
     const fullscreenBtn = document.getElementById('videoFullscreenBtn');
     const expandSvg = document.getElementById('expandSvg');
     const compressSvg = document.getElementById('compressSvg');
+    const bufferingPill = document.getElementById('cinemaBufferingPill');
 
     let isVideoLoaded = false;
+    let isBufferingPreload = false;
+    let bufferInterval = null;
     let idleTimer = null;
+    const PREBUFFER_TARGET_PCT = 25; // Pre-buffer at least 25% (~5s of 60fps video)
 
     function formatTime(seconds) {
       if (isNaN(seconds) || seconds < 0) return '0:00';
@@ -372,13 +400,32 @@
       return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
     }
 
-    function loadVideoSource() {
-      if (!isVideoLoaded && adVideo && adVideo.dataset.src) {
-        cinemaSpinner.classList.add('active');
-        adVideo.src = adVideo.dataset.src;
-        adVideo.load();
-        isVideoLoaded = true;
+    function updateBufferProgressUI() {
+      if (!adVideo) return 0;
+      let pct = 0;
+      if (adVideo.buffered.length > 0 && adVideo.duration > 0) {
+        const bufferedEnd = adVideo.buffered.end(adVideo.buffered.length - 1);
+        pct = Math.min(100, Math.round((bufferedEnd / adVideo.duration) * 100));
       }
+      const loaderBar = document.getElementById('cinemaLoaderBar');
+      const loaderPct = document.getElementById('cinemaLoaderPct');
+      const loaderStatus = document.getElementById('cinemaLoaderStatus');
+
+      if (loaderBar) loaderBar.style.width = Math.max(pct, 8) + '%';
+      if (loaderPct) loaderPct.textContent = pct + '%';
+      if (loaderStatus) {
+        const isAr = document.documentElement.getAttribute('lang') === 'ar';
+        if (pct < 20) {
+          loaderStatus.textContent = isAr ? 'بدء الاتصال بالبث...' : 'Connecting stream...';
+        } else if (pct < 60) {
+          loaderStatus.textContent = isAr ? 'تجميع إطارات 60 FPS...' : 'Buffering 60 FPS frames...';
+        } else if (pct < 95) {
+          loaderStatus.textContent = isAr ? 'تحسين مسار العرض...' : 'Optimizing pipeline...';
+        } else {
+          loaderStatus.textContent = isAr ? 'جاهز للانطلاق!' : 'Ready to launch!';
+        }
+      }
+      return pct;
     }
 
     function resetIdleTimer() {
@@ -392,46 +439,167 @@
       }
     }
 
-    function togglePlay() {
+    function startBufferingAndPlay() {
       if (!adVideo) return;
-      loadVideoSource();
+      const loaderOverlay = document.getElementById('cinemaLoaderOverlay');
+      const loaderBar = document.getElementById('cinemaLoaderBar');
+      const loaderPct = document.getElementById('cinemaLoaderPct');
 
-      if (adVideo.paused) {
-        cinemaSpinner.classList.add('active');
-        adVideo.play().then(() => {
-          cinemaSpinner.classList.remove('active');
-          videoOverlay.classList.add('hidden');
-          cinemaPlayer.classList.add('playing');
-          if (playIconSvg) playIconSvg.style.display = 'none';
-          if (pauseIconSvg) pauseIconSvg.style.display = 'block';
-          resetIdleTimer();
-        }).catch(err => {
-          console.log('Playback error:', err);
-          cinemaSpinner.classList.remove('active');
-        });
-      } else {
+      // If video is currently playing, clicking pauses it
+      if (!adVideo.paused && isVideoLoaded) {
         adVideo.pause();
-        videoOverlay.classList.remove('hidden');
+        if (videoOverlay) videoOverlay.classList.remove('hidden');
         cinemaPlayer.classList.remove('playing', 'idle');
         if (playIconSvg) playIconSvg.style.display = 'block';
         if (pauseIconSvg) pauseIconSvg.style.display = 'none';
         clearTimeout(idleTimer);
+        return;
       }
+
+      // If video was already buffered and paused, resume immediately
+      if (isVideoLoaded && adVideo.readyState >= 3) {
+        adVideo.play().then(() => {
+          if (videoOverlay) videoOverlay.classList.add('hidden');
+          cinemaPlayer.classList.add('playing');
+          if (playIconSvg) playIconSvg.style.display = 'none';
+          if (pauseIconSvg) pauseIconSvg.style.display = 'block';
+          resetIdleTimer();
+        }).catch(() => {});
+        return;
+      }
+
+      // Initial buffer required: show explicit loader card so user doesn't watch step-by-step
+      if (videoOverlay) videoOverlay.classList.add('hidden');
+      if (loaderOverlay) loaderOverlay.classList.add('active');
+      if (cinemaPlayer) cinemaPlayer.classList.add('buffering-preload');
+      isBufferingPreload = true;
+
+      if (!isVideoLoaded) {
+        adVideo.src = adVideo.dataset.src || 'ad.mp4';
+        adVideo.load();
+        isVideoLoaded = true;
+      }
+
+      clearInterval(bufferInterval);
+      bufferInterval = setInterval(() => {
+        const currentPct = updateBufferProgressUI();
+        // Launch once pre-buffer target is met OR browser signals canplaythrough
+        if ((currentPct >= PREBUFFER_TARGET_PCT || adVideo.readyState >= 4) && isBufferingPreload) {
+          clearInterval(bufferInterval);
+          isBufferingPreload = false;
+          if (loaderBar) loaderBar.style.width = '100%';
+          if (loaderPct) loaderPct.textContent = '100%';
+          const loaderStatus = document.getElementById('cinemaLoaderStatus');
+          if (loaderStatus) {
+            const isAr = document.documentElement.getAttribute('lang') === 'ar';
+            loaderStatus.textContent = isAr ? 'جاهز للانطلاق!' : 'Ready to launch!';
+          }
+
+          setTimeout(() => {
+            if (loaderOverlay) loaderOverlay.classList.remove('active');
+            if (cinemaPlayer) cinemaPlayer.classList.remove('buffering-preload');
+            adVideo.play().then(() => {
+              cinemaPlayer.classList.add('playing');
+              if (playIconSvg) playIconSvg.style.display = 'none';
+              if (pauseIconSvg) pauseIconSvg.style.display = 'block';
+              resetIdleTimer();
+            }).catch(err => {
+              console.log('Playback error:', err);
+              if (loaderOverlay) loaderOverlay.classList.remove('active');
+              if (cinemaPlayer) cinemaPlayer.classList.remove('buffering-preload');
+              if (videoOverlay) videoOverlay.classList.remove('hidden');
+            });
+          }, 350);
+        }
+      }, 100);
+
+      // Safety fallback: if buffer takes longer than 3.5s but readyState is sufficient, start smoothly
+      setTimeout(() => {
+        if (isBufferingPreload && adVideo.readyState >= 2) {
+          clearInterval(bufferInterval);
+          isBufferingPreload = false;
+          if (loaderOverlay) loaderOverlay.classList.remove('active');
+          if (cinemaPlayer) cinemaPlayer.classList.remove('buffering-preload');
+          adVideo.play().then(() => {
+            cinemaPlayer.classList.add('playing');
+            if (playIconSvg) playIconSvg.style.display = 'none';
+            if (pauseIconSvg) pauseIconSvg.style.display = 'block';
+            resetIdleTimer();
+          }).catch(() => {
+            if (videoOverlay) videoOverlay.classList.remove('hidden');
+          });
+        }
+      }, 3500);
     }
 
     if (adVideo) {
-      // Lazy load video source on hover over the container
-      cinemaPlayer.addEventListener('pointerenter', () => {
-        loadVideoSource();
-      }, { once: true });
+      // Smart background pre-buffering when approaching the section
+      if ('IntersectionObserver' in window) {
+        const prefetchObserver = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting && !isVideoLoaded) {
+              adVideo.src = adVideo.dataset.src || 'ad.mp4';
+              adVideo.load();
+              isVideoLoaded = true;
+              prefetchObserver.disconnect();
+            }
+          });
+        }, { rootMargin: '300px 0px' });
+        const reelSection = document.getElementById('cinematic');
+        if (reelSection) prefetchObserver.observe(reelSection);
+      }
 
       cinemaPlayer.addEventListener('mousemove', resetIdleTimer);
       cinemaPlayer.addEventListener('touchstart', resetIdleTimer, { passive: true });
 
-      if (videoOverlay) videoOverlay.addEventListener('click', togglePlay);
+      if (videoOverlay) videoOverlay.addEventListener('click', startBufferingAndPlay);
       if (playToggleBtn) playToggleBtn.addEventListener('click', (e) => {
         e.stopPropagation();
-        togglePlay();
+        startBufferingAndPlay();
+      });
+
+      // Hook up Hero "Watch Reel" button
+      const heroWatchReelBtn = document.querySelector('a[href="#cinematic"]');
+      if (heroWatchReelBtn) {
+        heroWatchReelBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          const cinematicSec = document.getElementById('cinematic');
+          if (cinematicSec) {
+            cinematicSec.scrollIntoView({ behavior: 'smooth' });
+            setTimeout(() => {
+              startBufferingAndPlay();
+            }, 450);
+          }
+        });
+      }
+
+      adVideo.addEventListener('progress', updateBufferProgressUI);
+
+      // In-playback buffering monitor (avoids freezing without notification)
+      adVideo.addEventListener('waiting', () => {
+        if (bufferingPill && !isBufferingPreload) {
+          bufferingPill.classList.add('active');
+        }
+      });
+
+      adVideo.addEventListener('playing', () => {
+        if (bufferingPill) bufferingPill.classList.remove('active');
+        if (videoOverlay) videoOverlay.classList.add('hidden');
+        cinemaPlayer.classList.add('playing');
+        if (playIconSvg) playIconSvg.style.display = 'none';
+        if (pauseIconSvg) pauseIconSvg.style.display = 'block';
+      });
+
+      adVideo.addEventListener('canplay', () => {
+        if (bufferingPill) bufferingPill.classList.remove('active');
+      });
+
+      adVideo.addEventListener('pause', () => {
+        if (bufferingPill) bufferingPill.classList.remove('active');
+        if (!isBufferingPreload && videoOverlay) videoOverlay.classList.remove('hidden');
+        cinemaPlayer.classList.remove('playing', 'idle');
+        if (playIconSvg) playIconSvg.style.display = 'block';
+        if (pauseIconSvg) pauseIconSvg.style.display = 'none';
       });
 
       if (audioToggleBtn) {
@@ -448,24 +616,6 @@
         });
       }
 
-      adVideo.addEventListener('waiting', () => {
-        cinemaSpinner.classList.add('active');
-      });
-
-      adVideo.addEventListener('playing', () => {
-        cinemaSpinner.classList.remove('active');
-        videoOverlay.classList.add('hidden');
-        cinemaPlayer.classList.add('playing');
-        if (playIconSvg) playIconSvg.style.display = 'none';
-        if (pauseIconSvg) pauseIconSvg.style.display = 'block';
-      });
-
-      adVideo.addEventListener('pause', () => {
-        videoOverlay.classList.remove('hidden');
-        cinemaPlayer.classList.remove('playing', 'idle');
-        if (playIconSvg) playIconSvg.style.display = 'block';
-        if (pauseIconSvg) pauseIconSvg.style.display = 'none';
-      });
 
       adVideo.addEventListener('timeupdate', () => {
         if (adVideo.duration && progressBar) {
@@ -485,7 +635,11 @@
 
       if (progressWrap) {
         progressWrap.addEventListener('click', (e) => {
-          loadVideoSource();
+          if (!isVideoLoaded && adVideo) {
+            adVideo.src = adVideo.dataset.src || 'ad.mp4';
+            adVideo.load();
+            isVideoLoaded = true;
+          }
           const rect = progressWrap.getBoundingClientRect();
           const pos = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
           if (adVideo.duration) {

@@ -53,6 +53,10 @@ const VELOX_I18N = {
     'reel.kicker': 'Experience Velox Racing',
     'reel.title': 'The Sound & Engineering of Velox',
     'reel.desc': 'Inside the workshop and onto the tarmac. From virtual CAD architectures to high-performance track testing.',
+    'reel.loadingTitle': 'Preparing High-Definition Reel...',
+    'reel.loadingSub': 'Buffering stream for smooth 60 FPS playback',
+    'reel.buffering': 'Buffering stream...',
+    'reel.ready': 'Watch High-Definition Reel',
 
     // CTA Banner (index.html)
     'cta.kicker': 'Recruitment Open',
@@ -183,6 +187,10 @@ const VELOX_I18N = {
     'reel.kicker': 'عش تجربة فيلوكس',
     'reel.title': 'صوت وهندسة فيلوكس',
     'reel.desc': 'من داخل الورشة إلى أرض الحلبة. من تصميمات الـ CAD ثلاثية الأبعاد إلى اختبارات الأداء الحقيقية على الأسفلت.',
+    'reel.loadingTitle': 'جاري تحميل وتجهيز العرض عالي الدقة...',
+    'reel.loadingSub': 'تجهيز البث لضمان تشغيل سلس وفائق الدقة دون تقطيع',
+    'reel.buffering': 'جاري استكمال التحميل...',
+    'reel.ready': 'مشاهدة العرض عالي الدقة',
 
     // CTA Banner (index.html)
     'cta.kicker': 'باب الانضمام مفتوح',
