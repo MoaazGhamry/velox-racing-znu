@@ -16,11 +16,11 @@
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
 
   <!-- Shared Style with Cache Buster -->
-  <link rel="stylesheet" href="style.css?v=3.6" />
+  <link rel="stylesheet" href="style.css?v=3.7" />
   <!-- Localization Engine -->
-  <script src="i18n.js?v=3.6"></script>
-  <!-- SheetJS for Professional Excel Exports (.xlsx) -->
-  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script src="i18n.js?v=3.7"></script>
+  <!-- SheetJS with Full Styling Engine for Professional Excel Exports (.xlsx) -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.min.js"></script>
   <!-- Supabase JS Client (CDN) -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -252,111 +252,120 @@
           </a>
         </div>
 
-        <!-- Status & HR Actions Card -->
-        <div class="drawer-section highlight-border">
-          <div class="drawer-section-header">
-            <h4>HR Review &amp; Candidate Status</h4>
-          </div>
-          <div style="margin-bottom: 14px;">
-            <label class="drawer-field-lbl">Candidate Pipeline Status:</label>
-            <div class="status-edit-row">
-              <select id="drawerStatusSelect" class="form-control" style="font-weight: 700; flex: 1; min-width: 160px;">
-                <option value="New">New</option>
-                <option value="Reviewed">Reviewed</option>
-                <option value="Interview">Interview</option>
-                <option value="Accepted">Accepted</option>
-                <option value="Rejected">Rejected</option>
-              </select>
-              <button type="button" id="saveNotesBtn" class="btn btn-primary" style="padding: 10px 18px; font-size: 0.85rem; font-weight: 600;">
-                Save Status &amp; Notes
-              </button>
+        <!-- Body Grid: 2 Columns for spacious executive view -->
+        <div class="drawer-body-grid">
+          <!-- Left Column: Operations & Academic Profile -->
+          <div class="drawer-col">
+            <!-- Status & HR Actions Card -->
+            <div class="drawer-section highlight-border">
+              <div class="drawer-section-header">
+                <h4>HR Review &amp; Candidate Status</h4>
+              </div>
+              <div style="margin-bottom: 14px;">
+                <label class="drawer-field-lbl">Candidate Pipeline Status:</label>
+                <div class="status-edit-row">
+                  <select id="drawerStatusSelect" class="form-control" style="font-weight: 700; flex: 1; min-width: 160px;">
+                    <option value="New">New</option>
+                    <option value="Reviewed">Reviewed</option>
+                    <option value="Interview">Interview</option>
+                    <option value="Accepted">Accepted</option>
+                    <option value="Rejected">Rejected</option>
+                  </select>
+                  <button type="button" id="saveNotesBtn" class="btn btn-primary" style="padding: 10px 18px; font-size: 0.85rem; font-weight: 600;">
+                    Save Status &amp; Notes
+                  </button>
+                </div>
+              </div>
+              <div>
+                <label class="drawer-field-lbl">Internal HR &amp; Interviewer Notes:</label>
+                <textarea id="drawerNotes" rows="3" class="form-control" placeholder="Interview score, technical remarks, attendance notes, follow-up tasks..."></textarea>
+              </div>
             </div>
-          </div>
-          <div>
-            <label class="drawer-field-lbl">Internal HR &amp; Interviewer Notes:</label>
-            <textarea id="drawerNotes" rows="3" class="form-control" placeholder="Interview score, technical remarks, attendance notes, follow-up tasks..."></textarea>
-          </div>
-        </div>
 
-        <!-- Academic & Contact Info -->
-        <div class="drawer-section">
-          <h4>Academic &amp; Contact Details</h4>
-          <div class="keyval-grid">
-            <div class="keyval-item">
-              <div class="lbl">Email Address</div>
-              <div class="val" id="drawerEmail">-</div>
+            <!-- Academic & Contact Info -->
+            <div class="drawer-section">
+              <h4>Academic &amp; Contact Details</h4>
+              <div class="keyval-grid">
+                <div class="keyval-item">
+                  <div class="lbl">Email Address</div>
+                  <div class="val" id="drawerEmail">-</div>
+                </div>
+                <div class="keyval-item">
+                  <div class="lbl">Phone / WhatsApp</div>
+                  <div class="val" id="drawerPhone">-</div>
+                </div>
+                <div class="keyval-item">
+                  <div class="lbl">University ID</div>
+                  <div class="val" id="drawerUniId">-</div>
+                </div>
+                <div class="keyval-item">
+                  <div class="lbl">Faculty &amp; Department</div>
+                  <div class="val" id="drawerFaculty">-</div>
+                </div>
+                <div class="keyval-item">
+                  <div class="lbl">Academic Year / Level</div>
+                  <div class="val" id="drawerYear">-</div>
+                </div>
+                <div class="keyval-item">
+                  <div class="lbl">Weekly Commitment</div>
+                  <div class="val" id="drawerCommitment">-</div>
+                </div>
+              </div>
             </div>
-            <div class="keyval-item">
-              <div class="lbl">Phone / WhatsApp</div>
-              <div class="val" id="drawerPhone">-</div>
-            </div>
-            <div class="keyval-item">
-              <div class="lbl">University ID</div>
-              <div class="val" id="drawerUniId">-</div>
-            </div>
-            <div class="keyval-item">
-              <div class="lbl">Faculty &amp; Department</div>
-              <div class="val" id="drawerFaculty">-</div>
-            </div>
-            <div class="keyval-item">
-              <div class="lbl">Academic Year / Level</div>
-              <div class="val" id="drawerYear">-</div>
-            </div>
-            <div class="keyval-item">
-              <div class="lbl">Weekly Commitment</div>
-              <div class="val" id="drawerCommitment">-</div>
+
+            <!-- Sub-team Preferences -->
+            <div class="drawer-section">
+              <h4>Subsystem Choices</h4>
+              <div class="subteam-cards-row">
+                <div class="subteam-choice-box primary">
+                  <span class="subteam-lbl">1st Priority Choice</span>
+                  <div class="subteam-name" id="drawerSubteam1">-</div>
+                </div>
+                <div class="subteam-choice-box">
+                  <span class="subteam-lbl">2nd Alternate Choice</span>
+                  <div class="subteam-name" id="drawerSubteam2">-</div>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
 
-        <!-- Sub-team Preferences -->
-        <div class="drawer-section">
-          <h4>Subsystem Choices</h4>
-          <div class="subteam-cards-row">
-            <div class="subteam-choice-box primary">
-              <span class="subteam-lbl">1st Priority Choice</span>
-              <div class="subteam-name" id="drawerSubteam1">-</div>
+          <!-- Right Column: Skills, Motivation, Portfolio & Actions -->
+          <div class="drawer-col">
+            <!-- Skills & Tools -->
+            <div class="drawer-section">
+              <h4>Technical Skills &amp; Software Tools</h4>
+              <div id="drawerSkillsChips" style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px;">
+                <!-- Rendered as chips or fallback text -->
+              </div>
             </div>
-            <div class="subteam-choice-box">
-              <span class="subteam-lbl">2nd Alternate Choice</span>
-              <div class="subteam-name" id="drawerSubteam2">-</div>
+
+            <!-- Statement of Purpose -->
+            <div class="drawer-section">
+              <h4>Statement of Purpose &amp; Motivation</h4>
+              <div class="statement-box" id="drawerWhy">-</div>
             </div>
-          </div>
-        </div>
 
-        <!-- Skills & Tools -->
-        <div class="drawer-section">
-          <h4>Technical Skills &amp; Software Tools</h4>
-          <div id="drawerSkillsChips" style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px;">
-            <!-- Rendered as chips or fallback text -->
-          </div>
-        </div>
-
-        <!-- Statement of Purpose -->
-        <div class="drawer-section">
-          <h4>Statement of Purpose &amp; Motivation</h4>
-          <div class="statement-box" id="drawerWhy">-</div>
-        </div>
-
-        <!-- CV / Portfolio Link -->
-        <div class="drawer-section" id="drawerPortfolioSection">
-          <h4>CV / Portfolio / Project Links</h4>
-          <a id="drawerPortfolioLink" href="#" target="_blank" rel="noopener" class="text-red" style="font-size: 0.9rem; font-weight: 600; word-break: break-all; display: inline-flex; align-items: center; gap: 6px;">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-            <span id="drawerPortfolioText">-</span>
-          </a>
-        </div>
-
-        <!-- Danger Zone: Delete Option in Drawer -->
-        <div class="drawer-section" style="border: 1px solid rgba(239, 68, 68, 0.25); background: rgba(239, 68, 68, 0.03);">
-          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
-            <div>
-              <div style="font-weight: 700; font-size: 0.88rem; color: var(--status-rejected);">Delete Application Record</div>
-              <div style="font-size: 0.78rem; color: var(--text-dim);">Permanently removes this response from the database and candidate rosters.</div>
+            <!-- CV / Portfolio Link -->
+            <div class="drawer-section" id="drawerPortfolioSection">
+              <h4>CV / Portfolio / Project Links</h4>
+              <a id="drawerPortfolioLink" href="#" target="_blank" rel="noopener" class="text-red" style="font-size: 0.9rem; font-weight: 600; word-break: break-all; display: inline-flex; align-items: center; gap: 6px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                <span id="drawerPortfolioText">-</span>
+              </a>
             </div>
-            <button type="button" class="btn btn-delete-danger" id="drawerDeleteBottomBtn" style="font-size: 0.82rem; padding: 7px 14px;">
-              Delete Response
-            </button>
+
+            <!-- Danger Zone: Delete Option in Drawer -->
+            <div class="drawer-section" style="border: 1px solid rgba(239, 68, 68, 0.25); background: rgba(239, 68, 68, 0.03);">
+              <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+                <div>
+                  <div style="font-weight: 700; font-size: 0.88rem; color: var(--status-rejected);">Delete Application Record</div>
+                  <div style="font-size: 0.78rem; color: var(--text-dim);">Permanently removes this candidate response.</div>
+                </div>
+                <button type="button" class="btn btn-delete-danger" id="drawerDeleteBottomBtn" style="font-size: 0.82rem; padding: 7px 14px;">
+                  Delete Response
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -935,7 +944,75 @@
     document.getElementById('subteamFilter').addEventListener('change', renderTable);
     document.getElementById('statusFilter').addEventListener('change', renderTable);
 
-    // Export to Professional Excel (.xlsx) with Multi-sheets & Auto-filtering
+    // Helper to get stylized status badge styles for Excel
+    function getStatusBadgeStyle(status) {
+      const s = (status || 'new').toLowerCase();
+      if (s === 'accepted') {
+        return {
+          fill: { fgColor: { rgb: "DCFCE7" } },
+          font: { name: "Segoe UI", sz: 10, bold: true, color: { rgb: "166534" } },
+          alignment: { vertical: "center", horizontal: "center" },
+          border: {
+            top: { style: "thin", color: { rgb: "86EFAC" } },
+            bottom: { style: "thin", color: { rgb: "86EFAC" } },
+            left: { style: "thin", color: { rgb: "86EFAC" } },
+            right: { style: "thin", color: { rgb: "86EFAC" } }
+          }
+        };
+      }
+      if (s === 'rejected') {
+        return {
+          fill: { fgColor: { rgb: "FEE2E2" } },
+          font: { name: "Segoe UI", sz: 10, bold: true, color: { rgb: "991B1B" } },
+          alignment: { vertical: "center", horizontal: "center" },
+          border: {
+            top: { style: "thin", color: { rgb: "FCA5A5" } },
+            bottom: { style: "thin", color: { rgb: "FCA5A5" } },
+            left: { style: "thin", color: { rgb: "FCA5A5" } },
+            right: { style: "thin", color: { rgb: "FCA5A5" } }
+          }
+        };
+      }
+      if (s === 'interview') {
+        return {
+          fill: { fgColor: { rgb: "F3E8FF" } },
+          font: { name: "Segoe UI", sz: 10, bold: true, color: { rgb: "6B21A8" } },
+          alignment: { vertical: "center", horizontal: "center" },
+          border: {
+            top: { style: "thin", color: { rgb: "D8B4FE" } },
+            bottom: { style: "thin", color: { rgb: "D8B4FE" } },
+            left: { style: "thin", color: { rgb: "D8B4FE" } },
+            right: { style: "thin", color: { rgb: "D8B4FE" } }
+          }
+        };
+      }
+      if (s === 'reviewed') {
+        return {
+          fill: { fgColor: { rgb: "FEF3C7" } },
+          font: { name: "Segoe UI", sz: 10, bold: true, color: { rgb: "92400E" } },
+          alignment: { vertical: "center", horizontal: "center" },
+          border: {
+            top: { style: "thin", color: { rgb: "FCD34D" } },
+            bottom: { style: "thin", color: { rgb: "FCD34D" } },
+            left: { style: "thin", color: { rgb: "FCD34D" } },
+            right: { style: "thin", color: { rgb: "FCD34D" } }
+          }
+        };
+      }
+      return {
+        fill: { fgColor: { rgb: "E0F2FE" } },
+        font: { name: "Segoe UI", sz: 10, bold: true, color: { rgb: "0369A1" } },
+        alignment: { vertical: "center", horizontal: "center" },
+        border: {
+          top: { style: "thin", color: { rgb: "7DD3FC" } },
+          bottom: { style: "thin", color: { rgb: "7DD3FC" } },
+          left: { style: "thin", color: { rgb: "7DD3FC" } },
+          right: { style: "thin", color: { rgb: "7DD3FC" } }
+        }
+      };
+    }
+
+    // Export to Formal Styled Excel (.xlsx) with Brand Colors & Auto-fitting
     function exportToExcel() {
       if (!applications.length) {
         alert('No applications to export.');
@@ -943,7 +1020,7 @@
       }
 
       if (typeof XLSX === 'undefined') {
-        console.warn('SheetJS not loaded, falling back to CSV export.');
+        console.warn('XLSX library not loaded, falling back to CSV export.');
         document.getElementById('exportCsvBtn').click();
         return;
       }
@@ -952,24 +1029,28 @@
       const headers = [
         "Candidate ID",
         "Applied Date",
-        "Full Name",
+        "Candidate Full Name",
         "Email Address",
         "Phone / Mobile",
         "WhatsApp Direct Link",
         "University ID",
-        "Faculty & Major",
+        "Faculty & Department",
         "Academic Year",
         "1st Choice Subsystem",
         "2nd Choice Subsystem",
         "Weekly Availability",
-        "Technical Skills",
-        "Statement of Purpose",
+        "Technical Skills & Tools",
+        "Statement of Purpose & Motivation",
         "CV / Portfolio Link",
-        "Application Status",
+        "Pipeline Status",
         "Internal HR Notes"
       ];
 
-      const rows = applications.map(app => {
+      const emptyRow = new Array(headers.length).fill("");
+      const titleRow = ["VELOX RACING — FORMULA STUDENT RECRUITMENT OPERATIONS", ...new Array(headers.length - 1).fill("")];
+      const subtitleRow = [`Zagazig National University | Executive Candidate Pipeline | Exported: ${new Date().toLocaleString()} | Total: ${applications.length} Candidates`, ...new Array(headers.length - 1).fill("")];
+
+      const dataRows = applications.map(app => {
         let cleanPhone = (app.phone || '').replace(/[^0-9]/g, '');
         if (cleanPhone.startsWith('01') && cleanPhone.length === 11) {
           cleanPhone = '20' + cleanPhone.substring(1);
@@ -997,29 +1078,148 @@
         ];
       });
 
-      const rosterData = [headers, ...rows];
-      const wsRoster = XLSX.utils.aoa_to_sheet(rosterData);
+      const rosterGrid = [
+        titleRow,    // Row 0 (Excel 1)
+        subtitleRow, // Row 1 (Excel 2)
+        emptyRow,    // Row 2 (Excel 3)
+        headers,     // Row 3 (Excel 4)
+        ...dataRows  // Rows 4+ (Excel 5+)
+      ];
 
-      // Auto-calculate column widths
-      const colWidths = headers.map((header, colIdx) => {
-        let maxLen = header.length;
-        rows.forEach(row => {
-          const val = row[colIdx];
-          if (val) {
-            const strVal = String(val);
-            if (strVal.length > maxLen) {
-              maxLen = Math.min(strVal.length, 55);
-            }
-          }
-        });
-        return { wch: Math.max(maxLen + 3, 12) };
-      });
-      wsRoster['!cols'] = colWidths;
+      const wsRoster = XLSX.utils.aoa_to_sheet(rosterGrid);
 
-      // Enable Auto-Filter on Header Row
-      if (wsRoster['!ref']) {
-        wsRoster['!autofilter'] = { ref: wsRoster['!ref'] };
+      // 1. Title Banner Style (A1:Q1 merged)
+      for (let c = 0; c < headers.length; c++) {
+        const addr = XLSX.utils.encode_cell({ r: 0, c: c });
+        if (!wsRoster[addr]) wsRoster[addr] = { t: "s", v: "" };
+        wsRoster[addr].s = {
+          fill: { fgColor: { rgb: "E10600" } }, // VELOX Formula 1 Red
+          font: { name: "Segoe UI", sz: 14, bold: true, color: { rgb: "FFFFFF" } },
+          alignment: { vertical: "center", horizontal: "center" }
+        };
       }
+
+      // 2. Subtitle Banner Style (A2:Q2 merged)
+      for (let c = 0; c < headers.length; c++) {
+        const addr = XLSX.utils.encode_cell({ r: 1, c: c });
+        if (!wsRoster[addr]) wsRoster[addr] = { t: "s", v: "" };
+        wsRoster[addr].s = {
+          fill: { fgColor: { rgb: "0F172A" } }, // Dark Carbon Navy
+          font: { name: "Segoe UI", sz: 9, bold: true, color: { rgb: "CBD5E1" } },
+          alignment: { vertical: "center", horizontal: "center" }
+        };
+      }
+
+      // 3. Table Headers Style (Row 3, Excel 4)
+      for (let c = 0; c < headers.length; c++) {
+        const addr = XLSX.utils.encode_cell({ r: 3, c: c });
+        if (wsRoster[addr]) {
+          wsRoster[addr].s = {
+            fill: { fgColor: { rgb: "1E293B" } }, // Executive Slate
+            font: { name: "Segoe UI", sz: 11, bold: true, color: { rgb: "FFFFFF" } },
+            alignment: { vertical: "center", horizontal: "center", wrapText: true },
+            border: {
+              top: { style: "medium", color: { rgb: "E10600" } },
+              bottom: { style: "medium", color: { rgb: "475569" } },
+              left: { style: "thin", color: { rgb: "334155" } },
+              right: { style: "thin", color: { rgb: "334155" } }
+            }
+          };
+        }
+      }
+
+      // 4. Data Rows Style (Rows 4+)
+      for (let i = 0; i < dataRows.length; i++) {
+        const r = 4 + i;
+        const isEven = (i % 2 === 0);
+        const rowBg = isEven ? "FFFFFF" : "F8FAFC";
+        const statusVal = applications[i].status || "New";
+
+        for (let c = 0; c < headers.length; c++) {
+          const addr = XLSX.utils.encode_cell({ r: r, c: c });
+          if (!wsRoster[addr]) wsRoster[addr] = { t: "s", v: "" };
+
+          const baseBorder = {
+            top: { style: "thin", color: { rgb: "E2E8F0" } },
+            bottom: { style: "thin", color: { rgb: "E2E8F0" } },
+            left: { style: "thin", color: { rgb: "E2E8F0" } },
+            right: { style: "thin", color: { rgb: "E2E8F0" } }
+          };
+
+          const isCenter = [0, 1, 4, 5, 6, 8, 11, 15].includes(c);
+
+          let cellStyle = {
+            fill: { fgColor: { rgb: rowBg } },
+            font: { name: "Segoe UI", sz: 10, color: { rgb: "1E293B" } },
+            alignment: { vertical: "center", horizontal: isCenter ? "center" : "left", wrapText: false },
+            border: baseBorder
+          };
+
+          // 1st Priority Subsystem (c: 9) -> Bold Deep Red
+          if (c === 9) {
+            cellStyle.font = { name: "Segoe UI", sz: 10, bold: true, color: { rgb: "DC2626" } };
+          }
+
+          // Hyperlinks (WA c: 5, Portfolio c: 14) -> Blue underline
+          if ((c === 5 || c === 14) && wsRoster[addr].v) {
+            cellStyle.font = { name: "Segoe UI", sz: 10, color: { rgb: "2563EB" }, underline: true };
+          }
+
+          // Status Badge (c: 15)
+          if (c === 15) {
+            cellStyle = getStatusBadgeStyle(statusVal);
+          }
+
+          wsRoster[addr].s = cellStyle;
+        }
+      }
+
+      // Generous Column Widths (Ensures zero truncated text)
+      wsRoster['!cols'] = [
+        { wch: 38 }, // Candidate ID
+        { wch: 22 }, // Applied Date
+        { wch: 26 }, // Full Name
+        { wch: 34 }, // Email Address
+        { wch: 18 }, // Phone
+        { wch: 30 }, // WhatsApp Link
+        { wch: 18 }, // University ID
+        { wch: 34 }, // Faculty & Department
+        { wch: 24 }, // Academic Year
+        { wch: 34 }, // 1st Choice Subsystem
+        { wch: 34 }, // 2nd Choice Subsystem
+        { wch: 20 }, // Weekly Availability
+        { wch: 42 }, // Technical Skills
+        { wch: 55 }, // Statement of Purpose
+        { wch: 32 }, // Portfolio Link
+        { wch: 18 }, // Status
+        { wch: 45 }  // Internal Notes
+      ];
+
+      // Row Heights
+      const rosterRowHeights = [
+        { hpt: 38 }, // Title
+        { hpt: 24 }, // Subtitle
+        { hpt: 10 }, // Spacer
+        { hpt: 30 }  // Headers
+      ];
+      for (let i = 0; i < dataRows.length; i++) {
+        rosterRowHeights.push({ hpt: 24 });
+      }
+      wsRoster['!rows'] = rosterRowHeights;
+
+      // Merges
+      wsRoster['!merges'] = [
+        { s: { r: 0, c: 0 }, e: { r: 0, c: headers.length - 1 } },
+        { s: { r: 1, c: 0 }, e: { r: 1, c: headers.length - 1 } }
+      ];
+
+      // Auto-filter on table headers
+      wsRoster['!autofilter'] = {
+        ref: XLSX.utils.encode_range({
+          s: { r: 3, c: 0 },
+          e: { r: 3 + dataRows.length, c: headers.length - 1 }
+        })
+      };
 
       // --- SHEET 2: Recruitment Overview & Metrics ---
       const totalCount = applications.length;
@@ -1035,39 +1235,153 @@
         subteamCounts[st] = (subteamCounts[st] || 0) + 1;
       });
 
-      const overviewData = [
-        ["VELOX RACING — FORMULA STUDENT RECRUITMENT OPERATIONS", ""],
-        ["Report Type", "Executive Candidate Recruitment Roster & Analytics"],
-        ["Generated Date", new Date().toLocaleString()],
-        ["Total Applications", totalCount],
-        ["", ""],
-        ["PIPELINE STATUS SUMMARY", "COUNT"],
-        ["New Applicants", countNew],
-        ["Under Review", countReviewed],
-        ["Scheduled for Interview", countInterview],
-        ["Accepted Candidates", countAccepted],
-        ["Rejected Candidates", countRejected],
-        ["", ""],
-        ["1ST CHOICE SUBSYSTEM DISTRIBUTION", "APPLICANTS COUNT"]
+      const overviewAOA = [
+        ["VELOX RACING — RECRUITMENT OPERATIONS ANALYTICS", "", "", ""],
+        ["ZAGAZIG NATIONAL UNIVERSITY | OPERATIONS ANALYTICS & PIPELINE METRICS", "", "", ""],
+        ["", "", "", ""],
+        ["CANDIDATE PIPELINE METRICS", "", "", ""],
+        ["Pipeline Stage", "Applicant Count", "Share (%)", ""],
+        ["Total Applications", totalCount, "100.0%", ""],
+        ["New Applicants", countNew, totalCount ? ((countNew / totalCount) * 100).toFixed(1) + "%" : "0%", ""],
+        ["Under Review", countReviewed, totalCount ? ((countReviewed / totalCount) * 100).toFixed(1) + "%" : "0%", ""],
+        ["Scheduled for Interview", countInterview, totalCount ? ((countInterview / totalCount) * 100).toFixed(1) + "%" : "0%", ""],
+        ["Accepted Candidates", countAccepted, totalCount ? ((countAccepted / totalCount) * 100).toFixed(1) + "%" : "0%", ""],
+        ["Rejected Candidates", countRejected, totalCount ? ((countRejected / totalCount) * 100).toFixed(1) + "%" : "0%", ""],
+        ["", "", "", ""],
+        ["1ST PRIORITY SUBSYSTEM SELECTIONS", "", "", ""],
+        ["Subsystem Name", "Applicant Count", "Distribution (%)", ""]
       ];
 
-      Object.keys(subteamCounts).sort().forEach(subteam => {
-        overviewData.push([subteam, subteamCounts[subteam]]);
+      Object.keys(subteamCounts).sort((a, b) => subteamCounts[b] - subteamCounts[a]).forEach(subteam => {
+        const cnt = subteamCounts[subteam];
+        const pct = totalCount ? ((cnt / totalCount) * 100).toFixed(1) + "%" : "0%";
+        overviewAOA.push([subteam, cnt, pct, ""]);
       });
 
-      const wsOverview = XLSX.utils.aoa_to_sheet(overviewData);
-      wsOverview['!cols'] = [{ wch: 45 }, { wch: 25 }];
+      const wsOverview = XLSX.utils.aoa_to_sheet(overviewAOA);
 
-      // Build Workbook
+      // Style Overview Sheet
+      // Title (r: 0)
+      for (let c = 0; c < 4; c++) {
+        const addr = XLSX.utils.encode_cell({ r: 0, c: c });
+        if (!wsOverview[addr]) wsOverview[addr] = { t: "s", v: "" };
+        wsOverview[addr].s = {
+          fill: { fgColor: { rgb: "E10600" } },
+          font: { name: "Segoe UI", sz: 14, bold: true, color: { rgb: "FFFFFF" } },
+          alignment: { vertical: "center", horizontal: "center" }
+        };
+      }
+      // Subtitle (r: 1)
+      for (let c = 0; c < 4; c++) {
+        const addr = XLSX.utils.encode_cell({ r: 1, c: c });
+        if (!wsOverview[addr]) wsOverview[addr] = { t: "s", v: "" };
+        wsOverview[addr].s = {
+          fill: { fgColor: { rgb: "0F172A" } },
+          font: { name: "Segoe UI", sz: 9, bold: true, color: { rgb: "CBD5E1" } },
+          alignment: { vertical: "center", horizontal: "center" }
+        };
+      }
+
+      // Section 1 Header: r: 3
+      for (let c = 0; c < 3; c++) {
+        const addr = XLSX.utils.encode_cell({ r: 3, c: c });
+        if (!wsOverview[addr]) wsOverview[addr] = { t: "s", v: "" };
+        wsOverview[addr].s = {
+          fill: { fgColor: { rgb: "1E293B" } },
+          font: { name: "Segoe UI", sz: 11, bold: true, color: { rgb: "FFFFFF" } },
+          alignment: { vertical: "center", horizontal: "left" }
+        };
+      }
+      // Subheader r: 4
+      for (let c = 0; c < 3; c++) {
+        const addr = XLSX.utils.encode_cell({ r: 4, c: c });
+        if (wsOverview[addr]) {
+          wsOverview[addr].s = {
+            fill: { fgColor: { rgb: "334155" } },
+            font: { name: "Segoe UI", sz: 10, bold: true, color: { rgb: "FFFFFF" } },
+            alignment: { vertical: "center", horizontal: c === 0 ? "left" : "center" }
+          };
+        }
+      }
+      // Metrics Rows r: 5 to 10
+      for (let r = 5; r <= 10; r++) {
+        const rowBg = (r % 2 === 1) ? "F8FAFC" : "FFFFFF";
+        for (let c = 0; c < 3; c++) {
+          const addr = XLSX.utils.encode_cell({ r: r, c: c });
+          if (wsOverview[addr]) {
+            wsOverview[addr].s = {
+              fill: { fgColor: { rgb: rowBg } },
+              font: { name: "Segoe UI", sz: 10, bold: (r === 5), color: { rgb: "1E293B" } },
+              alignment: { vertical: "center", horizontal: c === 0 ? "left" : "center" },
+              border: {
+                top: { style: "thin", color: { rgb: "E2E8F0" } },
+                bottom: { style: "thin", color: { rgb: "E2E8F0" } },
+                left: { style: "thin", color: { rgb: "E2E8F0" } },
+                right: { style: "thin", color: { rgb: "E2E8F0" } }
+              }
+            };
+          }
+        }
+      }
+
+      // Section 2 Header: r: 12
+      for (let c = 0; c < 3; c++) {
+        const addr = XLSX.utils.encode_cell({ r: 12, c: c });
+        if (!wsOverview[addr]) wsOverview[addr] = { t: "s", v: "" };
+        wsOverview[addr].s = {
+          fill: { fgColor: { rgb: "1E293B" } },
+          font: { name: "Segoe UI", sz: 11, bold: true, color: { rgb: "FFFFFF" } },
+          alignment: { vertical: "center", horizontal: "left" }
+        };
+      }
+      // Subheader r: 13
+      for (let c = 0; c < 3; c++) {
+        const addr = XLSX.utils.encode_cell({ r: 13, c: c });
+        if (wsOverview[addr]) {
+          wsOverview[addr].s = {
+            fill: { fgColor: { rgb: "334155" } },
+            font: { name: "Segoe UI", sz: 10, bold: true, color: { rgb: "FFFFFF" } },
+            alignment: { vertical: "center", horizontal: c === 0 ? "left" : "center" }
+          };
+        }
+      }
+      // Subsystem Rows r: 14+
+      for (let r = 14; r < overviewAOA.length; r++) {
+        const rowBg = (r % 2 === 1) ? "F8FAFC" : "FFFFFF";
+        for (let c = 0; c < 3; c++) {
+          const addr = XLSX.utils.encode_cell({ r: r, c: c });
+          if (wsOverview[addr]) {
+            wsOverview[addr].s = {
+              fill: { fgColor: { rgb: rowBg } },
+              font: { name: "Segoe UI", sz: 10, bold: (c === 0), color: (c === 0) ? { rgb: "DC2626" } : { rgb: "1E293B" } },
+              alignment: { vertical: "center", horizontal: c === 0 ? "left" : "center" },
+              border: {
+                top: { style: "thin", color: { rgb: "E2E8F0" } },
+                bottom: { style: "thin", color: { rgb: "E2E8F0" } },
+                left: { style: "thin", color: { rgb: "E2E8F0" } },
+                right: { style: "thin", color: { rgb: "E2E8F0" } }
+              }
+            };
+          }
+        }
+      }
+
+      wsOverview['!cols'] = [{ wch: 45 }, { wch: 22 }, { wch: 18 }, { wch: 10 }];
+      wsOverview['!merges'] = [
+        { s: { r: 0, c: 0 }, e: { r: 0, c: 3 } },
+        { s: { r: 1, c: 0 }, e: { r: 1, c: 3 } },
+        { s: { r: 3, c: 0 }, e: { r: 3, c: 2 } },
+        { s: { r: 12, c: 0 }, e: { r: 12, c: 2 } }
+      ];
+
+      // Build and Download Workbook
       const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, wsRoster, "Candidates Roster");
       XLSX.utils.book_append_sheet(wb, wsOverview, "Recruitment Overview");
 
-      // Generate Filename
       const dateTag = new Date().toISOString().slice(0, 10);
       const filename = `VELOX_Racing_Recruitment_Candidates_${dateTag}.xlsx`;
 
-      // Download .xlsx file
       XLSX.writeFile(wb, filename);
     }
 
