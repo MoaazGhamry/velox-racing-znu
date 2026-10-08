@@ -4,10 +4,10 @@
    Clean, modern, accessible, mobile-first design.
    ========================================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap');
 
 :root {
-  /* Colors */
+  /* Colors - Dark Theme (Default) */
   --bg: #0A0A0A;
   --bg-elevated: rgba(18, 18, 20, 0.75);
   --bg-card: rgba(20, 20, 24, 0.62);
@@ -47,6 +47,49 @@
   --nav-height: 64px;
   --safe-top: env(safe-area-inset-top, 0px);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Light / White Theme */
+[data-theme="light"] {
+  --bg: #F5F6F9;
+  --bg-elevated: rgba(255, 255, 255, 0.96);
+  --bg-card: rgba(255, 255, 255, 0.88);
+  --bg-card-hover: #FFFFFF;
+  --bg-input: rgba(240, 243, 246, 0.95);
+  --bg-glass: rgba(255, 255, 255, 0.88);
+  
+  --border: rgba(0, 0, 0, 0.1);
+  --border-hover: rgba(225, 6, 0, 0.45);
+  --border-focus: #E10600;
+
+  --text: #0B0F19;
+  --text-muted: #4B5563;
+  --text-dim: #6B7280;
+
+  --red-subtle: rgba(225, 6, 0, 0.08);
+  --red-glow: rgba(225, 6, 0, 0.16);
+}
+
+/* RTL / Arabic Support */
+[dir="rtl"] {
+  --font: 'Cairo', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  direction: rtl;
+  text-align: right;
+}
+
+[dir="rtl"] body {
+  font-family: var(--font);
+}
+
+[dir="rtl"] .nav-brand,
+[dir="rtl"] .nav-cta,
+[dir="rtl"] .hero-actions {
+  flex-direction: row;
+}
+
+[dir="rtl"] .nav-link.active::after {
+  left: auto;
+  right: 0;
 }
 
 /* ── Reset & Base ── */
@@ -270,10 +313,48 @@ p {
   border-radius: 2px;
 }
 
+/* Desktop: NEVER show .mobile-menu-cta in primary horizontal navbar */
+.mobile-menu-cta {
+  display: none !important;
+}
+
 .nav-cta {
   display: flex;
   align-items: center;
   gap: 12px;
+}
+
+.nav-tools {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nav-tool-btn {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  color: var(--text);
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  line-height: 1;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.nav-tool-btn:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--border-hover);
+  transform: translateY(-1px);
+}
+
+.nav-tool-btn:active {
+  transform: scale(0.96);
 }
 
 .hamburger {
@@ -566,6 +647,223 @@ p {
   width: 100%;
 }
 
+/* ── Cinematic Video Reel Showcase (ad.mp4) ── */
+.reel-section {
+  position: relative;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 30%, rgba(225, 6, 0, 0.08) 0%, transparent 70%);
+}
+
+.reel-container {
+  max-width: 1060px;
+  margin-inline: auto;
+}
+
+.f1-video-player {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: #000000;
+  border: 1px solid var(--border);
+  box-shadow: 0 24px 60px -15px rgba(0, 0, 0, 0.8), 0 0 35px rgba(225, 6, 0, 0.16);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.f1-video-player:hover {
+  border-color: rgba(225, 6, 0, 0.45);
+  box-shadow: 0 30px 70px -15px rgba(0, 0, 0, 0.9), 0 0 45px rgba(225, 6, 0, 0.25);
+}
+
+.reel-video {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  display: block;
+  background: #000000;
+}
+
+/* Motorsport Broadcast Top HUD */
+.reel-hud-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.88) 0%, rgba(0,0,0,0.4) 60%, transparent 100%);
+  z-index: 5;
+  pointer-events: none;
+}
+
+.reel-badge-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #FFFFFF;
+  text-transform: uppercase;
+}
+
+.reel-badge-live .live-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--red);
+  box-shadow: 0 0 10px var(--red);
+  animation: pulseLive 1.4s infinite;
+}
+
+@keyframes pulseLive {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.3; transform: scale(0.8); }
+}
+
+.reel-telemetry-tag {
+  font-size: 0.74rem;
+  font-family: monospace;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  padding: 5px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+/* Play/Pause Overlay */
+.f1-play-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+  z-index: 6;
+  transition: opacity 0.25s ease;
+}
+
+.f1-play-overlay.playing {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.f1-video-player:hover .f1-play-overlay.playing {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.f1-play-btn {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: rgba(10, 10, 12, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 2px solid var(--red);
+  box-shadow: 0 0 35px rgba(225, 6, 0, 0.5);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  padding-left: 4px;
+}
+
+.f1-play-btn:hover {
+  transform: scale(1.12);
+  background: var(--red);
+  box-shadow: 0 0 45px rgba(225, 6, 0, 0.8);
+}
+
+/* Motorsport Bottom Controls Bar */
+.reel-hud-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 18px 24px;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.94) 0%, rgba(0, 0, 0, 0.5) 60%, transparent 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 7;
+}
+
+.reel-progress-wrap {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 4px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.reel-progress-bar {
+  height: 100%;
+  width: 0%;
+  background: var(--red);
+  box-shadow: 0 0 12px var(--red);
+  transition: width 0.1s linear;
+}
+
+.reel-controls-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.reel-btn-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.reel-control-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #FFFFFF;
+  border-radius: var(--radius-sm);
+  padding: 7px 14px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s ease;
+}
+
+.reel-control-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+.reel-telemetry-chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.telemetry-chip {
+  font-size: 0.74rem;
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-sm);
+  padding: 5px 10px;
+  font-family: monospace;
+}
+
 /* ── Call To Action Banner ── */
 .cta-banner {
   background: var(--bg-elevated);
@@ -787,6 +1085,280 @@ p {
   background: rgba(255, 255, 255, 0.08);
   border-color: rgba(225, 6, 0, 0.35);
   padding-left: 18px;
+}
+
+/* ── Branched Tree Junction & Dual Columns ── */
+.tree-branch-junction {
+  width: 100%;
+  max-width: 860px;
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.tree-stem-vertical {
+  width: 2px;
+  height: 28px;
+  background: var(--border);
+  margin-inline: auto;
+}
+
+.tree-branch-crossbar {
+  width: 60%;
+  height: 2px;
+  background: var(--border);
+  position: relative;
+}
+
+.tree-branch-drops {
+  width: 60%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.tree-branch-drop {
+  width: 2px;
+  height: 24px;
+  background: var(--border);
+}
+
+.tree-branches-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  width: 100%;
+  margin-top: 4px;
+}
+
+.tree-branch-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.branch-header-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 8px 18px;
+  border-radius: var(--radius-full);
+  background: var(--bg-card);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--border);
+  margin-bottom: 18px;
+}
+
+.branch-header-badge.tech {
+  border-color: rgba(225, 6, 0, 0.4);
+  color: var(--text);
+  box-shadow: 0 0 20px rgba(225, 6, 0, 0.12);
+}
+
+.branch-header-badge.tech .badge-dot {
+  background: var(--red);
+  box-shadow: 0 0 8px var(--red);
+}
+
+.branch-header-badge.ops {
+  border-color: rgba(56, 189, 248, 0.4);
+  color: var(--text);
+  box-shadow: 0 0 20px rgba(56, 189, 248, 0.12);
+}
+
+.branch-header-badge.ops .badge-dot {
+  background: #38BDF8;
+  box-shadow: 0 0 8px #38BDF8;
+}
+
+.badge-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.branch-dept-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  margin-top: 16px;
+}
+
+/* Mobile Branch Filter Buttons */
+.branch-filter-nav {
+  display: none;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  margin-bottom: 24px;
+}
+
+.branch-filter-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  border-radius: var(--radius-full);
+  padding: 8px 16px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.branch-filter-btn.active,
+.branch-filter-btn:hover {
+  background: var(--red);
+  border-color: var(--red);
+  color: #FFFFFF;
+  box-shadow: 0 4px 14px rgba(225, 6, 0, 0.35);
+}
+
+/* ==========================================================================
+   SPONSORSHIP PORTAL (/sponsorship)
+   ========================================================================== */
+.univ-partner-card {
+  background: var(--bg-card);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 40px 32px;
+  margin-bottom: 64px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  box-shadow: 0 20px 50px -15px rgba(0, 0, 0, 0.6);
+  position: relative;
+  overflow: hidden;
+}
+
+.univ-partner-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--red), transparent);
+}
+
+.univ-logo-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 36px;
+  flex-wrap: wrap;
+  margin-block: 24px 24px;
+}
+
+.univ-logo-img {
+  max-height: 80px;
+  max-width: 320px;
+  width: auto;
+  object-fit: contain;
+  transition: all 0.25s ease;
+  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3));
+}
+
+.univ-crest-img {
+  max-height: 72px;
+  max-width: 72px;
+  width: auto;
+  object-fit: contain;
+}
+
+/* Sponsor Tier Cards Grid */
+.sponsor-tier-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  width: 100%;
+  margin-block: 32px 56px;
+}
+
+.tier-card {
+  background: var(--bg-card);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 28px 20px;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.tier-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(225, 6, 0, 0.4);
+  box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.8), 0 0 24px rgba(225, 6, 0, 0.15);
+}
+
+.tier-card.featured {
+  border-color: var(--red);
+  background: linear-gradient(180deg, rgba(225, 6, 0, 0.08) 0%, var(--bg-card) 60%);
+  box-shadow: 0 0 30px rgba(225, 6, 0, 0.15);
+}
+
+.tier-badge {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 8px;
+}
+
+.tier-name {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+
+.tier-desc {
+  font-size: 0.84rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.tier-perks {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 24px;
+  flex-grow: 1;
+}
+
+.tier-perk-item {
+  font-size: 0.82rem;
+  color: var(--text);
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  line-height: 1.4;
+}
+
+.tier-perk-item::before {
+  content: '✓';
+  color: var(--red);
+  font-weight: 800;
+  flex-shrink: 0;
 }
 
 /* ==========================================================================
@@ -1410,6 +1982,40 @@ p {
     display: none;
   }
 
+  /* Branched Org Chart Tree Mobile Adaptations */
+  .tree-branch-crossbar,
+  .tree-branch-drops {
+    display: none;
+  }
+
+  .tree-branches-wrapper {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .branch-filter-nav {
+    display: flex;
+  }
+
+  /* Sponsorship Grid Adaptations */
+  .sponsor-tier-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .univ-partner-card {
+    padding: 32px 18px;
+  }
+
+  .univ-logo-wrap {
+    gap: 20px;
+  }
+
+  .univ-logo-img {
+    max-height: 54px;
+    max-width: 220px;
+  }
+
   .form-row {
     grid-template-columns: 1fr;
   }
@@ -1444,6 +2050,12 @@ p {
   }
 }
 
+@media (min-width: 769px) and (max-width: 1100px) {
+  .sponsor-tier-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 @media (max-width: 480px) {
   .highlights-grid {
     grid-template-columns: 1fr;
@@ -1459,6 +2071,15 @@ p {
 
   .form-card {
     padding: 22px 14px;
+  }
+
+  .reel-hud-top,
+  .reel-hud-bottom {
+    padding: 12px 14px;
+  }
+
+  .reel-telemetry-chips {
+    display: none;
   }
 }
 

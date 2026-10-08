@@ -16,7 +16,7 @@
   <link rel="apple-touch-icon" href="VeloxForWeb_dark.png" />
 
   <!-- Shared Style with Cache Buster -->
-  <link rel="stylesheet" href="style.css?v=2.2" />
+  <link rel="stylesheet" href="style.css?v=2.3" />
 </head>
 <body>
 
@@ -36,10 +36,15 @@
           <li><a href="/" class="nav-link">Home</a></li>
           <li><a href="/#about" class="nav-link">About</a></li>
           <li><a href="/team" class="nav-link active">Team</a></li>
+          <li><a href="/sponsorship" class="nav-link">Sponsors</a></li>
           <li class="mobile-menu-cta"><a href="/join" class="btn btn-primary btn-full">Join the Team &rarr;</a></li>
         </ul>
 
         <div class="nav-cta">
+          <div class="nav-tools">
+            <button id="themeToggleBtn" class="nav-tool-btn" title="Toggle Dark/Light Mode" aria-label="Toggle Theme">🌙</button>
+            <button id="langToggleBtn" class="nav-tool-btn" title="تغيير اللغة" aria-label="Toggle Language">🌐 AR</button>
+          </div>
           <a href="/join" class="btn btn-primary">Join Us</a>
           <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation menu" aria-expanded="false">
             <span></span>
@@ -152,7 +157,7 @@
       return name.split(" ").map(n => n[0]).slice(0, 2).join("").toUpperCase();
     }
 
-    // Render Org Chart Tree from VELOX_TEAM
+    // Render Dual-Branch Org Chart Tree from VELOX_TEAM
     function renderOrgChart() {
       const root = document.getElementById('orgChartRoot');
       if (!root || !window.VELOX_TEAM) return;
@@ -161,7 +166,7 @@
 
       let html = '';
 
-      // Tier 1: Executive Leaders
+      // Tier 1: Executive Leaders (Fatima & Karim)
       html += `
         <div class="tree-tier tree-tier-exec">
           ${data.executives.map(exec => `
@@ -177,86 +182,197 @@
         </div>
       `;
 
-      // Stem to Tech Lead
-      html += `<div class="tree-stem"></div>`;
-
-      // Tier 2: Technical Leader
+      // Branching Junction (Desktop Connector Tree)
       html += `
-        <div class="tree-tier tree-tier-lead">
-          <div class="person-card">
-            <div class="avatar-circle">
-              ${data.technicalLeader.photo ? `<img src="${data.technicalLeader.photo}" alt="${data.technicalLeader.name}" class="avatar-img" />` : getInitials(data.technicalLeader.name)}
+        <div class="tree-branch-junction">
+          <div class="tree-stem-vertical"></div>
+          <div class="tree-branch-crossbar"></div>
+          <div class="tree-branch-drops">
+            <div class="tree-branch-drop"></div>
+            <div class="tree-branch-drop"></div>
+          </div>
+        </div>
+
+        <!-- Mobile Filter Navigation -->
+        <div class="branch-filter-nav" id="branchFilterNav">
+          <button type="button" class="branch-filter-btn active" data-filter="all">All Divisions</button>
+          <button type="button" class="branch-filter-btn" data-filter="tech">🏎️ Technical (4)</button>
+          <button type="button" class="branch-filter-btn" data-filter="ops">💼 Operations (3)</button>
+        </div>
+      `;
+
+      // Dual-Branch Columns
+      html += `
+        <div class="tree-branches-wrapper">
+          <!-- BRANCH 1: TECHNICAL ENGINEERING -->
+          <div class="tree-branch-col branch-technical" id="branchTech">
+            <div class="branch-header-badge tech">
+              <span class="badge-dot"></span>
+              <span>Technical Engineering Branch</span>
             </div>
-            <span class="person-role">${data.technicalLeader.role}</span>
-            <h3 class="person-name">${data.technicalLeader.name}</h3>
-            <p class="person-bio">${data.technicalLeader.bio || ''}</p>
-          </div>
-        </div>
-      `;
 
-      // Stem to Technical Departments
-      html += `<div class="tree-stem"></div>`;
-
-      // Tier 3: Technical Departments
-      html += `
-        <div style="width: 100%; margin-top: 16px;">
-          <h3 style="font-size: 1.1rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 16px; text-align: center;">Technical Engineering Divisions</h3>
-          <div class="dept-grid">
-            ${data.technicalDepartments.map(dept => `
-              <div class="dept-card expanded" tabindex="0">
-                <div class="dept-card-header">
-                  <h4 class="dept-name">${dept.name}</h4>
-                  <span style="font-size: 0.75rem; color: var(--red); font-weight: 700; text-transform: uppercase;">Technical</span>
+            <!-- Technical Leader Card -->
+            <div class="tree-tier tree-tier-lead" style="width: 100%;">
+              <div class="person-card" style="width: 100%;">
+                <div class="avatar-circle">
+                  ${data.technicalLeader.photo ? `<img src="${data.technicalLeader.photo}" alt="${data.technicalLeader.name}" class="avatar-img" />` : getInitials(data.technicalLeader.name)}
                 </div>
-                ${dept.leader ? `
-                  <div class="dept-lead">
-                    Leader: ${dept.leader.name}
-                  </div>
-                ` : ''}
-                <p class="dept-desc">${dept.description}</p>
-                <div class="dept-subteams-list" style="display: flex;">
-                  ${dept.subteams.map(sub => `
-                    <div class="subteam-pill">&bull; ${sub}</div>
-                  `).join('')}
-                </div>
+                <span class="person-role">${data.technicalLeader.role}</span>
+                <h3 class="person-name">${data.technicalLeader.name}</h3>
+                <p class="person-bio">${data.technicalLeader.bio || ''}</p>
               </div>
-            `).join('')}
-          </div>
-        </div>
-      `;
+            </div>
 
-      // Non-Technical Departments Section
-      html += `
-        <div style="width: 100%; margin-top: 56px;">
-          <h3 style="font-size: 1.1rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 16px; text-align: center;">Non-Technical & Operations</h3>
-          <div class="dept-grid">
-            ${data.nonTechnical.map(dept => `
-              <div class="dept-card expanded" tabindex="0">
-                <div class="dept-card-header">
-                  <h4 class="dept-name">${dept.name}</h4>
-                  <span style="font-size: 0.75rem; color: var(--text-dim); font-weight: 700; text-transform: uppercase;">Operations</span>
-                </div>
-                ${dept.leader ? `
-                  <div class="dept-lead">
-                    Lead: ${dept.leader.name}
+            <div class="tree-stem-vertical"></div>
+
+            <!-- Technical Departments -->
+            <div class="branch-dept-list">
+              ${data.technicalDepartments.map(dept => `
+                <div class="dept-card expanded" tabindex="0">
+                  <div class="dept-card-header">
+                    <h4 class="dept-name">${dept.name}</h4>
+                    <span style="font-size: 0.75rem; color: var(--red); font-weight: 700; text-transform: uppercase;">Technical</span>
                   </div>
-                ` : ''}
-                <p class="dept-desc">${dept.description}</p>
-                <div class="dept-subteams-list" style="display: flex;">
-                  ${dept.subteams.map(sub => `
-                    <div class="subteam-pill">&bull; ${sub}</div>
-                  `).join('')}
+                  ${dept.leader ? `
+                    <div class="dept-lead">
+                      Leader: ${dept.leader.name}
+                    </div>
+                  ` : ''}
+                  <p class="dept-desc">${dept.description}</p>
+                  <div class="dept-subteams-list" style="display: flex;">
+                    ${dept.subteams.map(sub => `
+                      <div class="subteam-pill">&bull; ${sub}</div>
+                    `).join('')}
+                  </div>
                 </div>
+              `).join('')}
+            </div>
+          </div>
+
+          <!-- BRANCH 2: OPERATIONS & NON-TECHNICAL -->
+          <div class="tree-branch-col branch-operations" id="branchOps">
+            <div class="branch-header-badge ops">
+              <span class="badge-dot"></span>
+              <span>Operations & Non-Technical Branch</span>
+            </div>
+
+            <!-- Operations / Media Leader Card -->
+            <div class="tree-tier tree-tier-lead" style="width: 100%;">
+              <div class="person-card" style="width: 100%;">
+                <div class="avatar-circle">
+                  ${getInitials("Mohamed Hassan")}
+                </div>
+                <span class="person-role" style="color: #38BDF8;">Operations & Media Lead</span>
+                <h3 class="person-name">Mohamed Hassan</h3>
+                <p class="person-bio">Directs external relations, visual brand identity, digital broadcasting, and operational sponsorship logistics.</p>
               </div>
-            `).join('')}
+            </div>
+
+            <div class="tree-stem-vertical"></div>
+
+            <!-- Non-Technical Departments -->
+            <div class="branch-dept-list">
+              ${data.nonTechnical.map(dept => `
+                <div class="dept-card expanded" tabindex="0">
+                  <div class="dept-card-header">
+                    <h4 class="dept-name">${dept.name}</h4>
+                    <span style="font-size: 0.75rem; color: #38BDF8; font-weight: 700; text-transform: uppercase;">Operations</span>
+                  </div>
+                  ${dept.leader ? `
+                    <div class="dept-lead" style="color: #38BDF8;">
+                      Leader: ${dept.leader.name}
+                    </div>
+                  ` : ''}
+                  <p class="dept-desc">${dept.description}</p>
+                  <div class="dept-subteams-list" style="display: flex;">
+                    ${dept.subteams.map(sub => `
+                      <div class="subteam-pill">&bull; ${sub}</div>
+                    `).join('')}
+                  </div>
+                </div>
+              `).join('')}
+            </div>
           </div>
         </div>
       `;
 
       root.innerHTML = html;
+
+      // Attach mobile filter events
+      const filterBtns = document.querySelectorAll('.branch-filter-btn');
+      const techCol = document.getElementById('branchTech');
+      const opsCol = document.getElementById('branchOps');
+
+      filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          filterBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          const filter = btn.dataset.filter;
+
+          if (filter === 'all') {
+            if (techCol) techCol.style.display = 'flex';
+            if (opsCol) opsCol.style.display = 'flex';
+          } else if (filter === 'tech') {
+            if (techCol) techCol.style.display = 'flex';
+            if (opsCol) opsCol.style.display = 'none';
+          } else if (filter === 'ops') {
+            if (techCol) techCol.style.display = 'none';
+            if (opsCol) opsCol.style.display = 'flex';
+          }
+        });
+      });
     }
 
-    document.addEventListener('DOMContentLoaded', renderOrgChart);
+    document.addEventListener('DOMContentLoaded', () => {
+      renderOrgChart();
+      initThemeAndLang();
+    });
+
+    // Theme & Language Global Support
+    function initThemeAndLang() {
+      const themeBtn = document.getElementById('themeToggleBtn');
+      const langBtn = document.getElementById('langToggleBtn');
+
+      // 1. Theme State
+      const savedTheme = localStorage.getItem('velox_theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      if (themeBtn) {
+        themeBtn.textContent = savedTheme === 'light' ? '☀️' : '🌙';
+        themeBtn.addEventListener('click', () => {
+          const current = document.documentElement.getAttribute('data-theme') || 'dark';
+          const next = current === 'dark' ? 'light' : 'dark';
+          document.documentElement.setAttribute('data-theme', next);
+          localStorage.setItem('velox_theme', next);
+          themeBtn.textContent = next === 'light' ? '☀️' : '🌙';
+        });
+      }
+
+      // 2. Language State
+      const savedLang = localStorage.getItem('velox_lang') || 'en';
+      setLanguage(savedLang);
+
+      if (langBtn) {
+        langBtn.addEventListener('click', () => {
+          const current = localStorage.getItem('velox_lang') || 'en';
+          const next = current === 'en' ? 'ar' : 'en';
+          setLanguage(next);
+        });
+      }
+    }
+
+    function setLanguage(lang) {
+      localStorage.setItem('velox_lang', lang);
+      const langBtn = document.getElementById('langToggleBtn');
+      if (lang === 'ar') {
+        document.documentElement.setAttribute('dir', 'rtl');
+        document.documentElement.setAttribute('lang', 'ar');
+        if (langBtn) langBtn.textContent = '🌐 EN';
+      } else {
+        document.documentElement.setAttribute('dir', 'ltr');
+        document.documentElement.setAttribute('lang', 'en');
+        if (langBtn) langBtn.textContent = '🌐 AR';
+      }
+    }
 
     // PWA Service Worker Registration & Cache Management
     if ('serviceWorker' in navigator) {

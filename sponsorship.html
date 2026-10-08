@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Sponsorship & Partners — Velox Racing | Zagazig National University</title>
+  <meta name="description" content="Partner with Velox Racing, the Formula Student team of Zagazig National University (ZNU). Support Egyptian engineering excellence at Silverstone Circuit." />
+  <link rel="icon" type="image/png" href="VeloxForWeb_dark.png" />
+  
+  <!-- PWA & Mobile Web App Meta -->
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#0A0A0A" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Velox Sponsors" />
+  <link rel="apple-touch-icon" href="VeloxForWeb_dark.png" />
+
+  <!-- Shared Style with Cache Buster -->
+  <link rel="stylesheet" href="style.css?v=2.3" />
+</head>
+<body>
+
+  <!-- Sticky Minimal Navbar -->
+  <header>
+    <nav class="navbar" id="navbar">
+      <div class="nav-container">
+        <a href="/" class="nav-brand" aria-label="Velox Racing Home">
+          <img src="VeloxLogoWeb.png" alt="Velox Racing Crest" class="nav-logo" onerror="this.src='VeloxForWeb_dark.png'" />
+          <span class="nav-title">
+            VELOX RACING
+            <span class="nav-title-badge">ZNU</span>
+          </span>
+        </a>
+
+        <ul class="nav-menu" id="navMenu">
+          <li><a href="/" class="nav-link" data-i18n="nav.home">Home</a></li>
+          <li><a href="/#about" class="nav-link" data-i18n="nav.about">About</a></li>
+          <li><a href="/team" class="nav-link" data-i18n="nav.team">Team</a></li>
+          <li><a href="/sponsorship" class="nav-link active" data-i18n="nav.sponsors">Sponsors</a></li>
+          <li class="mobile-menu-cta"><a href="/join" class="btn btn-primary btn-full" data-i18n="nav.join">Join the Team &rarr;</a></li>
+        </ul>
+
+        <div class="nav-cta">
+          <div class="nav-tools">
+            <button id="themeToggleBtn" class="nav-tool-btn" title="Toggle Dark/Light Mode" aria-label="Toggle Theme">🌙</button>
+            <button id="langToggleBtn" class="nav-tool-btn" title="تغيير اللغة" aria-label="Toggle Language">🌐 AR</button>
+          </div>
+          <a href="#partnerForm" class="btn btn-primary" data-i18n="nav.partnerBtn">Partner With Us</a>
+          <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation menu" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main style="padding-top: var(--nav-height);">
+    <!-- Hero Section -->
+    <section class="section" style="padding-top: 56px; border-bottom: 1px solid var(--border);">
+      <div class="container">
+        <div class="section-header center">
+          <span class="section-kicker" data-i18n="hero.kicker">Partnership Opportunities // Formula Student UK</span>
+          <h1 class="section-title" data-i18n="hero.title">Power Egyptian Innovation on the World Stage</h1>
+          <p class="section-desc" data-i18n="hero.desc">
+            Partner with Velox Racing, the Formula Student challenger of Zagazig National University. Fueling clean high-performance mobility and accelerating the next generation of elite engineers toward Silverstone Circuit.
+          </p>
+          <div style="display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-top: 28px;">
+            <a href="#partnerForm" class="btn btn-primary" style="padding: 12px 28px;" data-i18n="hero.btnInquire">Become a Partner</a>
+            <a href="#tiers" class="btn btn-outline" style="padding: 12px 28px;" data-i18n="hero.btnTiers">View Sponsorship Tiers</a>
+          </div>
+        </div>
+
+        <!-- Institutional Academic Patron Section (ZNU Logos) -->
+        <div class="univ-partner-card">
+          <span class="section-kicker" data-i18n="univ.kicker">Institutional Academic Patron</span>
+          <h2 style="font-size: 1.5rem; margin-top: 4px;" data-i18n="univ.title">Zagazig National University &amp; Faculty of Engineering</h2>
+          <p class="text-muted" style="max-width: 680px; margin-inline: auto; font-size: 0.95rem; margin-top: 8px;" data-i18n="univ.desc">
+            Velox Racing is officially endorsed, hosted, and academically mentored under the patronage of Zagazig National University (ZNU) and the Faculty of Engineering, with direct access to advanced campus laboratories, manufacturing machine shops, and faculty guidance.
+          </p>
+
+          <!-- University Logos Display (Adapts dynamically to Dark / Light mode) -->
+          <div class="univ-logo-wrap">
+            <img id="univLogoImg" src="znu text logo dark.png" alt="Zagazig National University" class="univ-logo-img" onerror="this.src='znu_logo_light.png'" />
+            <img src="logo_eng.png" alt="Faculty of Engineering ZNU" class="univ-crest-img" />
+            <img src="VeloxLogoWeb.png" alt="Velox Racing Crest" class="univ-crest-img" onerror="this.src='VeloxForWeb_dark.png'" />
+          </div>
+
+          <div style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-top: 8px;">
+            <span class="telemetry-chip" style="font-size: 0.8rem;" data-i18n="univ.chip1">🏛️ Faculty of Engineering</span>
+            <span class="telemetry-chip" style="font-size: 0.8rem;" data-i18n="univ.chip2">🔬 Advanced Dynamics Labs</span>
+            <span class="telemetry-chip" style="font-size: 0.8rem;" data-i18n="univ.chip3">🏁 Formula Student UK 2026</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Why Sponsor Velox Racing -->
+    <section class="section">
+      <div class="container">
+        <div class="section-header center">
+          <span class="section-kicker" data-i18n="why.kicker">Strategic Return On Investment</span>
+          <h2 class="section-title" data-i18n="why.title">Why Partner With Velox Racing?</h2>
+          <p class="section-desc" data-i18n="why.desc">
+            Align your organization with technological excellence, university youth empowerment, and international motorsport prestige.
+          </p>
+        </div>
+
+        <div class="highlights-grid">
+          <div class="highlight-card">
+            <div style="font-size: 2rem; margin-bottom: 8px;">🌍</div>
+            <h3 class="highlight-label" style="font-size: 1.15rem;" data-i18n="why.card1.title">International Silverstone Arena</h3>
+            <p class="highlight-detail" style="font-size: 0.88rem; line-height: 1.6;" data-i18n="why.card1.desc">
+              Formula Student UK is judged and scrutinized by Formula 1 technical directors and top European automotive manufacturers at the iconic Silverstone Circuit.
+            </p>
+          </div>
+
+          <div class="highlight-card">
+            <div style="font-size: 2rem; margin-bottom: 8px;">⚡</div>
+            <h3 class="highlight-label" style="font-size: 1.15rem;" data-i18n="why.card1.title2">Direct STEM Talent Pipeline</h3>
+            <p class="highlight-detail" style="font-size: 0.88rem; line-height: 1.6;" data-i18n="why.card2.desc">
+              Exclusive priority access to recruitment resume books from Egypt's sharpest students across Mechatronics, Mechanical, Embedded Systems, and Business.
+            </p>
+          </div>
+
+          <div class="highlight-card">
+            <div style="font-size: 2rem; margin-bottom: 8px;">🎯</div>
+            <h3 class="highlight-label" style="font-size: 1.15rem;" data-i18n="why.card3.title">High-Contrast Brand Visibility</h3>
+            <p class="highlight-detail" style="font-size: 0.88rem; line-height: 1.6;" data-i18n="why.card3.desc">
+              Your company branding showcased on the race car's aerodynamic livery, driver race suits, garage pit wall, event roll-ups, and cinematic social documentaries.
+            </p>
+          </div>
+
+          <div class="highlight-card">
+            <div style="font-size: 2rem; margin-bottom: 8px;">🚀</div>
+            <h3 class="highlight-label" style="font-size: 1.15rem;" data-i18n="why.card4.title">Clean Tech CSR &amp; EV R&amp;D</h3>
+            <p class="highlight-detail" style="font-size: 0.88rem; line-height: 1.6;" data-i18n="why.card4.desc">
+              Demonstrate corporate social responsibility by fostering national electric mobility innovation and hands-on applied engineering within Egyptian higher education.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sponsorship Packages / Tiers -->
+    <section class="section" id="tiers" style="background: radial-gradient(circle at 50% 20%, rgba(225, 6, 0, 0.05) 0%, transparent 60%);">
+      <div class="container">
+        <div class="section-header center">
+          <span class="section-kicker" data-i18n="tiers.kicker">Partnership Tiers</span>
+          <h2 class="section-title" data-i18n="tiers.title">Sponsorship Packages</h2>
+          <p class="section-desc" data-i18n="tiers.desc">
+            Tailored tiers designed for corporate sponsors, manufacturing partners, and technology suppliers.
+          </p>
+        </div>
+
+        <div class="sponsor-tier-grid">
+          <!-- Tier 1: Title Partner -->
+          <div class="tier-card featured">
+            <span class="tier-badge" data-i18n="tiers.titlePartner.badge">Primary Partner</span>
+            <h3 class="tier-name" data-i18n="tiers.titlePartner.name">Title Partner</h3>
+            <p class="tier-desc" data-i18n="tiers.titlePartner.desc">
+              The premier co-branding package with dominant vehicle livery placement and international Silverstone paddock access.
+            </p>
+            <ul class="tier-perks">
+              <li class="tier-perk-item" data-i18n="tiers.titlePartner.p1">Dominant branding on front nosecone, sidepods &amp; rear wing</li>
+              <li class="tier-perk-item" data-i18n="tiers.titlePartner.p2">Official team co-naming rights in press releases &amp; interviews</li>
+              <li class="tier-perk-item" data-i18n="tiers.titlePartner.p3">VIP Silverstone Paddock passes &amp; pit wall access</li>
+              <li class="tier-perk-item" data-i18n="tiers.titlePartner.p4">Exclusive on-campus recruitment day &amp; private car demo</li>
+            </ul>
+            <a href="#partnerForm" class="btn btn-primary btn-full" data-i18n="tiers.btnSelect">Select Package</a>
+          </div>
+
+          <!-- Tier 2: Platinum Partner -->
+          <div class="tier-card">
+            <span class="tier-badge" style="color: #E2E8F0;" data-i18n="tiers.plat.badge">Executive Tier</span>
+            <h3 class="tier-name" data-i18n="tiers.plat.name">Platinum Partner</h3>
+            <p class="tier-desc" data-i18n="tiers.plat.desc">
+              Extensive vehicle visibility, prominent uniform placement, and prioritized graduate recruitment.
+            </p>
+            <ul class="tier-perks">
+              <li class="tier-perk-item" data-i18n="tiers.plat.p1">Prominent front wing aerodynamic endplate branding</li>
+              <li class="tier-perk-item" data-i18n="tiers.plat.p2">Featured logo on driver race suits &amp; team crew gear</li>
+              <li class="tier-perk-item" data-i18n="tiers.plat.p3">Direct candidate resume book access for hiring</li>
+              <li class="tier-perk-item" data-i18n="tiers.plat.p4">Dedicated corporate spotlight across social media reels</li>
+            </ul>
+            <a href="#partnerForm" class="btn btn-outline btn-full" data-i18n="tiers.btnSelect">Select Package</a>
+          </div>
+
+          <!-- Tier 3: Gold Partner -->
+          <div class="tier-card">
+            <span class="tier-badge" style="color: #FBBF24;" data-i18n="tiers.gold.badge">Core Partner</span>
+            <h3 class="tier-name" data-i18n="tiers.gold.name">Gold Partner</h3>
+            <p class="tier-desc" data-i18n="tiers.gold.desc">
+              Strong brand positioning on the vehicle chassis spaceframe and digital engineering publications.
+            </p>
+            <ul class="tier-perks">
+              <li class="tier-perk-item" data-i18n="tiers.gold.p1">Branding on chassis side panels &amp; cockpit cockpit area</li>
+              <li class="tier-perk-item" data-i18n="tiers.gold.p2">Recognition in competition engineering design report</li>
+              <li class="tier-perk-item" data-i18n="tiers.gold.p3">Sponsor highlight posts on LinkedIn, Instagram &amp; Facebook</li>
+              <li class="tier-perk-item" data-i18n="tiers.gold.p4">Logo on official website and pit garage banners</li>
+            </ul>
+            <a href="#partnerForm" class="btn btn-outline btn-full" data-i18n="tiers.btnSelect">Select Package</a>
+          </div>
+
+          <!-- Tier 4: Technical & In-Kind Partner -->
+          <div class="tier-card">
+            <span class="tier-badge" style="color: #38BDF8;" data-i18n="tiers.inkind.badge">Technical / In-Kind</span>
+            <h3 class="tier-name" data-i18n="tiers.inkind.name">Technical Partner</h3>
+            <p class="tier-desc" data-i18n="tiers.inkind.desc">
+              For manufacturing facilities, CNC machinists, carbon fiber suppliers, software licenses, or logistics providers.
+            </p>
+            <ul class="tier-perks">
+              <li class="tier-perk-item" data-i18n="tiers.inkind.p1">Custom component fabrication, CNC milling or 3D printing</li>
+              <li class="tier-perk-item" data-i18n="tiers.inkind.p2">Raw materials, wiring harness, or safety equipment supply</li>
+              <li class="tier-perk-item" data-i18n="tiers.inkind.p3">Logo on official website partner directory</li>
+              <li class="tier-perk-item" data-i18n="tiers.inkind.p4">Technical case study featured on team media</li>
+            </ul>
+            <a href="#partnerForm" class="btn btn-outline btn-full" data-i18n="tiers.btnSelect">Select Package</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Partnership Inquiry Form -->
+    <section class="section" id="partnerForm" style="border-bottom: none;">
+      <div class="container">
+        <div class="form-card">
+          <div class="section-header center" style="margin-bottom: 24px;">
+            <span class="section-kicker" data-i18n="form.kicker">Direct Executive Contact</span>
+            <h2 style="font-size: 1.8rem;" data-i18n="form.title">Partner With Velox Racing</h2>
+            <p class="text-muted" data-i18n="form.desc">
+              Submit your inquiry to receive our comprehensive 2026 Formula Student Sponsorship Deck and discuss custom partnership packages with our Team Director.
+            </p>
+          </div>
+
+          <div class="form-alert success" id="sponsorSuccessAlert" role="alert" style="display: none; margin-bottom: 20px;">
+            <h4 data-i18n="form.successTitle">Thank you for your partnership inquiry!</h4>
+            <p data-i18n="form.successDesc">Our Business &amp; Sponsorship Directorate will review your details and contact you within 24–48 hours.</p>
+          </div>
+
+          <form id="sponsorshipInquiryForm">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="compName" data-i18n="form.compName">Organization / Company Name<span class="req">*</span></label>
+                <input type="text" id="compName" class="form-control" placeholder="e.g. Siemens, Petrojet, Elsewedy Electric" required />
+              </div>
+              <div class="form-group">
+                <label for="contactName" data-i18n="form.contactName">Contact Person &amp; Title<span class="req">*</span></label>
+                <input type="text" id="contactName" class="form-control" placeholder="e.g. Eng. Karim Tarek, CSR Director" required />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="compEmail" data-i18n="form.compEmail">Corporate / Official Email<span class="req">*</span></label>
+                <input type="email" id="compEmail" class="form-control" placeholder="contact@company.com" required />
+              </div>
+              <div class="form-group">
+                <label for="compPhone" data-i18n="form.compPhone">Phone Number / WhatsApp<span class="req">*</span></label>
+                <input type="tel" id="compPhone" class="form-control" placeholder="+20 10X XXX XXXX" required />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="tierSelect" data-i18n="form.tierSelect">Tier of Interest<span class="req">*</span></label>
+                <select id="tierSelect" class="form-control" required>
+                  <option value="" disabled selected data-i18n="form.optSelect">Select preferred partnership tier</option>
+                  <option value="Title Partner">Title Partner (Primary Livery & Silverstone Access)</option>
+                  <option value="Platinum Partner">Platinum Partner (Aero Wing & Race Suits)</option>
+                  <option value="Gold Partner">Gold Partner (Chassis & Digital Media)</option>
+                  <option value="Technical / In-Kind Partner">Technical / In-Kind Partner (Machining & Materials)</option>
+                  <option value="Custom Collaboration">Custom Corporate CSR Collaboration</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="supportType" data-i18n="form.supportType">Type of Sponsorship<span class="req">*</span></label>
+                <select id="supportType" class="form-control" required>
+                  <option value="Financial Sponsorship">Financial Sponsorship</option>
+                  <option value="Manufacturing / CNC Services">Manufacturing / CNC / Waterjet Services</option>
+                  <option value="Raw Materials / Composites">Raw Materials / Carbon Fiber / 4130 Steel</option>
+                  <option value="Electronics & DAQ Hardware">Electronics, Sensors &amp; DAQ Hardware</option>
+                  <option value="Software / Engineering Licenses">Engineering Simulation / Software Licenses</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="compMessage" data-i18n="form.compMessage">Message &amp; Scope of Partnership</label>
+              <textarea id="compMessage" class="form-control" rows="4" placeholder="Describe your collaboration objectives, material support, or any questions regarding our Formula Student UK campaign."></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-full" id="sponsorSubmitBtn" style="padding: 14px; font-size: 1rem; margin-top: 10px;" data-i18n="form.submitBtn">
+              Submit Partnership Inquiry &rarr;
+            </button>
+          </form>
+
+          <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border); text-align: center;">
+            <p class="text-muted" style="font-size: 0.88rem; margin-bottom: 8px;" data-i18n="form.directContact">
+              Prefer direct executive contact? Reach our sponsorship desk directly:
+            </p>
+            <a href="mailto:velox.racing.znu@gmail.com" class="btn btn-outline" style="font-size: 0.88rem; padding: 8px 18px;">
+              ✉️ velox.racing.znu@gmail.com
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Consistent Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="/" class="nav-brand">
+            <img src="VeloxLogoWeb.png" alt="Velox Racing" class="nav-logo" onerror="this.src='VeloxForWeb_dark.png'" />
+            <span class="nav-title">VELOX RACING</span>
+          </a>
+          <p data-i18n="footer.desc">
+            The official Formula Student racing team of Zagazig National University (ZNU), competing at Silverstone Circuit in Formula Student UK.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h5 data-i18n="footer.navTitle">Navigation</h5>
+          <ul>
+            <li><a href="/" data-i18n="nav.home">Home</a></li>
+            <li><a href="/#about" data-i18n="nav.about">About</a></li>
+            <li><a href="/team" data-i18n="nav.team">Team Structure</a></li>
+            <li><a href="/sponsorship" data-i18n="nav.sponsors">Sponsors</a></li>
+            <li><a href="/join" data-i18n="nav.join">Join the Team</a></li>
+            <li><a href="/hr">HR Portal</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h5 data-i18n="footer.connectTitle">Connect</h5>
+          <ul>
+            <li><a href="mailto:velox.racing.znu@gmail.com">velox.racing.znu@gmail.com</a></li>
+            <li><a href="https://www.linkedin.com/company/velox-racing-znu" target="_blank" rel="noopener">LinkedIn</a></li>
+            <li><a href="https://www.facebook.com/VeloxRacingZNU" target="_blank" rel="noopener">Facebook</a></li>
+            <li><a href="https://www.instagram.com/velox.racing" target="_blank" rel="noopener">Instagram</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>&copy; 2026 Velox Racing — Zagazig National University. All rights reserved.</span>
+        <span>Formula Student UK &bull; Silverstone</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bilingual Translations & Theme Script -->
+  <script>
+    // Minimal mobile navigation toggle
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const navMenu = document.getElementById('navMenu');
+
+    if (hamburgerBtn && navMenu) {
+      hamburgerBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = navMenu.classList.toggle('open');
+        hamburgerBtn.classList.toggle('open', isOpen);
+        hamburgerBtn.setAttribute('aria-expanded', isOpen);
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!navMenu.contains(e.target) && !hamburgerBtn.contains(e.target)) {
+          navMenu.classList.remove('open');
+          hamburgerBtn.classList.remove('open');
+          hamburgerBtn.setAttribute('aria-expanded', false);
+        }
+      });
+
+      navMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          navMenu.classList.remove('open');
+          hamburgerBtn.classList.remove('open');
+          hamburgerBtn.setAttribute('aria-expanded', false);
+        });
+      });
+    }
+
+    // ── Bilingual Dictionary (English & Arabic) ──
+    const I18N = {
+      en: {
+        'nav.home': 'Home',
+        'nav.about': 'About',
+        'nav.team': 'Team',
+        'nav.sponsors': 'Sponsors',
+        'nav.join': 'Join the Team →',
+        'nav.partnerBtn': 'Partner With Us',
+        'hero.kicker': 'Partnership Opportunities // Formula Student UK',
+        'hero.title': 'Power Egyptian Innovation on the World Stage',
+        'hero.desc': 'Partner with Velox Racing, the Formula Student challenger of Zagazig National University. Fueling clean high-performance mobility and accelerating the next generation of elite engineers toward Silverstone Circuit.',
+        'hero.btnInquire': 'Become a Partner',
+        'hero.btnTiers': 'View Sponsorship Tiers',
+        'univ.kicker': 'Institutional Academic Patron',
+        'univ.title': 'Zagazig National University & Faculty of Engineering',
+        'univ.desc': 'Velox Racing is officially endorsed, hosted, and academically mentored under the patronage of Zagazig National University (ZNU) and the Faculty of Engineering, with direct access to advanced campus laboratories, manufacturing machine shops, and faculty guidance.',
+        'univ.chip1': '🏛️ Faculty of Engineering',
+        'univ.chip2': '🔬 Advanced Dynamics Labs',
+        'univ.chip3': '🏁 Formula Student UK 2026',
+        'why.kicker': 'Strategic Return On Investment',
+        'why.title': 'Why Partner With Velox Racing?',
+        'why.desc': 'Align your organization with technological excellence, university youth empowerment, and international motorsport prestige.',
+        'why.card1.title': 'International Silverstone Arena',
+        'why.card1.desc': 'Formula Student UK is judged and scrutinized by Formula 1 technical directors and top European automotive manufacturers at the iconic Silverstone Circuit.',
+        'why.card1.title2': 'Direct STEM Talent Pipeline',
+        'why.card2.desc': 'Exclusive priority access to recruitment resume books from Egypt\'s sharpest students across Mechatronics, Mechanical, Embedded Systems, and Business.',
+        'why.card3.title': 'High-Contrast Brand Visibility',
+        'why.card3.desc': 'Your company branding showcased on the race car\'s aerodynamic livery, driver race suits, garage pit wall, event roll-ups, and cinematic social documentaries.',
+        'why.card4.title': 'Clean Tech CSR & EV R&D',
+        'why.card4.desc': 'Demonstrate corporate social responsibility by fostering national electric mobility innovation and hands-on applied engineering within Egyptian higher education.',
+        'tiers.kicker': 'Partnership Tiers',
+        'tiers.title': 'Sponsorship Packages',
+        'tiers.desc': 'Tailored tiers designed for corporate sponsors, manufacturing partners, and technology suppliers.',
+        'tiers.titlePartner.badge': 'Primary Partner',
+        'tiers.titlePartner.name': 'Title Partner',
+        'tiers.titlePartner.desc': 'The premier co-branding package with dominant vehicle livery placement and international Silverstone paddock access.',
+        'tiers.titlePartner.p1': 'Dominant branding on front nosecone, sidepods & rear wing',
+        'tiers.titlePartner.p2': 'Official team co-naming rights in press releases & interviews',
+        'tiers.titlePartner.p3': 'VIP Silverstone Paddock passes & pit wall access',
+        'tiers.titlePartner.p4': 'Exclusive on-campus recruitment day & private car demo',
+        'tiers.plat.badge': 'Executive Tier',
+        'tiers.plat.name': 'Platinum Partner',
+        'tiers.plat.desc': 'Extensive vehicle visibility, prominent uniform placement, and prioritized graduate recruitment.',
+        'tiers.plat.p1': 'Prominent front wing aerodynamic endplate branding',
+        'tiers.plat.p2': 'Featured logo on driver race suits & team crew gear',
+        'tiers.plat.p3': 'Direct candidate resume book access for hiring',
+        'tiers.plat.p4': 'Dedicated corporate spotlight across social media reels',
+        'tiers.gold.badge': 'Core Partner',
+        'tiers.gold.name': 'Gold Partner',
+        'tiers.gold.desc': 'Strong brand positioning on the vehicle chassis spaceframe and digital engineering publications.',
+        'tiers.gold.p1': 'Branding on chassis side panels & cockpit area',
+        'tiers.gold.p2': 'Recognition in competition engineering design report',
+        'tiers.gold.p3': 'Sponsor highlight posts on LinkedIn, Instagram & Facebook',
+        'tiers.gold.p4': 'Logo on official website and pit garage banners',
+        'tiers.inkind.badge': 'Technical / In-Kind',
+        'tiers.inkind.name': 'Technical Partner',
+        'tiers.inkind.desc': 'For manufacturing facilities, CNC machinists, carbon fiber suppliers, software licenses, or logistics providers.',
+        'tiers.inkind.p1': 'Custom component fabrication, CNC milling or 3D printing',
+        'tiers.inkind.p2': 'Raw materials, wiring harness, or safety equipment supply',
+        'tiers.inkind.p3': 'Logo on official website partner directory',
+        'tiers.inkind.p4': 'Technical case study featured on team media',
+        'tiers.btnSelect': 'Select Package',
+        'form.kicker': 'Direct Executive Contact',
+        'form.title': 'Partner With Velox Racing',
+        'form.desc': 'Submit your inquiry to receive our comprehensive 2026 Formula Student Sponsorship Deck and discuss custom partnership packages with our Team Director.',
+        'form.successTitle': 'Thank you for your partnership inquiry!',
+        'form.successDesc': 'Our Business & Sponsorship Directorate will review your details and contact you within 24–48 hours.',
+        'form.compName': 'Organization / Company Name*',
+        'form.contactName': 'Contact Person & Title*',
+        'form.compEmail': 'Corporate / Official Email*',
+        'form.compPhone': 'Phone Number / WhatsApp*',
+        'form.tierSelect': 'Tier of Interest*',
+        'form.optSelect': 'Select preferred partnership tier',
+        'form.supportType': 'Type of Sponsorship*',
+        'form.compMessage': 'Message & Scope of Partnership',
+        'form.submitBtn': 'Submit Partnership Inquiry →',
+        'form.directContact': 'Prefer direct executive contact? Reach our sponsorship desk directly:',
+        'footer.desc': 'The official Formula Student racing team of Zagazig National University (ZNU), competing at Silverstone Circuit in Formula Student UK.',
+        'footer.navTitle': 'Navigation',
+        'footer.connectTitle': 'Connect'
+      },
+      ar: {
+        'nav.home': 'الرئيسية',
+        'nav.about': 'عن الفريق',
+        'nav.team': 'الهيكل التنظيمي',
+        'nav.sponsors': 'الرعاة والشركاء',
+        'nav.join': 'انضم للفريق ←',
+        'nav.partnerBtn': 'كن شريكاً لنا',
+        'hero.kicker': 'فرص الرعاية والشراكة الاستراتيجية // فورمولا ستيودنت بريطانيا',
+        'hero.title': 'ادعم الابتكار الهندسي المصري في ساحة السباقات العالمية',
+        'hero.desc': 'شارك فريق فيلوكس للسباقات، ممثل جامعة الزقازيق الأهلية في مسابقة فورمولا ستيودنت العالمية. نسابق في حلبة سيلفرستون العريقة ونبني الجيل القادم من قادة صناعة السيارات والتنقل الكهربائي.',
+        'hero.btnInquire': 'كن شريكاً استراتيجياً',
+        'hero.btnTiers': 'استعراض باقات الرعاية',
+        'univ.kicker': 'الشريك والمظلة الأكاديمية الرسمية',
+        'univ.title': 'جامعة الزقازيق الأهلية وكلية الهندسة',
+        'univ.desc': 'يعمل فريق فيلوكس للسباقات تحت الرعاية الكاملة والدعم الأكاديمي والتقني المباشر من إدارة جامعة الزقازيق الأهلية وكلية الهندسة، مع الاستفادة من المعامل الهندسية المتطورة ومرافق التصنيع وإشراف الأساتذة.',
+        'univ.chip1': '🏛️ كلية الهندسة',
+        'univ.chip2': '🔬 معامل الديناميكا والتصنيع',
+        'univ.chip3': '🏁 فورمولا ستيودنت 2026',
+        'why.kicker': 'العائد الاستثماري الاستراتيجي',
+        'why.title': 'لماذا ترعى فريق فيلوكس للسباقات؟',
+        'why.desc': 'اربط علامتك التجارية بالتميز الهندسي، وتمكين الكفاءات الجامعية الشابة، والظهور في أرقى محافل رياضة السيارات الدولية.',
+        'why.card1.title': 'حلبة سيلفرستون الدولية',
+        'why.card1.desc': 'تُقام المسابقة في حلبة سيلفرستون البريطانية الشهيرة تحت تقييم كبار المدراء التقنيين لفرق الفورمولا 1 وأكبر مصنعي السيارات الأوروبيين.',
+        'why.card1.title2': 'بوابة توظيف حصرية للنوابغ الهندسية',
+        'why.card2.desc': 'أولوية الوصول إلى ملفات السيرة الذاتية لنخبة طلبة الهندسة والميكاترونكس وهندسة القوى والبرمجيات وإدارة الأعمال لتوظيفهم وتدريبهم.',
+        'why.card3.title': 'انتشار إعلامي عالي التأثير',
+        'why.card3.desc': 'ظهور بارز لشعار مؤسستكم على الهيكل الديناميكي الهوائي للسيارة، وبدلات السائقين، والمركز التقني في حلبة السباق، والتغطيات الوثائقية.',
+        'why.card4.title': 'المسؤولية المجتمعية والتنقل المستدام',
+        'why.card4.desc': 'المساهمة الملموسة في توطين أبحاث السيارات الكهربائية النظيفة في مصر وتنمية رأس المال البشري التقني في الجامعات المصرية.',
+        'tiers.kicker': 'باقات الشراكة',
+        'tiers.title': 'باقات الرعاية الرسمية',
+        'tiers.desc': 'باقات مخصصة للمؤسسات والشركات الصناعية، ومصنعي المكونات، ومزودي البرمجيات والخدمات اللوجستية.',
+        'tiers.titlePartner.badge': 'الشريك الرئيسي الأول',
+        'tiers.titlePartner.name': 'الشريك الرئيسي (Title)',
+        'tiers.titlePartner.desc': 'أعلى درجات الظهور الإعلامي مع مساحة رئيسية على سيارة السباق وتواجد في المركز التقني بحلبة سيلفرستون.',
+        'tiers.titlePartner.p1': 'مساحة رئيسية مهيمنة على مقدمة السيارة والأجنحة الخلفية',
+        'tiers.titlePartner.p2': 'اسم المؤسسة مقترن باسم الفريق في البيانات الصحفية والإعلامية',
+        'tiers.titlePartner.p3': 'تذاكر VIP لدخول كواليس السباق في حلبة سيلفرستون ببريطانيا',
+        'tiers.titlePartner.p4': 'يوم توظيف حصري داخل الحرم الجامعي وعرض خاص للسيارة',
+        'tiers.plat.badge': 'الفئة التنفيذية',
+        'tiers.plat.name': 'الشريك البلاتيني',
+        'tiers.plat.desc': 'ظهور بارز على عناصر الديناميكا الهوائية، وبدلات أعضاء الفريق، وأولوية استقطاب الخريجين.',
+        'tiers.plat.p1': 'شعار بارز على الجناح الهوائي الأمامي وجوانب السيارة',
+        'tiers.plat.p2': 'شعار على بدلات السائقين وزي الطاقم الفني',
+        'tiers.plat.p3': 'وصول مباشر لملفات المرشحين للتوظيف والتدريب',
+        'tiers.plat.p4': 'فيديو تسليط ضوء مخصص للشركة عبر منصات التواصل',
+        'tiers.gold.badge': 'الشريك الأساسي',
+        'tiers.gold.name': 'الشريك الذهبي',
+        'tiers.gold.desc': 'تواجد على شاسيه السيارة ومنصات الفريق الرقمية والتقارير الهندسية الرسمية.',
+        'tiers.gold.p1': 'شعار على شاسيه السيارة وجانب قمرة القيادة',
+        'tiers.gold.p2': 'إدراج اسم الشركة في تقارير التصميم الهندسي للمسابقة',
+        'tiers.gold.p3': 'منشورات شكر وتعريف دورية على لينكدإن وفيسبوك وإنستغرام',
+        'tiers.gold.p4': 'شعار على الموقع الإلكتروني الرسمي ولافتات الورشة',
+        'tiers.inkind.badge': 'شريك تقني / تصنيعي',
+        'tiers.inkind.name': 'الشريك التقني والتصنيعي',
+        'tiers.inkind.desc': 'لورش التصنيع وقطع الـ CNC، وموردي ألياف الكربون، والبرمجيات الهندسية، والخدمات اللوجستية.',
+        'tiers.inkind.p1': 'تصنيع أجزاء ميكانيكية متخصصة، تفريز CNC أو طباعة ثلاثية الأبعاد',
+        'tiers.inkind.p2': 'توفير مواد خام، كابلات كهربائية، أو أدوات أمان وتجميع',
+        'tiers.inkind.p3': 'شعار في دليل الشركاء بالموقع الإلكتروني',
+        'tiers.inkind.p4': 'تسليط الضوء على الدعم التقني في التوثيق الهندسي',
+        'tiers.btnSelect': 'اختيار هذه الباقة',
+        'form.kicker': 'التواصل المباشر مع إدارة الفريق',
+        'form.title': 'كن شريكاً لفريق فيلوكس للسباقات',
+        'form.desc': 'أرسل بياناتك لاستلام الملف التعريفي الشامل لسباق فورمولا ستيودنت 2026 ومناقشة تفاصيل التعاون مع إدارة الفريق.',
+        'form.successTitle': 'شكراً لاهتمامكم بالشراكة!',
+        'form.successDesc': 'سيقوم مسؤولو الرعاية والعلاقات الخارجية بمراجعة طلبكم والتواصل معكم خلال 24–48 ساعة.',
+        'form.compName': 'اسم المؤسسة / الشركة*',
+        'form.contactName': 'اسم الشخص المسؤول وصفته الوظيفية*',
+        'form.compEmail': 'البريد الإلكتروني الرسمي*',
+        'form.compPhone': 'رقم الهاتف / واتساب*',
+        'form.tierSelect': 'باقة الرعاية المستهدفة*',
+        'form.optSelect': 'اختر باقة الرعاية المفضلة',
+        'form.supportType': 'نوع الرعاية المقترحة*',
+        'form.compMessage': 'الرسالة وتفاصيل التعاون المقترح',
+        'form.submitBtn': 'إرسال طلب الشراكة ←',
+        'form.directContact': 'تفضل التواصل المباشر؟ يسعدنا استقبال رسائلكم عبر البريد الإلكتروني:',
+        'footer.desc': 'فريق فورمولا ستيودنت الرسمي لجامعة الزقازيق الأهلية، ممثل الجامعة في حلبة سيلفرستون البريطانية.',
+        'footer.navTitle': 'روابط سريعة',
+        'footer.connectTitle': 'تواصل معنا'
+      }
+    };
+
+    // ── Theme & Language Logic ──
+    const themeBtn = document.getElementById('themeToggleBtn');
+    const langBtn = document.getElementById('langToggleBtn');
+    const univLogoImg = document.getElementById('univLogoImg');
+
+    function updateUnivLogo(theme) {
+      if (!univLogoImg) return;
+      if (theme === 'light') {
+        univLogoImg.src = 'znu_logo_light.png';
+      } else {
+        univLogoImg.src = 'znu text logo dark.png';
+      }
+    }
+
+    function applyTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('velox_theme', theme);
+      if (themeBtn) themeBtn.textContent = theme === 'light' ? '☀️' : '🌙';
+      updateUnivLogo(theme);
+    }
+
+    function applyLanguage(lang) {
+      localStorage.setItem('velox_lang', lang);
+      document.documentElement.setAttribute('lang', lang);
+      document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+      if (langBtn) langBtn.textContent = lang === 'ar' ? '🌐 EN' : '🌐 AR';
+
+      const dict = I18N[lang] || I18N.en;
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (dict[key]) {
+          el.textContent = dict[key];
+        }
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Theme initialization
+      const savedTheme = localStorage.getItem('velox_theme') || 'dark';
+      applyTheme(savedTheme);
+
+      if (themeBtn) {
+        themeBtn.addEventListener('click', () => {
+          const current = document.documentElement.getAttribute('data-theme') || 'dark';
+          const next = current === 'dark' ? 'light' : 'dark';
+          applyTheme(next);
+        });
+      }
+
+      // 2. Language initialization
+      const savedLang = localStorage.getItem('velox_lang') || 'en';
+      applyLanguage(savedLang);
+
+      if (langBtn) {
+        langBtn.addEventListener('click', () => {
+          const current = localStorage.getItem('velox_lang') || 'en';
+          const next = current === 'en' ? 'ar' : 'en';
+          applyLanguage(next);
+        });
+      }
+
+      // 3. Sponsorship Form Submission Handler
+      const form = document.getElementById('sponsorshipInquiryForm');
+      const successAlert = document.getElementById('sponsorSuccessAlert');
+      const submitBtn = document.getElementById('sponsorSubmitBtn');
+
+      if (form) {
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          submitBtn.disabled = true;
+          submitBtn.textContent = 'Submitting...';
+
+          const compName = document.getElementById('compName').value.trim();
+          const contactName = document.getElementById('contactName').value.trim();
+          const compEmail = document.getElementById('compEmail').value.trim();
+          const compPhone = document.getElementById('compPhone').value.trim();
+          const tier = document.getElementById('tierSelect').value;
+          const supportType = document.getElementById('supportType').value;
+          const msg = document.getElementById('compMessage').value.trim();
+
+          const inquiry = {
+            id: 'SPONSOR-' + Math.random().toString(36).substring(2, 9).toUpperCase(),
+            company: compName,
+            contact: contactName,
+            email: compEmail,
+            phone: compPhone,
+            tier: tier,
+            support_type: supportType,
+            message: msg,
+            submitted_at: new Date().toISOString()
+          };
+
+          // Store locally
+          const stored = JSON.parse(localStorage.getItem('velox_sponsor_inquiries') || '[]');
+          stored.unshift(inquiry);
+          localStorage.setItem('velox_sponsor_inquiries', JSON.stringify(stored));
+
+          setTimeout(() => {
+            form.style.display = 'none';
+            if (successAlert) {
+              successAlert.style.display = 'block';
+              successAlert.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+          }, 400);
+        });
+      }
+    });
+
+    // PWA Service Worker Registration & Cache Management
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js')
+          .then(reg => reg.update())
+          .catch(() => {});
+      });
+    }
+  </script>
+</body>
+</html>

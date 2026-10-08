@@ -16,7 +16,7 @@
   <link rel="apple-touch-icon" href="VeloxForWeb_dark.png" />
 
   <!-- Shared Style with Cache Buster -->
-  <link rel="stylesheet" href="style.css?v=2.2" />
+  <link rel="stylesheet" href="style.css?v=2.3" />
   <!-- Supabase JS Client (CDN) -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -38,10 +38,15 @@
           <li><a href="/" class="nav-link">Home</a></li>
           <li><a href="/#about" class="nav-link">About</a></li>
           <li><a href="/team" class="nav-link">Team</a></li>
+          <li><a href="/sponsorship" class="nav-link">Sponsors</a></li>
           <li class="mobile-menu-cta"><a href="/join" class="btn btn-primary btn-full">Join the Team &rarr;</a></li>
         </ul>
 
         <div class="nav-cta">
+          <div class="nav-tools">
+            <button id="themeToggleBtn" class="nav-tool-btn" title="Toggle Dark/Light Mode" aria-label="Toggle Theme">🌙</button>
+            <button id="langToggleBtn" class="nav-tool-btn" title="تغيير اللغة" aria-label="Toggle Language">🌐 AR</button>
+          </div>
           <a href="/join" class="btn btn-primary">Join Us</a>
           <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation menu" aria-expanded="false">
             <span></span>
@@ -796,7 +801,52 @@
           });
         });
       }
+
+      initThemeAndLang();
     });
+
+    function initThemeAndLang() {
+      const themeBtn = document.getElementById('themeToggleBtn');
+      const langBtn = document.getElementById('langToggleBtn');
+
+      const savedTheme = localStorage.getItem('velox_theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      if (themeBtn) {
+        themeBtn.textContent = savedTheme === 'light' ? '☀️' : '🌙';
+        themeBtn.addEventListener('click', () => {
+          const current = document.documentElement.getAttribute('data-theme') || 'dark';
+          const next = current === 'dark' ? 'light' : 'dark';
+          document.documentElement.setAttribute('data-theme', next);
+          localStorage.setItem('velox_theme', next);
+          themeBtn.textContent = next === 'light' ? '☀️' : '🌙';
+        });
+      }
+
+      const savedLang = localStorage.getItem('velox_lang') || 'en';
+      setLanguage(savedLang);
+
+      if (langBtn) {
+        langBtn.addEventListener('click', () => {
+          const current = localStorage.getItem('velox_lang') || 'en';
+          const next = current === 'en' ? 'ar' : 'en';
+          setLanguage(next);
+        });
+      }
+    }
+
+    function setLanguage(lang) {
+      localStorage.setItem('velox_lang', lang);
+      const langBtn = document.getElementById('langToggleBtn');
+      if (lang === 'ar') {
+        document.documentElement.setAttribute('dir', 'rtl');
+        document.documentElement.setAttribute('lang', 'ar');
+        if (langBtn) langBtn.textContent = '🌐 EN';
+      } else {
+        document.documentElement.setAttribute('dir', 'ltr');
+        document.documentElement.setAttribute('lang', 'en');
+        if (langBtn) langBtn.textContent = '🌐 AR';
+      }
+    }
 
     // PWA Service Worker Registration & Cache Management
     if ('serviceWorker' in navigator) {

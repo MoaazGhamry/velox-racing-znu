@@ -16,7 +16,7 @@
   <link rel="apple-touch-icon" href="VeloxForWeb_dark.png" />
 
   <!-- Shared Style with Cache Buster -->
-  <link rel="stylesheet" href="style.css?v=2.2" />
+  <link rel="stylesheet" href="style.css?v=2.3" />
 </head>
 <body>
 
@@ -36,10 +36,15 @@
           <li><a href="/" class="nav-link active">Home</a></li>
           <li><a href="#about" class="nav-link">About</a></li>
           <li><a href="/team" class="nav-link">Team</a></li>
+          <li><a href="/sponsorship" class="nav-link">Sponsors</a></li>
           <li class="mobile-menu-cta"><a href="/join" class="btn btn-primary btn-full">Join the Team &rarr;</a></li>
         </ul>
 
         <div class="nav-cta">
+          <div class="nav-tools">
+            <button id="themeToggleBtn" class="nav-tool-btn" title="Toggle Dark/Light Mode" aria-label="Toggle Theme">🌙</button>
+            <button id="langToggleBtn" class="nav-tool-btn" title="تغيير اللغة" aria-label="Toggle Language">🌐 AR</button>
+          </div>
           <a href="/join" class="btn btn-primary">Join Us</a>
           <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation menu" aria-expanded="false">
             <span></span>
@@ -80,6 +85,9 @@
         <div class="hero-actions">
           <a href="/join" class="btn btn-primary">Join the Team</a>
           <a href="/team" class="btn btn-outline">Meet the Team</a>
+          <a href="#cinematic" class="btn btn-outline" style="display: inline-flex; align-items: center; gap: 8px;">
+            <span style="color: var(--red); font-weight: 800;">▶</span> Watch Reel
+          </a>
         </div>
       </div>
     </section>
@@ -145,6 +153,65 @@
       </div>
     </section>
 
+    <!-- Cinematic Video Reel Showcase (ad.mp4) -->
+    <section class="section reel-section" id="cinematic">
+      <div class="container">
+        <div class="section-header center">
+          <span class="section-kicker">Experience Velox Racing</span>
+          <h2 class="section-title">The Sound & Engineering of Velox</h2>
+          <p class="section-desc">
+            Inside the workshop and onto the tarmac. From virtual CAD architectures to high-performance track testing.
+          </p>
+        </div>
+
+        <div class="reel-container">
+          <div class="f1-video-player" id="f1VideoPlayer">
+            <!-- Top HUD Bar -->
+            <div class="reel-hud-top">
+              <span class="reel-badge-live">
+                <span class="live-dot"></span>
+                LIVE BROADCAST // PIT WALL & ONBOARD
+              </span>
+              <span class="reel-telemetry-tag">FSUK 2026 // VX-01 PROTOCOL</span>
+            </div>
+
+            <!-- Main Video -->
+            <video id="adVideo" class="reel-video" src="ad.mp4" playsinline preload="metadata" poster="velox_car_render.jpg" loop></video>
+
+            <!-- Big Center Play Button Overlay -->
+            <div class="f1-play-overlay" id="videoPlayOverlay" aria-label="Play video reel">
+              <div class="f1-play-btn" id="f1PlayBtnIcon">▶</div>
+            </div>
+
+            <!-- Bottom Motorsport HUD & Controls -->
+            <div class="reel-hud-bottom">
+              <div class="reel-progress-wrap" id="videoProgressWrap" title="Click to seek">
+                <div class="reel-progress-bar" id="videoProgressBar"></div>
+              </div>
+              <div class="reel-controls-row">
+                <div class="reel-btn-group">
+                  <button type="button" class="reel-control-btn" id="videoPlayToggleBtn">
+                    <span id="playToggleIcon">▶</span> <span id="playToggleText">Play</span>
+                  </button>
+                  <button type="button" class="reel-control-btn" id="videoAudioToggleBtn">
+                    <span id="audioToggleIcon">🔇</span> <span id="audioToggleText">Unmute Audio</span>
+                  </button>
+                  <button type="button" class="reel-control-btn" id="videoFullscreenBtn" title="Full Screen">
+                    ⛶ Expand
+                  </button>
+                </div>
+                <div class="reel-telemetry-chips">
+                  <span class="telemetry-chip">⚡ EV HIGH-TORQUE</span>
+                  <span class="telemetry-chip">🎯 0-100 &lt; 3.8s</span>
+                  <span class="telemetry-chip">🏎️ 185N DOWNFORCE</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Final Call to Action -->
     <section class="section" style="border-bottom: none;">
       <div class="container">
@@ -180,6 +247,7 @@
             <li><a href="/">Home</a></li>
             <li><a href="#about">About</a></li>
             <li><a href="/team">Team Structure</a></li>
+            <li><a href="/sponsorship">Sponsorship</a></li>
             <li><a href="/join">Join the Team</a></li>
             <li><a href="/hr">HR Portal</a></li>
           </ul>
@@ -232,6 +300,132 @@
           hamburgerBtn.setAttribute('aria-expanded', false);
         });
       });
+    }
+
+    // ── Interactive Motorsport Reel Video Controller ──
+    const adVideo = document.getElementById('adVideo');
+    const videoOverlay = document.getElementById('videoPlayOverlay');
+    const playToggleBtn = document.getElementById('videoPlayToggleBtn');
+    const playToggleIcon = document.getElementById('playToggleIcon');
+    const playToggleText = document.getElementById('playToggleText');
+    const audioToggleBtn = document.getElementById('videoAudioToggleBtn');
+    const audioToggleIcon = document.getElementById('audioToggleIcon');
+    const audioToggleText = document.getElementById('audioToggleText');
+    const progressBar = document.getElementById('videoProgressBar');
+    const progressWrap = document.getElementById('videoProgressWrap');
+    const fullscreenBtn = document.getElementById('videoFullscreenBtn');
+    const videoPlayerWrap = document.getElementById('f1VideoPlayer');
+
+    if (adVideo) {
+      function togglePlay() {
+        if (adVideo.paused) {
+          adVideo.play().then(() => {
+            videoOverlay.classList.add('playing');
+            if (playToggleIcon) playToggleIcon.textContent = '⏸';
+            if (playToggleText) playToggleText.textContent = 'Pause';
+          }).catch(err => console.log('Autoplay policy caught:', err));
+        } else {
+          adVideo.pause();
+          videoOverlay.classList.remove('playing');
+          if (playToggleIcon) playToggleIcon.textContent = '▶';
+          if (playToggleText) playToggleText.textContent = 'Play';
+        }
+      }
+
+      if (videoOverlay) videoOverlay.addEventListener('click', togglePlay);
+      if (playToggleBtn) playToggleBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        togglePlay();
+      });
+
+      if (audioToggleBtn) {
+        audioToggleBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          adVideo.muted = !adVideo.muted;
+          if (adVideo.muted) {
+            audioToggleIcon.textContent = '🔇';
+            audioToggleText.textContent = 'Unmute Audio';
+          } else {
+            audioToggleIcon.textContent = '🔊';
+            audioToggleText.textContent = 'Mute Audio';
+          }
+        });
+      }
+
+      adVideo.addEventListener('timeupdate', () => {
+        if (adVideo.duration && progressBar) {
+          const pct = (adVideo.currentTime / adVideo.duration) * 100;
+          progressBar.style.width = pct + '%';
+        }
+      });
+
+      if (progressWrap) {
+        progressWrap.addEventListener('click', (e) => {
+          const rect = progressWrap.getBoundingClientRect();
+          const pos = (e.clientX - rect.left) / rect.width;
+          if (adVideo.duration) {
+            adVideo.currentTime = pos * adVideo.duration;
+          }
+        });
+      }
+
+      if (fullscreenBtn && videoPlayerWrap) {
+        fullscreenBtn.addEventListener('click', () => {
+          if (!document.fullscreenElement) {
+            videoPlayerWrap.requestFullscreen().catch(() => {});
+          } else {
+            document.exitFullscreen().catch(() => {});
+          }
+        });
+      }
+    }
+
+    // ── Global Theme & Language Controller ──
+    document.addEventListener('DOMContentLoaded', () => {
+      initThemeAndLang();
+    });
+
+    function initThemeAndLang() {
+      const themeBtn = document.getElementById('themeToggleBtn');
+      const langBtn = document.getElementById('langToggleBtn');
+
+      const savedTheme = localStorage.getItem('velox_theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      if (themeBtn) {
+        themeBtn.textContent = savedTheme === 'light' ? '☀️' : '🌙';
+        themeBtn.addEventListener('click', () => {
+          const current = document.documentElement.getAttribute('data-theme') || 'dark';
+          const next = current === 'dark' ? 'light' : 'dark';
+          document.documentElement.setAttribute('data-theme', next);
+          localStorage.setItem('velox_theme', next);
+          themeBtn.textContent = next === 'light' ? '☀️' : '🌙';
+        });
+      }
+
+      const savedLang = localStorage.getItem('velox_lang') || 'en';
+      setLanguage(savedLang);
+
+      if (langBtn) {
+        langBtn.addEventListener('click', () => {
+          const current = localStorage.getItem('velox_lang') || 'en';
+          const next = current === 'en' ? 'ar' : 'en';
+          setLanguage(next);
+        });
+      }
+    }
+
+    function setLanguage(lang) {
+      localStorage.setItem('velox_lang', lang);
+      const langBtn = document.getElementById('langToggleBtn');
+      if (lang === 'ar') {
+        document.documentElement.setAttribute('dir', 'rtl');
+        document.documentElement.setAttribute('lang', 'ar');
+        if (langBtn) langBtn.textContent = '🌐 EN';
+      } else {
+        document.documentElement.setAttribute('dir', 'ltr');
+        document.documentElement.setAttribute('lang', 'en');
+        if (langBtn) langBtn.textContent = '🌐 AR';
+      }
     }
 
     // PWA Service Worker Registration & Cache Management
