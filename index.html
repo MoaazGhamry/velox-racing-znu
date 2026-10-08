@@ -16,10 +16,11 @@
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
 
   <!-- Shared Style with Cache Buster -->
-  <link rel="stylesheet" href="style.css?v=3.1" />
+  <link rel="stylesheet" href="style.css?v=3.3" />
 
-  <!-- Localization Engine -->
-  <script src="i18n.js?v=3.1"></script>
+  <!-- Localization Engine & Team Data -->
+  <script src="i18n.js?v=3.3"></script>
+  <script src="team.js?v=3.3"></script>
 </head>
 <body>
 
@@ -74,11 +75,13 @@
       <div class="hero-overlay"></div>
 
       <div class="container hero-content">
-        <span class="hero-badge" data-i18n="hero.badge">Zagazig National University &bull; Formula Student</span>
-        <h1 class="hero-title" data-i18n="hero.title">VELOX RACING</h1>
-        <p class="hero-tagline" data-i18n="hero.tagline">
-          Designing and engineering Zagazig National University's first Formula Student race car for the world stage at Silverstone Circuit.
-        </p>
+        <span class="hero-badge" data-i18n="hero.badge">VELOX Formula Student Team &bull; Zagazig National University</span>
+        <h1 class="hero-title" data-i18n="hero.title">Welcome to the VELOX Formula Student Team!</h1>
+        <div class="hero-tagline" data-i18n="hero.tagline">
+          <p class="hero-p">VELOX is the very first team at Zagazig National University to genuinely set its sights on international automotive competitions, offering opportunities to travel abroad, compete, and represent both the university and the team.</p>
+          <p class="hero-p">Here, you won’t just learn about race cars in theory; you will grow and become an integral part of a team that designs and manufactures an actual race car, preparing it to take on real international competitions.</p>
+          <p class="hero-p">If you are passionate about Formula cars and driven by challenges, VELOX is where you learn and turn that knowledge into a real-world project.</p>
+        </div>
         <div class="hero-actions">
           <a href="/join" class="btn btn-primary" data-i18n="hero.btnJoin">Join the Team</a>
           <a href="/team" class="btn btn-outline" data-i18n="hero.btnMeet">Meet the Team</a>
@@ -106,9 +109,9 @@
               <a href="/team" class="btn btn-outline" data-i18n="about.btnExplore">Explore Team Structure &rarr;</a>
               <div class="team-avatars-preview">
                 <div class="avatar-stack">
-                  <img src="photos/Karim Shaprawy.jpeg" alt="Karim Shaprawy - Vice Team Leader" class="stack-avatar" />
-                  <img src="photos/Mohamed Romy.jpeg" alt="Mohamed Romy - Technical Leader" class="stack-avatar" />
-                  <img src="photos/Moaaz Elghamry.jpeg" alt="Moaaz Elghamry - Powertrain Leader" class="stack-avatar" />
+                  <img src="photos/Karim Shaprawy.jpeg" alt="Karim Shaprawy - Vice Team Leader" class="stack-avatar clickable-member" data-member-id="karim-shaprawy" role="button" tabindex="0" title="Karim Shaprawy — Overview" />
+                  <img src="photos/Mohamed Romy.jpeg" alt="Mohamed Romy - Technical Leader" class="stack-avatar clickable-member" data-member-id="mohamed-romy" role="button" tabindex="0" title="Mohamed Romy — Overview" />
+                  <img src="photos/Moaaz Elghamry.jpeg" alt="Moaaz Elghamry - Powertrain Leader" class="stack-avatar clickable-member" data-member-id="moaaz-elghamry" role="button" tabindex="0" title="Moaaz Elghamry — Overview" />
                 </div>
                 <span class="avatar-stack-text" data-i18n="about.crewBadge">50+ Engineers &amp; Specialists &bull; ZNU</span>
               </div>
@@ -323,7 +326,7 @@
             <li><a href="mailto:velox.racing.znu@gmail.com">velox.racing.znu@gmail.com</a></li>
             <li><a href="https://www.linkedin.com/company/velox-racing-team/" target="_blank" rel="noopener">LinkedIn</a></li>
             <li><a href="https://www.facebook.com/share/19Xcwun8Di/?mibextid=wwXIfr" target="_blank" rel="noopener">Facebook</a></li>
-            <li><a href="https://www.instagram.com/velox_racing_znu?utm_source=qr" target="_blank" rel="noopener">Instagram</a></li>
+            <li><a href="https://www.instagram.com/velox_racing_znu?srtk=MWl2azlianJlZ3J3bg==" target="_blank" rel="noopener">Instagram</a></li>
           </ul>
         </div>
       </div>
@@ -759,6 +762,169 @@
       }
     }
 
+    // Helper to get initials
+    function getInitials(name) {
+      if (!name) return "VL";
+      return name.split(" ").map(n => n[0]).slice(0, 2).join("").toUpperCase();
+    }
+
+    // Modal Controller: Open Member Overview Modal
+    function openMemberModal(memberId) {
+      if (!window.getMemberById) return;
+      const member = window.getMemberById(memberId);
+      if (!member) return;
+
+      const currentLang = localStorage.getItem('velox_lang') || 'en';
+      const dict = (typeof VELOX_I18N !== 'undefined' && VELOX_I18N[currentLang]) ? VELOX_I18N[currentLang] : {};
+
+      const name = member.name;
+      const role = dict['role.' + member.role] || member.role;
+      const dept = (currentLang === 'ar' && member.department_ar) ? member.department_ar : (member.department || '');
+      const bio = (currentLang === 'ar' && member.bio_ar) ? member.bio_ar : (member.bio || '');
+      const resps = (currentLang === 'ar' && member.responsibilities_ar) ? member.responsibilities_ar : (member.responsibilities || []);
+      const quote = (currentLang === 'ar' && member.quote_ar) ? member.quote_ar : (member.quote || '');
+      const igUrl = member.instagram || (window.VELOX_TEAM && window.VELOX_TEAM.instagramUrl) || "https://www.instagram.com/velox_racing_znu?srtk=MWl2azlianJlZ3J3bg==";
+      const liUrl = member.linkedin || (window.VELOX_TEAM && window.VELOX_TEAM.linkedinUrl) || "https://www.linkedin.com/company/velox-racing-team/";
+
+      const scrollContainer = document.getElementById('memberModalScroll');
+      if (!scrollContainer) return;
+
+      scrollContainer.innerHTML = `
+        <!-- Top Meta Chips -->
+        <div class="member-modal-meta-row">
+          <span class="member-modal-meta-chip silverstone">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+            ${dict['modal.arena'] || 'Formula Student &bull; Silverstone 2026'}
+          </span>
+          <span class="member-modal-meta-chip">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
+            ${dict['modal.univ'] || 'Zagazig National University (ZNU)'}
+          </span>
+        </div>
+
+        <!-- Hero Row: Avatar + Name + Role -->
+        <div class="member-modal-hero">
+          <div class="member-modal-avatar-box">
+            ${member.photo ? `<img src="${member.photo}" alt="${name}" class="member-modal-avatar-img" />` : getInitials(name)}
+          </div>
+          <div class="member-modal-hero-info">
+            <span class="member-modal-role-badge">${role}</span>
+            <h3 class="member-modal-name">${name}</h3>
+            ${dept ? `<span class="member-modal-dept">${dept}</span>` : ''}
+          </div>
+        </div>
+
+        <div class="member-modal-divider"></div>
+
+        <!-- Section: Overview -->
+        <div class="member-modal-section">
+          <h4 class="member-modal-section-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+            ${dict['modal.overview'] || 'Engineering & Operational Overview'}
+          </h4>
+          <p class="member-modal-bio-text">${bio}</p>
+        </div>
+
+        <!-- Section: Responsibilities Checklist -->
+        ${resps && resps.length ? `
+          <div class="member-modal-section">
+            <h4 class="member-modal-section-title">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+              ${dict['modal.responsibilities'] || 'Core Responsibilities'}
+            </h4>
+            <ul class="member-modal-resps-list">
+              ${resps.map(r => `
+                <li class="member-modal-resp-item">
+                  <span class="member-modal-resp-check">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  </span>
+                  <span>${r}</span>
+                </li>
+              `).join('')}
+            </ul>
+          </div>
+        ` : ''}
+
+        <!-- Section: Quote -->
+        ${quote ? `
+          <blockquote class="member-modal-quote">
+            &ldquo;${quote}&rdquo;
+          </blockquote>
+        ` : ''}
+
+        <!-- Actions -->
+        <div class="member-modal-actions">
+          <a href="${igUrl}" target="_blank" rel="noopener" class="member-modal-btn member-modal-btn-outline" title="Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+            <span>${member.instagram ? (currentLang === 'ar' ? 'إنستغرام الشخصي' : 'Personal Instagram') : (dict['modal.followIg'] || 'Instagram Profile')}</span>
+          </a>
+          <a href="${liUrl}" target="_blank" rel="noopener" class="member-modal-btn member-modal-btn-outline" title="LinkedIn">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+            <span>${member.linkedin ? (currentLang === 'ar' ? 'لينكد إن الشخصي' : 'Personal LinkedIn') : (dict['modal.followLi'] || 'Team LinkedIn')}</span>
+          </a>
+          <a href="/join" class="member-modal-btn member-modal-btn-primary">
+            <span>${dict['modal.apply'] || 'Join the Crew &rarr;'}</span>
+          </a>
+        </div>
+      `;
+
+      const backdrop = document.getElementById('memberModalBackdrop');
+      if (backdrop) {
+        backdrop.classList.add('active');
+        backdrop.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+        const closeBtn = document.getElementById('memberModalCloseBtn');
+        if (closeBtn) closeBtn.focus();
+      }
+    }
+
+    function closeMemberModal() {
+      const backdrop = document.getElementById('memberModalBackdrop');
+      if (backdrop) {
+        backdrop.classList.remove('active');
+        backdrop.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+      }
+    }
+
+    // Global click & keyboard delegates for member modal
+    document.addEventListener('click', (e) => {
+      const closeBtn = e.target.closest('#memberModalCloseBtn');
+      if (closeBtn) {
+        closeMemberModal();
+        return;
+      }
+
+      const backdrop = document.getElementById('memberModalBackdrop');
+      if (backdrop && e.target === backdrop) {
+        closeMemberModal();
+        return;
+      }
+
+      const card = e.target.closest('[data-member-id]');
+      if (card) {
+        const memberId = card.getAttribute('data-member-id');
+        if (memberId) {
+          openMemberModal(memberId);
+        }
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeMemberModal();
+        return;
+      }
+
+      if (e.key === 'Enter' || e.key === ' ') {
+        const activeEl = document.activeElement;
+        if (activeEl && activeEl.hasAttribute('data-member-id')) {
+          e.preventDefault();
+          openMemberModal(activeEl.getAttribute('data-member-id'));
+        }
+      }
+    });
+
     // PWA Service Worker Registration & Cache Management
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
@@ -768,5 +934,21 @@
       });
     }
   </script>
+
+  <!-- Member Overview Modal Dialog -->
+  <div id="memberModalBackdrop" class="member-modal-backdrop" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="member-modal-dialog" id="memberModalDialog">
+      <div class="member-modal-accent-bar"></div>
+      <button type="button" class="member-modal-close" id="memberModalCloseBtn" aria-label="Close overview" title="Close (Esc)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+      <div class="member-modal-scroll" id="memberModalScroll">
+        <!-- Content populated on member click -->
+      </div>
+    </div>
+  </div>
 </body>
 </html>

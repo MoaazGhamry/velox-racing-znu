@@ -16,10 +16,10 @@
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
 
   <!-- Shared Style with Cache Buster -->
-  <link rel="stylesheet" href="style.css?v=3.1" />
+  <link rel="stylesheet" href="style.css?v=3.3" />
 
   <!-- Localization Engine -->
-  <script src="i18n.js?v=3.1"></script>
+  <script src="i18n.js?v=3.3"></script>
 </head>
 <body>
 
@@ -116,7 +116,7 @@
             <li><a href="mailto:velox.racing.znu@gmail.com">velox.racing.znu@gmail.com</a></li>
             <li><a href="https://www.linkedin.com/company/velox-racing-team/" target="_blank" rel="noopener">LinkedIn</a></li>
             <li><a href="https://www.facebook.com/share/19Xcwun8Di/?mibextid=wwXIfr" target="_blank" rel="noopener">Facebook</a></li>
-            <li><a href="https://www.instagram.com/velox_racing_znu?utm_source=qr" target="_blank" rel="noopener">Instagram</a></li>
+            <li><a href="https://www.instagram.com/velox_racing_znu?srtk=MWl2azlianJlZ3J3bg==" target="_blank" rel="noopener">Instagram</a></li>
           </ul>
         </div>
       </div>
@@ -129,7 +129,7 @@
   </footer>
 
   <!-- Team Data Source -->
-  <script src="team.js?v=3.1"></script>
+  <script src="team.js?v=3.3"></script>
 
   <script>
     // Minimal mobile navigation toggle
@@ -189,13 +189,17 @@
       html += `
         <div class="tree-tier tree-tier-exec">
           ${data.executives.map(exec => `
-            <div class="person-card">
+            <div class="person-card clickable-member" data-member-id="${exec.id}" role="button" tabindex="0" title="${dict['modal.viewProfile'] || 'Click to view overview'}">
               <div class="avatar-circle">
                 ${exec.photo ? `<img src="${exec.photo}" alt="${exec.name}" class="avatar-img" />` : getInitials(exec.name)}
               </div>
               <span class="person-role">${tRole(exec.role)}</span>
               <h3 class="person-name">${exec.name}</h3>
-              <p class="person-bio">${exec.bio || ''}</p>
+              <p class="person-bio">${(currentLang === 'ar' && exec.bio_ar) ? exec.bio_ar : (exec.bio || '')}</p>
+              <div class="person-view-cue">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                <span data-i18n="modal.viewProfile">${dict['modal.viewProfile'] || 'Click to view overview'}</span>
+              </div>
             </div>
           `).join('')}
         </div>
@@ -232,13 +236,17 @@
 
             <!-- Technical Leader Card -->
             <div class="tree-tier tree-tier-lead" style="width: 100%;">
-              <div class="person-card" style="width: 100%;">
+              <div class="person-card clickable-member" data-member-id="${data.technicalLeader.id}" role="button" tabindex="0" title="${dict['modal.viewProfile'] || 'Click to view overview'}" style="width: 100%;">
                 <div class="avatar-circle">
                   ${data.technicalLeader.photo ? `<img src="${data.technicalLeader.photo}" alt="${data.technicalLeader.name}" class="avatar-img" />` : getInitials(data.technicalLeader.name)}
                 </div>
                 <span class="person-role">${tRole(data.technicalLeader.role)}</span>
                 <h3 class="person-name">${data.technicalLeader.name}</h3>
-                <p class="person-bio">${data.technicalLeader.bio || ''}</p>
+                <p class="person-bio">${(currentLang === 'ar' && data.technicalLeader.bio_ar) ? data.technicalLeader.bio_ar : (data.technicalLeader.bio || '')}</p>
+                <div class="person-view-cue">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                  <span data-i18n="modal.viewProfile">${dict['modal.viewProfile'] || 'Click to view overview'}</span>
+                </div>
               </div>
             </div>
 
@@ -253,12 +261,12 @@
                     <span style="font-size: 0.75rem; color: var(--red); font-weight: 700; text-transform: uppercase;">Technical</span>
                   </div>
                   ${dept.leader ? `
-                    <div class="dept-lead">
+                    <div class="dept-lead clickable-member" data-member-id="${dept.leader.id}" role="button" tabindex="0" title="${dict['modal.viewProfile'] || 'Click to view overview'}">
                       <div class="dept-lead-avatar-wrap">
                         ${dept.leader.photo ? `<img src="${dept.leader.photo}" alt="${dept.leader.name}" class="dept-lead-avatar" />` : getInitials(dept.leader.name)}
                       </div>
                       <div class="dept-lead-text">
-                        <span class="dept-lead-badge">${tLeader}</span>
+                        <span class="dept-lead-badge">${tLeader} &bull; <span data-i18n="modal.viewProfile">${dict['modal.viewProfile'] || 'Overview'}</span> &rarr;</span>
                         <span class="dept-lead-name">${dept.leader.name}</span>
                       </div>
                     </div>
@@ -283,13 +291,17 @@
 
             <!-- Operations / Media Leader Card -->
             <div class="tree-tier tree-tier-lead" style="width: 100%;">
-              <div class="person-card" style="width: 100%;">
+              <div class="person-card clickable-member" data-member-id="mohamed-hassan" role="button" tabindex="0" title="${dict['modal.viewProfile'] || 'Click to view overview'}" style="width: 100%;">
                 <div class="avatar-circle">
                   ${(data.nonTechnical.find(d => d.id === 'media') && data.nonTechnical.find(d => d.id === 'media').leader && data.nonTechnical.find(d => d.id === 'media').leader.photo) ? `<img src="${data.nonTechnical.find(d => d.id === 'media').leader.photo}" alt="Mohamed Hassan" class="avatar-img" />` : getInitials("Mohamed Hassan")}
                 </div>
                 <span class="person-role" style="color: #38BDF8;">${tRole('Media Lead')}</span>
                 <h3 class="person-name">Mohamed Hassan</h3>
-                <p class="person-bio">Directs external relations, visual brand identity, digital broadcasting, and operational sponsorship logistics.</p>
+                <p class="person-bio">${(currentLang === 'ar' && data.nonTechnical.find(d => d.id === 'media') && data.nonTechnical.find(d => d.id === 'media').leader && data.nonTechnical.find(d => d.id === 'media').leader.bio_ar) ? data.nonTechnical.find(d => d.id === 'media').leader.bio_ar : (data.nonTechnical.find(d => d.id === 'media') && data.nonTechnical.find(d => d.id === 'media').leader && data.nonTechnical.find(d => d.id === 'media').leader.bio ? data.nonTechnical.find(d => d.id === 'media').leader.bio : 'Directs external relations, visual brand identity, digital broadcasting, and operational sponsorship logistics.')}</p>
+                <div class="person-view-cue" style="color: #38BDF8; background: rgba(56, 189, 248, 0.08); border-color: rgba(56, 189, 248, 0.22);">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                  <span data-i18n="modal.viewProfile">${dict['modal.viewProfile'] || 'Click to view overview'}</span>
+                </div>
               </div>
             </div>
 
@@ -304,12 +316,12 @@
                     <span style="font-size: 0.75rem; color: #38BDF8; font-weight: 700; text-transform: uppercase;">Operations</span>
                   </div>
                   ${dept.leader ? `
-                    <div class="dept-lead" style="border-color: rgba(56, 189, 248, 0.25);">
+                    <div class="dept-lead clickable-member" data-member-id="${dept.leader.id}" role="button" tabindex="0" title="${dict['modal.viewProfile'] || 'Click to view overview'}" style="border-color: rgba(56, 189, 248, 0.25);">
                       <div class="dept-lead-avatar-wrap" style="border-color: #38BDF8; color: #38BDF8;">
                         ${dept.leader.photo ? `<img src="${dept.leader.photo}" alt="${dept.leader.name}" class="dept-lead-avatar" />` : getInitials(dept.leader.name)}
                       </div>
                       <div class="dept-lead-text">
-                        <span class="dept-lead-badge" style="color: #38BDF8;">${tLeader}</span>
+                        <span class="dept-lead-badge" style="color: #38BDF8;">${tLeader} &bull; <span data-i18n="modal.viewProfile">${dict['modal.viewProfile'] || 'Overview'}</span> &rarr;</span>
                         <span class="dept-lead-name">${dept.leader.name}</span>
                       </div>
                     </div>
@@ -353,6 +365,163 @@
         });
       });
     }
+
+    // Modal Controller: Open Member Overview Modal
+    function openMemberModal(memberId) {
+      if (!window.getMemberById) return;
+      const member = window.getMemberById(memberId);
+      if (!member) return;
+
+      const currentLang = localStorage.getItem('velox_lang') || 'en';
+      const dict = (typeof VELOX_I18N !== 'undefined' && VELOX_I18N[currentLang]) ? VELOX_I18N[currentLang] : {};
+
+      const name = member.name;
+      const role = dict['role.' + member.role] || member.role;
+      const dept = (currentLang === 'ar' && member.department_ar) ? member.department_ar : (member.department || '');
+      const bio = (currentLang === 'ar' && member.bio_ar) ? member.bio_ar : (member.bio || '');
+      const resps = (currentLang === 'ar' && member.responsibilities_ar) ? member.responsibilities_ar : (member.responsibilities || []);
+      const quote = (currentLang === 'ar' && member.quote_ar) ? member.quote_ar : (member.quote || '');
+      const igUrl = member.instagram || (window.VELOX_TEAM && window.VELOX_TEAM.instagramUrl) || "https://www.instagram.com/velox_racing_znu?srtk=MWl2azlianJlZ3J3bg==";
+      const liUrl = member.linkedin || (window.VELOX_TEAM && window.VELOX_TEAM.linkedinUrl) || "https://www.linkedin.com/company/velox-racing-team/";
+
+      const scrollContainer = document.getElementById('memberModalScroll');
+      if (!scrollContainer) return;
+
+      scrollContainer.innerHTML = `
+        <!-- Top Meta Chips -->
+        <div class="member-modal-meta-row">
+          <span class="member-modal-meta-chip silverstone">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+            ${dict['modal.arena'] || 'Formula Student &bull; Silverstone 2026'}
+          </span>
+          <span class="member-modal-meta-chip">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
+            ${dict['modal.univ'] || 'Zagazig National University (ZNU)'}
+          </span>
+        </div>
+
+        <!-- Hero Row: Avatar + Name + Role -->
+        <div class="member-modal-hero">
+          <div class="member-modal-avatar-box">
+            ${member.photo ? `<img src="${member.photo}" alt="${name}" class="member-modal-avatar-img" />` : getInitials(name)}
+          </div>
+          <div class="member-modal-hero-info">
+            <span class="member-modal-role-badge">${role}</span>
+            <h3 class="member-modal-name">${name}</h3>
+            ${dept ? `<span class="member-modal-dept">${dept}</span>` : ''}
+          </div>
+        </div>
+
+        <div class="member-modal-divider"></div>
+
+        <!-- Section: Overview -->
+        <div class="member-modal-section">
+          <h4 class="member-modal-section-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+            ${dict['modal.overview'] || 'Engineering & Operational Overview'}
+          </h4>
+          <p class="member-modal-bio-text">${bio}</p>
+        </div>
+
+        <!-- Section: Responsibilities Checklist -->
+        ${resps && resps.length ? `
+          <div class="member-modal-section">
+            <h4 class="member-modal-section-title">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+              ${dict['modal.responsibilities'] || 'Core Responsibilities'}
+            </h4>
+            <ul class="member-modal-resps-list">
+              ${resps.map(r => `
+                <li class="member-modal-resp-item">
+                  <span class="member-modal-resp-check">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  </span>
+                  <span>${r}</span>
+                </li>
+              `).join('')}
+            </ul>
+          </div>
+        ` : ''}
+
+        <!-- Section: Quote -->
+        ${quote ? `
+          <blockquote class="member-modal-quote">
+            &ldquo;${quote}&rdquo;
+          </blockquote>
+        ` : ''}
+
+        <!-- Actions -->
+        <div class="member-modal-actions">
+          <a href="${igUrl}" target="_blank" rel="noopener" class="member-modal-btn member-modal-btn-outline" title="Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+            <span>${member.instagram ? (currentLang === 'ar' ? 'إنستغرام الشخصي' : 'Personal Instagram') : (dict['modal.followIg'] || 'Instagram Profile')}</span>
+          </a>
+          <a href="${liUrl}" target="_blank" rel="noopener" class="member-modal-btn member-modal-btn-outline" title="LinkedIn">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+            <span>${member.linkedin ? (currentLang === 'ar' ? 'لينكد إن الشخصي' : 'Personal LinkedIn') : (dict['modal.followLi'] || 'Team LinkedIn')}</span>
+          </a>
+          <a href="/join" class="member-modal-btn member-modal-btn-primary">
+            <span>${dict['modal.apply'] || 'Join the Crew &rarr;'}</span>
+          </a>
+        </div>
+      `;
+
+      const backdrop = document.getElementById('memberModalBackdrop');
+      if (backdrop) {
+        backdrop.classList.add('active');
+        backdrop.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+        const closeBtn = document.getElementById('memberModalCloseBtn');
+        if (closeBtn) closeBtn.focus();
+      }
+    }
+
+    function closeMemberModal() {
+      const backdrop = document.getElementById('memberModalBackdrop');
+      if (backdrop) {
+        backdrop.classList.remove('active');
+        backdrop.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+      }
+    }
+
+    // Attach global click & keyboard delegates for member cards
+    document.addEventListener('click', (e) => {
+      const closeBtn = e.target.closest('#memberModalCloseBtn');
+      if (closeBtn) {
+        closeMemberModal();
+        return;
+      }
+
+      const backdrop = document.getElementById('memberModalBackdrop');
+      if (backdrop && e.target === backdrop) {
+        closeMemberModal();
+        return;
+      }
+
+      const card = e.target.closest('[data-member-id]');
+      if (card) {
+        const memberId = card.getAttribute('data-member-id');
+        if (memberId) {
+          openMemberModal(memberId);
+        }
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeMemberModal();
+        return;
+      }
+
+      if (e.key === 'Enter' || e.key === ' ') {
+        const activeEl = document.activeElement;
+        if (activeEl && activeEl.hasAttribute('data-member-id')) {
+          e.preventDefault();
+          openMemberModal(activeEl.getAttribute('data-member-id'));
+        }
+      }
+    });
 
     // Re-render org chart whenever language switches
     window.addEventListener('veloxLanguageChanged', () => {
@@ -409,5 +578,21 @@
       });
     }
   </script>
+
+  <!-- Member Overview Modal Dialog -->
+  <div id="memberModalBackdrop" class="member-modal-backdrop" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="member-modal-dialog" id="memberModalDialog">
+      <div class="member-modal-accent-bar"></div>
+      <button type="button" class="member-modal-close" id="memberModalCloseBtn" aria-label="Close overview" title="Close (Esc)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+      <div class="member-modal-scroll" id="memberModalScroll">
+        <!-- Content populated on member click -->
+      </div>
+    </div>
+  </div>
 </body>
 </html>

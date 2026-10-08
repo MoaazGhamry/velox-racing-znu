@@ -17,9 +17,9 @@ const VELOX_I18N = {
     'nav.partnerBtn': 'Partner With Us',
 
     // Hero (index.html)
-    'hero.badge': 'Zagazig National University &bull; Formula Student',
-    'hero.title': 'VELOX RACING',
-    'hero.tagline': 'Designing and engineering Zagazig National University\'s first Formula Student race car for the world stage at Silverstone Circuit.',
+    'hero.badge': 'VELOX Formula Student Team &bull; Zagazig National University',
+    'hero.title': 'Welcome to the VELOX Formula Student Team!',
+    'hero.tagline': '<p class="hero-p">VELOX is the very first team at Zagazig National University to genuinely set its sights on international automotive competitions, offering opportunities to travel abroad, compete, and represent both the university and the team.</p><p class="hero-p">Here, you won’t just learn about race cars in theory; you will grow and become an integral part of a team that designs and manufactures an actual race car, preparing it to take on real international competitions.</p><p class="hero-p">If you are passionate about Formula cars and driven by challenges, VELOX is where you learn and turn that knowledge into a real-world project.</p>',
     'hero.btnJoin': 'Join the Team',
     'hero.btnMeet': 'Meet the Team',
     'hero.btnReel': 'Watch Reel',
@@ -65,9 +65,9 @@ const VELOX_I18N = {
     'cta.btn': 'Apply for the Team',
 
     // Recruitment Application (join.html)
-    'join.kicker': 'Recruitment Season 2026',
-    'join.title': 'Join Velox Racing',
-    'join.desc': 'Complete the official application below. No prior motorsport experience required — passion, problem-solving, and dedication are what define our crew.',
+    'join.kicker': 'VELOX Formula Student Team &bull; Recruitment 2026',
+    'join.title': 'Build the Race Car. Represent Egypt on the World Stage.',
+    'join.desc': 'Welcome to the official application for VELOX Formula Student Team at Zagazig National University. Here, you won’t just learn theory — you will grow, design, and manufacture an actual race car with real opportunities to travel and compete abroad. No prior motorsport experience required: passion, problem-solving, and commitment are what make our team.',
     'join.fullName': 'Full Name (English)<span class="req">*</span>',
     'join.fullNamePh': 'e.g. Mostafa Ahmed',
     'join.email': 'University / Personal Email<span class="req">*</span>',
@@ -104,8 +104,8 @@ const VELOX_I18N = {
     'join.skills': 'Relevant Skills & Software Tools',
     'join.skillsHint': 'Select any that apply to your background:',
     'join.skillsCustomPh': 'Other skills (e.g. Python, STM32, CBOM Costing, etc.)',
-    'join.whyJoin': 'Why do you want to join Velox Racing?<span class="req">*</span>',
-    'join.whyJoinPh': 'Share your motivation, goals, and what you hope to contribute to Chassis VX-01...',
+    'join.whyJoin': 'Why do you want to join the VELOX Formula Student Team?<span class="req">*</span>',
+    'join.whyJoinPh': 'Share your drive, what areas excite you the most, and how you envision contributing to designing, building, and racing Chassis VX-01...',
     'join.portfolio': 'CV, Portfolio, or LinkedIn Profile (Optional)',
     'join.portfolioPh': 'https://drive.google.com/... or https://linkedin.com/in/...',
     'join.submitBtn': 'Submit Application',
@@ -181,6 +181,17 @@ const VELOX_I18N = {
     'sponsors.chip2': 'Advanced Dynamics Labs',
     'sponsors.chip3': 'Formula Student 2026',
 
+    // Member Overview Modal
+    'modal.viewProfile': 'Click to view overview',
+    'modal.close': 'Close Overview',
+    'modal.overview': 'Engineering & Operational Overview',
+    'modal.responsibilities': 'Core Responsibilities',
+    'modal.arena': 'Formula Student &bull; Silverstone 2026',
+    'modal.univ': 'Zagazig National University (ZNU)',
+    'modal.followIg': 'Instagram Profile',
+    'modal.followLi': 'Team LinkedIn',
+    'modal.apply': 'Join the Crew &rarr;',
+
     // Footer (all pages)
     'footer.desc': 'The official Formula Student racing team of Zagazig National University (ZNU), competing internationally in Formula Student competitions.',
     'footer.navTitle': 'Navigation',
@@ -201,9 +212,9 @@ const VELOX_I18N = {
     'nav.partnerBtn': 'كن شريكاً لنا',
 
     // Hero (index.html)
-    'hero.badge': 'جامعة الزقازيق الأهلية &bull; فورمولا ستيودنت',
-    'hero.title': 'فريق فيلوكس للسباقات',
-    'hero.tagline': 'تصميم وهندسة أول سيارة سباق لجامعة الزقازيق الأهلية في مسابقة فورمولا ستيودنت العالمية على حلبة سيلفرستون البريطانية.',
+    'hero.badge': 'VELOX Formula Student Team',
+    'hero.title': 'أهلاً بيك في VELOX Formula Student Team',
+    'hero.tagline': '<p class="hero-p">VELOX هو أول فريق في جامعة الزقازيق الأهلية بيتجه بشكل حقيقي نحو مسابقات السيارات الدولية، مع فرص للمشاركة والسفر خارج مصر لتمثيل الجامعة والتيم.</p><p class="hero-p">هنا مش هتتعلم عن عربيات السباق نظريًا بس، لكن هتطور و تكون فرد من فريق بيصمم و بيصنع سيارة سباق فعلية ، وهتجهزها للمشاركة في المسابقات الدولية الحقيقية.</p><p class="hero-p">لو بتحب عربيات الفورميولا والتحديات، فـ VELOX هو المكان اللي هتتعلم فيه وتطبق اللي بتتعلمه على مشروع حقيقي.</p>',
     'hero.btnJoin': 'انضم للفريق',
     'hero.btnMeet': 'تعرّف على الفريق',
     'hero.btnReel': 'شاهد العرض',
@@ -249,9 +260,9 @@ const VELOX_I18N = {
     'cta.btn': 'قدّم طلب الانضمام الآن',
 
     // Recruitment Application (join.html)
-    'join.kicker': 'موسم الانضمام // ٢٠٢٦',
-    'join.title': 'انضم إلى فريق فيلوكس للسباقات',
-    'join.desc': 'املأ استمارة التقديم الرسمية أدناه. لا يُشترط وجود خبرة سابقة في رياضة المحركات — الشغف، وحل المشكلات، والالتزام هي ما يصنع فريقنا.',
+    'join.kicker': 'فريق فيلوكس فورمولا ستيودنت // موسم الانضمام ٢٠٢٦',
+    'join.title': 'اصنع سيارة السباق. ومثّل مصر في المحافل الدولية.',
+    'join.desc': 'أهلاً بيك في استمارة التقديم الرسمية لفريق VELOX Formula Student Team بجامعة الزقازيق الأهلية. هنا مش هتتعلم نظري بس، هتكون جزء من فريق بيصمم وبيصنع سيارة سباق حقيقية للمنافسة والسفر خارج مصر لتمثيل الجامعة والتيم. لا يُشترط وجود خبرة سابقة في رياضة المحركات — شغفك، استعدادك للتحدي، والتزامك هما اللي هيصنعوا الفارق.',
     'join.fullName': 'الاسم بالكامل (باللغة الإنجليزية)<span class="req">*</span>',
     'join.fullNamePh': 'مثال: Mostafa Ahmed',
     'join.email': 'البريد الإلكتروني الجامعي / الشخصي<span class="req">*</span>',
@@ -288,8 +299,8 @@ const VELOX_I18N = {
     'join.skills': 'المهارات التقنية وأدوات البرمجيات',
     'join.skillsHint': 'اختر ما ينطبق على خبرتك وخلفيتك:',
     'join.skillsCustomPh': 'مهارات أو أدوات أخرى (مثل Python, STM32, CBOM Costing, etc.)',
-    'join.whyJoin': 'لماذا ترغب في الانضمام إلى فريق فيلوكس؟<span class="req">*</span>',
-    'join.whyJoinPh': 'شاركنا دوافعك وأهدافك وما تطمح للمساهمة به في سيارة الفريق (Chassis VX-01)...',
+    'join.whyJoin': 'ليه حابب تنضم لـ VELOX Formula Student Team؟<span class="req">*</span>',
+    'join.whyJoinPh': 'كلمنا عن دوافعك، إيه أكثر مجال مهتم بيه، وإزاي شايف نفسك بتساهم في تصميم وبناء سيارة السباق الأولى للفريق...',
     'join.portfolio': 'السيرة الذاتية (CV)، أو رابط Portfolio، أو حساب LinkedIn (اختياري)',
     'join.portfolioPh': 'https://drive.google.com/... or https://linkedin.com/in/...',
     'join.submitBtn': 'إرسال طلب الانضمام',
@@ -364,6 +375,17 @@ const VELOX_I18N = {
     'sponsors.chip1': 'كلية الهندسة',
     'sponsors.chip2': 'معامل الديناميكا والتصنيع',
     'sponsors.chip3': 'فورمولا ستيودنت 2026',
+
+    // Member Overview Modal
+    'modal.viewProfile': 'اضغط لعرض النبذة والمسؤوليات',
+    'modal.close': 'إغلاق النبذة',
+    'modal.overview': 'نبذة هندسية وتشغيلية',
+    'modal.responsibilities': 'المسؤوليات والمهام الرئيسية',
+    'modal.arena': 'فورمولا ستيودنت &bull; حلبة سيلفرستون ٢٠٢٦',
+    'modal.univ': 'جامعة الزقازيق الأهلية',
+    'modal.followIg': 'حساب الإنستغرام',
+    'modal.followLi': 'لينكد إن الفريق',
+    'modal.apply': 'انضم إلى الفريق &larr;',
 
     // Footer (all pages)
     'footer.desc': 'فريق فورمولا ستيودنت الرسمي لجامعة الزقازيق الأهلية (ZNU)، المنافس في مسابقات فورمولا ستيودنت الدولية على حلبة سيلفرستون.',
