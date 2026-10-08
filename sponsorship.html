@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Sponsorship & Partners — Velox Racing | Zagazig National University</title>
   <meta name="description" content="Partner with Velox Racing, the Formula Student team of Zagazig National University (ZNU). Support Egyptian engineering excellence at Silverstone Circuit." />
-  <link rel="icon" type="image/png" href="VeloxForWeb_dark.png" />
+  <link rel="icon" type="image/png" href="pwa-icon-192.png" />
   
   <!-- PWA & Mobile Web App Meta -->
   <link rel="manifest" href="manifest.json" />
@@ -13,10 +13,13 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Velox Sponsors" />
-  <link rel="apple-touch-icon" href="VeloxForWeb_dark.png" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
 
   <!-- Shared Style with Cache Buster -->
-  <link rel="stylesheet" href="style.css?v=2.4" />
+  <link rel="stylesheet" href="style.css?v=2.5" />
+
+  <!-- Localization Engine -->
+  <script src="i18n.js?v=2.5"></script>
 </head>
 <body>
 
@@ -27,7 +30,7 @@
         <a href="/" class="nav-brand" aria-label="Velox Racing Home">
           <img src="VeloxLogoWeb.png" alt="Velox Racing Crest" class="nav-logo" onerror="this.src='VeloxForWeb_dark.png'" />
           <span class="nav-title">
-            VELOX RACING
+            <span data-i18n="nav.brand">VELOX RACING</span>
             <span class="nav-title-badge">ZNU</span>
           </span>
         </a>
@@ -583,11 +586,15 @@
         langLabel.textContent = lang === 'ar' ? 'EN' : 'AR';
       }
 
+      if (typeof applyVeloxLanguage === 'function') {
+        applyVeloxLanguage(lang);
+      }
+
       const dict = I18N[lang] || I18N.en;
       document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
         if (dict[key]) {
-          el.textContent = dict[key];
+          el.innerHTML = dict[key];
         }
       });
     }

@@ -100,17 +100,18 @@
 }
 
 [data-theme="light"] .hero-video-bg {
-  opacity: 0.05 !important;
-  filter: grayscale(100%) brightness(1.5) contrast(0.8) !important;
+  opacity: 0.24 !important;
+  filter: invert(1) contrast(1.2) brightness(1.02) !important;
   mix-blend-mode: multiply !important;
 }
 
 [data-theme="light"] .hero-overlay {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.88) 0%, rgba(248, 249, 250, 0.96) 65%, #F8F9FA 100%) !important;
+  background: linear-gradient(180deg, rgba(248, 249, 250, 0.22) 0%, rgba(248, 249, 250, 0.65) 65%, #F8F9FA 100%) !important;
 }
 
 [data-theme="light"] .hero-title {
   color: #0F172A !important;
+  text-shadow: 0 1px 12px rgba(255, 255, 255, 0.8);
 }
 
 [data-theme="light"] .hero-tagline {
@@ -2098,35 +2099,63 @@ p {
   }
 
   .nav-container {
-    padding-inline: 16px;
+    padding-inline: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    width: 100%;
   }
 
   .nav-brand {
+    flex: 1;
+    min-width: 0;
     gap: 8px;
+    overflow: hidden;
   }
 
   .nav-logo {
     height: 24px;
+    flex-shrink: 0;
   }
 
   .nav-title {
-    font-size: 0.92rem;
-    letter-spacing: 0.04em;
+    font-size: 0.88rem;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Hide badge on mobile header to completely eliminate crowding & collision */
+  .nav-title-badge {
+    display: none !important;
   }
 
   .nav-cta {
-    gap: 10px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
   }
 
-  /* Sleek, proportional pill button on mobile top bar */
-  .nav-cta .btn {
-    padding: 6px 14px;
-    font-size: 0.8rem;
-    font-weight: 700;
-    border-radius: 9999px;
-    letter-spacing: 0.02em;
-    min-height: 36px;
-    white-space: nowrap;
+  /* On mobile header, hide the desktop "Join Us" button because it's prominent inside the hamburger drawer */
+  .nav-cta > .btn {
+    display: none !important;
+  }
+
+  .nav-tools {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .nav-tool-btn {
+    min-width: 34px;
+    height: 34px;
+    padding: 0 8px;
+    font-size: 0.75rem;
+    border-radius: 8px;
   }
 
   /* Glassmorphic animated hamburger button */
@@ -2136,10 +2165,10 @@ p {
     justify-content: center;
     align-items: center;
     gap: 4px;
-    width: 38px;
-    height: 38px;
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    width: 36px;
+    height: 36px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.14);
     border-radius: 9px;
     cursor: pointer;
     transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
@@ -2150,17 +2179,27 @@ p {
 
   .hamburger:active {
     transform: scale(0.93);
-    background: rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.15);
   }
 
   .hamburger span {
     display: block;
     height: 2px;
     width: 17px;
-    background: #FFFFFF;
+    background: var(--text) !important;
     border-radius: 2px;
     transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease;
     transform-origin: center;
+  }
+
+  /* Light Theme Hamburger lines MUST be dark #0F172A so they are fully visible */
+  [data-theme="light"] .hamburger {
+    background: rgba(0, 0, 0, 0.05) !important;
+    border-color: rgba(0, 0, 0, 0.12) !important;
+  }
+
+  [data-theme="light"] .hamburger span {
+    background: #0F172A !important;
   }
 
   .hamburger.open span:nth-child(1) {
@@ -2180,7 +2219,7 @@ p {
     top: calc(var(--nav-height) + var(--safe-top) + 8px);
     left: 12px;
     right: 12px;
-    background: rgba(13, 13, 16, 0.92);
+    background: rgba(13, 13, 16, 0.94);
     backdrop-filter: blur(28px) saturate(200%);
     -webkit-backdrop-filter: blur(28px) saturate(200%);
     border: 1px solid rgba(255, 255, 255, 0.12);
@@ -2192,6 +2231,12 @@ p {
     display: none;
     z-index: 1001;
     animation: menuSlideDown 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  [data-theme="light"] .nav-menu {
+    background: rgba(255, 255, 255, 0.96) !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12) !important;
   }
 
   @keyframes menuSlideDown {
@@ -2221,12 +2266,22 @@ p {
     align-items: center;
   }
 
+  [data-theme="light"] .nav-menu .nav-link {
+    color: #475569 !important;
+  }
+
   .nav-menu .nav-link:hover,
   .nav-menu .nav-link.active {
     background: rgba(255, 255, 255, 0.08);
     color: #FFFFFF;
     padding-left: 20px;
     border-left: 3px solid var(--red);
+  }
+
+  [data-theme="light"] .nav-menu .nav-link:hover,
+  [data-theme="light"] .nav-menu .nav-link.active {
+    background: rgba(0, 0, 0, 0.05) !important;
+    color: #0F172A !important;
   }
 
   .nav-menu .mobile-menu-cta {

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Team Structure — Velox Racing | Zagazig National University</title>
   <meta name="description" content="Meet the leadership, engineering sub-teams, and operations departments behind Velox Racing at Zagazig National University." />
-  <link rel="icon" type="image/png" href="VeloxForWeb_dark.png" />
+  <link rel="icon" type="image/png" href="pwa-icon-192.png" />
   
   <!-- PWA & Mobile Web App Meta -->
   <link rel="manifest" href="manifest.json" />
@@ -13,10 +13,13 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Velox Racing" />
-  <link rel="apple-touch-icon" href="VeloxForWeb_dark.png" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
 
   <!-- Shared Style with Cache Buster -->
-  <link rel="stylesheet" href="style.css?v=2.4" />
+  <link rel="stylesheet" href="style.css?v=2.5" />
+
+  <!-- Localization Engine -->
+  <script src="i18n.js?v=2.5"></script>
 </head>
 <body>
 
@@ -27,17 +30,17 @@
         <a href="/" class="nav-brand" aria-label="Velox Racing Home">
           <img src="VeloxLogoWeb.png" alt="Velox Racing Crest" class="nav-logo" onerror="this.src='VeloxForWeb_dark.png'" />
           <span class="nav-title">
-            VELOX RACING
+            <span data-i18n="nav.brand">VELOX RACING</span>
             <span class="nav-title-badge">ZNU</span>
           </span>
         </a>
 
         <ul class="nav-menu" id="navMenu">
-          <li><a href="/" class="nav-link">Home</a></li>
-          <li><a href="/#about" class="nav-link">About</a></li>
-          <li><a href="/team" class="nav-link active">Team</a></li>
-          <li><a href="/sponsorship" class="nav-link">Sponsors</a></li>
-          <li class="mobile-menu-cta"><a href="/join" class="btn btn-primary btn-full">Join the Team &rarr;</a></li>
+          <li><a href="/" class="nav-link" data-i18n="nav.home">Home</a></li>
+          <li><a href="/#about" class="nav-link" data-i18n="nav.about">About</a></li>
+          <li><a href="/team" class="nav-link active" data-i18n="nav.team">Team</a></li>
+          <li><a href="/sponsorship" class="nav-link" data-i18n="nav.sponsors">Sponsors</a></li>
+          <li class="mobile-menu-cta"><a href="/join" class="btn btn-primary btn-full" data-i18n="nav.joinFull">Join the Team &rarr;</a></li>
         </ul>
 
         <div class="nav-cta">
@@ -51,7 +54,7 @@
               <span class="lang-label" id="langLabel">AR</span>
             </button>
           </div>
-          <a href="/join" class="btn btn-primary">Join Us</a>
+          <a href="/join" class="btn btn-primary" data-i18n="nav.join">Join Us</a>
           <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation menu" aria-expanded="false">
             <span></span>
             <span></span>
@@ -66,9 +69,9 @@
     <section class="section">
       <div class="container">
         <div class="section-header center">
-          <span class="section-kicker">Organizational Chart</span>
-          <h1 class="section-title">Team Structure</h1>
-          <p class="section-desc">
+          <span class="section-kicker" data-i18n="team.kicker">Organizational Chart</span>
+          <h1 class="section-title" data-i18n="team.title">Team Structure</h1>
+          <p class="section-desc" data-i18n="team.desc">
             A multidisciplinary hierarchy designed for streamlined engineering workflows, rapid iteration, and strict accountability.
           </p>
         </div>
@@ -88,26 +91,27 @@
         <div class="footer-brand">
           <a href="/" class="nav-brand">
             <img src="VeloxLogoWeb.png" alt="Velox Racing" class="nav-logo" onerror="this.src='VeloxForWeb_dark.png'" />
-            <span class="nav-title">VELOX RACING</span>
+            <span class="nav-title" data-i18n="nav.brand">VELOX RACING</span>
           </a>
-          <p>
+          <p data-i18n="footer.desc">
             The official Formula Student racing team of Zagazig National University (ZNU), competing at Silverstone Circuit in Formula Student UK.
           </p>
         </div>
 
         <div class="footer-col">
-          <h5>Navigation</h5>
+          <h5 data-i18n="footer.navTitle">Navigation</h5>
           <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/#about">About</a></li>
-            <li><a href="/team">Team Structure</a></li>
-            <li><a href="/join">Join the Team</a></li>
+            <li><a href="/" data-i18n="nav.home">Home</a></li>
+            <li><a href="/#about" data-i18n="nav.about">About</a></li>
+            <li><a href="/team" data-i18n="nav.team">Team Structure</a></li>
+            <li><a href="/sponsorship" data-i18n="nav.sponsors">Sponsorship</a></li>
+            <li><a href="/join" data-i18n="nav.join">Join the Team</a></li>
             <li><a href="/hr">HR Portal</a></li>
           </ul>
         </div>
 
         <div class="footer-col">
-          <h5>Connect</h5>
+          <h5 data-i18n="footer.connectTitle">Connect</h5>
           <ul>
             <li><a href="mailto:velox.racing.znu@gmail.com">velox.racing.znu@gmail.com</a></li>
             <li><a href="https://www.linkedin.com/company/velox-racing-znu" target="_blank" rel="noopener">LinkedIn</a></li>
@@ -118,8 +122,8 @@
       </div>
 
       <div class="footer-bottom">
-        <span>&copy; 2026 Velox Racing — Zagazig National University. All rights reserved.</span>
-        <span>Formula Student UK &bull; Silverstone</span>
+        <span data-i18n="footer.copy">&copy; 2026 Velox Racing — Zagazig National University. All rights reserved.</span>
+        <span data-i18n="footer.arena">Formula Student UK &bull; Silverstone</span>
       </div>
     </div>
   </footer>
@@ -163,12 +167,21 @@
       return name.split(" ").map(n => n[0]).slice(0, 2).join("").toUpperCase();
     }
 
-    // Render Dual-Branch Org Chart Tree from VELOX_TEAM
+    // Render Dual-Branch Org Chart Tree from VELOX_TEAM with bilingual localization
     function renderOrgChart() {
       const root = document.getElementById('orgChartRoot');
       if (!root || !window.VELOX_TEAM) return;
 
+      const currentLang = localStorage.getItem('velox_lang') || 'en';
+      const dict = (typeof VELOX_I18N !== 'undefined' && VELOX_I18N[currentLang]) ? VELOX_I18N[currentLang] : {};
       const data = window.VELOX_TEAM;
+
+      // Translation helpers
+      const tRole = (r) => dict['role.' + r] || r;
+      const tDept = (d) => dict['dept.' + d] || d;
+      const tDesc = (id, fallback) => dict['deptDesc.' + id] || fallback;
+      const tSub = (s) => dict['sub.' + s] || s;
+      const tLeader = dict['team.leaderRole'] || 'Leader';
 
       let html = '';
 
@@ -180,7 +193,7 @@
               <div class="avatar-circle">
                 ${exec.photo ? `<img src="${exec.photo}" alt="${exec.name}" class="avatar-img" />` : getInitials(exec.name)}
               </div>
-              <span class="person-role">${exec.role}</span>
+              <span class="person-role">${tRole(exec.role)}</span>
               <h3 class="person-name">${exec.name}</h3>
               <p class="person-bio">${exec.bio || ''}</p>
             </div>
@@ -199,11 +212,11 @@
           </div>
         </div>
 
-        <!-- Mobile Filter Navigation -->
+        <!-- Mobile Filter Navigation (Clean Motorsport Buttons, Zero Emojis) -->
         <div class="branch-filter-nav" id="branchFilterNav">
-          <button type="button" class="branch-filter-btn active" data-filter="all">All Divisions</button>
-          <button type="button" class="branch-filter-btn" data-filter="tech">🏎️ Technical (4)</button>
-          <button type="button" class="branch-filter-btn" data-filter="ops">💼 Operations (3)</button>
+          <button type="button" class="branch-filter-btn active" data-filter="all">${dict['team.filterAll'] || 'All Divisions'}</button>
+          <button type="button" class="branch-filter-btn" data-filter="tech">${dict['team.filterTech'] || 'Technical Branch (4)'}</button>
+          <button type="button" class="branch-filter-btn" data-filter="ops">${dict['team.filterOps'] || 'Operations Branch (3)'}</button>
         </div>
       `;
 
@@ -214,7 +227,7 @@
           <div class="tree-branch-col branch-technical" id="branchTech">
             <div class="branch-header-badge tech">
               <span class="badge-dot"></span>
-              <span>Technical Engineering Branch</span>
+              <span>${dict['team.branchTechTitle'] || 'Technical Engineering Branch'}</span>
             </div>
 
             <!-- Technical Leader Card -->
@@ -223,7 +236,7 @@
                 <div class="avatar-circle">
                   ${data.technicalLeader.photo ? `<img src="${data.technicalLeader.photo}" alt="${data.technicalLeader.name}" class="avatar-img" />` : getInitials(data.technicalLeader.name)}
                 </div>
-                <span class="person-role">${data.technicalLeader.role}</span>
+                <span class="person-role">${tRole(data.technicalLeader.role)}</span>
                 <h3 class="person-name">${data.technicalLeader.name}</h3>
                 <p class="person-bio">${data.technicalLeader.bio || ''}</p>
               </div>
@@ -236,18 +249,18 @@
               ${data.technicalDepartments.map(dept => `
                 <div class="dept-card expanded" tabindex="0">
                   <div class="dept-card-header">
-                    <h4 class="dept-name">${dept.name}</h4>
+                    <h4 class="dept-name">${tDept(dept.name)}</h4>
                     <span style="font-size: 0.75rem; color: var(--red); font-weight: 700; text-transform: uppercase;">Technical</span>
                   </div>
                   ${dept.leader ? `
                     <div class="dept-lead">
-                      Leader: ${dept.leader.name}
+                      ${tLeader}: ${dept.leader.name}
                     </div>
                   ` : ''}
-                  <p class="dept-desc">${dept.description}</p>
+                  <p class="dept-desc">${tDesc(dept.id, dept.description)}</p>
                   <div class="dept-subteams-list" style="display: flex;">
                     ${dept.subteams.map(sub => `
-                      <div class="subteam-pill">&bull; ${sub}</div>
+                      <div class="subteam-pill">&bull; ${tSub(sub)}</div>
                     `).join('')}
                   </div>
                 </div>
@@ -259,7 +272,7 @@
           <div class="tree-branch-col branch-operations" id="branchOps">
             <div class="branch-header-badge ops">
               <span class="badge-dot"></span>
-              <span>Operations & Non-Technical Branch</span>
+              <span>${dict['team.branchOpsTitle'] || 'Operations & Business Branch'}</span>
             </div>
 
             <!-- Operations / Media Leader Card -->
@@ -268,7 +281,7 @@
                 <div class="avatar-circle">
                   ${getInitials("Mohamed Hassan")}
                 </div>
-                <span class="person-role" style="color: #38BDF8;">Operations & Media Lead</span>
+                <span class="person-role" style="color: #38BDF8;">${tRole('Media Lead')}</span>
                 <h3 class="person-name">Mohamed Hassan</h3>
                 <p class="person-bio">Directs external relations, visual brand identity, digital broadcasting, and operational sponsorship logistics.</p>
               </div>
@@ -281,18 +294,18 @@
               ${data.nonTechnical.map(dept => `
                 <div class="dept-card expanded" tabindex="0">
                   <div class="dept-card-header">
-                    <h4 class="dept-name">${dept.name}</h4>
+                    <h4 class="dept-name">${tDept(dept.name)}</h4>
                     <span style="font-size: 0.75rem; color: #38BDF8; font-weight: 700; text-transform: uppercase;">Operations</span>
                   </div>
                   ${dept.leader ? `
                     <div class="dept-lead" style="color: #38BDF8;">
-                      Leader: ${dept.leader.name}
+                      ${tLeader}: ${dept.leader.name}
                     </div>
                   ` : ''}
-                  <p class="dept-desc">${dept.description}</p>
+                  <p class="dept-desc">${tDesc(dept.id, dept.description)}</p>
                   <div class="dept-subteams-list" style="display: flex;">
                     ${dept.subteams.map(sub => `
-                      <div class="subteam-pill">&bull; ${sub}</div>
+                      <div class="subteam-pill">&bull; ${tSub(sub)}</div>
                     `).join('')}
                   </div>
                 </div>
@@ -329,6 +342,11 @@
       });
     }
 
+    // Re-render org chart whenever language switches
+    window.addEventListener('veloxLanguageChanged', () => {
+      renderOrgChart();
+    });
+
     document.addEventListener('DOMContentLoaded', () => {
       renderOrgChart();
       initThemeAndLang();
@@ -351,26 +369,22 @@
         });
       }
 
-      // 2. Language State
+      // 2. Language State powered by i18n.js
       const savedLang = localStorage.getItem('velox_lang') || 'en';
-      setLanguage(savedLang);
+      if (typeof applyVeloxLanguage === 'function') {
+        applyVeloxLanguage(savedLang);
+      }
 
       if (langBtn) {
         langBtn.addEventListener('click', () => {
-          const current = localStorage.getItem('velox_lang') || 'en';
-          const next = current === 'en' ? 'ar' : 'en';
-          setLanguage(next);
+          if (typeof toggleVeloxLanguage === 'function') {
+            toggleVeloxLanguage();
+          } else {
+            const current = localStorage.getItem('velox_lang') || 'en';
+            const next = current === 'en' ? 'ar' : 'en';
+            if (typeof applyVeloxLanguage === 'function') applyVeloxLanguage(next);
+          }
         });
-      }
-    }
-
-    function setLanguage(lang) {
-      localStorage.setItem('velox_lang', lang);
-      document.documentElement.setAttribute('lang', lang);
-      document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
-      const langLabel = document.getElementById('langLabel');
-      if (langLabel) {
-        langLabel.textContent = lang === 'ar' ? 'EN' : 'AR';
       }
     }
 
