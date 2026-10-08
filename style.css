@@ -41,6 +41,8 @@
   --radius-full: 9999px;
 
   --nav-height: 64px;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
 }
 
 /* ── Reset & Base ── */
@@ -655,7 +657,7 @@ p {
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   color: var(--text);
-  font-size: 0.95rem;
+  font-size: 1rem;
   transition: border-color 0.15s ease;
 }
 
@@ -1057,33 +1059,80 @@ p {
 }
 
 @media (max-width: 768px) {
+  :root {
+    --nav-height: 60px;
+  }
+
+  .navbar {
+    padding-top: var(--safe-top);
+    height: calc(var(--nav-height) + var(--safe-top));
+  }
+
   .section {
-    padding-block: 64px;
+    padding-block: 56px;
+  }
+
+  .hero-content {
+    padding-block: 60px 40px;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .hero-actions .btn {
+    width: 100%;
   }
 
   .nav-menu {
     position: fixed;
-    top: var(--nav-height);
+    top: calc(var(--nav-height) + var(--safe-top));
     left: 0;
     right: 0;
-    background: var(--bg-elevated);
+    background: rgba(14, 14, 14, 0.98);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
     border-bottom: 1px solid var(--border);
     flex-direction: column;
-    padding: 24px;
-    gap: 16px;
+    padding: 20px 24px;
+    gap: 8px;
     display: none;
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.85);
   }
+
   .nav-menu.open {
     display: flex;
   }
 
+  .nav-menu .nav-link {
+    width: 100%;
+    padding: 12px 16px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    border-radius: var(--radius-sm);
+    font-size: 1rem;
+  }
+
+  .nav-menu .nav-link:hover,
+  .nav-menu .nav-link.active {
+    background: rgba(255, 255, 255, 0.05);
+  }
+
   .hamburger {
     display: flex;
+    width: 44px;
+    height: 44px;
+    align-items: center;
+    justify-content: center;
+    -webkit-tap-highlight-color: transparent;
   }
 
   .tree-tier {
     flex-direction: column;
   }
+
   .tree-stem {
     display: none;
   }
@@ -1091,16 +1140,51 @@ p {
   .form-row {
     grid-template-columns: 1fr;
   }
+
   .radio-group {
     grid-template-columns: repeat(2, 1fr);
   }
+
   .hr-stats-row {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .hr-table-wrap {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .drawer-panel {
+    max-width: 100%;
+    width: 100%;
+    border-left: none;
+    padding: 24px 20px calc(24px + var(--safe-bottom));
+  }
+
+  .footer {
+    padding-bottom: calc(32px + var(--safe-bottom));
   }
 
   .footer-bottom {
     flex-direction: column;
     gap: 8px;
     text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .highlights-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .radio-group {
+    grid-template-columns: 1fr;
+  }
+
+  .cta-banner {
+    padding: 40px 20px;
+  }
+
+  .form-card {
+    padding: 24px 16px;
   }
 }

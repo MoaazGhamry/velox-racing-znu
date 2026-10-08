@@ -2,13 +2,21 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Join the Team — Velox Racing | Zagazig National University</title>
   <meta name="description" content="Apply to join Velox Racing, Zagazig National University's Formula Student team. Technical engineering and operations divisions recruiting now." />
   <link rel="icon" type="image/png" href="VeloxForWeb_dark.png" />
   
-  <!-- Shared Style -->
-  <link rel="stylesheet" href="style.css" />
+  <!-- PWA & Mobile Web App Meta -->
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#0A0A0A" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Velox Racing" />
+  <link rel="apple-touch-icon" href="VeloxForWeb_dark.png" />
+
+  <!-- Shared Style with Cache Buster -->
+  <link rel="stylesheet" href="style.css?v=2.1" />
   <!-- Supabase JS Client (CDN) -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -265,9 +273,24 @@
     const hamburgerBtn = document.getElementById('hamburgerBtn');
     const navMenu = document.getElementById('navMenu');
     if (hamburgerBtn && navMenu) {
-      hamburgerBtn.addEventListener('click', () => {
+      hamburgerBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
         const isOpen = navMenu.classList.toggle('open');
         hamburgerBtn.setAttribute('aria-expanded', isOpen);
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!navMenu.contains(e.target) && !hamburgerBtn.contains(e.target)) {
+          navMenu.classList.remove('open');
+          hamburgerBtn.setAttribute('aria-expanded', false);
+        }
+      });
+
+      navMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          navMenu.classList.remove('open');
+          hamburgerBtn.setAttribute('aria-expanded', false);
+        });
       });
     }
 
@@ -456,6 +479,15 @@
     });
 
     document.addEventListener('DOMContentLoaded', initSubteamOptions);
+
+    // PWA Service Worker Registration & Cache Management
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js')
+          .then(reg => reg.update())
+          .catch(() => {});
+      });
+    }
   </script>
 </body>
 </html>

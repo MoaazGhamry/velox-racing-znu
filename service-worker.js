@@ -1,44 +1,82 @@
-const CACHE_NAME = 'velox-racing-v1';
-const ASSETS_TO_CACHE = [
+/**
+ * VELOX RACING PWA SERVICE WORKER
+ * Network-First Strategy + Total Cache Buster
+ */
+
+const CACHE_NAME = 'velox-clean-v2.1';
+const PRECACHE_ASSETS = [
   '/',
   '/index.html',
-  '/style.css',
-  '/script.js',
+  '/team.html',
+  '/join.html',
+  '/hr.html',
+  '/style.css?v=2.1',
+  '/team.js',
+  '/config.js',
   '/manifest.json',
-  '/velox_cropped.png',
-  '/logo_uni.png',
-  '/logo_eng.png',
-  '/velox_dark.png'
+  '/VeloxLogoWeb.png',
+  '/VeloxForWeb_dark.png',
+  '/velox_car_render.jpg'
 ];
 
+// Install: pre-cache assets & force instant activation
 self.addEventListener('install', (event) => {
+  self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(ASSETS_TO_CACHE);
+      return cache.addAll(PRECACHE_ASSETS).catch((err) => {
+        console.warn('Pre-cache item warning:', err);
+      });
     })
   );
-  self.skipWaiting();
 });
 
+// Activate: PURGE ALL OLD CACHES (Deletes old themes and legacy assets)
 self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then((cacheNames) => {
+    caches.keys().then((keys) => {
       return Promise.all(
-        cacheNames.map((cache) => {
-          if (cache !== CACHE_NAME) {
-            return caches.delete(cache);
+        keys.map((key) => {
+          if (key !== CACHE_NAME) {
+            console.log('Purging legacy cache:', key);
+            return caches.delete(key);
           }
         })
       );
-    })
+    }).then(() => self.clients.claim())
   );
-  self.clients.claim();
 });
 
+// Fetch: Network-First strategy
+// Users always get fresh live changes, with smooth offline support
 self.addEventListener('fetch', (event) => {
+  if (event.request.method !== 'GET' || !event.request.url.startsWith('http')) {
+    return;
+  }
+
+  // Large video streaming handled directly by browser
+  if (event.request.url.includes('.mp4')) {
+    return;
+  }
+
   event.respondWith(
-    caches.match(event.request).then((response) => {
-      return response || fetch(event.request);
-    })
+    fetch(event.request)
+      .then((networkResponse) => {
+        if (networkResponse && networkResponse.status === 200) {
+          const responseToCache = networkResponse.clone();
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(event.request, responseToCache);
+          });
+        }
+        return networkResponse;
+      })
+      .catch(() => {
+        return caches.match(event.request).then((cachedResponse) => {
+          if (cachedResponse) return cachedResponse;
+          if (event.request.headers.get('accept')?.includes('text/html')) {
+            return caches.match('/index.html');
+          }
+        });
+      })
   );
 });
