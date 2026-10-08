@@ -16,10 +16,10 @@
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
 
   <!-- Shared Style with Cache Buster -->
-  <link rel="stylesheet" href="style.css?v=3.0" />
+  <link rel="stylesheet" href="style.css?v=3.1" />
 
   <!-- Localization Engine -->
-  <script src="i18n.js?v=3.0"></script>
+  <script src="i18n.js?v=3.1"></script>
 </head>
 <body>
 
@@ -102,8 +102,16 @@
             <p data-i18n="about.p2">
               Operating through the Faculty of Engineering, our crew spans Mechatronics, Mechanical, Electrical, Computer Science, and Business disciplines. We compete internationally in Formula Student at Silverstone, testing our vehicle design, business strategy, and manufacturing against elite universities worldwide.
             </p>
-            <div style="margin-top: 24px;">
+            <div style="margin-top: 24px; display: flex; flex-direction: column; gap: 16px; align-items: flex-start;">
               <a href="/team" class="btn btn-outline" data-i18n="about.btnExplore">Explore Team Structure &rarr;</a>
+              <div class="team-avatars-preview">
+                <div class="avatar-stack">
+                  <img src="photos/Karim Shaprawy.jpeg" alt="Karim Shaprawy - Vice Team Leader" class="stack-avatar" />
+                  <img src="photos/Mohamed Romy.jpeg" alt="Mohamed Romy - Technical Leader" class="stack-avatar" />
+                  <img src="photos/Moaaz Elghamry.jpeg" alt="Moaaz Elghamry - Powertrain Leader" class="stack-avatar" />
+                </div>
+                <span class="avatar-stack-text" data-i18n="about.crewBadge">50+ Engineers &amp; Specialists &bull; ZNU</span>
+              </div>
             </div>
           </div>
           <div class="about-visual">

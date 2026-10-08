@@ -17,7 +17,7 @@ const VELOX_TEAM = {
       id: "vice-leader",
       role: "Vice Team Leader",
       name: "Karim Shaprawy",
-      photo: "",
+      photo: "photos/Karim Shaprawy.jpeg",
       bio: "Manages day-to-day operations, inter-subsystem workflows, and project timeline execution."
     }
   ],
@@ -25,7 +25,7 @@ const VELOX_TEAM = {
     id: "tech-leader",
     role: "Technical Leader",
     name: "Mohamed Romy",
-    photo: "",
+    photo: "photos/Mohamed Romy.jpeg",
     bio: "Directs vehicle engineering architecture, rules compliance, CAD packaging, and technical integration."
   },
   technicalDepartments: [
@@ -49,7 +49,7 @@ const VELOX_TEAM = {
       leader: {
         name: "Moaaz Elghamry",
         role: "Powertrain Leader",
-        photo: ""
+        photo: "photos/Moaaz Elghamry.jpeg"
       },
       subteams: ["Motor", "Transmission"],
       description: "Powertrain mounting, cooling thermal loops, torque transfer, chain drive ratio optimization, and differential assembly."

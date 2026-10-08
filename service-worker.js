@@ -3,7 +3,7 @@
  * Network-First Strategy + Total Cache Buster
  */
 
-const CACHE_NAME = 'velox-clean-v3.0';
+const CACHE_NAME = 'velox-clean-v3.1';
 const PRECACHE_ASSETS = [
   '/',
   '/index.html',
@@ -11,9 +11,9 @@ const PRECACHE_ASSETS = [
   '/join.html',
   '/hr.html',
   '/sponsorship.html',
-  '/style.css?v=3.0',
-  '/i18n.js?v=3.0',
-  '/team.js',
+  '/style.css?v=3.1',
+  '/i18n.js?v=3.1',
+  '/team.js?v=3.1',
   '/config.js',
   '/manifest.json',
   '/pwa-icon-192.png',
@@ -25,7 +25,10 @@ const PRECACHE_ASSETS = [
   '/znu_logo_light.png',
   '/znu text logo dark.png',
   '/logo_eng.png',
-  '/velox_car_render.jpg'
+  '/velox_car_render.jpg',
+  '/photos/Karim Shaprawy.jpeg',
+  '/photos/Moaaz Elghamry.jpeg',
+  '/photos/Mohamed Romy.jpeg'
 ];
 
 // Install: pre-cache assets & force instant activation

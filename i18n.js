@@ -47,6 +47,7 @@ const VELOX_I18N = {
     'about.p1': 'Velox Racing is the official Formula Student team of Zagazig National University (ZNU). We bring together ambitious undergraduate students to design, simulate, build, and test a single-seater formula-style racecar from the ground up.',
     'about.p2': 'Operating through the Faculty of Engineering, our crew spans Mechatronics, Mechanical, Electrical, Computer Science, and Business disciplines. We compete internationally in Formula Student at Silverstone, testing our vehicle design, business strategy, and manufacturing against elite universities worldwide.',
     'about.btnExplore': 'Explore Team Structure &rarr;',
+    'about.crewBadge': '50+ Engineers &amp; Specialists &bull; ZNU',
 
     // Cinema Showcase (index.html)
     'reel.kicker': 'Experience Velox Racing',
@@ -230,6 +231,7 @@ const VELOX_I18N = {
     'about.p1': 'فريق فيلوكس للسباقات هو الفريق الهندسي الرسمي لجامعة الزقازيق الأهلية (ZNU). نجمع نخبة من الطلاب الطموحين لتصميم ومحاكاة وبناء واختبار سيارة سباق بمقعد واحد من الصفر.',
     'about.p2': 'يعمل الفريق تحت مظلة كلية الهندسة ويضم طلاباً من أقسام الميكاترونكس، الميكانيكا، الكهرباء، هندسة الحاسب، وإدارة الأعمال، للمنافسة في مسابقات فورمولا ستيودنت العالمية على حلبة سيلفرستون واختبار التصميم الهندسي واستراتيجية التصنيع أمام جامعات العالم.',
     'about.btnExplore': 'استكشف الهيكل التنظيمي &larr;',
+    'about.crewBadge': '+50 مهندساً وأخصائياً &bull; جامعة الزقازيق الأهلية',
 
     // Cinema Showcase (index.html)
     'reel.kicker': 'عش تجربة فيلوكس',

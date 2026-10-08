@@ -16,10 +16,10 @@
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
 
   <!-- Shared Style with Cache Buster -->
-  <link rel="stylesheet" href="style.css?v=3.0" />
+  <link rel="stylesheet" href="style.css?v=3.1" />
 
   <!-- Localization Engine -->
-  <script src="i18n.js?v=3.0"></script>
+  <script src="i18n.js?v=3.1"></script>
 </head>
 <body>
 
@@ -129,7 +129,7 @@
   </footer>
 
   <!-- Team Data Source -->
-  <script src="team.js"></script>
+  <script src="team.js?v=3.1"></script>
 
   <script>
     // Minimal mobile navigation toggle
@@ -254,7 +254,13 @@
                   </div>
                   ${dept.leader ? `
                     <div class="dept-lead">
-                      ${tLeader}: ${dept.leader.name}
+                      <div class="dept-lead-avatar-wrap">
+                        ${dept.leader.photo ? `<img src="${dept.leader.photo}" alt="${dept.leader.name}" class="dept-lead-avatar" />` : getInitials(dept.leader.name)}
+                      </div>
+                      <div class="dept-lead-text">
+                        <span class="dept-lead-badge">${tLeader}</span>
+                        <span class="dept-lead-name">${dept.leader.name}</span>
+                      </div>
                     </div>
                   ` : ''}
                   <p class="dept-desc">${tDesc(dept.id, dept.description)}</p>
@@ -279,7 +285,7 @@
             <div class="tree-tier tree-tier-lead" style="width: 100%;">
               <div class="person-card" style="width: 100%;">
                 <div class="avatar-circle">
-                  ${getInitials("Mohamed Hassan")}
+                  ${(data.nonTechnical.find(d => d.id === 'media') && data.nonTechnical.find(d => d.id === 'media').leader && data.nonTechnical.find(d => d.id === 'media').leader.photo) ? `<img src="${data.nonTechnical.find(d => d.id === 'media').leader.photo}" alt="Mohamed Hassan" class="avatar-img" />` : getInitials("Mohamed Hassan")}
                 </div>
                 <span class="person-role" style="color: #38BDF8;">${tRole('Media Lead')}</span>
                 <h3 class="person-name">Mohamed Hassan</h3>
@@ -298,8 +304,14 @@
                     <span style="font-size: 0.75rem; color: #38BDF8; font-weight: 700; text-transform: uppercase;">Operations</span>
                   </div>
                   ${dept.leader ? `
-                    <div class="dept-lead" style="color: #38BDF8;">
-                      ${tLeader}: ${dept.leader.name}
+                    <div class="dept-lead" style="border-color: rgba(56, 189, 248, 0.25);">
+                      <div class="dept-lead-avatar-wrap" style="border-color: #38BDF8; color: #38BDF8;">
+                        ${dept.leader.photo ? `<img src="${dept.leader.photo}" alt="${dept.leader.name}" class="dept-lead-avatar" />` : getInitials(dept.leader.name)}
+                      </div>
+                      <div class="dept-lead-text">
+                        <span class="dept-lead-badge" style="color: #38BDF8;">${tLeader}</span>
+                        <span class="dept-lead-name">${dept.leader.name}</span>
+                      </div>
                     </div>
                   ` : ''}
                   <p class="dept-desc">${tDesc(dept.id, dept.description)}</p>
