@@ -16,9 +16,9 @@
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
 
   <!-- Shared Style with Cache Buster -->
-  <link rel="stylesheet" href="style.css?v=2.6" />
+  <link rel="stylesheet" href="style.css?v=2.7" />
   <!-- Localization Engine -->
-  <script src="i18n.js?v=2.6"></script>
+  <script src="i18n.js?v=2.7"></script>
   <!-- Supabase JS Client (CDN) -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -37,11 +37,11 @@
         </a>
 
         <ul class="nav-menu" id="navMenu">
-          <li><a href="/" class="nav-link">Home</a></li>
-          <li><a href="/#about" class="nav-link">About</a></li>
-          <li><a href="/team" class="nav-link">Team</a></li>
-          <li><a href="/sponsorship" class="nav-link">Sponsors</a></li>
-          <li class="mobile-menu-cta"><a href="/join" class="btn btn-primary btn-full">Join the Team &rarr;</a></li>
+          <li><a href="/" class="nav-link" data-i18n="nav.home">Home</a></li>
+          <li><a href="/#about" class="nav-link" data-i18n="nav.about">About</a></li>
+          <li><a href="/team" class="nav-link" data-i18n="nav.team">Team</a></li>
+          <li><a href="/sponsorship" class="nav-link" data-i18n="nav.sponsors">Sponsors</a></li>
+          <li class="mobile-menu-cta"><a href="/join" class="btn btn-primary btn-full" data-i18n="nav.joinFull">Join the Team &rarr;</a></li>
         </ul>
 
         <div class="nav-cta">
@@ -55,7 +55,7 @@
               <span class="lang-label" id="langLabel">AR</span>
             </button>
           </div>
-          <a href="/join" class="btn btn-primary">Join Us</a>
+          <a href="/join" class="btn btn-primary" data-i18n="nav.join">Join Us</a>
           <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation menu" aria-expanded="false">
             <span></span>
             <span></span>
@@ -70,9 +70,9 @@
     <section class="section">
       <div class="container">
         <div class="section-header center">
-          <span class="section-kicker">Recruitment Season 2026</span>
-          <h1 class="section-title">Join Velox Racing</h1>
-          <p class="section-desc">
+          <span class="section-kicker" data-i18n="join.kicker">Recruitment Season 2026</span>
+          <h1 class="section-title" data-i18n="join.title">Join Velox Racing</h1>
+          <p class="section-desc" data-i18n="join.desc">
             Complete the official application below. No prior motorsport experience required — passion, problem-solving, and dedication are what define our crew.
           </p>
         </div>
@@ -88,100 +88,100 @@
 
             <!-- 1. Full Name -->
             <div class="form-group">
-              <label for="fullName">Full Name (English)<span class="req">*</span></label>
-              <input type="text" id="fullName" class="form-control" placeholder="e.g. Mostafa Ahmed" required />
+              <label for="fullName" data-i18n="join.fullName">Full Name (English)<span class="req">*</span></label>
+              <input type="text" id="fullName" class="form-control" data-i18n-ph="join.fullNamePh" placeholder="e.g. Mostafa Ahmed" required />
             </div>
 
             <!-- 2. Email & Phone -->
             <div class="form-row">
               <div class="form-group">
-                <label for="email">University / Personal Email<span class="req">*</span></label>
+                <label for="email" data-i18n="join.email">University / Personal Email<span class="req">*</span></label>
                 <input type="email" id="email" class="form-control" placeholder="name@domain.com" required />
-                <span class="hint">Only one application allowed per email</span>
+                <span class="hint" data-i18n="join.emailHint">Only one application allowed per email</span>
               </div>
               <div class="form-group">
-                <label for="phone">Phone / WhatsApp Number<span class="req">*</span></label>
-                <input type="tel" id="phone" class="form-control" placeholder="010XXXXXXXX" required />
+                <label for="phone" data-i18n="join.phone">Phone / WhatsApp Number<span class="req">*</span></label>
+                <input type="tel" id="phone" class="form-control" data-i18n-ph="join.phonePh" placeholder="010XXXXXXXX" required />
               </div>
             </div>
 
             <!-- 3. University ID & Faculty -->
             <div class="form-row">
               <div class="form-group">
-                <label for="universityId">University ID / Student ID<span class="req">*</span></label>
-                <input type="text" id="universityId" class="form-control" placeholder="e.g. 202300123" required />
+                <label for="universityId" data-i18n="join.universityId">University ID / Student ID<span class="req">*</span></label>
+                <input type="text" id="universityId" class="form-control" data-i18n-ph="join.universityIdPh" placeholder="e.g. 202300123" required />
               </div>
               <div class="form-group">
-                <label for="faculty">Faculty / Department<span class="req">*</span></label>
+                <label for="faculty" data-i18n="join.faculty">Faculty / Department<span class="req">*</span></label>
                 <select id="faculty" class="form-control" required>
-                  <option value="" disabled selected>Select your faculty</option>
-                  <option value="Engineering — Mechatronics">Engineering — Mechatronics</option>
-                  <option value="Engineering — Mechanical">Engineering — Mechanical</option>
-                  <option value="Engineering — Electrical">Engineering — Electrical</option>
-                  <option value="Computer & Information Sciences (AI / Aviation)">Computer & Informatics (AI / Aviation)</option>
-                  <option value="Business / Commerce">Business / Commerce</option>
-                  <option value="Other Faculty">Other Faculty</option>
+                  <option value="" disabled selected data-i18n="join.facultySelect">Select your faculty</option>
+                  <option value="Engineering — Mechatronics" data-i18n="join.facMecha">Engineering — Mechatronics</option>
+                  <option value="Engineering — Mechanical" data-i18n="join.facMech">Engineering — Mechanical</option>
+                  <option value="Engineering — Electrical" data-i18n="join.facElec">Engineering — Electrical</option>
+                  <option value="Computer & Information Sciences (AI / Aviation)" data-i18n="join.facCs">Computer & Information Sciences (AI / Aviation)</option>
+                  <option value="Business / Commerce" data-i18n="join.facBus">Business / Commerce</option>
+                  <option value="Other Faculty" data-i18n="join.facOther">Other Faculty</option>
                 </select>
               </div>
             </div>
 
             <!-- 4. Academic Year -->
             <div class="form-group">
-              <label for="academicYear">Academic Level / Year<span class="req">*</span></label>
+              <label for="academicYear" data-i18n="join.academicYear">Academic Level / Year<span class="req">*</span></label>
               <select id="academicYear" class="form-control" required>
-                <option value="" disabled selected>Select your current year</option>
-                <option value="Level 0 / Preparatory (Prep Year)">Level 0 / Preparatory (Prep Year)</option>
-                <option value="Level 100 / Second Year">Level 100 / Second Year</option>
-                <option value="Level 200 / Third Year">Level 200 / Third Year</option>
-                <option value="Level 300 / Fourth Year">Level 300 / Fourth Year</option>
-                <option value="Level 400 / Fifth Year (Senior)">Level 400 / Fifth Year (Senior)</option>
-                <option value="Graduate / Alumni">Graduate / Alumni</option>
+                <option value="" disabled selected data-i18n="join.yearSelect">Select your current year</option>
+                <option value="Level 0 / Preparatory (Prep Year)" data-i18n="join.lvl0">Level 0 / Preparatory (Prep Year)</option>
+                <option value="Level 100 / Second Year" data-i18n="join.lvl100">Level 100 / Second Year</option>
+                <option value="Level 200 / Third Year" data-i18n="join.lvl200">Level 200 / Third Year</option>
+                <option value="Level 300 / Fourth Year" data-i18n="join.lvl300">Level 300 / Fourth Year</option>
+                <option value="Level 400 / Fifth Year (Senior)" data-i18n="join.lvl400">Level 400 / Fifth Year (Senior)</option>
+                <option value="Graduate / Alumni" data-i18n="join.alumni">Graduate / Alumni</option>
               </select>
             </div>
 
             <!-- 5. Sub-team Choices -->
             <div class="form-row">
               <div class="form-group">
-                <label for="subteamFirst">1st Choice Sub-team<span class="req">*</span></label>
+                <label for="subteamFirst" data-i18n="join.subteam1">1st Choice Sub-team<span class="req">*</span></label>
                 <select id="subteamFirst" class="form-control" required>
-                  <option value="" disabled selected>Loading subteams...</option>
+                  <option value="" disabled selected data-i18n="join.subteamSelect1">Select 1st choice</option>
                 </select>
               </div>
               <div class="form-group">
-                <label for="subteamSecond">2nd Choice Sub-team<span class="req">*</span></label>
+                <label for="subteamSecond" data-i18n="join.subteam2">2nd Choice Sub-team<span class="req">*</span></label>
                 <select id="subteamSecond" class="form-control" required>
-                  <option value="" disabled selected>Loading subteams...</option>
+                  <option value="" disabled selected data-i18n="join.subteamSelect2">Select 2nd choice</option>
                 </select>
               </div>
             </div>
 
             <!-- 6. Weekly Time Dedication -->
             <div class="form-group">
-              <label>Weekly Time Commitment<span class="req">*</span></label>
+              <label data-i18n="join.timeCommitment">Weekly Time Commitment<span class="req">*</span></label>
               <div class="radio-group">
                 <label class="radio-pill">
                   <input type="radio" name="timeCommitment" value="< 3 hours" />
-                  &lt; 3 hours
+                  <span data-i18n="join.timeL3">&lt; 3 hours</span>
                 </label>
                 <label class="radio-pill">
                   <input type="radio" name="timeCommitment" value="3 to 5 hours" />
-                  3 to 5 hrs
+                  <span data-i18n="join.time35">3 to 5 hrs</span>
                 </label>
                 <label class="radio-pill active">
                   <input type="radio" name="timeCommitment" value="5 to 10 hours" checked />
-                  5 to 10 hrs
+                  <span data-i18n="join.time510">5 to 10 hrs</span>
                 </label>
                 <label class="radio-pill">
                   <input type="radio" name="timeCommitment" value="10+ hours" />
-                  10+ hrs
+                  <span data-i18n="join.time10p">10+ hrs</span>
                 </label>
               </div>
             </div>
 
-            <!-- 7. Relevant Skills & Experience -->
+            <!-- 7. Relevant Skills & Experience (Skills Kept in English) -->
             <div class="form-group">
-              <label>Relevant Skills & Software Tools</label>
-              <span class="hint">Select any that apply to your background:</span>
+              <label data-i18n="join.skills">Relevant Skills & Software Tools</label>
+              <span class="hint" data-i18n="join.skillsHint">Select any that apply to your background:</span>
               <div class="chips-wrap" id="skillsChips">
                 <label class="chip-label"><input type="checkbox" value="SolidWorks" /> SolidWorks / CAD</label>
                 <label class="chip-label"><input type="checkbox" value="Ansys / FEA" /> Ansys / FEA</label>
@@ -194,23 +194,23 @@
                 <label class="chip-label"><input type="checkbox" value="Sponsorship & PR" /> Sponsorship & PR</label>
                 <label class="chip-label"><input type="checkbox" value="Project Management" /> Project Management</label>
               </div>
-              <input type="text" id="skillsCustom" class="form-control" style="margin-top: 10px;" placeholder="Other skills (e.g. Python, STM32, CBOM Costing, etc.)" />
+              <input type="text" id="skillsCustom" class="form-control" style="margin-top: 10px;" data-i18n-ph="join.skillsCustomPh" placeholder="Other skills (e.g. Python, STM32, CBOM Costing, etc.)" />
             </div>
 
             <!-- 8. Why Join Velox -->
             <div class="form-group">
-              <label for="whyJoin">Why do you want to join Velox Racing?<span class="req">*</span></label>
-              <textarea id="whyJoin" rows="4" class="form-control" placeholder="Share your motivation, goals, and what you hope to contribute to Chassis VX-01..." required></textarea>
+              <label for="whyJoin" data-i18n="join.whyJoin">Why do you want to join Velox Racing?<span class="req">*</span></label>
+              <textarea id="whyJoin" rows="4" class="form-control" data-i18n-ph="join.whyJoinPh" placeholder="Share your motivation, goals, and what you hope to contribute to Chassis VX-01..." required></textarea>
             </div>
 
             <!-- 9. Optional CV / Portfolio -->
             <div class="form-group">
-              <label for="portfolioUrl">CV, Portfolio, or LinkedIn Profile (Optional)</label>
-              <input type="url" id="portfolioUrl" class="form-control" placeholder="https://drive.google.com/... or https://linkedin.com/in/..." />
+              <label for="portfolioUrl" data-i18n="join.portfolio">CV, Portfolio, or LinkedIn Profile (Optional)</label>
+              <input type="url" id="portfolioUrl" class="form-control" data-i18n-ph="join.portfolioPh" placeholder="https://drive.google.com/... or https://linkedin.com/in/..." />
             </div>
 
             <div style="margin-top: 28px;">
-              <button type="submit" class="btn btn-primary btn-full" id="submitBtn">
+              <button type="submit" class="btn btn-primary btn-full" id="submitBtn" data-i18n="join.submitBtn">
                 Submit Application
               </button>
             </div>
@@ -223,11 +223,11 @@
                 <polyline points="20 6 9 17 4 12"></polyline>
               </svg>
             </div>
-            <h2 style="font-size: 1.8rem; margin-bottom: 10px;">Application Submitted</h2>
-            <p style="margin-bottom: 24px; color: var(--text-muted);">
+            <h2 style="font-size: 1.8rem; margin-bottom: 10px;" data-i18n="join.successTitle">Application Submitted</h2>
+            <p style="margin-bottom: 24px; color: var(--text-muted);" data-i18n="join.successDesc">
               Thank you for applying to Velox Racing. Your submission has been securely recorded. Our HR division and subsystem leaders will review your profile and contact you via email or WhatsApp regarding interview scheduling.
             </p>
-            <a href="/" class="btn btn-outline">Back to Home</a>
+            <a href="/" class="btn btn-outline" data-i18n="join.backHome">Back to Home</a>
           </div>
         </div>
       </div>
@@ -243,36 +243,36 @@
             <img src="VeloxLogoWeb.png" alt="Velox Racing" class="nav-logo" onerror="this.src='VeloxForWeb_dark.png'" />
             <span class="nav-title">VELOX RACING</span>
           </a>
-          <p>
+          <p data-i18n="footer.desc">
             The official Formula Student racing team of Zagazig National University (ZNU), competing at Silverstone Circuit in Formula Student UK.
           </p>
         </div>
 
         <div class="footer-col">
-          <h5>Navigation</h5>
+          <h5 data-i18n="footer.navTitle">Navigation</h5>
           <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="/team">Team Structure</a></li>
-            <li><a href="/join">Join the Team</a></li>
-            <li><a href="/hr">HR Portal</a></li>
+            <li><a href="/" data-i18n="nav.home">Home</a></li>
+            <li><a href="/#about" data-i18n="nav.about">About</a></li>
+            <li><a href="/team" data-i18n="nav.team">Team Structure</a></li>
+            <li><a href="/join" data-i18n="nav.join">Join the Team</a></li>
+            <li><a href="/sponsorship" data-i18n="nav.sponsors">Sponsors</a></li>
           </ul>
         </div>
 
         <div class="footer-col">
-          <h5>Connect</h5>
+          <h5 data-i18n="footer.connectTitle">Connect</h5>
           <ul>
             <li><a href="mailto:velox.racing.znu@gmail.com">velox.racing.znu@gmail.com</a></li>
-            <li><a href="https://www.linkedin.com/company/velox-racing-znu" target="_blank" rel="noopener">LinkedIn</a></li>
-            <li><a href="https://www.facebook.com/VeloxRacingZNU" target="_blank" rel="noopener">Facebook</a></li>
-            <li><a href="https://www.instagram.com/velox.racing" target="_blank" rel="noopener">Instagram</a></li>
+            <li><a href="https://www.linkedin.com/company/velox-racing-team/" target="_blank" rel="noopener">LinkedIn</a></li>
+            <li><a href="https://www.facebook.com/share/19Xcwun8Di/?mibextid=wwXIfr" target="_blank" rel="noopener">Facebook</a></li>
+            <li><a href="https://www.instagram.com/velox_racing_znu?utm_source=qr" target="_blank" rel="noopener">Instagram</a></li>
           </ul>
         </div>
       </div>
 
       <div class="footer-bottom">
-        <span>&copy; 2026 Velox Racing — Zagazig National University. All rights reserved.</span>
-        <span>Formula Student UK &bull; Silverstone</span>
+        <span data-i18n="footer.copy">&copy; 2026 Velox Racing — Zagazig National University. All rights reserved.</span>
+        <span data-i18n="footer.arena">Formula Student UK &bull; Silverstone</span>
       </div>
     </div>
   </footer>
@@ -321,16 +321,29 @@
       const select2 = document.getElementById('subteamSecond');
       if (!select1 || !select2 || typeof getSubteamsList !== 'function') return;
 
+      const isAr = document.documentElement.getAttribute('lang') === 'ar';
+      const placeholder1 = isAr ? 'اختر الرغبة الأولى' : 'Select 1st choice';
+      const placeholder2 = isAr ? 'اختر الرغبة الثانية' : 'Select 2nd choice';
+
+      const prev1 = select1.value;
+      const prev2 = select2.value;
+
       const subteams = getSubteamsList();
       
-      select1.innerHTML = '<option value="" disabled selected>Select 1st choice</option>';
-      select2.innerHTML = '<option value="" disabled selected>Select 2nd choice</option>';
+      select1.innerHTML = `<option value="" disabled ${!prev1 ? 'selected' : ''}>${placeholder1}</option>`;
+      select2.innerHTML = `<option value="" disabled ${!prev2 ? 'selected' : ''}>${placeholder2}</option>`;
 
       subteams.forEach(name => {
-        select1.innerHTML += `<option value="${name}">${name}</option>`;
-        select2.innerHTML += `<option value="${name}">${name}</option>`;
+        // Keep engineering terms clear in English
+        select1.innerHTML += `<option value="${name}" ${prev1 === name ? 'selected' : ''}>${name}</option>`;
+        select2.innerHTML += `<option value="${name}" ${prev2 === name ? 'selected' : ''}>${name}</option>`;
       });
     }
+
+    // Re-populate subteams when language changes
+    window.addEventListener('veloxLanguageChanged', () => {
+      initSubteamOptions();
+    });
 
     // Interactive Skill Chips & Radio Pills
     document.querySelectorAll('.chip-label input').forEach(input => {
@@ -405,17 +418,19 @@
       const timeInput = document.querySelector('input[name="timeCommitment"]:checked');
       const timeCommitment = timeInput ? timeInput.value : '5 to 10 hours';
 
+      const isAr = document.documentElement.getAttribute('lang') === 'ar';
+
       if (!fullName || !email || !phone || !universityId || !faculty || !academicYear || !subteamFirst || !subteamSecond || !whyJoin) {
-        showError('Please fill in all required fields marked with an asterisk (*).');
+        showError(isAr ? 'يرجى ملء جميع الحقول المطلوبة المميزة بعلامة (*).' : 'Please fill in all required fields marked with an asterisk (*).');
         return;
       }
 
       if (subteamFirst === subteamSecond) {
-        showError('Please choose two different sub-teams for your 1st and 2nd choices.');
+        showError(isAr ? 'يرجى اختيار قسمين فرعيين مختلفين للرغبة الأولى والثانية.' : 'Please choose two different sub-teams for your 1st and 2nd choices.');
         return;
       }
 
-      // Collect skills
+      // Collect skills (Preserved in English)
       const selectedSkills = [];
       document.querySelectorAll('.chip-label input:checked').forEach(cb => selectedSkills.push(cb.value));
       const customSkill = document.getElementById('skillsCustom').value.trim();
@@ -441,7 +456,7 @@
       };
 
       submitBtn.disabled = true;
-      submitBtn.textContent = 'Submitting Application...';
+      submitBtn.textContent = isAr ? 'جاري إرسال الطلب...' : 'Submitting Application...';
 
       try {
         // Initialize Supabase client
@@ -455,12 +470,12 @@
           if (error) {
             // Check for Postgres UNIQUE constraint violation (23505)
             if (error.code === '23505' || (error.message && error.message.toLowerCase().includes('unique'))) {
-              showError('An application with this email address has already been submitted. If you need to make changes, please contact HR at velox.racing.znu@gmail.com.');
+              showError(isAr ? 'تم تسجيل طلب انضمام بهذا البريد الإلكتروني مسبقاً.' : 'An application with this email address has already been submitted. If you need to make changes, please contact HR at velox.racing.znu@gmail.com.');
             } else {
               showError(`Database error: ${error.message}`);
             }
             submitBtn.disabled = false;
-            submitBtn.textContent = 'Submit Application';
+            submitBtn.textContent = isAr ? 'إرسال طلب الانضمام' : 'Submit Application';
             return;
           }
         } else {
@@ -470,9 +485,9 @@
           
           // Check email uniqueness in local cache
           if (existingApps.some(app => app.email.toLowerCase() === email)) {
-            showError('An application with this email address has already been submitted. If you need to make changes, please contact HR at velox.racing.znu@gmail.com.');
+            showError(isAr ? 'تم تسجيل طلب انضمام بهذا البريد الإلكتروني مسبقاً.' : 'An application with this email address has already been submitted. If you need to make changes, please contact HR at velox.racing.znu@gmail.com.');
             submitBtn.disabled = false;
-            submitBtn.textContent = 'Submit Application';
+            submitBtn.textContent = isAr ? 'إرسال طلب الانضمام' : 'Submit Application';
             return;
           }
 
@@ -491,11 +506,11 @@
         successScreen.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
       } catch (err) {
-        showError('An unexpected error occurred. Please try again or email velox.racing.znu@gmail.com.');
+        showError(isAr ? 'حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى أو مراسلتنا على velox.racing.znu@gmail.com' : 'An unexpected error occurred. Please try again or email velox.racing.znu@gmail.com.');
         console.error(err);
       } finally {
         submitBtn.disabled = false;
-        submitBtn.textContent = 'Submit Application';
+        submitBtn.textContent = isAr ? 'إرسال طلب الانضمام' : 'Submit Application';
       }
     });
 
@@ -520,24 +535,16 @@
       }
 
       const savedLang = localStorage.getItem('velox_lang') || 'en';
-      setLanguage(savedLang);
+      if (typeof applyVeloxLanguage === 'function') {
+        applyVeloxLanguage(savedLang);
+      }
 
       if (langBtn) {
         langBtn.addEventListener('click', () => {
-          const current = localStorage.getItem('velox_lang') || 'en';
-          const next = current === 'en' ? 'ar' : 'en';
-          setLanguage(next);
+          if (typeof toggleVeloxLanguage === 'function') {
+            toggleVeloxLanguage();
+          }
         });
-      }
-    }
-
-    function setLanguage(lang) {
-      localStorage.setItem('velox_lang', lang);
-      document.documentElement.setAttribute('lang', lang);
-      document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
-      const langLabel = document.getElementById('langLabel');
-      if (langLabel) {
-        langLabel.textContent = lang === 'ar' ? 'EN' : 'AR';
       }
     }
 

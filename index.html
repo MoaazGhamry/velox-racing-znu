@@ -16,10 +16,10 @@
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
 
   <!-- Shared Style with Cache Buster -->
-  <link rel="stylesheet" href="style.css?v=2.6" />
+  <link rel="stylesheet" href="style.css?v=2.7" />
 
   <!-- Localization Engine -->
-  <script src="i18n.js?v=2.6"></script>
+  <script src="i18n.js?v=2.7"></script>
 </head>
 <body>
 
@@ -324,9 +324,9 @@
           <h5 data-i18n="footer.connectTitle">Connect</h5>
           <ul>
             <li><a href="mailto:velox.racing.znu@gmail.com">velox.racing.znu@gmail.com</a></li>
-            <li><a href="https://www.linkedin.com/company/velox-racing-znu" target="_blank" rel="noopener">LinkedIn</a></li>
-            <li><a href="https://www.facebook.com/VeloxRacingZNU" target="_blank" rel="noopener">Facebook</a></li>
-            <li><a href="https://www.instagram.com/velox.racing" target="_blank" rel="noopener">Instagram</a></li>
+            <li><a href="https://www.linkedin.com/company/velox-racing-team/" target="_blank" rel="noopener">LinkedIn</a></li>
+            <li><a href="https://www.facebook.com/share/19Xcwun8Di/?mibextid=wwXIfr" target="_blank" rel="noopener">Facebook</a></li>
+            <li><a href="https://www.instagram.com/velox_racing_znu?utm_source=qr" target="_blank" rel="noopener">Instagram</a></li>
           </ul>
         </div>
       </div>
@@ -387,11 +387,16 @@
     const compressSvg = document.getElementById('compressSvg');
     const bufferingPill = document.getElementById('cinemaBufferingPill');
 
+    // ── Persistent Cache Storage & Background Download Manager ──
+    const VIDEO_CACHE_NAME = 'velox-video-cache-v1';
+    const VIDEO_URL = 'ad.mp4';
     let isVideoLoaded = false;
-    let isBufferingPreload = false;
-    let bufferInterval = null;
+    let isVideoReadyToPlay = false;
+    let isDownloading = false;
+    let hasAutoOpened = false;
+    let shouldAutoPlayWhenReady = false;
+    let downloadProgress = 0;
     let idleTimer = null;
-    const PREBUFFER_TARGET_PCT = 25; // Pre-buffer at least 25% (~5s of 60fps video)
 
     function formatTime(seconds) {
       if (isNaN(seconds) || seconds < 0) return '0:00';
@@ -400,13 +405,7 @@
       return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
     }
 
-    function updateBufferProgressUI() {
-      if (!adVideo) return 0;
-      let pct = 0;
-      if (adVideo.buffered.length > 0 && adVideo.duration > 0) {
-        const bufferedEnd = adVideo.buffered.end(adVideo.buffered.length - 1);
-        pct = Math.min(100, Math.round((bufferedEnd / adVideo.duration) * 100));
-      }
+    function updateLoaderUI(pct, isReady) {
       const loaderBar = document.getElementById('cinemaLoaderBar');
       const loaderPct = document.getElementById('cinemaLoaderPct');
       const loaderStatus = document.getElementById('cinemaLoaderStatus');
@@ -415,17 +414,16 @@
       if (loaderPct) loaderPct.textContent = pct + '%';
       if (loaderStatus) {
         const isAr = document.documentElement.getAttribute('lang') === 'ar';
-        if (pct < 20) {
-          loaderStatus.textContent = isAr ? 'بدء الاتصال بالبث...' : 'Connecting stream...';
-        } else if (pct < 60) {
-          loaderStatus.textContent = isAr ? 'تجميع إطارات 60 FPS...' : 'Buffering 60 FPS frames...';
-        } else if (pct < 95) {
-          loaderStatus.textContent = isAr ? 'تحسين مسار العرض...' : 'Optimizing pipeline...';
-        } else {
+        if (isReady || pct >= 100) {
           loaderStatus.textContent = isAr ? 'جاهز للانطلاق!' : 'Ready to launch!';
+        } else if (pct < 25) {
+          loaderStatus.textContent = isAr ? 'بدء تحميل البث وحفظه...' : 'Downloading & caching stream...';
+        } else if (pct < 70) {
+          loaderStatus.textContent = isAr ? 'تجميع إطارات 60 FPS...' : 'Buffering 60 FPS frames...';
+        } else {
+          loaderStatus.textContent = isAr ? 'تحسين مسار العرض...' : 'Optimizing playback pipeline...';
         }
       }
-      return pct;
     }
 
     function resetIdleTimer() {
@@ -439,13 +437,43 @@
       }
     }
 
-    function startBufferingAndPlay() {
+    // Launch and open video smoothly
+    function executePlay() {
       if (!adVideo) return;
       const loaderOverlay = document.getElementById('cinemaLoaderOverlay');
-      const loaderBar = document.getElementById('cinemaLoaderBar');
-      const loaderPct = document.getElementById('cinemaLoaderPct');
+      updateLoaderUI(100, true);
 
-      // If video is currently playing, clicking pauses it
+      setTimeout(() => {
+        if (loaderOverlay) loaderOverlay.classList.remove('active');
+        if (cinemaPlayer) cinemaPlayer.classList.remove('buffering-preload');
+        if (videoOverlay) videoOverlay.classList.add('hidden');
+
+        // Play with sound if permitted; gracefully fallback to muted autoplay per browser policy
+        adVideo.play().then(() => {
+          cinemaPlayer.classList.add('playing');
+          if (playIconSvg) playIconSvg.style.display = 'none';
+          if (pauseIconSvg) pauseIconSvg.style.display = 'block';
+          resetIdleTimer();
+        }).catch(err => {
+          console.log('[Velox Video] Unmuted playback blocked, auto-playing muted:', err);
+          adVideo.muted = true;
+          if (audioMutedSvg) audioMutedSvg.style.display = 'block';
+          if (audioHighSvg) audioHighSvg.style.display = 'none';
+          adVideo.play().then(() => {
+            cinemaPlayer.classList.add('playing');
+            if (playIconSvg) playIconSvg.style.display = 'none';
+            if (pauseIconSvg) pauseIconSvg.style.display = 'block';
+            resetIdleTimer();
+          }).catch(e => console.log('[Velox Video] Autoplay failed:', e));
+        });
+      }, 250);
+    }
+
+    // Toggle play / pause manually
+    function handleManualPlayToggle() {
+      if (!adVideo) return;
+      const loaderOverlay = document.getElementById('cinemaLoaderOverlay');
+
       if (!adVideo.paused && isVideoLoaded) {
         adVideo.pause();
         if (videoOverlay) videoOverlay.classList.remove('hidden');
@@ -456,106 +484,159 @@
         return;
       }
 
-      // If video was already buffered and paused, resume immediately
-      if (isVideoLoaded && adVideo.readyState >= 3) {
-        adVideo.play().then(() => {
-          if (videoOverlay) videoOverlay.classList.add('hidden');
-          cinemaPlayer.classList.add('playing');
-          if (playIconSvg) playIconSvg.style.display = 'none';
-          if (pauseIconSvg) pauseIconSvg.style.display = 'block';
-          resetIdleTimer();
-        }).catch(() => {});
-        return;
+      if (isVideoReadyToPlay) {
+        executePlay();
+      } else {
+        // Show loading card while background download finishes
+        if (videoOverlay) videoOverlay.classList.add('hidden');
+        if (loaderOverlay) loaderOverlay.classList.add('active');
+        if (cinemaPlayer) cinemaPlayer.classList.add('buffering-preload');
+        shouldAutoPlayWhenReady = true;
+        updateLoaderUI(downloadProgress, false);
       }
+    }
 
-      // Initial buffer required: show explicit loader card so user doesn't watch step-by-step
-      if (videoOverlay) videoOverlay.classList.add('hidden');
-      if (loaderOverlay) loaderOverlay.classList.add('active');
-      if (cinemaPlayer) cinemaPlayer.classList.add('buffering-preload');
-      isBufferingPreload = true;
+    // ── Persistent Download & Cache Logic (Downloaded ONCE to save cellular) ──
+    async function initVideoDownloadAndCache() {
+      if (!adVideo) return;
 
-      if (!isVideoLoaded) {
-        adVideo.src = adVideo.dataset.src || 'ad.mp4';
-        adVideo.load();
-        isVideoLoaded = true;
-      }
+      // 1. Check browser Cache Storage first
+      if ('caches' in window) {
+        try {
+          const cache = await caches.open(VIDEO_CACHE_NAME);
+          const cachedResponse = await cache.match(VIDEO_URL);
+          if (cachedResponse) {
+            console.log('[Velox Video] Video loaded from persistent Cache Storage! (0 cellular bytes)');
+            const blob = await cachedResponse.blob();
+            adVideo.src = URL.createObjectURL(blob);
+            isVideoLoaded = true;
+            isVideoReadyToPlay = true;
+            downloadProgress = 100;
+            updateLoaderUI(100, true);
 
-      clearInterval(bufferInterval);
-      bufferInterval = setInterval(() => {
-        const currentPct = updateBufferProgressUI();
-        // Launch once pre-buffer target is met OR browser signals canplaythrough
-        if ((currentPct >= PREBUFFER_TARGET_PCT || adVideo.readyState >= 4) && isBufferingPreload) {
-          clearInterval(bufferInterval);
-          isBufferingPreload = false;
-          if (loaderBar) loaderBar.style.width = '100%';
-          if (loaderPct) loaderPct.textContent = '100%';
-          const loaderStatus = document.getElementById('cinemaLoaderStatus');
-          if (loaderStatus) {
-            const isAr = document.documentElement.getAttribute('lang') === 'ar';
-            loaderStatus.textContent = isAr ? 'جاهز للانطلاق!' : 'Ready to launch!';
+            if (shouldAutoPlayWhenReady && !hasAutoOpened) {
+              hasAutoOpened = true;
+              executePlay();
+            }
+            return;
           }
-
-          setTimeout(() => {
-            if (loaderOverlay) loaderOverlay.classList.remove('active');
-            if (cinemaPlayer) cinemaPlayer.classList.remove('buffering-preload');
-            adVideo.play().then(() => {
-              cinemaPlayer.classList.add('playing');
-              if (playIconSvg) playIconSvg.style.display = 'none';
-              if (pauseIconSvg) pauseIconSvg.style.display = 'block';
-              resetIdleTimer();
-            }).catch(err => {
-              console.log('Playback error:', err);
-              if (loaderOverlay) loaderOverlay.classList.remove('active');
-              if (cinemaPlayer) cinemaPlayer.classList.remove('buffering-preload');
-              if (videoOverlay) videoOverlay.classList.remove('hidden');
-            });
-          }, 350);
+        } catch (cacheErr) {
+          console.warn('[Velox Video] Cache Storage check fallback:', cacheErr);
         }
-      }, 100);
+      }
 
-      // Safety fallback: if buffer takes longer than 3.5s but readyState is sufficient, start smoothly
-      setTimeout(() => {
-        if (isBufferingPreload && adVideo.readyState >= 2) {
-          clearInterval(bufferInterval);
-          isBufferingPreload = false;
-          if (loaderOverlay) loaderOverlay.classList.remove('active');
-          if (cinemaPlayer) cinemaPlayer.classList.remove('buffering-preload');
-          adVideo.play().then(() => {
-            cinemaPlayer.classList.add('playing');
-            if (playIconSvg) playIconSvg.style.display = 'none';
-            if (pauseIconSvg) pauseIconSvg.style.display = 'block';
-            resetIdleTimer();
-          }).catch(() => {
-            if (videoOverlay) videoOverlay.classList.remove('hidden');
-          });
+      // 2. Download ONCE in background when entering the website and save to Cache
+      if (isDownloading) return;
+      isDownloading = true;
+
+      try {
+        const response = await fetch(VIDEO_URL);
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+        const contentLength = response.headers.get('content-length');
+        const totalBytes = contentLength ? parseInt(contentLength, 10) : 10283435;
+        let receivedBytes = 0;
+        const chunks = [];
+
+        if (response.body && response.body.getReader) {
+          const reader = response.body.getReader();
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            chunks.push(value);
+            receivedBytes += value.length;
+            downloadProgress = Math.min(99, Math.round((receivedBytes / totalBytes) * 100));
+            updateLoaderUI(downloadProgress, false);
+          }
+        } else {
+          const arrayBuffer = await response.arrayBuffer();
+          chunks.push(new Uint8Array(arrayBuffer));
+          receivedBytes = arrayBuffer.byteLength;
         }
-      }, 3500);
+
+        const fullBlob = new Blob(chunks, { type: 'video/mp4' });
+        downloadProgress = 100;
+        updateLoaderUI(100, true);
+
+        // Store into persistent Cache Storage for future visits / reloads
+        if ('caches' in window) {
+          try {
+            const cache = await caches.open(VIDEO_CACHE_NAME);
+            await cache.put(VIDEO_URL, new Response(fullBlob.slice(0), {
+              headers: {
+                'Content-Type': 'video/mp4',
+                'Content-Length': fullBlob.size.toString()
+              }
+            }));
+            console.log('[Velox Video] Saved to persistent Cache Storage for future visits!');
+          } catch (e) {
+            console.warn('[Velox Video] Could not put into Cache Storage:', e);
+          }
+        }
+
+        adVideo.src = URL.createObjectURL(fullBlob);
+        isVideoLoaded = true;
+        isVideoReadyToPlay = true;
+
+        if (shouldAutoPlayWhenReady && !hasAutoOpened) {
+          hasAutoOpened = true;
+          executePlay();
+        }
+
+      } catch (netErr) {
+        console.warn('[Velox Video] Stream fetch fallback to direct src:', netErr);
+        adVideo.src = VIDEO_URL;
+        isVideoLoaded = true;
+        isVideoReadyToPlay = true;
+        if (shouldAutoPlayWhenReady && !hasAutoOpened) {
+          hasAutoOpened = true;
+          executePlay();
+        }
+      } finally {
+        isDownloading = false;
+      }
+    }
+
+    // Start background download immediately on site entrance
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initVideoDownloadAndCache);
+    } else {
+      initVideoDownloadAndCache();
     }
 
     if (adVideo) {
-      // Smart background pre-buffering when approaching the section
+      // ── Auto-Open on Scroll Observer ──
       if ('IntersectionObserver' in window) {
-        const prefetchObserver = new IntersectionObserver((entries) => {
+        const autoScrollObserver = new IntersectionObserver((entries) => {
           entries.forEach(entry => {
-            if (entry.isIntersecting && !isVideoLoaded) {
-              adVideo.src = adVideo.dataset.src || 'ad.mp4';
-              adVideo.load();
-              isVideoLoaded = true;
-              prefetchObserver.disconnect();
+            if (entry.isIntersecting && !hasAutoOpened) {
+              shouldAutoPlayWhenReady = true;
+              if (isVideoReadyToPlay) {
+                hasAutoOpened = true;
+                executePlay();
+              } else {
+                // Show loading card while download finishes
+                const loaderOverlay = document.getElementById('cinemaLoaderOverlay');
+                if (videoOverlay) videoOverlay.classList.add('hidden');
+                if (loaderOverlay) loaderOverlay.classList.add('active');
+                if (cinemaPlayer) cinemaPlayer.classList.add('buffering-preload');
+                updateLoaderUI(downloadProgress, false);
+              }
             }
           });
-        }, { rootMargin: '300px 0px' });
+        }, { threshold: 0.35 });
+
         const reelSection = document.getElementById('cinematic');
-        if (reelSection) prefetchObserver.observe(reelSection);
+        if (reelSection) autoScrollObserver.observe(reelSection);
       }
 
       cinemaPlayer.addEventListener('mousemove', resetIdleTimer);
       cinemaPlayer.addEventListener('touchstart', resetIdleTimer, { passive: true });
 
-      if (videoOverlay) videoOverlay.addEventListener('click', startBufferingAndPlay);
+      if (videoOverlay) videoOverlay.addEventListener('click', handleManualPlayToggle);
       if (playToggleBtn) playToggleBtn.addEventListener('click', (e) => {
         e.stopPropagation();
-        startBufferingAndPlay();
+        handleManualPlayToggle();
       });
 
       // Hook up Hero "Watch Reel" button
@@ -567,7 +648,7 @@
           if (cinematicSec) {
             cinematicSec.scrollIntoView({ behavior: 'smooth' });
             setTimeout(() => {
-              startBufferingAndPlay();
+              handleManualPlayToggle();
             }, 450);
           }
         });
