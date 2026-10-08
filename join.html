@@ -16,7 +16,7 @@
   <link rel="apple-touch-icon" href="VeloxForWeb_dark.png" />
 
   <!-- Shared Style with Cache Buster -->
-  <link rel="stylesheet" href="style.css?v=2.1" />
+  <link rel="stylesheet" href="style.css?v=2.2" />
   <!-- Supabase JS Client (CDN) -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -28,13 +28,17 @@
       <div class="nav-container">
         <a href="/" class="nav-brand" aria-label="Velox Racing Home">
           <img src="VeloxLogoWeb.png" alt="Velox Racing Crest" class="nav-logo" onerror="this.src='VeloxForWeb_dark.png'" />
-          <span class="nav-title">VELOX RACING</span>
+          <span class="nav-title">
+            VELOX RACING
+            <span class="nav-title-badge">ZNU</span>
+          </span>
         </a>
 
         <ul class="nav-menu" id="navMenu">
           <li><a href="/" class="nav-link">Home</a></li>
           <li><a href="/#about" class="nav-link">About</a></li>
           <li><a href="/team" class="nav-link">Team</a></li>
+          <li class="mobile-menu-cta"><a href="/join" class="btn btn-primary btn-full">Join the Team &rarr;</a></li>
         </ul>
 
         <div class="nav-cta">
@@ -113,11 +117,12 @@
               <label for="academicYear">Academic Level / Year<span class="req">*</span></label>
               <select id="academicYear" class="form-control" required>
                 <option value="" disabled selected>Select your current year</option>
+                <option value="Level 0 / Preparatory (Prep Year)">Level 0 / Preparatory (Prep Year)</option>
                 <option value="Level 100 / First Year">Level 100 / First Year</option>
                 <option value="Level 200 / Second Year">Level 200 / Second Year</option>
                 <option value="Level 300 / Third Year">Level 300 / Third Year</option>
-                <option value="Level 400 / Fourth Year">Level 400 / Fourth Year</option>
-                <option value="Graduate / Other">Graduate / Other</option>
+                <option value="Level 400 / Fourth Year (Senior)">Level 400 / Fourth Year (Senior)</option>
+                <option value="Graduate / Alumni">Graduate / Alumni</option>
               </select>
             </div>
 
@@ -276,12 +281,14 @@
       hamburgerBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         const isOpen = navMenu.classList.toggle('open');
+        hamburgerBtn.classList.toggle('open', isOpen);
         hamburgerBtn.setAttribute('aria-expanded', isOpen);
       });
 
       document.addEventListener('click', (e) => {
         if (!navMenu.contains(e.target) && !hamburgerBtn.contains(e.target)) {
           navMenu.classList.remove('open');
+          hamburgerBtn.classList.remove('open');
           hamburgerBtn.setAttribute('aria-expanded', false);
         }
       });
@@ -289,6 +296,7 @@
       navMenu.querySelectorAll('a').forEach(link => {
         link.addEventListener('click', () => {
           navMenu.classList.remove('open');
+          hamburgerBtn.classList.remove('open');
           hamburgerBtn.setAttribute('aria-expanded', false);
         });
       });

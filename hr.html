@@ -16,7 +16,7 @@
   <link rel="apple-touch-icon" href="VeloxForWeb_dark.png" />
 
   <!-- Shared Style with Cache Buster -->
-  <link rel="stylesheet" href="style.css?v=2.1" />
+  <link rel="stylesheet" href="style.css?v=2.2" />
   <!-- Supabase JS Client (CDN) -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -28,17 +28,21 @@
       <div class="nav-container">
         <a href="/" class="nav-brand" aria-label="Velox Racing Home">
           <img src="VeloxLogoWeb.png" alt="Velox Racing Crest" class="nav-logo" onerror="this.src='VeloxForWeb_dark.png'" />
-          <span class="nav-title">VELOX RACING</span>
+          <span class="nav-title">
+            VELOX RACING
+            <span class="nav-title-badge">ZNU</span>
+          </span>
         </a>
 
         <ul class="nav-menu" id="navMenu">
           <li><a href="/" class="nav-link">Home</a></li>
           <li><a href="/#about" class="nav-link">About</a></li>
           <li><a href="/team" class="nav-link">Team</a></li>
+          <li class="mobile-menu-cta"><a href="/join" class="btn btn-primary btn-full">Join the Team &rarr;</a></li>
         </ul>
 
         <div class="nav-cta">
-          <a href="/join" class="btn btn-outline" style="font-size: 0.85rem; padding: 6px 14px;">Join Form</a>
+          <a href="/join" class="btn btn-primary">Join Us</a>
           <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation menu" aria-expanded="false">
             <span></span>
             <span></span>
@@ -762,7 +766,37 @@
         .replace(/'/g, '&#39;');
     }
 
-    document.addEventListener('DOMContentLoaded', checkAuthSession);
+    document.addEventListener('DOMContentLoaded', () => {
+      checkAuthSession();
+
+      // Mobile Hamburger Navigation Toggle
+      const hamburgerBtn = document.getElementById('hamburgerBtn');
+      const navMenu = document.getElementById('navMenu');
+      if (hamburgerBtn && navMenu) {
+        hamburgerBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const isOpen = navMenu.classList.toggle('open');
+          hamburgerBtn.classList.toggle('open', isOpen);
+          hamburgerBtn.setAttribute('aria-expanded', isOpen);
+        });
+
+        document.addEventListener('click', (e) => {
+          if (!navMenu.contains(e.target) && !hamburgerBtn.contains(e.target)) {
+            navMenu.classList.remove('open');
+            hamburgerBtn.classList.remove('open');
+            hamburgerBtn.setAttribute('aria-expanded', false);
+          }
+        });
+
+        navMenu.querySelectorAll('a').forEach(link => {
+          link.addEventListener('click', () => {
+            navMenu.classList.remove('open');
+            hamburgerBtn.classList.remove('open');
+            hamburgerBtn.setAttribute('aria-expanded', false);
+          });
+        });
+      }
+    });
 
     // PWA Service Worker Registration & Cache Management
     if ('serviceWorker' in navigator) {
