@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Team Structure — Velox Racing | Zagazig National University</title>
+  <meta name="description" content="Meet the leadership, engineering sub-teams, and operations departments behind Velox Racing at Zagazig National University." />
+  <link rel="icon" type="image/png" href="VeloxForWeb_dark.png" />
+  
+  <!-- Shared Style -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Sticky Minimal Navbar -->
+  <header>
+    <nav class="navbar" id="navbar">
+      <div class="nav-container">
+        <a href="/" class="nav-brand" aria-label="Velox Racing Home">
+          <img src="VeloxLogoWeb.png" alt="Velox Racing Crest" class="nav-logo" onerror="this.src='VeloxForWeb_dark.png'" />
+          <span class="nav-title">VELOX RACING</span>
+        </a>
+
+        <ul class="nav-menu" id="navMenu">
+          <li><a href="/" class="nav-link">Home</a></li>
+          <li><a href="/#about" class="nav-link">About</a></li>
+          <li><a href="/team" class="nav-link active">Team</a></li>
+        </ul>
+
+        <div class="nav-cta">
+          <a href="/join" class="btn btn-primary">Join Us</a>
+          <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation menu" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main style="padding-top: var(--nav-height);">
+    <section class="section">
+      <div class="container">
+        <div class="section-header center">
+          <span class="section-kicker">Organizational Chart</span>
+          <h1 class="section-title">Team Structure</h1>
+          <p class="section-desc">
+            A multidisciplinary hierarchy designed for streamlined engineering workflows, rapid iteration, and strict accountability.
+          </p>
+        </div>
+
+        <!-- Dynamic Org Chart Root -->
+        <div class="team-tree-container" id="orgChartRoot">
+          <!-- Populated from team.js -->
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Consistent Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="/" class="nav-brand">
+            <img src="VeloxLogoWeb.png" alt="Velox Racing" class="nav-logo" onerror="this.src='VeloxForWeb_dark.png'" />
+            <span class="nav-title">VELOX RACING</span>
+          </a>
+          <p>
+            The official Formula Student racing team of Zagazig National University (ZNU), competing at Silverstone Circuit in Formula Student UK.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h5>Navigation</h5>
+          <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/#about">About</a></li>
+            <li><a href="/team">Team Structure</a></li>
+            <li><a href="/join">Join the Team</a></li>
+            <li><a href="/hr">HR Portal</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h5>Connect</h5>
+          <ul>
+            <li><a href="mailto:velox.racing.znu@gmail.com">velox.racing.znu@gmail.com</a></li>
+            <li><a href="https://www.linkedin.com/company/velox-racing-znu" target="_blank" rel="noopener">LinkedIn</a></li>
+            <li><a href="https://www.facebook.com/VeloxRacingZNU" target="_blank" rel="noopener">Facebook</a></li>
+            <li><a href="https://www.instagram.com/velox.racing" target="_blank" rel="noopener">Instagram</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>&copy; 2026 Velox Racing — Zagazig National University. All rights reserved.</span>
+        <span>Formula Student UK &bull; Silverstone</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Team Data Source -->
+  <script src="team.js"></script>
+
+  <script>
+    // Minimal mobile navigation toggle
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const navMenu = document.getElementById('navMenu');
+
+    if (hamburgerBtn && navMenu) {
+      hamburgerBtn.addEventListener('click', () => {
+        const isOpen = navMenu.classList.toggle('open');
+        hamburgerBtn.setAttribute('aria-expanded', isOpen);
+      });
+      navMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          navMenu.classList.remove('open');
+          hamburgerBtn.setAttribute('aria-expanded', false);
+        });
+      });
+    }
+
+    // Helper to get initials
+    function getInitials(name) {
+      if (!name) return "VL";
+      return name.split(" ").map(n => n[0]).slice(0, 2).join("").toUpperCase();
+    }
+
+    // Render Org Chart Tree from VELOX_TEAM
+    function renderOrgChart() {
+      const root = document.getElementById('orgChartRoot');
+      if (!root || !window.VELOX_TEAM) return;
+
+      const data = window.VELOX_TEAM;
+
+      let html = '';
+
+      // Tier 1: Executive Leaders
+      html += `
+        <div class="tree-tier tree-tier-exec">
+          ${data.executives.map(exec => `
+            <div class="person-card">
+              <div class="avatar-circle">
+                ${exec.photo ? `<img src="${exec.photo}" alt="${exec.name}" class="avatar-img" />` : getInitials(exec.name)}
+              </div>
+              <span class="person-role">${exec.role}</span>
+              <h3 class="person-name">${exec.name}</h3>
+              <p class="person-bio">${exec.bio || ''}</p>
+            </div>
+          `).join('')}
+        </div>
+      `;
+
+      // Stem to Tech Lead
+      html += `<div class="tree-stem"></div>`;
+
+      // Tier 2: Technical Leader
+      html += `
+        <div class="tree-tier tree-tier-lead">
+          <div class="person-card">
+            <div class="avatar-circle">
+              ${data.technicalLeader.photo ? `<img src="${data.technicalLeader.photo}" alt="${data.technicalLeader.name}" class="avatar-img" />` : getInitials(data.technicalLeader.name)}
+            </div>
+            <span class="person-role">${data.technicalLeader.role}</span>
+            <h3 class="person-name">${data.technicalLeader.name}</h3>
+            <p class="person-bio">${data.technicalLeader.bio || ''}</p>
+          </div>
+        </div>
+      `;
+
+      // Stem to Technical Departments
+      html += `<div class="tree-stem"></div>`;
+
+      // Tier 3: Technical Departments
+      html += `
+        <div style="width: 100%; margin-top: 16px;">
+          <h3 style="font-size: 1.1rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 16px; text-align: center;">Technical Engineering Divisions</h3>
+          <div class="dept-grid">
+            ${data.technicalDepartments.map(dept => `
+              <div class="dept-card expanded" tabindex="0">
+                <div class="dept-card-header">
+                  <h4 class="dept-name">${dept.name}</h4>
+                  <span style="font-size: 0.75rem; color: var(--red); font-weight: 700; text-transform: uppercase;">Technical</span>
+                </div>
+                ${dept.leader ? `
+                  <div class="dept-lead">
+                    Leader: ${dept.leader.name}
+                  </div>
+                ` : ''}
+                <p class="dept-desc">${dept.description}</p>
+                <div class="dept-subteams-list" style="display: flex;">
+                  ${dept.subteams.map(sub => `
+                    <div class="subteam-pill">&bull; ${sub}</div>
+                  `).join('')}
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+
+      // Non-Technical Departments Section
+      html += `
+        <div style="width: 100%; margin-top: 56px;">
+          <h3 style="font-size: 1.1rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 16px; text-align: center;">Non-Technical & Operations</h3>
+          <div class="dept-grid">
+            ${data.nonTechnical.map(dept => `
+              <div class="dept-card expanded" tabindex="0">
+                <div class="dept-card-header">
+                  <h4 class="dept-name">${dept.name}</h4>
+                  <span style="font-size: 0.75rem; color: var(--text-dim); font-weight: 700; text-transform: uppercase;">Operations</span>
+                </div>
+                ${dept.leader ? `
+                  <div class="dept-lead">
+                    Lead: ${dept.leader.name}
+                  </div>
+                ` : ''}
+                <p class="dept-desc">${dept.description}</p>
+                <div class="dept-subteams-list" style="display: flex;">
+                  ${dept.subteams.map(sub => `
+                    <div class="subteam-pill">&bull; ${sub}</div>
+                  `).join('')}
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+
+      root.innerHTML = html;
+    }
+
+    document.addEventListener('DOMContentLoaded', renderOrgChart);
+  </script>
+</body>
+</html>

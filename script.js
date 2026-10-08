@@ -56,6 +56,8 @@ const translations = {
   en: {
     // Nav
     'nav.home': 'Home',
+    'nav.team': 'Team',
+    'nav.join': 'Join Us',
     'nav.about': 'About',
     'nav.car': 'Chassis VX-01',
     'nav.competition': 'Silverstone UK',
@@ -394,6 +396,66 @@ const translations = {
     'contact.submit': 'Transmit Message to Pit Wall',
     'contact.success': 'Message transmitted successfully to velox.racing.znu@gmail.com! We will contact you soon.',
 
+    // Team Page Translations
+    'team.pageTag': 'ORGANIZATIONAL ARCHITECTURE • FORMULA STUDENT UK',
+    'team.pageTitle': 'Team',
+    'team.pageTitleRed': 'Structure',
+    'team.pageSubtitle': 'The technical leadership, specialized engineering disciplines, and operational departments driving Zagazig National University’s journey to Silverstone Circuit.',
+    'team.badgeExec': 'EXECUTIVE',
+    'team.fatimaName': 'Fatima Salman',
+    'team.fatimaRole': 'Team Leader',
+    'team.fatimaBio': 'Leads overall engineering vision, institutional alignment with Zagazig National University, and international Formula Student UK roadmap.',
+    'team.karimName': 'Karim Shaprawy',
+    'team.karimRole': 'Vice Team Leader',
+    'team.karimBio': 'Directs day-to-day operations, inter-departmental workflows, budget governance, and competition timeline milestones.',
+    'team.badgeEngChief': 'ENGINEERING CHIEF',
+    'team.romyName': 'Mohamed Romy',
+    'team.romyRole': 'Technical Leader',
+    'team.romyBio': 'Head of technical direction across all mechanical and electrical subsystems, ensuring strict compliance with IMechE Formula Student rules.',
+    'team.badgeOpsChief': 'OPERATIONS & BUSINESS',
+    'team.opsName': 'Non-Technical Operations',
+    'team.opsRole': 'HR, Media & Business Director',
+    'team.opsBio': 'Orchestrates talent recruitment, brand communications, sponsorships, and the formal Formula Student Static Business Presentation.',
+    'team.sectionTech': 'Technical Engineering Departments',
+    'team.sectionNonTech': 'Non-Technical & Operations Departments',
+    'team.ctaTitle': 'Ready to Engineer the Future with VELOX?',
+    'team.ctaDesc': 'We are recruiting passionate students across all engineering and non-engineering majors at Zagazig National University. Apply to your choice of sub-team today.',
+    'team.ctaBtn': 'Join The Build Crew',
+
+    // Join Application Translations
+    'join.tag': 'COLLEGIATE MOTORSPORT RECRUITMENT • CLASS OF 2026/2027',
+    'join.title': 'Join The',
+    'join.titleRed': 'Build Crew',
+    'join.subtitle': 'VELOX is Zagazig National University’s official Formula Student engineering team. You will not just study race cars theoretically — you will design, simulate, fabricate, and test an actual formula race car to represent Egypt at Silverstone Circuit, UK.',
+    'join.secPersonal': 'Personal & Academic Credentials',
+    'join.lblFullName': 'Full Name (in English only)',
+    'join.hintFullName': 'As shown on official university ID',
+    'join.lblEmail': 'Email Address',
+    'join.hintEmail': 'We will send your interview invitation here',
+    'join.lblPhone': 'WhatsApp Phone Number',
+    'join.hintPhone': 'Active WhatsApp number for crew updates',
+    'join.lblUnivId': 'University Student ID',
+    'join.hintUnivId': 'Zagazig National University ID number',
+    'join.lblFaculty': 'Faculty / Major',
+    'join.lblAcademicYear': 'Academic Level / Year',
+    'join.secSubteams': 'Sub-team Specialization (From Team Structure)',
+    'join.subteamInstruction': 'Choose your primary discipline and a secondary preference. Sub-team options are aligned with our official organizational chart.',
+    'join.lblSubteam1': 'First-Choice Sub-team',
+    'join.lblSubteam2': 'Second-Choice Sub-team',
+    'join.hintSubteam2': 'Must be different from your first choice',
+    'join.secSkills': 'Relevant Skills & Engineering Tools',
+    'join.lblSkillsSelect': 'Select any tools or competencies you have experience with:',
+    'join.lblSkillsOther': 'Other skills, software, or practical experience:',
+    'join.secCommitment': 'Motivation, Commitment & Portfolio',
+    'join.lblStatement': 'Why do you want to join VELOX Racing Team?',
+    'join.lblTime': 'How much time can you realistically dedicate each week?',
+    'join.lblPortfolio': 'CV / Portfolio / LinkedIn / Drive Link (Optional)',
+    'join.hintPortfolio': 'Ensure Google Drive links have public viewing permissions enabled',
+    'join.btnSubmit': 'Transmit Application to Pit Wall',
+    'join.successTitle': 'Application Transmitted Successfully!',
+    'join.successDesc': 'Welcome to the engineering candidate pool. Your application has been logged into the VELOX Racing pit-wall database. Our technical leads and HR crew will review your submission and contact you via WhatsApp and Email for interview scheduling.',
+    'join.btnBackHome': 'Return to Official Homepage',
+
     // Footer
     'footer.copy': '© 2026/2027 VELOX Racing Team • Zagazig National University. All rights reserved.',
     'footer.sub': 'Engineered From Zero • Powered by Student Ambition.'
@@ -402,6 +464,8 @@ const translations = {
   ar: {
     // Nav
     'nav.home': 'الرئيسية',
+    'nav.team': 'الفريق',
+    'nav.join': 'انضم إلينا',
     'nav.about': 'من نحن',
     'nav.car': 'السيارة VX-01',
     'nav.competition': 'سيلفرستون بريطانيا',
@@ -409,6 +473,66 @@ const translations = {
     'nav.sponsors': 'الشركاء والرعاة',
     'nav.contact': 'تواصل معنا',
     'nav.ctaJoin': 'انضم للبناء',
+
+    // Team Page Translations
+    'team.pageTag': 'الهيكل التنظيمي • مسابقة فورميولا ستيودنت بريطانيا',
+    'team.pageTitle': 'هيكل',
+    'team.pageTitleRed': 'الفريق',
+    'team.pageSubtitle': 'القيادة الهندسية، التخصصات الفنية، والأقسام التشغيلية التي تقود مسيرة جامعة الزقازيق الأهلية إلى حلبة سيلفرستون العالمية.',
+    'team.badgeExec': 'القيادة التنفيذية',
+    'team.fatimaName': 'فاطمة سلمان',
+    'team.fatimaRole': 'قائد الفريق',
+    'team.fatimaBio': 'تقود الرؤية العامة للفريق، التنسيق المؤسسي مع إدارة جامعة الزقازيق الأهلية، وخارطة طريق المشاركة في بريطانيا.',
+    'team.karimName': 'كريم شبراوي',
+    'team.karimRole': 'نائب قائد الفريق',
+    'team.karimBio': 'يدير العمليات اليومية، التنسيق بين الأقسام، الميزانية والالتزام بالجدول الزمني للبطولة.',
+    'team.badgeEngChief': 'القيادة الهندسية',
+    'team.romyName': 'محمد رومي',
+    'team.romyRole': 'القائد التقني',
+    'team.romyBio': 'المشرف على التوجيه الهندسي لكافة الأنظمة الميكانيكية والكهربائية وضمان مطابقة معايير لوائح المسابقة البريطانية.',
+    'team.badgeOpsChief': 'العمليات وإدارة الأعمال',
+    'team.opsName': 'العمليات غير التقنية',
+    'team.opsRole': 'إدارة الموارد البشرية والإعلام والأعمال',
+    'team.opsBio': 'تنسيق توظيف المواهب، التواصل الإعلامي، الرعايات، وعروض خطة العمل الاستثمارية للبطولة.',
+    'team.sectionTech': 'الأقسام الهندسية والتقنية',
+    'team.sectionNonTech': 'الأقسام التشغيلية والإدارية',
+    'team.ctaTitle': 'هل أنت مستعد لبناء المستقبل مع فيلوكس؟',
+    'team.ctaDesc': 'نفتح باب الانضمام لجميع طلاب جامعة الزقازيق الأهلية من مختلف الكليات. قدّم على التخصص الذي يناسب طموحك اليوم.',
+    'team.ctaBtn': 'انضم لفريق البناء',
+
+    // Join Application Translations
+    'join.tag': 'توظيف فريق السباقات • دفعة 2026/2027',
+    'join.title': 'انضم إلى',
+    'join.titleRed': 'فريق البناء',
+    'join.subtitle': 'فيلوكس هو الفريق الهندسي الرسمي لجامعة الزقازيق الأهلية. لن تدرس سيارات السباق نظرياً فقط — بل ستصمم وتصنع وتختبر سيارة سباق حقيقية لتمثيل مصر في حلبة سيلفرستون.',
+    'join.secPersonal': 'البيانات الشخصية والدراسية',
+    'join.lblFullName': 'الاسم بالكامل (باللغة الإنجليزية)',
+    'join.hintFullName': 'كما هو مسجل في بطاقة الجامعة',
+    'join.lblEmail': 'البريد الإلكتروني',
+    'join.hintEmail': 'سيتم إرسال موعد المقابلة عبر هذا الإيميل',
+    'join.lblPhone': 'رقم الهاتف / واتساب',
+    'join.hintPhone': 'رقم واتساب نشط للتواصل الفوري',
+    'join.lblUnivId': 'الرقم الجامعي / رقم الجلوس',
+    'join.hintUnivId': 'الرقم التعريفي بجامعة الزقازيق الأهلية',
+    'join.lblFaculty': 'الكلية / التخصص',
+    'join.lblAcademicYear': 'الفرقة الدراسية / المستوى',
+    'join.secSubteams': 'تحديد التخصص (من هيكل الفريق)',
+    'join.subteamInstruction': 'اختر رغبتك الأولى ورغبتك البديلة. الخيارات متطابقة تماماً مع الهيكل التنظيمي الرسمي.',
+    'join.lblSubteam1': 'الرغبة الأولى (التخصص الأساسي)',
+    'join.lblSubteam2': 'الرغبة الثانية (التخصص البديل)',
+    'join.hintSubteam2': 'يجب أن تكون مختلفة عن الرغبة الأولى',
+    'join.secSkills': 'المهارات والبرامج الهندسية',
+    'join.lblSkillsSelect': 'اختر المهارات أو البرامج التي لديك خبرة بها:',
+    'join.lblSkillsOther': 'مهارات أو خبرات عملية أخرى:',
+    'join.secCommitment': 'الدوافع، الوقت المتاح، وسابقة الأعمال',
+    'join.lblStatement': 'لماذا ترغب في الانضمام لفريق فيلوكس؟',
+    'join.lblTime': 'كم عدد الساعات التي يمكنك تخصيصها للفريق أسبوعياً؟',
+    'join.lblPortfolio': 'رابط السيرة الذاتية / بورتفوليو / لينكد إن (اختياري)',
+    'join.hintPortfolio': 'تأكد من فتح صلاحية العرض لروابط Google Drive',
+    'join.btnSubmit': 'إرسال استمارة الانضمام',
+    'join.successTitle': 'تم إرسال استمارتك بنجاح!',
+    'join.successDesc': 'مرحباً بك ضمن المرشحين. تم تسجيل استمارتك بقاعدة بيانات فيلوكس. ستراجع لجنة التقييم طلبك وسيتم التواصل معك عبر واتساب والإيميل لتحديد المقابلة الشخصية.',
+    'join.btnBackHome': 'العودة للرئيسية',
 
     // Hero
     'hero.badge': 'جامعة الزقازيق الأهلية • فريق سباقات السيارات الرسمي • انطلاقة سيلفرستون بريطانيا',
@@ -833,7 +957,7 @@ document.addEventListener('DOMContentLoaded', () => {
     ambientVideo.addEventListener('ended', () => {
       ambientVideo.currentTime = 0;
       ambientVideo.playbackRate = 0.55;
-      ambientVideo.play().catch(() => {});
+      ambientVideo.play().catch(() => { });
     });
 
     // Seamless loop continuity
@@ -841,7 +965,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (ambientVideo.duration && ambientVideo.currentTime >= ambientVideo.duration - 0.25) {
         ambientVideo.currentTime = 0;
         ambientVideo.playbackRate = 0.55;
-        ambientVideo.play().catch(() => {});
+        ambientVideo.play().catch(() => { });
       }
     });
 
@@ -1115,7 +1239,7 @@ document.addEventListener('DOMContentLoaded', () => {
       videoModal.classList.add('open');
       document.body.style.overflow = 'hidden';
       modalVideoPlayer.currentTime = 0;
-      modalVideoPlayer.play().catch(() => {});
+      modalVideoPlayer.play().catch(() => { });
     };
     const closeModal = () => {
       videoModal.classList.remove('open');
@@ -1150,7 +1274,7 @@ document.addEventListener('DOMContentLoaded', () => {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(data),
         });
-        
+
         if (response.ok) {
           submitBtn.style.display = 'none';
           formSuccess.style.display = 'block';

@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>HR Portal — Velox Racing | Zagazig National University</title>
+  <link rel="icon" type="image/png" href="VeloxForWeb_dark.png" />
+  
+  <!-- Shared Style -->
+  <link rel="stylesheet" href="style.css" />
+  <!-- Supabase JS Client (CDN) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+  <!-- Sticky Minimal Navbar -->
+  <header>
+    <nav class="navbar" id="navbar">
+      <div class="nav-container">
+        <a href="/" class="nav-brand" aria-label="Velox Racing Home">
+          <img src="VeloxLogoWeb.png" alt="Velox Racing Crest" class="nav-logo" onerror="this.src='VeloxForWeb_dark.png'" />
+          <span class="nav-title">VELOX RACING</span>
+        </a>
+
+        <ul class="nav-menu" id="navMenu">
+          <li><a href="/" class="nav-link">Home</a></li>
+          <li><a href="/#about" class="nav-link">About</a></li>
+          <li><a href="/team" class="nav-link">Team</a></li>
+        </ul>
+
+        <div class="nav-cta">
+          <a href="/join" class="btn btn-outline" style="font-size: 0.85rem; padding: 6px 14px;">Join Form</a>
+          <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation menu" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main style="padding-top: var(--nav-height); min-height: 80vh;">
+    <!-- 1. LOGIN VIEW -->
+    <section class="section" id="hrLoginSection">
+      <div class="container">
+        <div class="hr-box">
+          <div style="margin-bottom: 16px;">
+            <img src="VeloxLogoWeb.png" alt="Velox Logo" style="height: 36px; margin: 0 auto;" onerror="this.src='VeloxForWeb_dark.png'" />
+          </div>
+          <h2>HR & Team Lead Portal</h2>
+          <p class="text-muted">Sign in with authorized credentials to review candidate applications.</p>
+
+          <div class="form-alert error" id="loginAlert" role="alert" style="display: none; margin-bottom: 16px;"></div>
+
+          <form id="hrLoginForm">
+            <div class="form-group" style="text-align: left;">
+              <label for="hrEmail">Authorized Email</label>
+              <input type="email" id="hrEmail" class="form-control" placeholder="hr@velox-racing.com" required autocomplete="username" />
+            </div>
+
+            <div class="form-group" style="text-align: left;">
+              <label for="hrPassword">Password</label>
+              <input type="password" id="hrPassword" class="form-control" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" required autocomplete="current-password" />
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-full" id="loginSubmitBtn" style="margin-top: 10px;">
+              Sign In to Dashboard
+            </button>
+          </form>
+
+          <div id="demoNotice" style="margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border); font-size: 0.78rem; color: var(--text-dim); text-align: left;">
+            <p style="margin-bottom: 8px;"><strong>Note for Admins:</strong> Link your Supabase Project in <code>config.js</code>. While unconfigured, click below to inspect demo applicant data:</p>
+            <button type="button" class="btn btn-outline btn-full" id="demoLoginBtn" style="font-size: 0.8rem; padding: 6px 12px;">
+              Enter Demo Mode
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. DASHBOARD VIEW -->
+    <section class="section" id="hrDashboardSection" style="display: none; padding-top: 40px;">
+      <div class="container">
+        <!-- Dashboard Header -->
+        <div class="hr-header-bar">
+          <div>
+            <span class="section-kicker">Recruitment Operations</span>
+            <h1 style="font-size: 1.8rem;">Applicant Dashboard</h1>
+            <span id="activeUserLabel" style="font-size: 0.82rem; color: var(--text-dim);">Logged in</span>
+          </div>
+
+          <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+            <button type="button" class="btn btn-outline" id="exportCsvBtn">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 4px;">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+              Export CSV
+            </button>
+            <button type="button" class="btn btn-outline" id="logoutBtn" style="color: var(--red);">
+              Logout
+            </button>
+          </div>
+        </div>
+
+        <!-- Metrics Row -->
+        <div class="hr-stats-row">
+          <div class="hr-stat-card">
+            <div class="hr-stat-lbl">Total</div>
+            <div class="hr-stat-val" id="statTotal">0</div>
+          </div>
+          <div class="hr-stat-card">
+            <div class="hr-stat-lbl" style="color: var(--status-new);">New</div>
+            <div class="hr-stat-val" id="statNew">0</div>
+          </div>
+          <div class="hr-stat-card">
+            <div class="hr-stat-lbl" style="color: var(--status-reviewed);">Reviewed</div>
+            <div class="hr-stat-val" id="statReviewed">0</div>
+          </div>
+          <div class="hr-stat-card">
+            <div class="hr-stat-lbl" style="color: var(--status-interview);">Interview</div>
+            <div class="hr-stat-val" id="statInterview">0</div>
+          </div>
+          <div class="hr-stat-card">
+            <div class="hr-stat-lbl" style="color: var(--status-accepted);">Accepted</div>
+            <div class="hr-stat-val" id="statAccepted">0</div>
+          </div>
+          <div class="hr-stat-card">
+            <div class="hr-stat-lbl" style="color: var(--status-rejected);">Rejected</div>
+            <div class="hr-stat-val" id="statRejected">0</div>
+          </div>
+        </div>
+
+        <!-- Filter Controls -->
+        <div class="hr-controls-bar">
+          <input type="text" id="searchInput" class="form-control hr-search" placeholder="Search by candidate name, email, or ID..." />
+          <select id="subteamFilter" class="form-control" style="max-width: 260px;">
+            <option value="">All Sub-teams</option>
+          </select>
+          <select id="statusFilter" class="form-control" style="max-width: 180px;">
+            <option value="">All Statuses</option>
+            <option value="New">New</option>
+            <option value="Reviewed">Reviewed</option>
+            <option value="Interview">Interview</option>
+            <option value="Accepted">Accepted</option>
+            <option value="Rejected">Rejected</option>
+          </select>
+        </div>
+
+        <!-- Applicants Table -->
+        <div class="hr-table-wrap">
+          <table class="hr-table" id="applicantsTable">
+            <thead>
+              <tr>
+                <th>Applicant</th>
+                <th>1st Choice</th>
+                <th>2nd Choice</th>
+                <th>Applied Date</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="applicantsTableBody">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+          <div id="noDataNotice" style="display: none; padding: 40px; text-align: center; color: var(--text-dim);">
+            No applications match the current filter criteria.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. SLIDE-OUT APPLICANT DETAIL DRAWER -->
+    <div class="drawer-backdrop" id="detailDrawer">
+      <div class="drawer-panel" role="dialog" aria-modal="true" aria-labelledby="drawerApplicantName">
+        <!-- Drawer Header -->
+        <div class="drawer-header">
+          <div>
+            <span class="section-kicker" id="drawerAppId">APPLICATION</span>
+            <h2 id="drawerApplicantName" style="font-size: 1.4rem; margin-top: 2px;">Candidate Name</h2>
+          </div>
+          <button type="button" id="closeDrawerBtn" aria-label="Close details" style="background: transparent; border: none; font-size: 1.5rem; color: var(--text-muted); cursor: pointer; padding: 4px 8px;">
+            &times;
+          </button>
+        </div>
+
+        <!-- Status & HR Actions Card -->
+        <div class="drawer-section" style="border-left: 3px solid var(--red);">
+          <h4>HR Status &amp; Notes</h4>
+          <div style="margin-bottom: 12px;">
+            <label style="font-size: 0.75rem; color: var(--text-dim); display: block; margin-bottom: 4px;">Update Status:</label>
+            <select id="drawerStatusSelect" class="form-control" style="font-weight: 600;">
+              <option value="New">New</option>
+              <option value="Reviewed">Reviewed</option>
+              <option value="Interview">Interview</option>
+              <option value="Accepted">Accepted</option>
+              <option value="Rejected">Rejected</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-size: 0.75rem; color: var(--text-dim); display: block; margin-bottom: 4px;">Internal HR Notes:</label>
+            <textarea id="drawerNotes" rows="3" class="form-control" placeholder="Interview score, technical remarks, attendance notes..."></textarea>
+            <button type="button" id="saveNotesBtn" class="btn btn-outline" style="margin-top: 8px; font-size: 0.8rem; padding: 6px 12px;">
+              Save Status &amp; Notes
+            </button>
+          </div>
+        </div>
+
+        <!-- Academic & Contact Info -->
+        <div class="drawer-section">
+          <h4>Academic &amp; Contact</h4>
+          <div class="keyval-grid">
+            <div class="keyval-item">
+              <div class="lbl">Email</div>
+              <div class="val" id="drawerEmail">-</div>
+            </div>
+            <div class="keyval-item">
+              <div class="lbl">Phone / WhatsApp</div>
+              <div class="val" id="drawerPhone">-</div>
+            </div>
+            <div class="keyval-item">
+              <div class="lbl">University ID</div>
+              <div class="val" id="drawerUniId">-</div>
+            </div>
+            <div class="keyval-item">
+              <div class="lbl">Faculty</div>
+              <div class="val" id="drawerFaculty">-</div>
+            </div>
+            <div class="keyval-item">
+              <div class="lbl">Academic Year</div>
+              <div class="val" id="drawerYear">-</div>
+            </div>
+            <div class="keyval-item">
+              <div class="lbl">Weekly Availability</div>
+              <div class="val" id="drawerCommitment">-</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sub-team Preferences -->
+        <div class="drawer-section">
+          <h4>Subsystem Choices</h4>
+          <div class="keyval-grid">
+            <div class="keyval-item">
+              <div class="lbl">1st Choice</div>
+              <div class="val text-red" id="drawerSubteam1">-</div>
+            </div>
+            <div class="keyval-item">
+              <div class="lbl">2nd Choice</div>
+              <div class="val" id="drawerSubteam2">-</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Skills & Statement -->
+        <div class="drawer-section">
+          <h4>Skills &amp; Experience</h4>
+          <p id="drawerSkills" style="font-size: 0.88rem; color: var(--text);">-</p>
+        </div>
+
+        <div class="drawer-section">
+          <h4>Statement of Purpose</h4>
+          <p id="drawerWhy" style="font-size: 0.88rem; color: var(--text); line-height: 1.6; white-space: pre-wrap;">-</p>
+        </div>
+
+        <div class="drawer-section" id="drawerPortfolioSection">
+          <h4>CV / Portfolio Link</h4>
+          <a id="drawerPortfolioLink" href="#" target="_blank" rel="noopener" class="text-red" style="font-size: 0.88rem; word-break: break-all;">-</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Consistent Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="/" class="nav-brand">
+            <img src="VeloxLogoWeb.png" alt="Velox Racing" class="nav-logo" onerror="this.src='VeloxForWeb_dark.png'" />
+            <span class="nav-title">VELOX RACING</span>
+          </a>
+          <p>
+            The official Formula Student racing team of Zagazig National University (ZNU), competing at Silverstone Circuit in Formula Student UK.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h5>Navigation</h5>
+          <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="/team">Team Structure</a></li>
+            <li><a href="/join">Join the Team</a></li>
+            <li><a href="/hr">HR Portal</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h5>Connect</h5>
+          <ul>
+            <li><a href="mailto:velox.racing.znu@gmail.com">velox.racing.znu@gmail.com</a></li>
+            <li><a href="https://www.linkedin.com/company/velox-racing-znu" target="_blank" rel="noopener">LinkedIn</a></li>
+            <li><a href="https://www.facebook.com/VeloxRacingZNU" target="_blank" rel="noopener">Facebook</a></li>
+            <li><a href="https://www.instagram.com/velox.racing" target="_blank" rel="noopener">Instagram</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>&copy; 2026 Velox Racing — Zagazig National University. All rights reserved.</span>
+        <span>Formula Student UK &bull; Silverstone</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- App Configuration & Team Data -->
+  <script src="config.js"></script>
+  <script src="team.js"></script>
+
+  <script>
+    // State
+    let supabaseClient = null;
+    let applications = [];
+    let currentApplicant = null;
+    let isDemoMode = false;
+
+    // Mobile nav toggle
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const navMenu = document.getElementById('navMenu');
+    if (hamburgerBtn && navMenu) {
+      hamburgerBtn.addEventListener('click', () => {
+        navMenu.classList.toggle('open');
+      });
+    }
+
+    // Initialize Supabase Client
+    function initSupabase() {
+      const cfg = window.VELOX_CONFIG || {};
+      if (cfg.url && cfg.anonKey && !cfg.url.includes('your-project-id') && window.supabase) {
+        supabaseClient = window.supabase.createClient(cfg.url, cfg.anonKey);
+      }
+    }
+
+    // Check active session on load
+    async function checkAuthSession() {
+      initSupabase();
+
+      if (supabaseClient) {
+        const { data: { session } } = await supabaseClient.auth.getSession();
+        if (session) {
+          showDashboard(session.user.email);
+          return;
+        }
+      }
+
+      // Check if session was active in demo mode
+      if (sessionStorage.getItem('velox_demo_hr_auth') === 'true') {
+        showDashboard('demo.hr@velox-racing.com');
+        return;
+      }
+
+      // Show login view
+      showLogin();
+    }
+
+    function showLogin() {
+      document.getElementById('hrLoginSection').style.display = 'block';
+      document.getElementById('hrDashboardSection').style.display = 'none';
+    }
+
+    function showDashboard(userEmail) {
+      document.getElementById('hrLoginSection').style.display = 'none';
+      document.getElementById('hrDashboardSection').style.display = 'block';
+      document.getElementById('activeUserLabel').textContent = `Logged in as: ${userEmail}`;
+      loadSubteamFilter();
+      fetchApplications();
+    }
+
+    // Populate sub-team filter dropdown
+    function loadSubteamFilter() {
+      const select = document.getElementById('subteamFilter');
+      if (!select || typeof getSubteamsList !== 'function') return;
+      const subteams = getSubteamsList();
+      select.innerHTML = '<option value="">All Sub-teams</option>';
+      subteams.forEach(s => {
+        select.innerHTML += `<option value="${s}">${s}</option>`;
+      });
+    }
+
+    // Fetch applications from Supabase or Local Demo Cache
+    async function fetchApplications() {
+      if (supabaseClient && !isDemoMode) {
+        const { data, error } = await supabaseClient
+          .from('applications')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        if (error) {
+          console.error('Error fetching applications from Supabase:', error);
+          alert('Could not fetch applications from database: ' + error.message);
+          return;
+        }
+        applications = data || [];
+      } else {
+        // Fallback / Demo data
+        const localApps = JSON.parse(localStorage.getItem('velox_mock_applications') || '[]');
+        const seedApps = [
+          {
+            id: "APP-001",
+            created_at: "2026-10-07T14:30:00Z",
+            full_name: "Omar Mostafa",
+            email: "omar.mostafa@eng.zu.edu.eg",
+            phone: "01098765432",
+            university_id: "202300411",
+            faculty: "Engineering — Mechatronics",
+            academic_year: "Level 200 / Second Year",
+            subteam_first: "Vehicle Dynamics — Suspension",
+            subteam_second: "Body & Chassis — Chassis",
+            skills: "SolidWorks, MATLAB / Simulink, Vehicle Dynamics",
+            why_join: "Passionate about suspension kinematics and tire load modeling. I want to contribute to the double-wishbone geometry of Chassis VX-01 for Silverstone UK.",
+            time_commitment: "5 to 10 hours",
+            portfolio_url: "https://linkedin.com",
+            status: "Interview",
+            hr_notes: "Strong CAD knowledge. Scheduled for technical interview."
+          },
+          {
+            id: "APP-002",
+            created_at: "2026-10-08T09:15:00Z",
+            full_name: "Nouran Elsayed",
+            email: "nouran.elsayed@cis.zu.edu.eg",
+            phone: "01123456789",
+            university_id: "202401890",
+            faculty: "Computer & Information Sciences (AI / Aviation)",
+            academic_year: "Level 100 / First Year",
+            subteam_first: "Electrical — DAQ & Telemetry",
+            subteam_second: "Electrical — Wiring Loom",
+            skills: "C++ / Embedded, PCB Design, Microcontrollers",
+            why_join: "Experienced in STM32 and CAN-bus telemetry. Want to develop real-time wireless telemetry streaming for the pit wall.",
+            time_commitment: "10+ hours",
+            portfolio_url: "https://github.com",
+            status: "New",
+            hr_notes: ""
+          },
+          {
+            id: "APP-003",
+            created_at: "2026-10-08T10:00:00Z",
+            full_name: "Youssef Tarek",
+            email: "youssef.tarek@biz.zu.edu.eg",
+            phone: "01234567890",
+            university_id: "202203155",
+            faculty: "Business / Commerce",
+            academic_year: "Level 300 / Third Year",
+            subteam_first: "Business (Team Director) — Corporate Relations & Sponsorship",
+            subteam_second: "Media & PR — Social Media & Public Relations",
+            skills: "Sponsorship & PR, Project Management",
+            why_join: "Keen to secure automotive sponsorships and manage the corporate partners pipeline for our UK campaign.",
+            time_commitment: "5 to 10 hours",
+            portfolio_url: "",
+            status: "Reviewed",
+            hr_notes: "Strong presentation and communication."
+          }
+        ];
+
+        applications = localApps.length > 0 ? localApps : seedApps;
+      }
+
+      renderTable();
+      updateMetrics();
+    }
+
+    // Render Table based on Search & Filters
+    function renderTable() {
+      const tbody = document.getElementById('applicantsTableBody');
+      const noData = document.getElementById('noDataNotice');
+      const search = document.getElementById('searchInput').value.toLowerCase().trim();
+      const subteam = document.getElementById('subteamFilter').value;
+      const status = document.getElementById('statusFilter').value;
+
+      const filtered = applications.filter(app => {
+        const matchSearch = !search || 
+          (app.full_name && app.full_name.toLowerCase().includes(search)) ||
+          (app.email && app.email.toLowerCase().includes(search)) ||
+          (app.university_id && app.university_id.toLowerCase().includes(search));
+
+        const matchSubteam = !subteam || 
+          app.subteam_first === subteam || 
+          app.subteam_second === subteam;
+
+        const matchStatus = !status || app.status === status;
+
+        return matchSearch && matchSubteam && matchStatus;
+      });
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = '';
+        noData.style.display = 'block';
+        return;
+      }
+
+      noData.style.display = 'none';
+      tbody.innerHTML = filtered.map(app => {
+        const dateStr = app.created_at ? new Date(app.created_at).toLocaleDateString() : 'Recent';
+        const statusClass = `badge-${(app.status || 'new').toLowerCase()}`;
+
+        return `
+          <tr class="clickable" onclick="openDrawer('${app.id}')">
+            <td>
+              <div style="font-weight: 600; color: var(--text);">${escapeHtml(app.full_name)}</div>
+              <div style="font-size: 0.78rem; color: var(--text-dim);">${escapeHtml(app.email)} &bull; ${escapeHtml(app.university_id || '')}</div>
+            </td>
+            <td><span style="font-size: 0.85rem; color: var(--red); font-weight: 500;">${escapeHtml(app.subteam_first || '-')}</span></td>
+            <td><span style="font-size: 0.85rem; color: var(--text-muted);">${escapeHtml(app.subteam_second || '-')}</span></td>
+            <td style="font-size: 0.82rem; white-space: nowrap;">${dateStr}</td>
+            <td><span class="badge ${statusClass}">${escapeHtml(app.status || 'New')}</span></td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // Update Top Stat Cards
+    function updateMetrics() {
+      document.getElementById('statTotal').textContent = applications.length;
+      document.getElementById('statNew').textContent = applications.filter(a => a.status === 'New').length;
+      document.getElementById('statReviewed').textContent = applications.filter(a => a.status === 'Reviewed').length;
+      document.getElementById('statInterview').textContent = applications.filter(a => a.status === 'Interview').length;
+      document.getElementById('statAccepted').textContent = applications.filter(a => a.status === 'Accepted').length;
+      document.getElementById('statRejected').textContent = applications.filter(a => a.status === 'Rejected').length;
+    }
+
+    // Open Drawer for Applicant
+    window.openDrawer = function(id) {
+      currentApplicant = applications.find(a => a.id === id);
+      if (!currentApplicant) return;
+
+      document.getElementById('drawerAppId').textContent = `ID: ${currentApplicant.id || 'N/A'}`;
+      document.getElementById('drawerApplicantName').textContent = currentApplicant.full_name || 'Candidate';
+      document.getElementById('drawerEmail').textContent = currentApplicant.email || '-';
+      document.getElementById('drawerPhone').textContent = currentApplicant.phone || '-';
+      document.getElementById('drawerUniId').textContent = currentApplicant.university_id || '-';
+      document.getElementById('drawerFaculty').textContent = currentApplicant.faculty || '-';
+      document.getElementById('drawerYear').textContent = currentApplicant.academic_year || '-';
+      document.getElementById('drawerCommitment').textContent = currentApplicant.time_commitment || '-';
+      document.getElementById('drawerSubteam1').textContent = currentApplicant.subteam_first || '-';
+      document.getElementById('drawerSubteam2').textContent = currentApplicant.subteam_second || '-';
+      document.getElementById('drawerSkills').textContent = currentApplicant.skills || 'None listed';
+      document.getElementById('drawerWhy').textContent = currentApplicant.why_join || 'No statement provided.';
+
+      const portSec = document.getElementById('drawerPortfolioSection');
+      const portLink = document.getElementById('drawerPortfolioLink');
+      if (currentApplicant.portfolio_url) {
+        portSec.style.display = 'block';
+        portLink.href = currentApplicant.portfolio_url;
+        portLink.textContent = currentApplicant.portfolio_url;
+      } else {
+        portSec.style.display = 'none';
+      }
+
+      document.getElementById('drawerStatusSelect').value = currentApplicant.status || 'New';
+      document.getElementById('drawerNotes').value = currentApplicant.hr_notes || '';
+
+      document.getElementById('detailDrawer').classList.add('open');
+    };
+
+    function closeDrawer() {
+      document.getElementById('detailDrawer').classList.remove('open');
+      currentApplicant = null;
+    }
+
+    document.getElementById('closeDrawerBtn').addEventListener('click', closeDrawer);
+    document.getElementById('detailDrawer').addEventListener('click', (e) => {
+      if (e.target.id === 'detailDrawer') closeDrawer();
+    });
+
+    // Save Status & Notes to Supabase
+    document.getElementById('saveNotesBtn').addEventListener('click', async () => {
+      if (!currentApplicant) return;
+      const newStatus = document.getElementById('drawerStatusSelect').value;
+      const notes = document.getElementById('drawerNotes').value.trim();
+
+      const btn = document.getElementById('saveNotesBtn');
+      btn.disabled = true;
+      btn.textContent = 'Saving...';
+
+      if (supabaseClient && !isDemoMode) {
+        const { error } = await supabaseClient
+          .from('applications')
+          .update({ status: newStatus, hr_notes: notes })
+          .eq('id', currentApplicant.id);
+
+        if (error) {
+          alert('Failed to update application: ' + error.message);
+          btn.disabled = false;
+          btn.textContent = 'Save Status & Notes';
+          return;
+        }
+      }
+
+      // Update in local state
+      currentApplicant.status = newStatus;
+      currentApplicant.hr_notes = notes;
+
+      // Update in localStorage if mock
+      const localApps = JSON.parse(localStorage.getItem('velox_mock_applications') || '[]');
+      const idx = localApps.findIndex(a => a.id === currentApplicant.id);
+      if (idx !== -1) {
+        localApps[idx].status = newStatus;
+        localApps[idx].hr_notes = notes;
+        localStorage.setItem('velox_mock_applications', JSON.stringify(localApps));
+      }
+
+      btn.disabled = false;
+      btn.textContent = 'Saved!';
+      setTimeout(() => { btn.textContent = 'Save Status & Notes'; }, 1500);
+
+      renderTable();
+      updateMetrics();
+    });
+
+    // Search and Filter Events
+    document.getElementById('searchInput').addEventListener('input', renderTable);
+    document.getElementById('subteamFilter').addEventListener('change', renderTable);
+    document.getElementById('statusFilter').addEventListener('change', renderTable);
+
+    // Export Filtered Table to CSV
+    document.getElementById('exportCsvBtn').addEventListener('click', () => {
+      if (!applications.length) {
+        alert('No applications to export.');
+        return;
+      }
+
+      const headers = ["ID", "Full Name", "Email", "Phone", "University ID", "Faculty", "Academic Year", "1st Choice", "2nd Choice", "Time Commitment", "Skills", "Why Join", "Portfolio", "Status", "HR Notes", "Date"];
+      
+      const rows = applications.map(app => [
+        `"${(app.id || '').replace(/"/g, '""')}"`,
+        `"${(app.full_name || '').replace(/"/g, '""')}"`,
+        `"${(app.email || '').replace(/"/g, '""')}"`,
+        `"${(app.phone || '').replace(/"/g, '""')}"`,
+        `"${(app.university_id || '').replace(/"/g, '""')}"`,
+        `"${(app.faculty || '').replace(/"/g, '""')}"`,
+        `"${(app.academic_year || '').replace(/"/g, '""')}"`,
+        `"${(app.subteam_first || '').replace(/"/g, '""')}"`,
+        `"${(app.subteam_second || '').replace(/"/g, '""')}"`,
+        `"${(app.time_commitment || '').replace(/"/g, '""')}"`,
+        `"${(app.skills || '').replace(/"/g, '""')}"`,
+        `"${(app.why_join || '').replace(/"/g, '""')}"`,
+        `"${(app.portfolio_url || '').replace(/"/g, '""')}"`,
+        `"${(app.status || '').replace(/"/g, '""')}"`,
+        `"${(app.hr_notes || '').replace(/"/g, '""')}"`,
+        `"${(app.created_at || '').replace(/"/g, '""')}"`
+      ]);
+
+      const csvContent = "\uFEFF" + [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.setAttribute('href', url);
+      link.setAttribute('download', `velox_applications_${new Date().toISOString().slice(0, 10)}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    });
+
+    // Login Form Submit Handler
+    document.getElementById('hrLoginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('hrEmail').value.trim();
+      const password = document.getElementById('hrPassword').value;
+      const alertBox = document.getElementById('loginAlert');
+      const submitBtn = document.getElementById('loginSubmitBtn');
+
+      alertBox.style.display = 'none';
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Verifying credentials...';
+
+      initSupabase();
+
+      if (supabaseClient) {
+        const { data, error } = await supabaseClient.auth.signInWithPassword({
+          email: email,
+          password: password
+        });
+
+        if (error) {
+          alertBox.textContent = error.message;
+          alertBox.style.display = 'block';
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Sign In to Dashboard';
+          return;
+        }
+
+        showDashboard(data.user.email);
+      } else {
+        // Fallback demo login
+        if (password === 'velox2026' || password === 'admin') {
+          sessionStorage.setItem('velox_demo_hr_auth', 'true');
+          isDemoMode = true;
+          showDashboard(email);
+        } else {
+          alertBox.textContent = 'Invalid credentials. Link Supabase in config.js or use Demo Mode below.';
+          alertBox.style.display = 'block';
+        }
+      }
+
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Sign In to Dashboard';
+    });
+
+    // Demo Mode Button
+    document.getElementById('demoLoginBtn').addEventListener('click', () => {
+      sessionStorage.setItem('velox_demo_hr_auth', 'true');
+      isDemoMode = true;
+      showDashboard('demo.lead@velox-racing.com');
+    });
+
+    // Logout Handler
+    document.getElementById('logoutBtn').addEventListener('click', async () => {
+      if (supabaseClient) {
+        await supabaseClient.auth.signOut();
+      }
+      sessionStorage.removeItem('velox_demo_hr_auth');
+      isDemoMode = false;
+      applications = [];
+      showLogin();
+    });
+
+    // Helper: Escape HTML
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    document.addEventListener('DOMContentLoaded', checkAuthSession);
+  </script>
+</body>
+</html>

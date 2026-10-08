@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Join the Team — Velox Racing | Zagazig National University</title>
+  <meta name="description" content="Apply to join Velox Racing, Zagazig National University's Formula Student team. Technical engineering and operations divisions recruiting now." />
+  <link rel="icon" type="image/png" href="VeloxForWeb_dark.png" />
+  
+  <!-- Shared Style -->
+  <link rel="stylesheet" href="style.css" />
+  <!-- Supabase JS Client (CDN) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+  <!-- Sticky Minimal Navbar -->
+  <header>
+    <nav class="navbar" id="navbar">
+      <div class="nav-container">
+        <a href="/" class="nav-brand" aria-label="Velox Racing Home">
+          <img src="VeloxLogoWeb.png" alt="Velox Racing Crest" class="nav-logo" onerror="this.src='VeloxForWeb_dark.png'" />
+          <span class="nav-title">VELOX RACING</span>
+        </a>
+
+        <ul class="nav-menu" id="navMenu">
+          <li><a href="/" class="nav-link">Home</a></li>
+          <li><a href="/#about" class="nav-link">About</a></li>
+          <li><a href="/team" class="nav-link">Team</a></li>
+        </ul>
+
+        <div class="nav-cta">
+          <a href="/join" class="btn btn-primary">Join Us</a>
+          <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation menu" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main style="padding-top: var(--nav-height);">
+    <section class="section">
+      <div class="container">
+        <div class="section-header center">
+          <span class="section-kicker">Recruitment Season 2026</span>
+          <h1 class="section-title">Join Velox Racing</h1>
+          <p class="section-desc">
+            Complete the official application below. No prior motorsport experience required — passion, problem-solving, and dedication are what define our crew.
+          </p>
+        </div>
+
+        <div class="form-card">
+          <!-- Alert Box -->
+          <div class="form-alert error" id="formAlert" role="alert"></div>
+
+          <!-- Application Form -->
+          <form id="joinForm" novalidate>
+            <!-- Anti-Spam Honeypot (Hidden) -->
+            <input type="text" name="b_company_verification" id="bHp" class="hp-field" tabindex="-1" autocomplete="off" />
+
+            <!-- 1. Full Name -->
+            <div class="form-group">
+              <label for="fullName">Full Name (English)<span class="req">*</span></label>
+              <input type="text" id="fullName" class="form-control" placeholder="e.g. Mostafa Ahmed" required />
+            </div>
+
+            <!-- 2. Email & Phone -->
+            <div class="form-row">
+              <div class="form-group">
+                <label for="email">University / Personal Email<span class="req">*</span></label>
+                <input type="email" id="email" class="form-control" placeholder="name@domain.com" required />
+                <span class="hint">Only one application allowed per email</span>
+              </div>
+              <div class="form-group">
+                <label for="phone">Phone / WhatsApp Number<span class="req">*</span></label>
+                <input type="tel" id="phone" class="form-control" placeholder="010XXXXXXXX" required />
+              </div>
+            </div>
+
+            <!-- 3. University ID & Faculty -->
+            <div class="form-row">
+              <div class="form-group">
+                <label for="universityId">University ID / Student ID<span class="req">*</span></label>
+                <input type="text" id="universityId" class="form-control" placeholder="e.g. 202300123" required />
+              </div>
+              <div class="form-group">
+                <label for="faculty">Faculty / Department<span class="req">*</span></label>
+                <select id="faculty" class="form-control" required>
+                  <option value="" disabled selected>Select your faculty</option>
+                  <option value="Engineering — Mechatronics">Engineering — Mechatronics</option>
+                  <option value="Engineering — Mechanical">Engineering — Mechanical</option>
+                  <option value="Engineering — Electrical">Engineering — Electrical</option>
+                  <option value="Computer & Information Sciences (AI / Aviation)">Computer & Informatics (AI / Aviation)</option>
+                  <option value="Business / Commerce">Business / Commerce</option>
+                  <option value="Other Faculty">Other Faculty</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- 4. Academic Year -->
+            <div class="form-group">
+              <label for="academicYear">Academic Level / Year<span class="req">*</span></label>
+              <select id="academicYear" class="form-control" required>
+                <option value="" disabled selected>Select your current year</option>
+                <option value="Level 100 / First Year">Level 100 / First Year</option>
+                <option value="Level 200 / Second Year">Level 200 / Second Year</option>
+                <option value="Level 300 / Third Year">Level 300 / Third Year</option>
+                <option value="Level 400 / Fourth Year">Level 400 / Fourth Year</option>
+                <option value="Graduate / Other">Graduate / Other</option>
+              </select>
+            </div>
+
+            <!-- 5. Sub-team Choices -->
+            <div class="form-row">
+              <div class="form-group">
+                <label for="subteamFirst">1st Choice Sub-team<span class="req">*</span></label>
+                <select id="subteamFirst" class="form-control" required>
+                  <option value="" disabled selected>Loading subteams...</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="subteamSecond">2nd Choice Sub-team<span class="req">*</span></label>
+                <select id="subteamSecond" class="form-control" required>
+                  <option value="" disabled selected>Loading subteams...</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- 6. Weekly Time Dedication -->
+            <div class="form-group">
+              <label>Weekly Time Commitment<span class="req">*</span></label>
+              <div class="radio-group">
+                <label class="radio-pill">
+                  <input type="radio" name="timeCommitment" value="< 3 hours" />
+                  &lt; 3 hours
+                </label>
+                <label class="radio-pill">
+                  <input type="radio" name="timeCommitment" value="3 to 5 hours" />
+                  3 to 5 hrs
+                </label>
+                <label class="radio-pill active">
+                  <input type="radio" name="timeCommitment" value="5 to 10 hours" checked />
+                  5 to 10 hrs
+                </label>
+                <label class="radio-pill">
+                  <input type="radio" name="timeCommitment" value="10+ hours" />
+                  10+ hrs
+                </label>
+              </div>
+            </div>
+
+            <!-- 7. Relevant Skills & Experience -->
+            <div class="form-group">
+              <label>Relevant Skills & Software Tools</label>
+              <span class="hint">Select any that apply to your background:</span>
+              <div class="chips-wrap" id="skillsChips">
+                <label class="chip-label"><input type="checkbox" value="SolidWorks" /> SolidWorks / CAD</label>
+                <label class="chip-label"><input type="checkbox" value="Ansys / FEA" /> Ansys / FEA</label>
+                <label class="chip-label"><input type="checkbox" value="CFD Simulation" /> CFD Simulation</label>
+                <label class="chip-label"><input type="checkbox" value="MATLAB / Simulink" /> MATLAB / Simulink</label>
+                <label class="chip-label"><input type="checkbox" value="C++ / Embedded" /> C++ / Embedded</label>
+                <label class="chip-label"><input type="checkbox" value="PCB Design" /> PCB Design</label>
+                <label class="chip-label"><input type="checkbox" value="Welding & Machining" /> Welding & Fabrication</label>
+                <label class="chip-label"><input type="checkbox" value="Graphic Design & Video" /> Design / Video</label>
+                <label class="chip-label"><input type="checkbox" value="Sponsorship & PR" /> Sponsorship & PR</label>
+                <label class="chip-label"><input type="checkbox" value="Project Management" /> Project Management</label>
+              </div>
+              <input type="text" id="skillsCustom" class="form-control" style="margin-top: 10px;" placeholder="Other skills (e.g. Python, STM32, CBOM Costing, etc.)" />
+            </div>
+
+            <!-- 8. Why Join Velox -->
+            <div class="form-group">
+              <label for="whyJoin">Why do you want to join Velox Racing?<span class="req">*</span></label>
+              <textarea id="whyJoin" rows="4" class="form-control" placeholder="Share your motivation, goals, and what you hope to contribute to Chassis VX-01..." required></textarea>
+            </div>
+
+            <!-- 9. Optional CV / Portfolio -->
+            <div class="form-group">
+              <label for="portfolioUrl">CV, Portfolio, or LinkedIn Profile (Optional)</label>
+              <input type="url" id="portfolioUrl" class="form-control" placeholder="https://drive.google.com/... or https://linkedin.com/in/..." />
+            </div>
+
+            <div style="margin-top: 28px;">
+              <button type="submit" class="btn btn-primary btn-full" id="submitBtn">
+                Submit Application
+              </button>
+            </div>
+          </form>
+
+          <!-- Success Screen -->
+          <div class="success-screen" id="successScreen">
+            <div class="success-icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            </div>
+            <h2 style="font-size: 1.8rem; margin-bottom: 10px;">Application Submitted</h2>
+            <p style="margin-bottom: 24px; color: var(--text-muted);">
+              Thank you for applying to Velox Racing. Your submission has been securely recorded. Our HR division and subsystem leaders will review your profile and contact you via email or WhatsApp regarding interview scheduling.
+            </p>
+            <a href="/" class="btn btn-outline">Back to Home</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Consistent Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="/" class="nav-brand">
+            <img src="VeloxLogoWeb.png" alt="Velox Racing" class="nav-logo" onerror="this.src='VeloxForWeb_dark.png'" />
+            <span class="nav-title">VELOX RACING</span>
+          </a>
+          <p>
+            The official Formula Student racing team of Zagazig National University (ZNU), competing at Silverstone Circuit in Formula Student UK.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h5>Navigation</h5>
+          <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="/team">Team Structure</a></li>
+            <li><a href="/join">Join the Team</a></li>
+            <li><a href="/hr">HR Portal</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h5>Connect</h5>
+          <ul>
+            <li><a href="mailto:velox.racing.znu@gmail.com">velox.racing.znu@gmail.com</a></li>
+            <li><a href="https://www.linkedin.com/company/velox-racing-znu" target="_blank" rel="noopener">LinkedIn</a></li>
+            <li><a href="https://www.facebook.com/VeloxRacingZNU" target="_blank" rel="noopener">Facebook</a></li>
+            <li><a href="https://www.instagram.com/velox.racing" target="_blank" rel="noopener">Instagram</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>&copy; 2026 Velox Racing — Zagazig National University. All rights reserved.</span>
+        <span>Formula Student UK &bull; Silverstone</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- App Configuration & Team Data -->
+  <script src="config.js"></script>
+  <script src="team.js"></script>
+
+  <script>
+    // Timestamp on load to prevent bot / instant submissions
+    const pageLoadTime = Date.now();
+    const MIN_SUBMISSION_TIME_MS = 5000; // 5 seconds minimum
+    const COOLDOWN_MS = 60000; // 1 minute client-side cooldown
+
+    // Hamburger navigation toggle
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const navMenu = document.getElementById('navMenu');
+    if (hamburgerBtn && navMenu) {
+      hamburgerBtn.addEventListener('click', () => {
+        const isOpen = navMenu.classList.toggle('open');
+        hamburgerBtn.setAttribute('aria-expanded', isOpen);
+      });
+    }
+
+    // Populate Sub-team dropdowns from team.js
+    function initSubteamOptions() {
+      const select1 = document.getElementById('subteamFirst');
+      const select2 = document.getElementById('subteamSecond');
+      if (!select1 || !select2 || typeof getSubteamsList !== 'function') return;
+
+      const subteams = getSubteamsList();
+      
+      select1.innerHTML = '<option value="" disabled selected>Select 1st choice</option>';
+      select2.innerHTML = '<option value="" disabled selected>Select 2nd choice</option>';
+
+      subteams.forEach(name => {
+        select1.innerHTML += `<option value="${name}">${name}</option>`;
+        select2.innerHTML += `<option value="${name}">${name}</option>`;
+      });
+    }
+
+    // Interactive Skill Chips & Radio Pills
+    document.querySelectorAll('.chip-label input').forEach(input => {
+      input.addEventListener('change', () => {
+        input.parentElement.classList.toggle('active', input.checked);
+      });
+    });
+
+    document.querySelectorAll('.radio-pill input').forEach(input => {
+      input.addEventListener('change', () => {
+        document.querySelectorAll('.radio-pill').forEach(pill => pill.classList.remove('active'));
+        input.parentElement.classList.add('active');
+      });
+    });
+
+    // Form Submission Handling with Supabase Client & Spam Protection
+    const joinForm = document.getElementById('joinForm');
+    const formAlert = document.getElementById('formAlert');
+    const submitBtn = document.getElementById('submitBtn');
+    const successScreen = document.getElementById('successScreen');
+
+    function showError(msg) {
+      formAlert.textContent = msg;
+      formAlert.style.display = 'block';
+      formAlert.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function clearError() {
+      formAlert.style.display = 'none';
+      formAlert.textContent = '';
+    }
+
+    joinForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      clearError();
+
+      // 1. Honeypot check
+      const honeypot = document.getElementById('bHp').value;
+      if (honeypot && honeypot.trim() !== '') {
+        console.warn('Bot detected via honeypot');
+        // Pretend success to fool bot
+        joinForm.style.display = 'none';
+        successScreen.style.display = 'block';
+        return;
+      }
+
+      // 2. Minimum submission time check
+      if (Date.now() - pageLoadTime < MIN_SUBMISSION_TIME_MS) {
+        showError('Submission completed too quickly. Please take a moment to review your information.');
+        return;
+      }
+
+      // 3. Client-side cooldown check
+      const lastSubmit = localStorage.getItem('velox_last_submit_ts');
+      if (lastSubmit && (Date.now() - parseInt(lastSubmit, 10) < COOLDOWN_MS)) {
+        showError('Please wait a moment before submitting another application.');
+        return;
+      }
+
+      // 4. Form values & validation
+      const fullName = document.getElementById('fullName').value.trim();
+      const email = document.getElementById('email').value.trim().toLowerCase();
+      const phone = document.getElementById('phone').value.trim();
+      const universityId = document.getElementById('universityId').value.trim();
+      const faculty = document.getElementById('faculty').value;
+      const academicYear = document.getElementById('academicYear').value;
+      const subteamFirst = document.getElementById('subteamFirst').value;
+      const subteamSecond = document.getElementById('subteamSecond').value;
+      const whyJoin = document.getElementById('whyJoin').value.trim();
+      const portfolioUrl = document.getElementById('portfolioUrl').value.trim();
+
+      const timeInput = document.querySelector('input[name="timeCommitment"]:checked');
+      const timeCommitment = timeInput ? timeInput.value : '5 to 10 hours';
+
+      if (!fullName || !email || !phone || !universityId || !faculty || !academicYear || !subteamFirst || !subteamSecond || !whyJoin) {
+        showError('Please fill in all required fields marked with an asterisk (*).');
+        return;
+      }
+
+      if (subteamFirst === subteamSecond) {
+        showError('Please choose two different sub-teams for your 1st and 2nd choices.');
+        return;
+      }
+
+      // Collect skills
+      const selectedSkills = [];
+      document.querySelectorAll('.chip-label input:checked').forEach(cb => selectedSkills.push(cb.value));
+      const customSkill = document.getElementById('skillsCustom').value.trim();
+      if (customSkill) selectedSkills.push(customSkill);
+      const skillsStr = selectedSkills.join(', ');
+
+      // Payload
+      const applicationData = {
+        full_name: fullName,
+        email: email,
+        phone: phone,
+        university_id: universityId,
+        faculty: faculty,
+        academic_year: academicYear,
+        subteam_first: subteamFirst,
+        subteam_second: subteamSecond,
+        time_commitment: timeCommitment,
+        skills: skillsStr,
+        why_join: whyJoin,
+        portfolio_url: portfolioUrl || null,
+        status: 'New',
+        hr_notes: ''
+      };
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Submitting Application...';
+
+      try {
+        // Initialize Supabase client
+        const cfg = window.VELOX_CONFIG || {};
+        const isSupabaseConfigured = cfg.url && cfg.anonKey && !cfg.url.includes('your-project-id');
+
+        if (isSupabaseConfigured && window.supabase) {
+          const client = window.supabase.createClient(cfg.url, cfg.anonKey);
+          const { data, error } = await client.from('applications').insert([applicationData]);
+
+          if (error) {
+            // Check for Postgres UNIQUE constraint violation (23505)
+            if (error.code === '23505' || (error.message && error.message.toLowerCase().includes('unique'))) {
+              showError('An application with this email address has already been submitted. If you need to make changes, please contact HR at velox.racing.znu@gmail.com.');
+            } else {
+              showError(`Database error: ${error.message}`);
+            }
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Submit Application';
+            return;
+          }
+        } else {
+          // Local storage fallback for testing before Supabase project keys are linked
+          console.info('Supabase keys not configured yet; saving to local storage fallback.');
+          const existingApps = JSON.parse(localStorage.getItem('velox_mock_applications') || '[]');
+          
+          // Check email uniqueness in local cache
+          if (existingApps.some(app => app.email.toLowerCase() === email)) {
+            showError('An application with this email address has already been submitted. If you need to make changes, please contact HR at velox.racing.znu@gmail.com.');
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Submit Application';
+            return;
+          }
+
+          applicationData.id = 'APP-' + Math.random().toString(36).substring(2, 9).toUpperCase();
+          applicationData.created_at = new Date().toISOString();
+          existingApps.unshift(applicationData);
+          localStorage.setItem('velox_mock_applications', JSON.stringify(existingApps));
+        }
+
+        // Set cooldown timestamp
+        localStorage.setItem('velox_last_submit_ts', Date.now().toString());
+
+        // Show success screen
+        joinForm.style.display = 'none';
+        successScreen.style.display = 'block';
+        successScreen.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+      } catch (err) {
+        showError('An unexpected error occurred. Please try again or email velox.racing.znu@gmail.com.');
+        console.error(err);
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Submit Application';
+      }
+    });
+
+    document.addEventListener('DOMContentLoaded', initSubteamOptions);
+  </script>
+</body>
+</html>
