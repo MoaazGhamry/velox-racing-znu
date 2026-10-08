@@ -16,9 +16,11 @@
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
 
   <!-- Shared Style with Cache Buster -->
-  <link rel="stylesheet" href="style.css?v=3.4" />
+  <link rel="stylesheet" href="style.css?v=3.6" />
   <!-- Localization Engine -->
-  <script src="i18n.js?v=3.4"></script>
+  <script src="i18n.js?v=3.6"></script>
+  <!-- SheetJS for Professional Excel Exports (.xlsx) -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <!-- Supabase JS Client (CDN) -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -117,15 +119,20 @@
           </div>
 
           <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
-            <button type="button" class="btn btn-outline" id="exportCsvBtn">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 4px;">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                <polyline points="7 10 12 15 17 10"></polyline>
-                <line x1="12" y1="15" x2="12" y2="3"></line>
+            <button type="button" class="btn btn-primary" id="exportExcelBtn" style="display: inline-flex; align-items: center; gap: 8px;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="8" y1="13" x2="16" y2="13"></line>
+                <line x1="8" y1="17" x2="16" y2="17"></line>
+                <polyline points="10 9 9 9 8 9"></polyline>
               </svg>
-              Export CSV
+              <span>Export Excel (.xlsx)</span>
             </button>
-            <button type="button" class="btn btn-outline" id="logoutBtn" style="color: var(--red);">
+            <button type="button" class="btn btn-outline" id="exportCsvBtn" title="Export CSV format">
+              CSV
+            </button>
+            <button type="button" class="btn btn-outline" id="logoutBtn" style="color: var(--status-rejected);">
               Logout
             </button>
           </div>
@@ -185,6 +192,7 @@
                 <th>2nd Choice</th>
                 <th>Applied Date</th>
                 <th>Status</th>
+                <th style="text-align: right; width: 140px;">Actions</th>
               </tr>
             </thead>
             <tbody id="applicantsTableBody">
@@ -203,43 +211,79 @@
       <div class="drawer-panel" role="dialog" aria-modal="true" aria-labelledby="drawerApplicantName">
         <!-- Drawer Header -->
         <div class="drawer-header">
-          <div>
-            <span class="section-kicker" id="drawerAppId">APPLICATION</span>
-            <h2 id="drawerApplicantName" style="font-size: 1.4rem; margin-top: 2px;">Candidate Name</h2>
+          <div style="flex: 1; min-width: 0;">
+            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 6px;">
+              <span class="drawer-app-id-chip" id="drawerAppId">APPLICATION</span>
+              <span class="badge" id="drawerStatusBadge">Status</span>
+            </div>
+            <h2 class="drawer-applicant-title" id="drawerApplicantName">Candidate Name</h2>
+            <div style="font-size: 0.8rem; color: var(--text-dim); margin-top: 3px;" id="drawerSubTitle">
+              <span id="drawerUniIdShort"></span> &bull; Applied: <span id="drawerAppliedDate"></span>
+            </div>
           </div>
-          <button type="button" id="closeDrawerBtn" aria-label="Close details" style="background: transparent; border: none; font-size: 1.5rem; color: var(--text-muted); cursor: pointer; padding: 4px 8px;">
-            &times;
-          </button>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <button type="button" class="drawer-btn-danger-icon" id="drawerDeleteTopBtn" title="Delete application response" aria-label="Delete response">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                <line x1="10" y1="11" x2="10" y2="17"></line>
+                <line x1="14" y1="11" x2="14" y2="17"></line>
+              </svg>
+            </button>
+            <button type="button" class="drawer-close-btn" id="closeDrawerBtn" aria-label="Close details">
+              &times;
+            </button>
+          </div>
+        </div>
+
+        <!-- Quick Contact Action Bar -->
+        <div class="contact-quick-actions">
+          <a id="drawerEmailLink" href="#" class="quick-contact-pill" title="Send email">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+            <span>Email</span>
+          </a>
+          <a id="drawerPhoneLink" href="#" class="quick-contact-pill" title="Call candidate">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+            <span>Call</span>
+          </a>
+          <a id="drawerWhatsAppLink" href="#" target="_blank" rel="noopener" class="quick-contact-pill whatsapp" title="Chat on WhatsApp">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+            <span>WhatsApp</span>
+          </a>
         </div>
 
         <!-- Status & HR Actions Card -->
-        <div class="drawer-section" style="border-left: 3px solid var(--red);">
-          <h4>HR Status &amp; Notes</h4>
-          <div style="margin-bottom: 12px;">
-            <label style="font-size: 0.75rem; color: var(--text-dim); display: block; margin-bottom: 4px;">Update Status:</label>
-            <select id="drawerStatusSelect" class="form-control" style="font-weight: 600;">
-              <option value="New">New</option>
-              <option value="Reviewed">Reviewed</option>
-              <option value="Interview">Interview</option>
-              <option value="Accepted">Accepted</option>
-              <option value="Rejected">Rejected</option>
-            </select>
+        <div class="drawer-section highlight-border">
+          <div class="drawer-section-header">
+            <h4>HR Review &amp; Candidate Status</h4>
+          </div>
+          <div style="margin-bottom: 14px;">
+            <label class="drawer-field-lbl">Candidate Pipeline Status:</label>
+            <div class="status-edit-row">
+              <select id="drawerStatusSelect" class="form-control" style="font-weight: 700; flex: 1; min-width: 160px;">
+                <option value="New">New</option>
+                <option value="Reviewed">Reviewed</option>
+                <option value="Interview">Interview</option>
+                <option value="Accepted">Accepted</option>
+                <option value="Rejected">Rejected</option>
+              </select>
+              <button type="button" id="saveNotesBtn" class="btn btn-primary" style="padding: 10px 18px; font-size: 0.85rem; font-weight: 600;">
+                Save Status &amp; Notes
+              </button>
+            </div>
           </div>
           <div>
-            <label style="font-size: 0.75rem; color: var(--text-dim); display: block; margin-bottom: 4px;">Internal HR Notes:</label>
-            <textarea id="drawerNotes" rows="3" class="form-control" placeholder="Interview score, technical remarks, attendance notes..."></textarea>
-            <button type="button" id="saveNotesBtn" class="btn btn-outline" style="margin-top: 8px; font-size: 0.8rem; padding: 6px 12px;">
-              Save Status &amp; Notes
-            </button>
+            <label class="drawer-field-lbl">Internal HR &amp; Interviewer Notes:</label>
+            <textarea id="drawerNotes" rows="3" class="form-control" placeholder="Interview score, technical remarks, attendance notes, follow-up tasks..."></textarea>
           </div>
         </div>
 
         <!-- Academic & Contact Info -->
         <div class="drawer-section">
-          <h4>Academic &amp; Contact</h4>
+          <h4>Academic &amp; Contact Details</h4>
           <div class="keyval-grid">
             <div class="keyval-item">
-              <div class="lbl">Email</div>
+              <div class="lbl">Email Address</div>
               <div class="val" id="drawerEmail">-</div>
             </div>
             <div class="keyval-item">
@@ -251,15 +295,15 @@
               <div class="val" id="drawerUniId">-</div>
             </div>
             <div class="keyval-item">
-              <div class="lbl">Faculty</div>
+              <div class="lbl">Faculty &amp; Department</div>
               <div class="val" id="drawerFaculty">-</div>
             </div>
             <div class="keyval-item">
-              <div class="lbl">Academic Year</div>
+              <div class="lbl">Academic Year / Level</div>
               <div class="val" id="drawerYear">-</div>
             </div>
             <div class="keyval-item">
-              <div class="lbl">Weekly Availability</div>
+              <div class="lbl">Weekly Commitment</div>
               <div class="val" id="drawerCommitment">-</div>
             </div>
           </div>
@@ -268,32 +312,52 @@
         <!-- Sub-team Preferences -->
         <div class="drawer-section">
           <h4>Subsystem Choices</h4>
-          <div class="keyval-grid">
-            <div class="keyval-item">
-              <div class="lbl">1st Choice</div>
-              <div class="val text-red" id="drawerSubteam1">-</div>
+          <div class="subteam-cards-row">
+            <div class="subteam-choice-box primary">
+              <span class="subteam-lbl">1st Priority Choice</span>
+              <div class="subteam-name" id="drawerSubteam1">-</div>
             </div>
-            <div class="keyval-item">
-              <div class="lbl">2nd Choice</div>
-              <div class="val" id="drawerSubteam2">-</div>
+            <div class="subteam-choice-box">
+              <span class="subteam-lbl">2nd Alternate Choice</span>
+              <div class="subteam-name" id="drawerSubteam2">-</div>
             </div>
           </div>
         </div>
 
-        <!-- Skills & Statement -->
+        <!-- Skills & Tools -->
         <div class="drawer-section">
-          <h4>Skills &amp; Experience</h4>
-          <p id="drawerSkills" style="font-size: 0.88rem; color: var(--text);">-</p>
+          <h4>Technical Skills &amp; Software Tools</h4>
+          <div id="drawerSkillsChips" style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px;">
+            <!-- Rendered as chips or fallback text -->
+          </div>
         </div>
 
+        <!-- Statement of Purpose -->
         <div class="drawer-section">
-          <h4>Statement of Purpose</h4>
-          <p id="drawerWhy" style="font-size: 0.88rem; color: var(--text); line-height: 1.6; white-space: pre-wrap;">-</p>
+          <h4>Statement of Purpose &amp; Motivation</h4>
+          <div class="statement-box" id="drawerWhy">-</div>
         </div>
 
+        <!-- CV / Portfolio Link -->
         <div class="drawer-section" id="drawerPortfolioSection">
-          <h4>CV / Portfolio Link</h4>
-          <a id="drawerPortfolioLink" href="#" target="_blank" rel="noopener" class="text-red" style="font-size: 0.88rem; word-break: break-all;">-</a>
+          <h4>CV / Portfolio / Project Links</h4>
+          <a id="drawerPortfolioLink" href="#" target="_blank" rel="noopener" class="text-red" style="font-size: 0.9rem; font-weight: 600; word-break: break-all; display: inline-flex; align-items: center; gap: 6px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+            <span id="drawerPortfolioText">-</span>
+          </a>
+        </div>
+
+        <!-- Danger Zone: Delete Option in Drawer -->
+        <div class="drawer-section" style="border: 1px solid rgba(239, 68, 68, 0.25); background: rgba(239, 68, 68, 0.03);">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+            <div>
+              <div style="font-weight: 700; font-size: 0.88rem; color: var(--status-rejected);">Delete Application Record</div>
+              <div style="font-size: 0.78rem; color: var(--text-dim);">Permanently removes this response from the database and candidate rosters.</div>
+            </div>
+            <button type="button" class="btn btn-delete-danger" id="drawerDeleteBottomBtn" style="font-size: 0.82rem; padding: 7px 14px;">
+              Delete Response
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -341,6 +405,28 @@
       </div>
     </div>
   </footer>
+
+  <!-- DELETE CONFIRMATION MODAL -->
+  <div class="delete-modal-backdrop" id="deleteConfirmModal" role="dialog" aria-modal="true" aria-labelledby="deleteModalTitle">
+    <div class="delete-modal-box">
+      <div class="delete-modal-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="3 6 5 6 21 6"></polyline>
+          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+          <line x1="10" y1="11" x2="10" y2="17"></line>
+          <line x1="14" y1="11" x2="14" y2="17"></line>
+        </svg>
+      </div>
+      <h3 id="deleteModalTitle" style="font-size: 1.25rem; font-weight: 700; margin-bottom: 8px; color: var(--text);">Delete Application?</h3>
+      <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 20px;">
+        Are you sure you want to permanently delete the application for <strong id="deleteCandidateName" style="color: var(--text);"></strong>? This will remove their record from the database.
+      </p>
+      <div style="display: flex; gap: 10px; justify-content: flex-end;">
+        <button type="button" class="btn btn-outline" id="cancelDeleteBtn">Cancel</button>
+        <button type="button" class="btn btn-delete-danger" id="confirmDeleteBtn">Delete Application</button>
+      </div>
+    </div>
+  </div>
 
   <!-- App Configuration & Team Data -->
   <script src="config.js"></script>
@@ -557,6 +643,17 @@
             <td><span style="font-size: 0.85rem; color: var(--text-muted);">${escapeHtml(app.subteam_second || '-')}</span></td>
             <td style="font-size: 0.82rem; white-space: nowrap;">${dateStr}</td>
             <td><span class="badge ${statusClass}">${escapeHtml(app.status || 'New')}</span></td>
+            <td style="text-align: right; white-space: nowrap;">
+              <button type="button" class="table-btn table-btn-review" onclick="event.stopPropagation(); openDrawer('${app.id}')">
+                Review
+              </button>
+              <button type="button" class="table-btn table-btn-delete" title="Delete application response" onclick="event.stopPropagation(); promptDeleteApplicant('${app.id}')">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="3 6 5 6 21 6"></polyline>
+                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                </svg>
+              </button>
+            </td>
           </tr>
         `;
       }).join('');
@@ -577,29 +674,111 @@
       currentApplicant = applications.find(a => a.id === id);
       if (!currentApplicant) return;
 
-      document.getElementById('drawerAppId').textContent = `ID: ${currentApplicant.id || 'N/A'}`;
+      const dateStr = currentApplicant.created_at ? new Date(currentApplicant.created_at).toLocaleDateString() : 'Recent';
+      const statusLower = (currentApplicant.status || 'new').toLowerCase();
+
+      // Header & Subtitle
+      document.getElementById('drawerAppId').textContent = currentApplicant.id || 'N/A';
+      const statusBadge = document.getElementById('drawerStatusBadge');
+      if (statusBadge) {
+        statusBadge.textContent = currentApplicant.status || 'New';
+        statusBadge.className = `badge badge-${statusLower}`;
+      }
+
       document.getElementById('drawerApplicantName').textContent = currentApplicant.full_name || 'Candidate';
+      const uniShort = document.getElementById('drawerUniIdShort');
+      if (uniShort) {
+        uniShort.textContent = currentApplicant.university_id ? `ID: ${currentApplicant.university_id}` : 'Applicant';
+      }
+      const appliedDateEl = document.getElementById('drawerAppliedDate');
+      if (appliedDateEl) {
+        appliedDateEl.textContent = dateStr;
+      }
+
+      // Quick Contact Actions
+      const emailLink = document.getElementById('drawerEmailLink');
+      if (emailLink) {
+        if (currentApplicant.email) {
+          emailLink.href = `mailto:${encodeURIComponent(currentApplicant.email)}`;
+          emailLink.style.display = 'inline-flex';
+        } else {
+          emailLink.style.display = 'none';
+        }
+      }
+
+      const phoneLink = document.getElementById('drawerPhoneLink');
+      if (phoneLink) {
+        if (currentApplicant.phone) {
+          phoneLink.href = `tel:${currentApplicant.phone.replace(/[^0-9+]/g, '')}`;
+          phoneLink.style.display = 'inline-flex';
+        } else {
+          phoneLink.style.display = 'none';
+        }
+      }
+
+      const waLink = document.getElementById('drawerWhatsAppLink');
+      if (waLink) {
+        if (currentApplicant.phone) {
+          let cleanPhone = currentApplicant.phone.replace(/[^0-9]/g, '');
+          if (cleanPhone.startsWith('01') && cleanPhone.length === 11) {
+            cleanPhone = '20' + cleanPhone.substring(1);
+          }
+          waLink.href = `https://wa.me/${cleanPhone}`;
+          waLink.style.display = 'inline-flex';
+        } else {
+          waLink.style.display = 'none';
+        }
+      }
+
+      // Academic & Contact Card
       document.getElementById('drawerEmail').textContent = currentApplicant.email || '-';
       document.getElementById('drawerPhone').textContent = currentApplicant.phone || '-';
       document.getElementById('drawerUniId').textContent = currentApplicant.university_id || '-';
       document.getElementById('drawerFaculty').textContent = currentApplicant.faculty || '-';
       document.getElementById('drawerYear').textContent = currentApplicant.academic_year || '-';
       document.getElementById('drawerCommitment').textContent = currentApplicant.time_commitment || '-';
+
+      // Subsystem Choices
       document.getElementById('drawerSubteam1').textContent = currentApplicant.subteam_first || '-';
       document.getElementById('drawerSubteam2').textContent = currentApplicant.subteam_second || '-';
-      document.getElementById('drawerSkills').textContent = currentApplicant.skills || 'None listed';
+
+      // Skills Chips
+      const skillsContainer = document.getElementById('drawerSkillsChips');
+      if (skillsContainer) {
+        skillsContainer.innerHTML = '';
+        if (currentApplicant.skills && currentApplicant.skills.trim()) {
+          const skillList = currentApplicant.skills.split(',').map(s => s.trim()).filter(Boolean);
+          if (skillList.length > 0) {
+            skillList.forEach(skill => {
+              const chip = document.createElement('span');
+              chip.className = 'skills-badge-chip';
+              chip.textContent = skill;
+              skillsContainer.appendChild(chip);
+            });
+          } else {
+            skillsContainer.innerHTML = `<span style="font-size: 0.85rem; color: var(--text-dim);">${escapeHtml(currentApplicant.skills)}</span>`;
+          }
+        } else {
+          skillsContainer.innerHTML = `<span style="font-size: 0.85rem; color: var(--text-dim);">No specific skills or tools listed</span>`;
+        }
+      }
+
+      // Statement of Purpose
       document.getElementById('drawerWhy').textContent = currentApplicant.why_join || 'No statement provided.';
 
+      // Portfolio
       const portSec = document.getElementById('drawerPortfolioSection');
       const portLink = document.getElementById('drawerPortfolioLink');
+      const portText = document.getElementById('drawerPortfolioText');
       if (currentApplicant.portfolio_url) {
         portSec.style.display = 'block';
         portLink.href = currentApplicant.portfolio_url;
-        portLink.textContent = currentApplicant.portfolio_url;
+        if (portText) portText.textContent = currentApplicant.portfolio_url;
       } else {
         portSec.style.display = 'none';
       }
 
+      // Status & Notes
       document.getElementById('drawerStatusSelect').value = currentApplicant.status || 'New';
       document.getElementById('drawerNotes').value = currentApplicant.hr_notes || '';
 
@@ -615,6 +794,96 @@
     document.getElementById('detailDrawer').addEventListener('click', (e) => {
       if (e.target.id === 'detailDrawer') closeDrawer();
     });
+
+    // Delete Applicant Handling
+    let candidateToDelete = null;
+
+    window.promptDeleteApplicant = function(id) {
+      const cand = applications.find(a => a.id === id);
+      if (!cand) return;
+      candidateToDelete = cand;
+      document.getElementById('deleteCandidateName').textContent = cand.full_name || 'Candidate';
+      document.getElementById('deleteConfirmModal').classList.add('open');
+    };
+
+    function closeDeleteModal() {
+      document.getElementById('deleteConfirmModal').classList.remove('open');
+      candidateToDelete = null;
+    }
+
+    const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+    if (cancelDeleteBtn) cancelDeleteBtn.addEventListener('click', closeDeleteModal);
+
+    const deleteModal = document.getElementById('deleteConfirmModal');
+    if (deleteModal) {
+      deleteModal.addEventListener('click', (e) => {
+        if (e.target.id === 'deleteConfirmModal') closeDeleteModal();
+      });
+    }
+
+    const drawerDelTop = document.getElementById('drawerDeleteTopBtn');
+    if (drawerDelTop) {
+      drawerDelTop.addEventListener('click', () => {
+        if (currentApplicant) promptDeleteApplicant(currentApplicant.id);
+      });
+    }
+
+    const drawerDelBottom = document.getElementById('drawerDeleteBottomBtn');
+    if (drawerDelBottom) {
+      drawerDelBottom.addEventListener('click', () => {
+        if (currentApplicant) promptDeleteApplicant(currentApplicant.id);
+      });
+    }
+
+    const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+    if (confirmDeleteBtn) {
+      confirmDeleteBtn.addEventListener('click', async () => {
+        if (!candidateToDelete) return;
+        const btn = confirmDeleteBtn;
+        btn.disabled = true;
+        btn.textContent = 'Deleting...';
+
+        const deletedId = candidateToDelete.id;
+
+        try {
+          if (supabaseClient && !isDemoMode) {
+            const { error } = await supabaseClient
+              .from('applications')
+              .delete()
+              .eq('id', deletedId);
+
+            if (error) {
+              alert('Failed to delete application from database: ' + error.message);
+              btn.disabled = false;
+              btn.textContent = 'Delete Application';
+              return;
+            }
+          }
+
+          // Remove from local memory
+          applications = applications.filter(a => a.id !== deletedId);
+
+          // Remove from local demo cache
+          const localApps = JSON.parse(localStorage.getItem('velox_mock_applications') || '[]');
+          const updatedLocal = localApps.filter(a => a.id !== deletedId);
+          localStorage.setItem('velox_mock_applications', JSON.stringify(updatedLocal));
+
+          if (currentApplicant && currentApplicant.id === deletedId) {
+            closeDrawer();
+          }
+
+          closeDeleteModal();
+          renderTable();
+          updateMetrics();
+        } catch (err) {
+          console.error('Delete error:', err);
+          alert('An unexpected error occurred while deleting.');
+        } finally {
+          btn.disabled = false;
+          btn.textContent = 'Delete Application';
+        }
+      });
+    }
 
     // Save Status & Notes to Supabase
     document.getElementById('saveNotesBtn').addEventListener('click', async () => {
@@ -666,7 +935,148 @@
     document.getElementById('subteamFilter').addEventListener('change', renderTable);
     document.getElementById('statusFilter').addEventListener('change', renderTable);
 
-    // Export Filtered Table to CSV
+    // Export to Professional Excel (.xlsx) with Multi-sheets & Auto-filtering
+    function exportToExcel() {
+      if (!applications.length) {
+        alert('No applications to export.');
+        return;
+      }
+
+      if (typeof XLSX === 'undefined') {
+        console.warn('SheetJS not loaded, falling back to CSV export.');
+        document.getElementById('exportCsvBtn').click();
+        return;
+      }
+
+      // --- SHEET 1: Candidates Roster ---
+      const headers = [
+        "Candidate ID",
+        "Applied Date",
+        "Full Name",
+        "Email Address",
+        "Phone / Mobile",
+        "WhatsApp Direct Link",
+        "University ID",
+        "Faculty & Major",
+        "Academic Year",
+        "1st Choice Subsystem",
+        "2nd Choice Subsystem",
+        "Weekly Availability",
+        "Technical Skills",
+        "Statement of Purpose",
+        "CV / Portfolio Link",
+        "Application Status",
+        "Internal HR Notes"
+      ];
+
+      const rows = applications.map(app => {
+        let cleanPhone = (app.phone || '').replace(/[^0-9]/g, '');
+        if (cleanPhone.startsWith('01') && cleanPhone.length === 11) {
+          cleanPhone = '20' + cleanPhone.substring(1);
+        }
+        const waLink = cleanPhone ? `https://wa.me/${cleanPhone}` : '';
+
+        return [
+          app.id || '',
+          app.created_at ? new Date(app.created_at).toLocaleString() : '',
+          app.full_name || '',
+          app.email || '',
+          app.phone || '',
+          waLink,
+          app.university_id || '',
+          app.faculty || '',
+          app.academic_year || '',
+          app.subteam_first || '',
+          app.subteam_second || '',
+          app.time_commitment || '',
+          app.skills || '',
+          app.why_join || '',
+          app.portfolio_url || '',
+          app.status || 'New',
+          app.hr_notes || ''
+        ];
+      });
+
+      const rosterData = [headers, ...rows];
+      const wsRoster = XLSX.utils.aoa_to_sheet(rosterData);
+
+      // Auto-calculate column widths
+      const colWidths = headers.map((header, colIdx) => {
+        let maxLen = header.length;
+        rows.forEach(row => {
+          const val = row[colIdx];
+          if (val) {
+            const strVal = String(val);
+            if (strVal.length > maxLen) {
+              maxLen = Math.min(strVal.length, 55);
+            }
+          }
+        });
+        return { wch: Math.max(maxLen + 3, 12) };
+      });
+      wsRoster['!cols'] = colWidths;
+
+      // Enable Auto-Filter on Header Row
+      if (wsRoster['!ref']) {
+        wsRoster['!autofilter'] = { ref: wsRoster['!ref'] };
+      }
+
+      // --- SHEET 2: Recruitment Overview & Metrics ---
+      const totalCount = applications.length;
+      const countNew = applications.filter(a => a.status === 'New').length;
+      const countReviewed = applications.filter(a => a.status === 'Reviewed').length;
+      const countInterview = applications.filter(a => a.status === 'Interview').length;
+      const countAccepted = applications.filter(a => a.status === 'Accepted').length;
+      const countRejected = applications.filter(a => a.status === 'Rejected').length;
+
+      const subteamCounts = {};
+      applications.forEach(a => {
+        const st = a.subteam_first || 'Unassigned';
+        subteamCounts[st] = (subteamCounts[st] || 0) + 1;
+      });
+
+      const overviewData = [
+        ["VELOX RACING — FORMULA STUDENT RECRUITMENT OPERATIONS", ""],
+        ["Report Type", "Executive Candidate Recruitment Roster & Analytics"],
+        ["Generated Date", new Date().toLocaleString()],
+        ["Total Applications", totalCount],
+        ["", ""],
+        ["PIPELINE STATUS SUMMARY", "COUNT"],
+        ["New Applicants", countNew],
+        ["Under Review", countReviewed],
+        ["Scheduled for Interview", countInterview],
+        ["Accepted Candidates", countAccepted],
+        ["Rejected Candidates", countRejected],
+        ["", ""],
+        ["1ST CHOICE SUBSYSTEM DISTRIBUTION", "APPLICANTS COUNT"]
+      ];
+
+      Object.keys(subteamCounts).sort().forEach(subteam => {
+        overviewData.push([subteam, subteamCounts[subteam]]);
+      });
+
+      const wsOverview = XLSX.utils.aoa_to_sheet(overviewData);
+      wsOverview['!cols'] = [{ wch: 45 }, { wch: 25 }];
+
+      // Build Workbook
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, wsRoster, "Candidates Roster");
+      XLSX.utils.book_append_sheet(wb, wsOverview, "Recruitment Overview");
+
+      // Generate Filename
+      const dateTag = new Date().toISOString().slice(0, 10);
+      const filename = `VELOX_Racing_Recruitment_Candidates_${dateTag}.xlsx`;
+
+      // Download .xlsx file
+      XLSX.writeFile(wb, filename);
+    }
+
+    const exportExcelBtn = document.getElementById('exportExcelBtn');
+    if (exportExcelBtn) {
+      exportExcelBtn.addEventListener('click', exportToExcel);
+    }
+
+    // Export Filtered Table to CSV (Fast Backup)
     document.getElementById('exportCsvBtn').addEventListener('click', () => {
       if (!applications.length) {
         alert('No applications to export.');
