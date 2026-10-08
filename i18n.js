@@ -18,8 +18,8 @@ const VELOX_I18N = {
 
     // Hero (index.html)
     'hero.badge': 'VELOX Formula Student Team &bull; Zagazig National University',
-    'hero.title': 'Welcome to the VELOX Formula Student Team!',
-    'hero.tagline': '<p class="hero-p">VELOX is the very first team at Zagazig National University to genuinely set its sights on international automotive competitions, offering opportunities to travel abroad, compete, and represent both the university and the team.</p><p class="hero-p">Here, you won’t just learn about race cars in theory; you will grow and become an integral part of a team that designs and manufactures an actual race car, preparing it to take on real international competitions.</p><p class="hero-p">If you are passionate about Formula cars and driven by challenges, VELOX is where you learn and turn that knowledge into a real-world project.</p>',
+    'hero.title': 'Welcome to VELOX Formula Student Team',
+    'hero.tagline': 'The first team at Zagazig National University targeting international motorsport competitions. We go beyond theory—designing, building, and racing an authentic formula car to represent our university on the world stage.',
     'hero.btnJoin': 'Join the Team',
     'hero.btnMeet': 'Meet the Team',
     'hero.btnReel': 'Watch Reel',
@@ -212,9 +212,9 @@ const VELOX_I18N = {
     'nav.partnerBtn': 'كن شريكاً لنا',
 
     // Hero (index.html)
-    'hero.badge': 'VELOX Formula Student Team',
-    'hero.title': 'أهلاً بيك في VELOX Formula Student Team',
-    'hero.tagline': '<p class="hero-p">VELOX هو أول فريق في جامعة الزقازيق الأهلية بيتجه بشكل حقيقي نحو مسابقات السيارات الدولية، مع فرص للمشاركة والسفر خارج مصر لتمثيل الجامعة والتيم.</p><p class="hero-p">هنا مش هتتعلم عن عربيات السباق نظريًا بس، لكن هتطور و تكون فرد من فريق بيصمم و بيصنع سيارة سباق فعلية ، وهتجهزها للمشاركة في المسابقات الدولية الحقيقية.</p><p class="hero-p">لو بتحب عربيات الفورميولا والتحديات، فـ VELOX هو المكان اللي هتتعلم فيه وتطبق اللي بتتعلمه على مشروع حقيقي.</p>',
+    'hero.badge': 'فريق فيلوكس فورمولا ستيودنت &bull; جامعة الزقازيق الأهلية',
+    'hero.title': 'أهلاً بكم في فريق <span style="display: inline-block; white-space: nowrap; direction: ltr;">VELOX Formula Student</span>',
+    'hero.tagline': 'أول فريق بجامعة الزقازيق الأهلية ينافس في مسابقات فورمولا ستيودنت الدولية. نتجاوز حدود النظريات—نصمّم، نصنّع، ونسابق بسيارة فورمولا حقيقية لتمثيل الجامعة ومصر عالمياً.',
     'hero.btnJoin': 'انضم للفريق',
     'hero.btnMeet': 'تعرّف على الفريق',
     'hero.btnReel': 'شاهد العرض',

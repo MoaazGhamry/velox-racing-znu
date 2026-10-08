@@ -685,18 +685,11 @@ p {
 }
 
 .hero-tagline {
-  font-size: 1.05rem;
-  line-height: 1.75;
+  font-size: 1.12rem;
+  line-height: 1.7;
   color: #D1D5DB;
   margin-bottom: 34px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.hero-tagline .hero-p {
-  margin: 0;
-  color: inherit;
+  max-width: 740px;
 }
 
 [data-theme="light"] .hero-tagline {
@@ -705,6 +698,13 @@ p {
 
 [dir="rtl"] .hero-content {
   text-align: right;
+}
+
+[dir="rtl"] .hero-tagline {
+  font-size: 1.18rem;
+  line-height: 1.85;
+  text-align: right;
+  direction: rtl;
 }
 
 [dir="rtl"] .hero-actions {
