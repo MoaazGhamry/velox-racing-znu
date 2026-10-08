@@ -16,7 +16,7 @@
   <link rel="apple-touch-icon" href="VeloxForWeb_dark.png" />
 
   <!-- Shared Style with Cache Buster -->
-  <link rel="stylesheet" href="style.css?v=2.3" />
+  <link rel="stylesheet" href="style.css?v=2.4" />
 </head>
 <body>
 
@@ -42,8 +42,14 @@
 
         <div class="nav-cta">
           <div class="nav-tools">
-            <button id="themeToggleBtn" class="nav-tool-btn" title="Toggle Dark/Light Mode" aria-label="Toggle Theme">🌙</button>
-            <button id="langToggleBtn" class="nav-tool-btn" title="تغيير اللغة" aria-label="Toggle Language">🌐 AR</button>
+            <button id="themeToggleBtn" class="nav-tool-btn" title="Toggle Theme" aria-label="Toggle Theme">
+              <svg class="theme-icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+              <svg class="theme-icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+            </button>
+            <button id="langToggleBtn" class="nav-tool-btn" title="Language" aria-label="Toggle Language">
+              <svg class="lang-icon-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+              <span class="lang-label" id="langLabel">AR</span>
+            </button>
           </div>
           <a href="/join" class="btn btn-primary">Join Us</a>
           <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation menu" aria-expanded="false">
@@ -153,7 +159,7 @@
       </div>
     </section>
 
-    <!-- Cinematic Video Reel Showcase (ad.mp4) -->
+    <!-- Sleek Cinema Video Showcase (ad.mp4) -->
     <section class="section reel-section" id="cinematic">
       <div class="container">
         <div class="section-header center">
@@ -165,45 +171,78 @@
         </div>
 
         <div class="reel-container">
-          <div class="f1-video-player" id="f1VideoPlayer">
-            <!-- Top HUD Bar -->
-            <div class="reel-hud-top">
-              <span class="reel-badge-live">
-                <span class="live-dot"></span>
-                LIVE BROADCAST // PIT WALL & ONBOARD
-              </span>
-              <span class="reel-telemetry-tag">FSUK 2026 // VX-01 PROTOCOL</span>
-            </div>
+          <div class="cinema-player" id="cinemaPlayer">
+            <!-- Main Video: Lazy-loaded with poster, preload none for zero initial load weight -->
+            <video
+              id="adVideo"
+              class="cinema-video"
+              data-src="ad.mp4"
+              playsinline
+              preload="none"
+              poster="velox_car_render.jpg"
+              loop>
+            </video>
 
-            <!-- Main Video -->
-            <video id="adVideo" class="reel-video" src="ad.mp4" playsinline preload="metadata" poster="velox_car_render.jpg" loop></video>
+            <!-- Loading Spinner (Shown during lazy-loading and buffering) -->
+            <div class="cinema-spinner" id="cinemaSpinner" aria-label="Loading video"></div>
 
             <!-- Big Center Play Button Overlay -->
-            <div class="f1-play-overlay" id="videoPlayOverlay" aria-label="Play video reel">
-              <div class="f1-play-btn" id="f1PlayBtnIcon">▶</div>
+            <div class="cinema-play-overlay" id="videoPlayOverlay" aria-label="Play video" role="button" tabindex="0">
+              <div class="cinema-play-btn" id="cinemaPlayBtn">
+                <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+              </div>
             </div>
 
-            <!-- Bottom Motorsport HUD & Controls -->
-            <div class="reel-hud-bottom">
-              <div class="reel-progress-wrap" id="videoProgressWrap" title="Click to seek">
-                <div class="reel-progress-bar" id="videoProgressBar"></div>
-              </div>
-              <div class="reel-controls-row">
-                <div class="reel-btn-group">
-                  <button type="button" class="reel-control-btn" id="videoPlayToggleBtn">
-                    <span id="playToggleIcon">▶</span> <span id="playToggleText">Play</span>
-                  </button>
-                  <button type="button" class="reel-control-btn" id="videoAudioToggleBtn">
-                    <span id="audioToggleIcon">🔇</span> <span id="audioToggleText">Unmute Audio</span>
-                  </button>
-                  <button type="button" class="reel-control-btn" id="videoFullscreenBtn" title="Full Screen">
-                    ⛶ Expand
-                  </button>
+            <!-- Minimalist Bottom Controls Bar (Strictly Icons, No Words, No Chips) -->
+            <div class="cinema-controls-bar" id="cinemaControlsBar">
+              <!-- Scrub Progress Bar -->
+              <div class="cinema-progress-wrap" id="videoProgressWrap" title="Seek video" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                <div class="cinema-progress-bar" id="videoProgressBar">
+                  <div class="cinema-progress-thumb"></div>
                 </div>
-                <div class="reel-telemetry-chips">
-                  <span class="telemetry-chip">⚡ EV HIGH-TORQUE</span>
-                  <span class="telemetry-chip">🎯 0-100 &lt; 3.8s</span>
-                  <span class="telemetry-chip">🏎️ 185N DOWNFORCE</span>
+              </div>
+
+              <!-- Controls Row: Play/Pause, Mute/Unmute, Time, Fullscreen -->
+              <div class="cinema-controls-row">
+                <div class="cinema-controls-left">
+                  <button type="button" class="cinema-icon-btn" id="videoPlayToggleBtn" aria-label="Play or Pause" title="Play / Pause">
+                    <!-- Play SVG -->
+                    <svg id="playIconSvg" viewBox="0 0 24 24" fill="currentColor">
+                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                    <!-- Pause SVG (hidden initially) -->
+                    <svg id="pauseIconSvg" viewBox="0 0 24 24" fill="currentColor" style="display: none;">
+                      <rect x="6" y="4" width="4" height="16"></rect>
+                      <rect x="14" y="4" width="4" height="16"></rect>
+                    </svg>
+                  </button>
+
+                  <button type="button" class="cinema-icon-btn" id="videoAudioToggleBtn" aria-label="Mute or Unmute" title="Audio">
+                    <!-- Muted SVG (default because video starts muted) -->
+                    <svg id="audioMutedSvg" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                      <line x1="23" y1="9" x2="17" y2="15"></line>
+                      <line x1="17" y1="9" x2="23" y2="15"></line>
+                    </svg>
+                    <!-- Unmuted SVG -->
+                    <svg id="audioHighSvg" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="display: none;">
+                      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                      <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                    </svg>
+                  </button>
+
+                  <span class="cinema-time" id="cinemaTimeDisplay">0:00 / 0:19</span>
+                </div>
+
+                <div class="cinema-controls-right">
+                  <button type="button" class="cinema-icon-btn" id="videoFullscreenBtn" aria-label="Fullscreen" title="Fullscreen">
+                    <svg id="expandSvg" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                      <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+                    </svg>
+                    <svg id="compressSvg" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="display: none;">
+                      <path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"></path>
+                    </svg>
+                  </button>
                 </div>
               </div>
             </div>
@@ -302,35 +341,89 @@
       });
     }
 
-    // ── Interactive Motorsport Reel Video Controller ──
+    // ── Sleek Cinema Video Controller ──
     const adVideo = document.getElementById('adVideo');
+    const cinemaPlayer = document.getElementById('cinemaPlayer');
     const videoOverlay = document.getElementById('videoPlayOverlay');
+    const cinemaSpinner = document.getElementById('cinemaSpinner');
     const playToggleBtn = document.getElementById('videoPlayToggleBtn');
-    const playToggleIcon = document.getElementById('playToggleIcon');
-    const playToggleText = document.getElementById('playToggleText');
+    const playIconSvg = document.getElementById('playIconSvg');
+    const pauseIconSvg = document.getElementById('pauseIconSvg');
     const audioToggleBtn = document.getElementById('videoAudioToggleBtn');
-    const audioToggleIcon = document.getElementById('audioToggleIcon');
-    const audioToggleText = document.getElementById('audioToggleText');
+    const audioMutedSvg = document.getElementById('audioMutedSvg');
+    const audioHighSvg = document.getElementById('audioHighSvg');
     const progressBar = document.getElementById('videoProgressBar');
     const progressWrap = document.getElementById('videoProgressWrap');
+    const timeDisplay = document.getElementById('cinemaTimeDisplay');
     const fullscreenBtn = document.getElementById('videoFullscreenBtn');
-    const videoPlayerWrap = document.getElementById('f1VideoPlayer');
+    const expandSvg = document.getElementById('expandSvg');
+    const compressSvg = document.getElementById('compressSvg');
+
+    let isVideoLoaded = false;
+    let idleTimer = null;
+
+    function formatTime(seconds) {
+      if (isNaN(seconds) || seconds < 0) return '0:00';
+      const mins = Math.floor(seconds / 60);
+      const secs = Math.floor(seconds % 60);
+      return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+    }
+
+    function loadVideoSource() {
+      if (!isVideoLoaded && adVideo && adVideo.dataset.src) {
+        cinemaSpinner.classList.add('active');
+        adVideo.src = adVideo.dataset.src;
+        adVideo.load();
+        isVideoLoaded = true;
+      }
+    }
+
+    function resetIdleTimer() {
+      if (!cinemaPlayer) return;
+      cinemaPlayer.classList.remove('idle');
+      clearTimeout(idleTimer);
+      if (!adVideo.paused) {
+        idleTimer = setTimeout(() => {
+          cinemaPlayer.classList.add('idle');
+        }, 2800);
+      }
+    }
+
+    function togglePlay() {
+      if (!adVideo) return;
+      loadVideoSource();
+
+      if (adVideo.paused) {
+        cinemaSpinner.classList.add('active');
+        adVideo.play().then(() => {
+          cinemaSpinner.classList.remove('active');
+          videoOverlay.classList.add('hidden');
+          cinemaPlayer.classList.add('playing');
+          if (playIconSvg) playIconSvg.style.display = 'none';
+          if (pauseIconSvg) pauseIconSvg.style.display = 'block';
+          resetIdleTimer();
+        }).catch(err => {
+          console.log('Playback error:', err);
+          cinemaSpinner.classList.remove('active');
+        });
+      } else {
+        adVideo.pause();
+        videoOverlay.classList.remove('hidden');
+        cinemaPlayer.classList.remove('playing', 'idle');
+        if (playIconSvg) playIconSvg.style.display = 'block';
+        if (pauseIconSvg) pauseIconSvg.style.display = 'none';
+        clearTimeout(idleTimer);
+      }
+    }
 
     if (adVideo) {
-      function togglePlay() {
-        if (adVideo.paused) {
-          adVideo.play().then(() => {
-            videoOverlay.classList.add('playing');
-            if (playToggleIcon) playToggleIcon.textContent = '⏸';
-            if (playToggleText) playToggleText.textContent = 'Pause';
-          }).catch(err => console.log('Autoplay policy caught:', err));
-        } else {
-          adVideo.pause();
-          videoOverlay.classList.remove('playing');
-          if (playToggleIcon) playToggleIcon.textContent = '▶';
-          if (playToggleText) playToggleText.textContent = 'Play';
-        }
-      }
+      // Lazy load video source on hover over the container
+      cinemaPlayer.addEventListener('pointerenter', () => {
+        loadVideoSource();
+      }, { once: true });
+
+      cinemaPlayer.addEventListener('mousemove', resetIdleTimer);
+      cinemaPlayer.addEventListener('touchstart', resetIdleTimer, { passive: true });
 
       if (videoOverlay) videoOverlay.addEventListener('click', togglePlay);
       if (playToggleBtn) playToggleBtn.addEventListener('click', (e) => {
@@ -343,44 +436,85 @@
           e.stopPropagation();
           adVideo.muted = !adVideo.muted;
           if (adVideo.muted) {
-            audioToggleIcon.textContent = '🔇';
-            audioToggleText.textContent = 'Unmute Audio';
+            if (audioMutedSvg) audioMutedSvg.style.display = 'block';
+            if (audioHighSvg) audioHighSvg.style.display = 'none';
           } else {
-            audioToggleIcon.textContent = '🔊';
-            audioToggleText.textContent = 'Mute Audio';
+            if (audioMutedSvg) audioMutedSvg.style.display = 'none';
+            if (audioHighSvg) audioHighSvg.style.display = 'block';
           }
         });
       }
+
+      adVideo.addEventListener('waiting', () => {
+        cinemaSpinner.classList.add('active');
+      });
+
+      adVideo.addEventListener('playing', () => {
+        cinemaSpinner.classList.remove('active');
+        videoOverlay.classList.add('hidden');
+        cinemaPlayer.classList.add('playing');
+        if (playIconSvg) playIconSvg.style.display = 'none';
+        if (pauseIconSvg) pauseIconSvg.style.display = 'block';
+      });
+
+      adVideo.addEventListener('pause', () => {
+        videoOverlay.classList.remove('hidden');
+        cinemaPlayer.classList.remove('playing', 'idle');
+        if (playIconSvg) playIconSvg.style.display = 'block';
+        if (pauseIconSvg) pauseIconSvg.style.display = 'none';
+      });
 
       adVideo.addEventListener('timeupdate', () => {
         if (adVideo.duration && progressBar) {
           const pct = (adVideo.currentTime / adVideo.duration) * 100;
           progressBar.style.width = pct + '%';
+          if (timeDisplay) {
+            timeDisplay.textContent = `${formatTime(adVideo.currentTime)} / ${formatTime(adVideo.duration)}`;
+          }
+        }
+      });
+
+      adVideo.addEventListener('loadedmetadata', () => {
+        if (timeDisplay && adVideo.duration) {
+          timeDisplay.textContent = `0:00 / ${formatTime(adVideo.duration)}`;
         }
       });
 
       if (progressWrap) {
         progressWrap.addEventListener('click', (e) => {
+          loadVideoSource();
           const rect = progressWrap.getBoundingClientRect();
-          const pos = (e.clientX - rect.left) / rect.width;
+          const pos = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
           if (adVideo.duration) {
             adVideo.currentTime = pos * adVideo.duration;
           }
         });
       }
 
-      if (fullscreenBtn && videoPlayerWrap) {
+      if (fullscreenBtn && cinemaPlayer) {
         fullscreenBtn.addEventListener('click', () => {
           if (!document.fullscreenElement) {
-            videoPlayerWrap.requestFullscreen().catch(() => {});
+            cinemaPlayer.requestFullscreen().then(() => {
+              if (expandSvg) expandSvg.style.display = 'none';
+              if (compressSvg) compressSvg.style.display = 'block';
+            }).catch(() => {});
           } else {
-            document.exitFullscreen().catch(() => {});
+            document.exitFullscreen().then(() => {
+              if (expandSvg) expandSvg.style.display = 'block';
+              if (compressSvg) compressSvg.style.display = 'none';
+            }).catch(() => {});
           }
+        });
+
+        document.addEventListener('fullscreenchange', () => {
+          const isFs = !!document.fullscreenElement;
+          if (expandSvg) expandSvg.style.display = isFs ? 'none' : 'block';
+          if (compressSvg) compressSvg.style.display = isFs ? 'block' : 'none';
         });
       }
     }
 
-    // ── Global Theme & Language Controller ──
+    // ── Global Theme & Language Controller (Clean SVG Icons, Zero Emojis) ──
     document.addEventListener('DOMContentLoaded', () => {
       initThemeAndLang();
     });
@@ -391,14 +525,13 @@
 
       const savedTheme = localStorage.getItem('velox_theme') || 'dark';
       document.documentElement.setAttribute('data-theme', savedTheme);
+
       if (themeBtn) {
-        themeBtn.textContent = savedTheme === 'light' ? '☀️' : '🌙';
         themeBtn.addEventListener('click', () => {
           const current = document.documentElement.getAttribute('data-theme') || 'dark';
           const next = current === 'dark' ? 'light' : 'dark';
           document.documentElement.setAttribute('data-theme', next);
           localStorage.setItem('velox_theme', next);
-          themeBtn.textContent = next === 'light' ? '☀️' : '🌙';
         });
       }
 
@@ -416,15 +549,11 @@
 
     function setLanguage(lang) {
       localStorage.setItem('velox_lang', lang);
-      const langBtn = document.getElementById('langToggleBtn');
-      if (lang === 'ar') {
-        document.documentElement.setAttribute('dir', 'rtl');
-        document.documentElement.setAttribute('lang', 'ar');
-        if (langBtn) langBtn.textContent = '🌐 EN';
-      } else {
-        document.documentElement.setAttribute('dir', 'ltr');
-        document.documentElement.setAttribute('lang', 'en');
-        if (langBtn) langBtn.textContent = '🌐 AR';
+      document.documentElement.setAttribute('lang', lang);
+      document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+      const langLabel = document.getElementById('langLabel');
+      if (langLabel) {
+        langLabel.textContent = lang === 'ar' ? 'EN' : 'AR';
       }
     }
 

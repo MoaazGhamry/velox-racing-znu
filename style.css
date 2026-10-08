@@ -51,23 +51,274 @@
 
 /* Light / White Theme */
 [data-theme="light"] {
-  --bg: #F5F6F9;
-  --bg-elevated: rgba(255, 255, 255, 0.96);
-  --bg-card: rgba(255, 255, 255, 0.88);
+  --bg: #F8F9FA;
+  --bg-elevated: #FFFFFF;
+  --bg-card: rgba(255, 255, 255, 0.95);
   --bg-card-hover: #FFFFFF;
-  --bg-input: rgba(240, 243, 246, 0.95);
-  --bg-glass: rgba(255, 255, 255, 0.88);
+  --bg-input: #F1F3F5;
+  --bg-glass: rgba(255, 255, 255, 0.92);
   
-  --border: rgba(0, 0, 0, 0.1);
-  --border-hover: rgba(225, 6, 0, 0.45);
+  --border: rgba(0, 0, 0, 0.09);
+  --border-hover: rgba(225, 6, 0, 0.4);
   --border-focus: #E10600;
 
-  --text: #0B0F19;
-  --text-muted: #4B5563;
-  --text-dim: #6B7280;
+  --text: #0F172A;
+  --text-muted: #475569;
+  --text-dim: #64748B;
 
   --red-subtle: rgba(225, 6, 0, 0.08);
   --red-glow: rgba(225, 6, 0, 0.16);
+}
+
+/* Light Mode Overrides for Crisp Appearance */
+[data-theme="light"] body {
+  background-color: #F8F9FA !important;
+  color: #0F172A !important;
+}
+
+[data-theme="light"] .navbar {
+  background: rgba(255, 255, 255, 0.92) !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04) !important;
+}
+
+[data-theme="light"] .nav-link {
+  color: #475569 !important;
+}
+
+[data-theme="light"] .nav-link:hover,
+[data-theme="light"] .nav-link.active {
+  color: #0F172A !important;
+}
+
+[data-theme="light"] .nav-title {
+  color: #0F172A !important;
+}
+
+[data-theme="light"] .hero {
+  background-color: #F8F9FA !important;
+}
+
+[data-theme="light"] .hero-video-bg {
+  opacity: 0.05 !important;
+  filter: grayscale(100%) brightness(1.5) contrast(0.8) !important;
+  mix-blend-mode: multiply !important;
+}
+
+[data-theme="light"] .hero-overlay {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.88) 0%, rgba(248, 249, 250, 0.96) 65%, #F8F9FA 100%) !important;
+}
+
+[data-theme="light"] .hero-title {
+  color: #0F172A !important;
+}
+
+[data-theme="light"] .hero-tagline {
+  color: #334155 !important;
+}
+
+[data-theme="light"] .hero-actions .btn-outline {
+  background: #FFFFFF !important;
+  color: #0F172A !important;
+  border: 1px solid rgba(0, 0, 0, 0.15) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+}
+
+[data-theme="light"] .hero-actions .btn-outline:hover {
+  background: #FFFFFF !important;
+  border-color: var(--red) !important;
+  color: var(--red) !important;
+}
+
+[data-theme="light"] .f1-gantry {
+  background: rgba(255, 255, 255, 0.92) !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04) !important;
+}
+
+[data-theme="light"] .f1-gantry-status {
+  color: #64748B !important;
+}
+
+[data-theme="light"] .f1-gantry-light {
+  background: #E2E8F0 !important;
+  border-color: #CBD5E1 !important;
+}
+
+[data-theme="light"] .section {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+}
+
+[data-theme="light"] .section-header .section-title {
+  color: #0F172A !important;
+}
+
+[data-theme="light"] .section-header .section-desc {
+  color: #475569 !important;
+}
+
+[data-theme="light"] .highlight-card,
+[data-theme="light"] .person-card,
+[data-theme="light"] .dept-card,
+[data-theme="light"] .form-card,
+[data-theme="light"] .subteam-pill,
+[data-theme="light"] .univ-partner-card,
+[data-theme="light"] .tier-card {
+  background: #FFFFFF !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 6px 24px -10px rgba(0, 0, 0, 0.06) !important;
+}
+
+[data-theme="light"] .highlight-card:hover,
+[data-theme="light"] .person-card:hover,
+[data-theme="light"] .dept-card:hover,
+[data-theme="light"] .tier-card:hover {
+  border-color: rgba(225, 6, 0, 0.35) !important;
+  box-shadow: 0 14px 35px -10px rgba(0, 0, 0, 0.1) !important;
+}
+
+[data-theme="light"] .highlight-num {
+  color: #0F172A !important;
+}
+
+[data-theme="light"] .highlight-label {
+  color: #0F172A !important;
+}
+
+[data-theme="light"] .highlight-detail {
+  color: #64748B !important;
+}
+
+[data-theme="light"] .cta-banner {
+  background: #FFFFFF !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 12px 36px -15px rgba(0, 0, 0, 0.07) !important;
+}
+
+[data-theme="light"] .cta-banner h2 {
+  color: #0F172A !important;
+}
+
+[data-theme="light"] .cta-banner p {
+  color: #475569 !important;
+}
+
+/* Light Mode Reel & Video Showcase */
+[data-theme="light"] .reel-section {
+  background: radial-gradient(circle at 50% 30%, rgba(225, 6, 0, 0.04) 0%, #F8F9FA 70%) !important;
+}
+
+[data-theme="light"] .cinema-player {
+  border: 1px solid rgba(0, 0, 0, 0.12) !important;
+  box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.12), 0 0 30px rgba(225, 6, 0, 0.08) !important;
+}
+
+/* Light Mode Footer - Explicitly Crisp and White */
+[data-theme="light"] .footer {
+  background: #FFFFFF !important;
+  border-top: 1px solid rgba(0, 0, 0, 0.08) !important;
+  color: #475569 !important;
+}
+
+[data-theme="light"] .footer .nav-title {
+  color: #0F172A !important;
+}
+
+[data-theme="light"] .footer-brand p {
+  color: #475569 !important;
+}
+
+[data-theme="light"] .footer-col h5 {
+  color: #0F172A !important;
+}
+
+[data-theme="light"] .footer-col a {
+  color: #64748B !important;
+}
+
+[data-theme="light"] .footer-col a:hover {
+  color: var(--red) !important;
+}
+
+[data-theme="light"] .footer-bottom {
+  border-top: 1px solid rgba(0, 0, 0, 0.08) !important;
+  color: #94A3B8 !important;
+}
+
+/* Theme & Language Nav Tools - SVG Icons */
+.nav-tool-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: 38px;
+  height: 38px;
+  padding: 0 10px;
+  border-radius: 9px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.nav-tool-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+.nav-tool-btn:active {
+  transform: scale(0.95);
+}
+
+[data-theme="light"] .nav-tool-btn {
+  background: rgba(0, 0, 0, 0.04) !important;
+  border-color: rgba(0, 0, 0, 0.1) !important;
+  color: #0F172A !important;
+}
+
+[data-theme="light"] .nav-tool-btn:hover {
+  background: rgba(0, 0, 0, 0.08) !important;
+  border-color: rgba(0, 0, 0, 0.18) !important;
+}
+
+.theme-icon-moon,
+.theme-icon-sun,
+.lang-icon-globe {
+  width: 17px;
+  height: 17px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Default Dark Theme: show Moon */
+.theme-icon-sun {
+  display: none !important;
+}
+.theme-icon-moon {
+  display: inline-block !important;
+}
+
+/* Light Theme: show Sun */
+[data-theme="light"] .theme-icon-sun {
+  display: inline-block !important;
+}
+[data-theme="light"] .theme-icon-moon {
+  display: none !important;
+}
+
+.nav-tool-btn .lang-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  font-family: var(--font);
+  line-height: 1;
 }
 
 /* RTL / Arabic Support */
@@ -647,7 +898,7 @@ p {
   width: 100%;
 }
 
-/* ── Cinematic Video Reel Showcase (ad.mp4) ── */
+/* ── Sleek Cinema Video Showcase (ad.mp4) ── */
 .reel-section {
   position: relative;
   overflow: hidden;
@@ -655,213 +906,235 @@ p {
 }
 
 .reel-container {
-  max-width: 1060px;
+  max-width: 1040px;
   margin-inline: auto;
 }
 
-.f1-video-player {
+.cinema-player {
   position: relative;
-  border-radius: var(--radius-lg);
+  border-radius: 18px;
   overflow: hidden;
   background: #000000;
-  border: 1px solid var(--border);
-  box-shadow: 0 24px 60px -15px rgba(0, 0, 0, 0.8), 0 0 35px rgba(225, 6, 0, 0.16);
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.f1-video-player:hover {
-  border-color: rgba(225, 6, 0, 0.45);
-  box-shadow: 0 30px 70px -15px rgba(0, 0, 0, 0.9), 0 0 45px rgba(225, 6, 0, 0.25);
-}
-
-.reel-video {
-  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 24px 60px -15px rgba(0, 0, 0, 0.85), 0 0 35px rgba(225, 6, 0, 0.12);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   aspect-ratio: 16 / 9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cinema-player:hover {
+  border-color: rgba(225, 6, 0, 0.4);
+  box-shadow: 0 30px 75px -15px rgba(0, 0, 0, 0.95), 0 0 50px rgba(225, 6, 0, 0.22);
+}
+
+.cinema-video {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   display: block;
   background: #000000;
 }
 
-/* Motorsport Broadcast Top HUD */
-.reel-hud-top {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px 24px;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.88) 0%, rgba(0,0,0,0.4) 60%, transparent 100%);
-  z-index: 5;
-  pointer-events: none;
-}
-
-.reel-badge-live {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.76rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  color: #FFFFFF;
-  text-transform: uppercase;
-}
-
-.reel-badge-live .live-dot {
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: var(--red);
-  box-shadow: 0 0 10px var(--red);
-  animation: pulseLive 1.4s infinite;
-}
-
-@keyframes pulseLive {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.3; transform: scale(0.8); }
-}
-
-.reel-telemetry-tag {
-  font-size: 0.74rem;
-  font-family: monospace;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  color: var(--text-muted);
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(8px);
-  padding: 5px 12px;
-  border-radius: var(--radius-sm);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-}
-
-/* Play/Pause Overlay */
-.f1-play-overlay {
+/* Center Play Overlay */
+.cinema-play-overlay {
   position: absolute;
   inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 0, 0, 0.35);
+  background: rgba(0, 0, 0, 0.28);
   cursor: pointer;
   z-index: 6;
-  transition: opacity 0.25s ease;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
-.f1-play-overlay.playing {
+.cinema-play-overlay.hidden {
   opacity: 0;
+  visibility: hidden;
   pointer-events: none;
 }
 
-.f1-video-player:hover .f1-play-overlay.playing {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.f1-play-btn {
-  width: 72px;
-  height: 72px;
+.cinema-play-btn {
+  width: 76px;
+  height: 76px;
   border-radius: 50%;
-  background: rgba(10, 10, 12, 0.85);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 2px solid var(--red);
-  box-shadow: 0 0 35px rgba(225, 6, 0, 0.5);
+  background: rgba(15, 15, 18, 0.72);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.6), 0 0 25px rgba(225, 6, 0, 0.35);
   color: #FFFFFF;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.5rem;
+  cursor: pointer;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  padding-left: 4px;
 }
 
-.f1-play-btn:hover {
+.cinema-play-btn svg {
+  width: 28px;
+  height: 28px;
+  fill: #FFFFFF;
+  margin-left: 3px;
+  transition: transform 0.2s ease, fill 0.2s ease;
+}
+
+.cinema-play-btn:hover {
   transform: scale(1.12);
   background: var(--red);
-  box-shadow: 0 0 45px rgba(225, 6, 0, 0.8);
+  border-color: var(--red);
+  box-shadow: 0 14px 45px rgba(225, 6, 0, 0.75), 0 0 35px var(--red);
 }
 
-/* Motorsport Bottom Controls Bar */
-.reel-hud-bottom {
+.cinema-play-btn:active {
+  transform: scale(0.96);
+}
+
+/* Loading Buffering Spinner */
+.cinema-spinner {
+  position: absolute;
+  width: 52px;
+  height: 52px;
+  border: 3.5px solid rgba(255, 255, 255, 0.18);
+  border-top-color: var(--red);
+  border-radius: 50%;
+  animation: cinemaSpin 0.75s linear infinite;
+  z-index: 7;
+  pointer-events: none;
+  display: none;
+}
+
+.cinema-spinner.active {
+  display: block;
+}
+
+@keyframes cinemaSpin {
+  to { transform: rotate(360deg); }
+}
+
+/* Sleek Minimal Bottom Controls Bar (No Text Words, No Chips) */
+.cinema-controls-bar {
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 18px 24px;
-  background: linear-gradient(0deg, rgba(0, 0, 0, 0.94) 0%, rgba(0, 0, 0, 0.5) 60%, transparent 100%);
+  padding: 16px 20px;
+  background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.6) 35%, rgba(0, 0, 0, 0.92) 100%);
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  z-index: 7;
+  gap: 10px;
+  z-index: 8;
+  opacity: 1;
+  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.reel-progress-wrap {
+.cinema-player.playing.idle .cinema-controls-bar {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.cinema-player:hover .cinema-controls-bar {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Slim Scrub Bar */
+.cinema-progress-wrap {
   width: 100%;
-  height: 6px;
-  background: rgba(255, 255, 255, 0.18);
-  border-radius: 4px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.22);
+  border-radius: 9999px;
   cursor: pointer;
   position: relative;
-  overflow: hidden;
+  transition: height 0.15s ease;
 }
 
-.reel-progress-bar {
+.cinema-progress-wrap:hover {
+  height: 8px;
+}
+
+.cinema-progress-bar {
   height: 100%;
   width: 0%;
   background: var(--red);
-  box-shadow: 0 0 12px var(--red);
-  transition: width 0.1s linear;
+  border-radius: 9999px;
+  box-shadow: 0 0 10px var(--red);
+  position: relative;
+  transition: width 0.08s linear;
 }
 
-.reel-controls-row {
+.cinema-progress-thumb {
+  position: absolute;
+  right: -5px;
+  top: 50%;
+  transform: translateY(-50%) scale(0);
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
+  transition: transform 0.15s ease;
+}
+
+.cinema-progress-wrap:hover .cinema-progress-thumb {
+  transform: translateY(-50%) scale(1);
+}
+
+/* Controls Row */
+.cinema-controls-row {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.cinema-controls-left,
+.cinema-controls-right {
+  display: flex;
+  align-items: center;
   gap: 12px;
 }
 
-.reel-btn-group {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.reel-control-btn {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.14);
+.cinema-icon-btn {
+  background: transparent;
+  border: none;
   color: #FFFFFF;
-  border-radius: var(--radius-sm);
-  padding: 7px 14px;
-  font-size: 0.82rem;
-  font-weight: 600;
   cursor: pointer;
+  padding: 6px;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  transition: all 0.15s ease;
+  justify-content: center;
+  border-radius: 6px;
+  transition: color 0.15s ease, transform 0.15s ease, background 0.15s ease;
+  line-height: 1;
 }
 
-.reel-control-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
-  border-color: rgba(255, 255, 255, 0.35);
+.cinema-icon-btn:hover {
+  color: var(--red);
+  background: rgba(255, 255, 255, 0.1);
+  transform: scale(1.08);
 }
 
-.reel-telemetry-chips {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
+.cinema-icon-btn:active {
+  transform: scale(0.94);
 }
 
-.telemetry-chip {
-  font-size: 0.74rem;
-  color: var(--text-muted);
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: var(--radius-sm);
-  padding: 5px 10px;
+.cinema-icon-btn svg {
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.cinema-time {
+  font-size: 0.8rem;
   font-family: monospace;
+  color: #CBD5E1;
+  letter-spacing: 0.04em;
+  user-select: none;
 }
 
 /* ── Call To Action Banner ── */
@@ -1738,6 +2011,13 @@ p {
   border-top: 1px solid var(--border);
   padding-top: 64px;
   padding-bottom: 32px;
+  color: var(--text-muted);
+}
+
+[data-theme="light"] .footer {
+  background: #FFFFFF !important;
+  border-top: 1px solid rgba(0, 0, 0, 0.08) !important;
+  color: #475569 !important;
 }
 
 .footer-grid {
@@ -2073,13 +2353,8 @@ p {
     padding: 22px 14px;
   }
 
-  .reel-hud-top,
-  .reel-hud-bottom {
-    padding: 12px 14px;
-  }
-
-  .reel-telemetry-chips {
-    display: none;
+  .cinema-controls-bar {
+    padding: 10px 12px;
   }
 }
 
