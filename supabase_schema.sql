@@ -1,5 +1,5 @@
 -- ==============================================================================
--- VELOX RACING — FORMULA STUDENT UK
+-- VELOX RACING — FORMULA STUDENT
 -- Zagazig National University (ZNU)
 -- Supabase Database Schema & Row Level Security (RLS) for Team Applications
 -- ==============================================================================

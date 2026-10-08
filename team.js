@@ -1,6 +1,6 @@
 /**
  * VELOX Racing Team Structure Data
- * Zagazig National University — Formula Student UK
+ * Zagazig National University — Formula Student
  * Single editable source of truth for the Org Chart (/team) and Application Form (/join).
  */
 
@@ -11,7 +11,7 @@ const VELOX_TEAM = {
       role: "Team Leader",
       name: "Fatima Salman",
       photo: "",
-      bio: "Oversees overall team direction, university relations, and international competition readiness for Formula Student UK."
+      bio: "Oversees overall team direction, university relations, and international competition readiness for Formula Student."
     },
     {
       id: "vice-leader",

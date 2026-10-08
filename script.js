@@ -1,6 +1,6 @@
 /* ==========================================================================
    VELOX RACING TEAM — OFFICIAL INTERACTIVE JAVASCRIPT
-   Zagazig National University | Formula Student UK & Global Collegiate Motorsport
+   Zagazig National University | Formula Student & Global Collegiate Motorsport
    Zero-Emoji Minimalist Architecture | Widescreen & Mobile-Perfect
    ========================================================================== */
 
@@ -69,7 +69,7 @@ const translations = {
     // Hero
     'hero.badge': 'ZAGAZIG NATIONAL UNIVERSITY • OFFICIAL MOTORSPORT RACING TEAM • SILVERSTONE UK DEBUT',
     'hero.title': 'ENGINEERED FROM PASSION.<br />BUILT FOR <span class="text-red">GLOBAL CIRCUITS</span>.',
-    'hero.subtitle': 'The official collegiate motorsport racing team of <strong>Zagazig National University</strong>. We are designing and manufacturing race car Chassis VX-01 from scratch to compete across premier global engineering championships, debuting this season at Silverstone Circuit for Formula Student UK. No car was handed to us &mdash; we are engineering every single part.',
+    'hero.subtitle': 'The official collegiate motorsport racing team of <strong>Zagazig National University</strong>. We are designing and manufacturing race car Chassis VX-01 from scratch to compete across premier global engineering championships, debuting this season at Silverstone Circuit for Formula Student. No car was handed to us &mdash; we are engineering every single part.',
     'hero.scrollCue': 'SWIPE / SCROLL TO EXPLORE',
     'hero.ticker.status': 'IN ACTIVE BUILD',
     'hero.ticker.statusSub': 'Chassis & Subsystems',
@@ -112,14 +112,14 @@ const translations = {
     'about.allianceZnu': 'ZNU ACADEMIA',
     'about.allianceVelox': 'VELOX RACING',
     'about.allianceLab': 'MECHATRONICS LAB',
-    'about.bmTitle': 'Formula Student UK Benchmark',
+    'about.bmTitle': 'Formula Student Benchmark',
     'about.bmDesc': 'Evaluated by Formula 1 technical directors and motorsport engineers at Silverstone Circuit, UK.',
     'about.bmUniv': 'Universities',
     'about.bmNations': 'Nations',
     'about.bmPoints': 'Max Points',
 
     // Blueprint Specification & Callouts
-    'blueprint.tag': 'IMechE FORMULA STUDENT UK // TECHNICAL SPECIFICATION',
+    'blueprint.tag': 'IMechE FORMULA STUDENT // TECHNICAL SPECIFICATION',
     'blueprint.title': 'CHASSIS VX-01 • DIGITAL TWIN ARCHITECTURE',
     'blueprint.cadDoc': 'CAD DOC: ZNU-VX01-FS26',
     'blueprint.status': 'BUILD STATUS: IN FABRICATION',
@@ -168,7 +168,7 @@ const translations = {
     'contact.socialYt': 'YouTube',
 
     // Footer & Modal
-    'footer.dividerText': 'FORMULA STUDENT UK • ZAGAZIG NATIONAL UNIVERSITY • VELOX RACING',
+    'footer.dividerText': 'FORMULA STUDENT • ZAGAZIG NATIONAL UNIVERSITY • VELOX RACING',
     'footer.desc1': 'VELOX Formula Student Racing Team.',
     'footer.desc2': 'Faculty of Engineering • Zagazig National University.',
     'footer.contactLabel': 'Official Contact:',
@@ -179,7 +179,7 @@ const translations = {
     'modal.filmTitle': 'VELOX FORMULA STUDENT — OFFICIAL SILVERSTONE LAUNCH FILM',
 
     // Divider
-    'divider.text': 'ZNU RACING DIVISION • FORMULA STUDENT UK • SILVERSTONE PIT LANE',
+    'divider.text': 'ZNU RACING DIVISION • FORMULA STUDENT • SILVERSTONE PIT LANE',
 
     // Motivational Banner
     'banner.title': 'WE DON’T JUST DREAM. WE BUILD.',
@@ -191,7 +191,7 @@ const translations = {
     'about.title': 'About <span class="text-red">VELOX Racing Team</span>',
     'about.desc': 'Born in the mechatronics engineering halls of Zagazig National University, VELOX is the university’s official motorsport racing team, engineering Egypt’s next-generation formula single-seater prototype to compete on the world stage.',
     'about.lead': '<strong>VELOX</strong> &mdash; from Latin for <em>&ldquo;swift, agile, rapid&rdquo;</em> &mdash; represents our dedication to building a competitive racing prototype from zero through relentless technical execution and student teamwork.',
-    'about.p1': 'Formula Student UK is the world’s most prestigious collegiate engineering championship, organized by the <strong>Institution of Mechanical Engineers (IMechE)</strong> at Silverstone Circuit. We are entering both the Concept Class (Design, Cost, Business) and Dynamics Class.',
+    'about.p1': 'Formula Student is the world’s most prestigious collegiate engineering championship, organized by the <strong>Institution of Mechanical Engineers (IMechE)</strong> at Silverstone Circuit. We are entering both the Concept Class (Design, Cost, Business) and Dynamics Class.',
     'about.p2': 'Our team brings together over 35 ambitious students from <strong>Zagazig National University</strong>. From laser-notched chromoly tube welding and aerodynamics CFD to ECU telemetry and sponsorship management, every part is engineered by students.',
     'about.v1.title': 'Fabricated From Zero',
     'about.v1.desc': 'No car was given to us. Every bracket, tube, and composite wing is designed and fabricated by students.',
@@ -222,14 +222,14 @@ const translations = {
     // FS-UK
     'comp.tag': 'THE TARGET • SILVERSTONE CIRCUIT UK',
     'comp.title': 'Formula Student <span class="text-red">UK</span> Competition',
-    'comp.desc': 'VELOX is participating in <strong>Concept Class &amp; Dynamics Class</strong> at Silverstone Circuit. Formula Student UK evaluates both engineering design theory and on-track vehicle performance.',
-    'comp.badge': 'FORMULA STUDENT UK',
+    'comp.desc': 'VELOX is participating in <strong>Concept Class &amp; Dynamics Class</strong> at Silverstone Circuit. Formula Student evaluates both engineering design theory and on-track vehicle performance.',
+    'comp.badge': 'FORMULA STUDENT',
     'comp.location': 'Silverstone Circuit • Northamptonshire, United Kingdom',
     'comp.dates': 'Silverstone Wing Paddock // July 2027',
     'comp.cdHeading': 'The Road to Silverstone 2026/2027',
-    'comp.cdDesc': 'Formula Student UK, organized by the Institution of Mechanical Engineers (IMechE), brings together over 100 premier collegiate engineering teams. Teams are rigorously judged across static design presentations and wheel-to-wheel dynamic trials on the iconic Silverstone tarmac.',
-    'comp.cdTitle': 'COUNTDOWN TO FORMULA STUDENT UK • SILVERSTONE GREEN FLAG',
-    'comp.cdVenue': 'Event Venue: Silverstone Pit Straight • Formula Student UK Championship',
+    'comp.cdDesc': 'Formula Student, organized by the Institution of Mechanical Engineers (IMechE), brings together over 100 premier collegiate engineering teams. Teams are rigorously judged across static design presentations and wheel-to-wheel dynamic trials on the iconic Silverstone tarmac.',
+    'comp.cdTitle': 'COUNTDOWN TO FORMULA STUDENT • SILVERSTONE GREEN FLAG',
+    'comp.cdVenue': 'Event Venue: Silverstone Pit Straight • Formula Student Championship',
     'comp.days': 'Days',
     'comp.hours': 'Hours',
     'comp.mins': 'Minutes',
@@ -345,7 +345,7 @@ const translations = {
     'sponsors.znuLoc': 'Zagazig, Sharkia, Egypt',
     'sponsors.veloxTitle': 'VELOX Racing Team',
     'sponsors.veloxDesc': 'Faculty of Engineering Motorsport Division',
-    'sponsors.veloxBadge': 'Formula Student UK Entry',
+    'sponsors.veloxBadge': 'Formula Student Entry',
     'sponsors.engTitle': 'Faculty of Engineering',
     'sponsors.engDesc': 'Mechatronics Engineering Department & Workshops',
     'sponsors.engLoc': 'Engineering Innovation',
@@ -363,7 +363,7 @@ const translations = {
     'sponsors.slotBronze3': 'Motorsport Lubricants',
     'sponsors.slotBronze4': 'Workshop Tooling',
     'sponsors.ctaTitle': 'Elevate Your Brand at Silverstone Circuit',
-    'sponsors.ctaDesc': 'Formula Student UK attracts the world’s most innovative automotive, aerospace, and motorsport executives. By partnering with VELOX Racing Team, your company directly invests in high-caliber engineering talent and enjoys international brand exposure on the global racing stage.',
+    'sponsors.ctaDesc': 'Formula Student attracts the world’s most innovative automotive, aerospace, and motorsport executives. By partnering with VELOX Racing Team, your company directly invests in high-caliber engineering talent and enjoys international brand exposure on the global racing stage.',
     'sponsors.b1': 'Livery Placement on VX-01',
     'sponsors.b2': 'Silverstone Paddock Branding',
     'sponsors.b3': 'Direct Recruitment Pipeline to Top ZNU Talent',
@@ -397,14 +397,14 @@ const translations = {
     'contact.success': 'Message transmitted successfully to velox.racing.znu@gmail.com! We will contact you soon.',
 
     // Team Page Translations
-    'team.pageTag': 'ORGANIZATIONAL ARCHITECTURE • FORMULA STUDENT UK',
+    'team.pageTag': 'ORGANIZATIONAL ARCHITECTURE • FORMULA STUDENT',
     'team.pageTitle': 'Team',
     'team.pageTitleRed': 'Structure',
     'team.pageSubtitle': 'The technical leadership, specialized engineering disciplines, and operational departments driving Zagazig National University’s journey to Silverstone Circuit.',
     'team.badgeExec': 'EXECUTIVE',
     'team.fatimaName': 'Fatima Salman',
     'team.fatimaRole': 'Team Leader',
-    'team.fatimaBio': 'Leads overall engineering vision, institutional alignment with Zagazig National University, and international Formula Student UK roadmap.',
+    'team.fatimaBio': 'Leads overall engineering vision, institutional alignment with Zagazig National University, and international Formula Student roadmap.',
     'team.karimName': 'Karim Shaprawy',
     'team.karimRole': 'Vice Team Leader',
     'team.karimBio': 'Directs day-to-day operations, inter-departmental workflows, budget governance, and competition timeline milestones.',
@@ -537,7 +537,7 @@ const translations = {
     // Hero
     'hero.badge': 'جامعة الزقازيق الأهلية • فريق سباقات السيارات الرسمي • انطلاقة سيلفرستون بريطانيا',
     'hero.title': 'نصنع السرعة بأيدينا..<br />وننطلق نحو <span class="text-red">العالمية</span>.',
-    'hero.subtitle': 'فريق فيلوكس (VELOX) هو الفريق الهندسي الرسمي لجامعة الزقازيق الأهلية لسباقات السيارات. نصمم ونبني سيارة السباق VX-01 بالكامل من نقطة الصفر بجهود وعقول طلابنا لخوض كبرى بطولات سباقات السيارات الهندسية، ومحطتنا التنافسية هذا الموسم هي حلبة سيلفرستون العريقة في بريطانيا (Formula Student UK). لم نستلم سيارة جاهزة، بل نصنع كل جزء بسواعدنا.',
+    'hero.subtitle': 'فريق فيلوكس (VELOX) هو الفريق الهندسي الرسمي لجامعة الزقازيق الأهلية لسباقات السيارات. نصمم ونبني سيارة السباق VX-01 بالكامل من نقطة الصفر بجهود وعقول طلابنا لخوض كبرى بطولات سباقات السيارات الهندسية، ومحطتنا التنافسية هذا الموسم هي حلبة سيلفرستون العريقة في بريطانيا (Formula Student). لم نستلم سيارة جاهزة، بل نصنع كل جزء بسواعدنا.',
     'hero.scrollCue': 'مرر للأسفل لاكتشاف التفاصيل',
     'hero.ticker.status': 'قيد التصنيع النشط',
     'hero.ticker.statusSub': 'الهيكل والأنظمة',

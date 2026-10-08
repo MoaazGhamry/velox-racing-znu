@@ -1,6 +1,6 @@
 /**
  * VELOX RACING — UNIFIED BILINGUAL LOCALIZATION ENGINE (EN / AR)
- * Zagazig National University | Formula Student UK
+ * Zagazig National University | Formula Student
  * Authentic, prestigious collegiate motorsport translations.
  */
 
@@ -17,8 +17,7 @@ const VELOX_I18N = {
     'nav.partnerBtn': 'Partner With Us',
 
     // Hero (index.html)
-    'hero.status': 'LIGHTS OUT',
-    'hero.badge': 'Zagazig National University &bull; Formula Student UK',
+    'hero.badge': 'Zagazig National University &bull; Formula Student',
     'hero.title': 'VELOX RACING',
     'hero.tagline': 'Designing and engineering Zagazig National University\'s first Formula Student race car for the world stage at Silverstone Circuit.',
     'hero.btnJoin': 'Join the Team',
@@ -40,13 +39,13 @@ const VELOX_I18N = {
     'hl.c3Desc': 'Body, Chassis, Vehicle Dynamics, Powertrain, Electrical, PR, and Business',
     'hl.c4Num': 'Silverstone',
     'hl.c4Label': 'Target Arena',
-    'hl.c4Desc': 'Formula Student UK international competition at the home of British motorsport',
+    'hl.c4Desc': 'Formula Student international competition on the world racing stage',
 
     // About (index.html)
     'about.kicker': 'About the Team',
     'about.title': 'Built by Students.<br />Driven by Engineering.',
     'about.p1': 'Velox Racing is the official Formula Student team of Zagazig National University (ZNU). We bring together ambitious undergraduate students to design, simulate, build, and test a single-seater formula-style racecar from the ground up.',
-    'about.p2': 'Operating through the Faculty of Engineering, our crew spans Mechatronics, Mechanical, Electrical, Computer Science, and Business disciplines. We compete internationally in Formula Student UK at Silverstone, testing our vehicle design, business strategy, and manufacturing against elite universities worldwide.',
+    'about.p2': 'Operating through the Faculty of Engineering, our crew spans Mechatronics, Mechanical, Electrical, Computer Science, and Business disciplines. We compete internationally in Formula Student at Silverstone, testing our vehicle design, business strategy, and manufacturing against elite universities worldwide.',
     'about.btnExplore': 'Explore Team Structure &rarr;',
 
     // Cinema Showcase (index.html)
@@ -169,7 +168,7 @@ const VELOX_I18N = {
     'sub.Media & Brand Specialist': 'Media & Brand Specialist',
 
     // Sponsorship Page (sponsorship.html)
-    'sponsors.heroKicker': 'Partnership Opportunities // Formula Student UK',
+    'sponsors.heroKicker': 'Partnership Opportunities // Formula Student',
     'sponsors.heroTitle': 'Power Egyptian Innovation on the World Stage',
     'sponsors.heroDesc': 'Partner with Velox Racing, the Formula Student challenger of Zagazig National University. Fueling clean high-performance mobility and accelerating the next generation of elite engineers toward Silverstone Circuit.',
     'sponsors.btnInquire': 'Become a Partner',
@@ -179,14 +178,14 @@ const VELOX_I18N = {
     'sponsors.univDesc': 'Velox Racing is officially endorsed, hosted, and academically mentored under the patronage of Zagazig National University (ZNU) and the Faculty of Engineering, with direct access to advanced campus laboratories, manufacturing machine shops, and faculty guidance.',
     'sponsors.chip1': 'Faculty of Engineering',
     'sponsors.chip2': 'Advanced Dynamics Labs',
-    'sponsors.chip3': 'Formula Student UK 2026',
+    'sponsors.chip3': 'Formula Student 2026',
 
     // Footer (all pages)
-    'footer.desc': 'The official Formula Student racing team of Zagazig National University (ZNU), competing at Silverstone Circuit in Formula Student UK.',
+    'footer.desc': 'The official Formula Student racing team of Zagazig National University (ZNU), competing internationally in Formula Student competitions.',
     'footer.navTitle': 'Navigation',
     'footer.connectTitle': 'Connect',
     'footer.copy': '&copy; 2026 Velox Racing &mdash; Zagazig National University. All rights reserved.',
-    'footer.arena': 'Formula Student UK &bull; Silverstone'
+    'footer.arena': 'Formula Student &bull; Silverstone'
   },
 
   ar: {
@@ -201,8 +200,7 @@ const VELOX_I18N = {
     'nav.partnerBtn': 'كن شريكاً لنا',
 
     // Hero (index.html)
-    'hero.status': 'انطلاق السباق',
-    'hero.badge': 'جامعة الزقازيق الأهلية &bull; فورمولا ستيودنت بريطانيا',
+    'hero.badge': 'جامعة الزقازيق الأهلية &bull; فورمولا ستيودنت',
     'hero.title': 'فريق فيلوكس للسباقات',
     'hero.tagline': 'تصميم وهندسة أول سيارة سباق لجامعة الزقازيق الأهلية في مسابقة فورمولا ستيودنت العالمية على حلبة سيلفرستون البريطانية.',
     'hero.btnJoin': 'انضم للفريق',
@@ -224,13 +222,13 @@ const VELOX_I18N = {
     'hl.c3Desc': 'الهيكل، الشاسيه، ديناميكا المركبة، منظومة الدفع، الأنظمة الكهربائية، العلاقات العامة، وإدارة الأعمال',
     'hl.c4Num': 'سيلفرستون',
     'hl.c4Label': 'حلبة السباق العالمية',
-    'hl.c4Desc': 'المنافسة الدولية لفورمولا ستيودنت بريطانيا في مهد رياضة المحركات العالمية',
+    'hl.c4Desc': 'المنافسة الدولية في مسابقات فورمولا ستيودنت على ساحة السباقات العالمية',
 
     // About (index.html)
     'about.kicker': 'عن فريق فيلوكس',
     'about.title': 'بُنيت بجهود الطلاب.<br />وتُقاد بالهندسة.',
     'about.p1': 'فريق فيلوكس للسباقات هو الفريق الهندسي الرسمي لجامعة الزقازيق الأهلية (ZNU). نجمع نخبة من الطلاب الطموحين لتصميم ومحاكاة وبناء واختبار سيارة سباق بمقعد واحد من الصفر.',
-    'about.p2': 'يعمل الفريق تحت مظلة كلية الهندسة ويضم طلاباً من أقسام الميكاترونكس، الميكانيكا، الكهرباء، هندسة الحاسب، وإدارة الأعمال، للمنافسة في مسابقة فورمولا ستيودنت بريطانيا على حلبة سيلفرستون العريقة واختبار التصميم الهندسي واستراتيجية التصنيع أمام جامعات العالم.',
+    'about.p2': 'يعمل الفريق تحت مظلة كلية الهندسة ويضم طلاباً من أقسام الميكاترونكس، الميكانيكا، الكهرباء، هندسة الحاسب، وإدارة الأعمال، للمنافسة في مسابقات فورمولا ستيودنت العالمية على حلبة سيلفرستون واختبار التصميم الهندسي واستراتيجية التصنيع أمام جامعات العالم.',
     'about.btnExplore': 'استكشف الهيكل التنظيمي &larr;',
 
     // Cinema Showcase (index.html)
@@ -353,7 +351,7 @@ const VELOX_I18N = {
     'sub.Media & Brand Specialist': 'أخصائي الهوية والعلامة التجارية',
 
     // Sponsorship Page (sponsorship.html)
-    'sponsors.heroKicker': 'فرص الرعاية والشراكة الاستراتيجية // فورمولا ستيودنت بريطانيا',
+    'sponsors.heroKicker': 'فرص الرعاية والشراكة الاستراتيجية // فورمولا ستيودنت',
     'sponsors.heroTitle': 'ادعم الابتكار الهندسي المصري في ساحة السباقات العالمية',
     'sponsors.heroDesc': 'شارك فريق فيلوكس للسباقات، ممثل جامعة الزقازيق الأهلية في مسابقة فورمولا ستيودنت العالمية. نسابق في حلبة سيلفرستون العريقة ونبني الجيل القادم من قادة صناعة السيارات والتنقل الكهربائي.',
     'sponsors.btnInquire': 'كن شريكاً استراتيجياً',
@@ -366,11 +364,11 @@ const VELOX_I18N = {
     'sponsors.chip3': 'فورمولا ستيودنت 2026',
 
     // Footer (all pages)
-    'footer.desc': 'فريق فورمولا ستيودنت الرسمي لجامعة الزقازيق الأهلية (ZNU)، ممثل مصر في حلبة سيلفرستون ببريطانيا.',
+    'footer.desc': 'فريق فورمولا ستيودنت الرسمي لجامعة الزقازيق الأهلية (ZNU)، المنافس في مسابقات فورمولا ستيودنت الدولية على حلبة سيلفرستون.',
     'footer.navTitle': 'روابط سريعة',
     'footer.connectTitle': 'تواصل معنا',
     'footer.copy': '&copy; 2026 فريق فيلوكس للسباقات &mdash; جامعة الزقازيق الأهلية. جميع الحقوق محفوظة.',
-    'footer.arena': 'فورمولا ستيودنت بريطانيا &bull; حلبة سيلفرستون'
+    'footer.arena': 'فورمولا ستيودنت &bull; حلبة سيلفرستون'
   }
 };
 

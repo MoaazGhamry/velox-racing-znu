@@ -1,6 +1,6 @@
 /**
  * VELOX RACING — CLIENT CONFIGURATION
- * Zagazig National University | Formula Student UK
+ * Zagazig National University | Formula Student
  * 
  * Connected to live Supabase project: mmkeybgkqkoepmyuispa
  * The publishable key is safe for client-side use with Row Level Security (RLS).
