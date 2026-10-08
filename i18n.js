@@ -373,6 +373,32 @@ const VELOX_I18N = {
 };
 
 /**
+ * Apply Theme across page
+ */
+function applyVeloxTheme(theme) {
+  const currentTheme = (theme === 'light') ? 'light' : 'dark';
+  localStorage.setItem('velox_theme', currentTheme);
+  document.documentElement.setAttribute('data-theme', currentTheme);
+
+  // Update University logo in sponsorship page or elsewhere if present
+  const univLogoImg = document.getElementById('univLogoImg');
+  if (univLogoImg) {
+    univLogoImg.src = currentTheme === 'light' ? 'znu_logo_light.png' : 'znu text logo dark.png';
+  }
+
+  window.dispatchEvent(new CustomEvent('veloxThemeChanged', { detail: { theme: currentTheme } }));
+}
+
+/**
+ * Toggle Theme between Dark and Light mode
+ */
+function toggleVeloxTheme() {
+  const current = document.documentElement.getAttribute('data-theme') || localStorage.getItem('velox_theme') || 'dark';
+  const next = current === 'dark' ? 'light' : 'dark';
+  applyVeloxTheme(next);
+}
+
+/**
  * Apply Language across page
  */
 function applyVeloxLanguage(lang) {
@@ -418,13 +444,42 @@ function toggleVeloxLanguage() {
   applyVeloxLanguage(next);
 }
 
-// Auto-run on document ready
+// Auto-run on document ready with resilient global delegation
 if (typeof window !== 'undefined') {
   window.applyVeloxLanguage = applyVeloxLanguage;
   window.toggleVeloxLanguage = toggleVeloxLanguage;
+  window.applyVeloxTheme = applyVeloxTheme;
+  window.toggleVeloxTheme = toggleVeloxTheme;
   window.VELOX_I18N = VELOX_I18N;
-  document.addEventListener('DOMContentLoaded', () => {
-    const saved = localStorage.getItem('velox_lang') || 'en';
-    applyVeloxLanguage(saved);
-  });
+
+  const initVeloxPreferences = () => {
+    const savedTheme = localStorage.getItem('velox_theme') || 'dark';
+    applyVeloxTheme(savedTheme);
+    const savedLang = localStorage.getItem('velox_lang') || 'en';
+    applyVeloxLanguage(savedLang);
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initVeloxPreferences);
+  } else {
+    initVeloxPreferences();
+  }
+
+  // Global click delegator: guaranteed to work on every single page
+  document.addEventListener('click', (e) => {
+    const langBtn = e.target.closest('#langToggleBtn');
+    if (langBtn) {
+      e.preventDefault();
+      e.stopPropagation();
+      toggleVeloxLanguage();
+      return;
+    }
+    const themeBtn = e.target.closest('#themeToggleBtn');
+    if (themeBtn) {
+      e.preventDefault();
+      e.stopPropagation();
+      toggleVeloxTheme();
+      return;
+    }
+  }, true);
 }

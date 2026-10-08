@@ -16,10 +16,10 @@
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
 
   <!-- Shared Style with Cache Buster -->
-  <link rel="stylesheet" href="style.css?v=2.8" />
+  <link rel="stylesheet" href="style.css?v=3.0" />
 
   <!-- Localization Engine -->
-  <script src="i18n.js?v=2.8"></script>
+  <script src="i18n.js?v=3.0"></script>
 </head>
 <body>
 
@@ -82,7 +82,7 @@
         <div class="hero-actions">
           <a href="/join" class="btn btn-primary" data-i18n="hero.btnJoin">Join the Team</a>
           <a href="/team" class="btn btn-outline" data-i18n="hero.btnMeet">Meet the Team</a>
-          <a href="#cinematic" class="btn btn-outline" style="display: inline-flex; align-items: center; gap: 8px;">
+          <a id="heroWatchReelBtn" href="#cinematic" class="btn btn-outline" style="display: inline-flex; align-items: center; gap: 8px;">
             <span style="color: var(--red); font-weight: 800;">▶</span> <span data-i18n="hero.btnReel">Watch Reel</span>
           </a>
         </div>
@@ -167,9 +167,9 @@
             <video
               id="adVideo"
               class="cinema-video"
-              data-src="ad.mp4"
+              src="ad.mp4"
               playsinline
-              preload="metadata"
+              preload="auto"
               poster="velox_car_render.jpg"
               loop>
             </video>
@@ -197,8 +197,8 @@
                   <div class="cinema-loader-bar" id="cinemaLoaderBar"></div>
                 </div>
                 <div class="cinema-loader-meta">
-                  <span class="cinema-loader-pct" id="cinemaLoaderPct">0%</span>
-                  <span class="cinema-loader-status" id="cinemaLoaderStatus">Pre-buffering frames...</span>
+                  <span class="cinema-loader-pct" id="cinemaLoaderPct">100%</span>
+                  <span class="cinema-loader-status" id="cinemaLoaderStatus">Ready to launch!</span>
                 </div>
               </div>
             </div>
@@ -213,6 +213,7 @@
             <div class="cinema-controls-bar" id="cinemaControlsBar">
               <!-- Scrub Progress Bar -->
               <div class="cinema-progress-wrap" id="videoProgressWrap" title="Seek video" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                <div class="cinema-progress-buffer" id="videoProgressBuffer"></div>
                 <div class="cinema-progress-bar" id="videoProgressBar">
                   <div class="cinema-progress-thumb"></div>
                 </div>
@@ -234,14 +235,14 @@
                   </button>
 
                   <button type="button" class="cinema-icon-btn" id="videoAudioToggleBtn" aria-label="Mute or Unmute" title="Audio">
-                    <!-- Muted SVG (default because video starts muted) -->
-                    <svg id="audioMutedSvg" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <!-- Muted SVG (hidden initially when unmuted) -->
+                    <svg id="audioMutedSvg" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="display: none;">
                       <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
                       <line x1="23" y1="9" x2="17" y2="15"></line>
                       <line x1="17" y1="9" x2="23" y2="15"></line>
                     </svg>
-                    <!-- Unmuted SVG -->
-                    <svg id="audioHighSvg" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="display: none;">
+                    <!-- Unmuted SVG (visible initially) -->
+                    <svg id="audioHighSvg" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                       <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
                       <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
                     </svg>
@@ -357,6 +358,48 @@
       });
     }
 
+    // ── Global Theme & Language Controller (Clean SVG Icons, Zero Emojis) ──
+    function initThemeAndLang() {
+      const themeBtn = document.getElementById('themeToggleBtn');
+      const langBtn = document.getElementById('langToggleBtn');
+
+      const savedTheme = localStorage.getItem('velox_theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+
+      if (themeBtn) {
+        themeBtn.onclick = () => {
+          const current = document.documentElement.getAttribute('data-theme') || 'dark';
+          const next = current === 'dark' ? 'light' : 'dark';
+          document.documentElement.setAttribute('data-theme', next);
+          localStorage.setItem('velox_theme', next);
+        };
+      }
+
+      // Language Controller powered by i18n.js
+      const savedLang = localStorage.getItem('velox_lang') || 'en';
+      if (typeof applyVeloxLanguage === 'function') {
+        applyVeloxLanguage(savedLang);
+      }
+
+      if (langBtn) {
+        langBtn.onclick = () => {
+          if (typeof toggleVeloxLanguage === 'function') {
+            toggleVeloxLanguage();
+          } else {
+            const current = localStorage.getItem('velox_lang') || 'en';
+            const next = current === 'en' ? 'ar' : 'en';
+            if (typeof applyVeloxLanguage === 'function') applyVeloxLanguage(next);
+          }
+        };
+      }
+    }
+
+    // Initialize immediately
+    initThemeAndLang();
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initThemeAndLang);
+    }
+
     // ── Sleek Cinema Video Controller ──
     const adVideo = document.getElementById('adVideo');
     const cinemaPlayer = document.getElementById('cinemaPlayer');
@@ -374,16 +417,6 @@
     const expandSvg = document.getElementById('expandSvg');
     const compressSvg = document.getElementById('compressSvg');
     const bufferingPill = document.getElementById('cinemaBufferingPill');
-
-    // ── Persistent Cache Storage & Background Download Manager ──
-    const VIDEO_CACHE_NAME = 'velox-video-cache-v1';
-    const VIDEO_URL = 'ad.mp4';
-    let isVideoLoaded = false;
-    let isVideoReadyToPlay = false;
-    let isDownloading = false;
-    let hasAutoOpened = false;
-    let shouldAutoPlayWhenReady = false;
-    let downloadProgress = 0;
     let idleTimer = null;
 
     function formatTime(seconds) {
@@ -393,29 +426,20 @@
       return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
     }
 
-    function updateLoaderUI(pct, isReady) {
-      const loaderBar = document.getElementById('cinemaLoaderBar');
-      const loaderPct = document.getElementById('cinemaLoaderPct');
-      const loaderStatus = document.getElementById('cinemaLoaderStatus');
-
-      if (loaderBar) loaderBar.style.width = Math.max(pct, 8) + '%';
-      if (loaderPct) loaderPct.textContent = pct + '%';
-      if (loaderStatus) {
-        const isAr = document.documentElement.getAttribute('lang') === 'ar';
-        if (isReady || pct >= 100) {
-          loaderStatus.textContent = isAr ? 'جاهز للانطلاق!' : 'Ready to launch!';
-        } else if (pct < 25) {
-          loaderStatus.textContent = isAr ? 'بدء تحميل البث وحفظه...' : 'Downloading & caching stream...';
-        } else if (pct < 70) {
-          loaderStatus.textContent = isAr ? 'تجميع إطارات 60 FPS...' : 'Buffering 60 FPS frames...';
-        } else {
-          loaderStatus.textContent = isAr ? 'تحسين مسار العرض...' : 'Optimizing playback pipeline...';
-        }
+    function setAudioState(isMuted) {
+      if (!adVideo) return;
+      adVideo.muted = isMuted;
+      if (isMuted) {
+        if (audioMutedSvg) audioMutedSvg.style.display = 'block';
+        if (audioHighSvg) audioHighSvg.style.display = 'none';
+      } else {
+        if (audioMutedSvg) audioMutedSvg.style.display = 'none';
+        if (audioHighSvg) audioHighSvg.style.display = 'block';
       }
     }
 
     function resetIdleTimer() {
-      if (!cinemaPlayer) return;
+      if (!cinemaPlayer || !adVideo) return;
       cinemaPlayer.classList.remove('idle');
       clearTimeout(idleTimer);
       if (!adVideo.paused) {
@@ -425,202 +449,67 @@
       }
     }
 
-    // Launch and open video smoothly
-    function executePlay() {
+    // Execute Play with Sound Priority
+    function executePlay(requestUnmuted = true) {
       if (!adVideo) return;
       const loaderOverlay = document.getElementById('cinemaLoaderOverlay');
-      updateLoaderUI(100, true);
+      if (loaderOverlay) loaderOverlay.classList.remove('active');
+      if (cinemaPlayer) cinemaPlayer.classList.remove('buffering-preload');
+      if (videoOverlay) videoOverlay.classList.add('hidden');
 
-      setTimeout(() => {
-        if (loaderOverlay) loaderOverlay.classList.remove('active');
-        if (cinemaPlayer) cinemaPlayer.classList.remove('buffering-preload');
-        if (videoOverlay) videoOverlay.classList.add('hidden');
-
-        // Play with sound if permitted; gracefully fallback to muted autoplay per browser policy
+      if (requestUnmuted) {
+        setAudioState(false);
         adVideo.play().then(() => {
-          cinemaPlayer.classList.add('playing');
+          if (cinemaPlayer) cinemaPlayer.classList.add('playing');
           if (playIconSvg) playIconSvg.style.display = 'none';
           if (pauseIconSvg) pauseIconSvg.style.display = 'block';
           resetIdleTimer();
         }).catch(err => {
-          console.log('[Velox Video] Unmuted playback blocked, auto-playing muted:', err);
-          adVideo.muted = true;
-          if (audioMutedSvg) audioMutedSvg.style.display = 'block';
-          if (audioHighSvg) audioHighSvg.style.display = 'none';
+          console.log('[Velox Video] Unmuted playback blocked, playing muted per browser policy:', err);
+          setAudioState(true);
           adVideo.play().then(() => {
-            cinemaPlayer.classList.add('playing');
+            if (cinemaPlayer) cinemaPlayer.classList.add('playing');
             if (playIconSvg) playIconSvg.style.display = 'none';
             if (pauseIconSvg) pauseIconSvg.style.display = 'block';
             resetIdleTimer();
-          }).catch(e => console.log('[Velox Video] Autoplay failed:', e));
+          }).catch(e => console.warn('[Velox Video] Autoplay failed:', e));
         });
-      }, 250);
+      } else {
+        setAudioState(true);
+        adVideo.play().then(() => {
+          if (cinemaPlayer) cinemaPlayer.classList.add('playing');
+          if (playIconSvg) playIconSvg.style.display = 'none';
+          if (pauseIconSvg) pauseIconSvg.style.display = 'block';
+          resetIdleTimer();
+        }).catch(e => console.warn('[Velox Video] Muted autoplay failed:', e));
+      }
     }
 
-    // Toggle play / pause manually
+    // Manual Play/Pause Toggle (User initiated -> Plays with sound!)
     function handleManualPlayToggle() {
       if (!adVideo) return;
-      const loaderOverlay = document.getElementById('cinemaLoaderOverlay');
-
-      if (!adVideo.paused && isVideoLoaded) {
+      if (!adVideo.paused) {
         adVideo.pause();
         if (videoOverlay) videoOverlay.classList.remove('hidden');
-        cinemaPlayer.classList.remove('playing', 'idle');
+        if (cinemaPlayer) cinemaPlayer.classList.remove('playing', 'idle');
         if (playIconSvg) playIconSvg.style.display = 'block';
         if (pauseIconSvg) pauseIconSvg.style.display = 'none';
         clearTimeout(idleTimer);
-        return;
-      }
-
-      if (isVideoReadyToPlay) {
-        executePlay();
       } else {
-        // Show loading card while background download finishes
-        if (videoOverlay) videoOverlay.classList.add('hidden');
-        if (loaderOverlay) loaderOverlay.classList.add('active');
-        if (cinemaPlayer) cinemaPlayer.classList.add('buffering-preload');
-        shouldAutoPlayWhenReady = true;
-        updateLoaderUI(downloadProgress, false);
+        executePlay(true);
       }
-    }
-
-    // ── Persistent Download & Cache Logic (Downloaded ONCE to save cellular) ──
-    async function initVideoDownloadAndCache() {
-      if (!adVideo) return;
-
-      // 1. Check browser Cache Storage first
-      if ('caches' in window) {
-        try {
-          const cache = await caches.open(VIDEO_CACHE_NAME);
-          const cachedResponse = await cache.match(VIDEO_URL);
-          if (cachedResponse) {
-            console.log('[Velox Video] Video loaded from persistent Cache Storage! (0 cellular bytes)');
-            const blob = await cachedResponse.blob();
-            adVideo.src = URL.createObjectURL(blob);
-            isVideoLoaded = true;
-            isVideoReadyToPlay = true;
-            downloadProgress = 100;
-            updateLoaderUI(100, true);
-
-            if (shouldAutoPlayWhenReady && !hasAutoOpened) {
-              hasAutoOpened = true;
-              executePlay();
-            }
-            return;
-          }
-        } catch (cacheErr) {
-          console.warn('[Velox Video] Cache Storage check fallback:', cacheErr);
-        }
-      }
-
-      // 2. Download ONCE in background when entering the website and save to Cache
-      if (isDownloading) return;
-      isDownloading = true;
-
-      try {
-        const response = await fetch(VIDEO_URL);
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-
-        const contentLength = response.headers.get('content-length');
-        const totalBytes = contentLength ? parseInt(contentLength, 10) : 10283435;
-        let receivedBytes = 0;
-        const chunks = [];
-
-        if (response.body && response.body.getReader) {
-          const reader = response.body.getReader();
-          while (true) {
-            const { done, value } = await reader.read();
-            if (done) break;
-            chunks.push(value);
-            receivedBytes += value.length;
-            downloadProgress = Math.min(99, Math.round((receivedBytes / totalBytes) * 100));
-            updateLoaderUI(downloadProgress, false);
-          }
-        } else {
-          const arrayBuffer = await response.arrayBuffer();
-          chunks.push(new Uint8Array(arrayBuffer));
-          receivedBytes = arrayBuffer.byteLength;
-        }
-
-        const fullBlob = new Blob(chunks, { type: 'video/mp4' });
-        downloadProgress = 100;
-        updateLoaderUI(100, true);
-
-        // Store into persistent Cache Storage for future visits / reloads
-        if ('caches' in window) {
-          try {
-            const cache = await caches.open(VIDEO_CACHE_NAME);
-            await cache.put(VIDEO_URL, new Response(fullBlob.slice(0), {
-              headers: {
-                'Content-Type': 'video/mp4',
-                'Content-Length': fullBlob.size.toString()
-              }
-            }));
-            console.log('[Velox Video] Saved to persistent Cache Storage for future visits!');
-          } catch (e) {
-            console.warn('[Velox Video] Could not put into Cache Storage:', e);
-          }
-        }
-
-        adVideo.src = URL.createObjectURL(fullBlob);
-        isVideoLoaded = true;
-        isVideoReadyToPlay = true;
-
-        if (shouldAutoPlayWhenReady && !hasAutoOpened) {
-          hasAutoOpened = true;
-          executePlay();
-        }
-
-      } catch (netErr) {
-        console.warn('[Velox Video] Stream fetch fallback to direct src:', netErr);
-        adVideo.src = VIDEO_URL;
-        isVideoLoaded = true;
-        isVideoReadyToPlay = true;
-        if (shouldAutoPlayWhenReady && !hasAutoOpened) {
-          hasAutoOpened = true;
-          executePlay();
-        }
-      } finally {
-        isDownloading = false;
-      }
-    }
-
-    // Start background download immediately on site entrance
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initVideoDownloadAndCache);
-    } else {
-      initVideoDownloadAndCache();
     }
 
     if (adVideo) {
-      // ── Auto-Open on Scroll Observer ──
-      if ('IntersectionObserver' in window) {
-        const autoScrollObserver = new IntersectionObserver((entries) => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting && !hasAutoOpened) {
-              shouldAutoPlayWhenReady = true;
-              if (isVideoReadyToPlay) {
-                hasAutoOpened = true;
-                executePlay();
-              } else {
-                // Show loading card while download finishes
-                const loaderOverlay = document.getElementById('cinemaLoaderOverlay');
-                if (videoOverlay) videoOverlay.classList.add('hidden');
-                if (loaderOverlay) loaderOverlay.classList.add('active');
-                if (cinemaPlayer) cinemaPlayer.classList.add('buffering-preload');
-                updateLoaderUI(downloadProgress, false);
-              }
-            }
-          });
-        }, { threshold: 0.35 });
+      // Default to unmuted with sound
+      setAudioState(false);
 
-        const reelSection = document.getElementById('cinematic');
-        if (reelSection) autoScrollObserver.observe(reelSection);
+      if (cinemaPlayer) {
+        cinemaPlayer.addEventListener('mousemove', resetIdleTimer);
+        cinemaPlayer.addEventListener('touchstart', resetIdleTimer, { passive: true });
       }
 
-      cinemaPlayer.addEventListener('mousemove', resetIdleTimer);
-      cinemaPlayer.addEventListener('touchstart', resetIdleTimer, { passive: true });
-
+      adVideo.addEventListener('click', handleManualPlayToggle);
       if (videoOverlay) videoOverlay.addEventListener('click', handleManualPlayToggle);
       if (playToggleBtn) playToggleBtn.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -628,33 +517,157 @@
       });
 
       // Hook up Hero "Watch Reel" button
-      const heroWatchReelBtn = document.querySelector('a[href="#cinematic"]');
+      const heroWatchReelBtn = document.getElementById('heroWatchReelBtn') || document.querySelector('a[href="#cinematic"]');
       if (heroWatchReelBtn) {
         heroWatchReelBtn.addEventListener('click', (e) => {
           e.preventDefault();
           const cinematicSec = document.getElementById('cinematic');
           if (cinematicSec) {
             cinematicSec.scrollIntoView({ behavior: 'smooth' });
-            setTimeout(() => {
-              handleManualPlayToggle();
-            }, 450);
+          }
+          handleManualPlayToggle();
+        });
+      }
+
+      // Audio Toggle Button
+      if (audioToggleBtn) {
+        audioToggleBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          setAudioState(!adVideo.muted);
+          if (!adVideo.muted && adVideo.paused) {
+            adVideo.play().catch(() => {});
           }
         });
       }
 
-      adVideo.addEventListener('progress', updateBufferProgressUI);
+      // Timeline / Progress updates
+      let isScrubbing = false;
+      let wasPlayingBeforeScrub = false;
 
-      // In-playback buffering monitor (avoids freezing without notification)
-      adVideo.addEventListener('waiting', () => {
-        if (bufferingPill && !isBufferingPreload) {
-          bufferingPill.classList.add('active');
+      adVideo.addEventListener('timeupdate', () => {
+        if (isScrubbing) return;
+        if (adVideo.duration && !isNaN(adVideo.duration) && progressBar) {
+          const pct = (adVideo.currentTime / adVideo.duration) * 100;
+          progressBar.style.width = pct + '%';
+          if (timeDisplay) {
+            timeDisplay.textContent = `${formatTime(adVideo.currentTime)} / ${formatTime(adVideo.duration)}`;
+          }
         }
+      });
+
+      adVideo.addEventListener('progress', () => {
+        if (adVideo.duration && adVideo.buffered.length > 0) {
+          const bufferedEnd = adVideo.buffered.end(adVideo.buffered.length - 1);
+          const pct = Math.min(100, (bufferedEnd / adVideo.duration) * 100);
+          const bufferBar = document.getElementById('videoProgressBuffer');
+          if (bufferBar) bufferBar.style.width = pct + '%';
+        }
+      });
+
+      adVideo.addEventListener('loadedmetadata', () => {
+        if (timeDisplay && adVideo.duration) {
+          timeDisplay.textContent = `0:00 / ${formatTime(adVideo.duration)}`;
+        }
+      });
+
+      // Fluid Drag & Click Scrubbing on the Progress Bar
+      if (progressWrap) {
+        function updateScrubUI(pos) {
+          const safePos = Math.max(0, Math.min(1, pos));
+          if (progressBar) progressBar.style.width = (safePos * 100) + '%';
+          if (timeDisplay && adVideo.duration && !isNaN(adVideo.duration)) {
+            const previewTime = safePos * adVideo.duration;
+            timeDisplay.textContent = `${formatTime(previewTime)} / ${formatTime(adVideo.duration)}`;
+          }
+        }
+
+        function commitSeek(clientX) {
+          const rect = progressWrap.getBoundingClientRect();
+          if (rect.width <= 0) return;
+          const pos = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+          updateScrubUI(pos);
+          if (adVideo.duration && !isNaN(adVideo.duration)) {
+            try {
+              adVideo.currentTime = pos * adVideo.duration;
+            } catch (e) {}
+          }
+        }
+
+        progressWrap.addEventListener('click', (e) => {
+          commitSeek(e.clientX);
+        });
+
+        progressWrap.addEventListener('mousedown', (e) => {
+          isScrubbing = true;
+          wasPlayingBeforeScrub = !adVideo.paused;
+          progressWrap.classList.add('is-scrubbing');
+          commitSeek(e.clientX);
+        });
+
+        window.addEventListener('mousemove', (e) => {
+          if (isScrubbing) {
+            const rect = progressWrap.getBoundingClientRect();
+            if (rect.width > 0) {
+              const pos = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+              updateScrubUI(pos);
+            }
+          }
+        });
+
+        window.addEventListener('mouseup', (e) => {
+          if (isScrubbing) {
+            isScrubbing = false;
+            progressWrap.classList.remove('is-scrubbing');
+            commitSeek(e.clientX);
+            if (wasPlayingBeforeScrub) {
+              adVideo.play().catch(() => {});
+            }
+          }
+        });
+
+        // Touch scrubbing for mobile devices
+        progressWrap.addEventListener('touchstart', (e) => {
+          if (e.touches && e.touches[0]) {
+            isScrubbing = true;
+            wasPlayingBeforeScrub = !adVideo.paused;
+            progressWrap.classList.add('is-scrubbing');
+            commitSeek(e.touches[0].clientX);
+          }
+        }, { passive: true });
+
+        window.addEventListener('touchmove', (e) => {
+          if (isScrubbing && e.touches && e.touches[0]) {
+            const rect = progressWrap.getBoundingClientRect();
+            if (rect.width > 0) {
+              const pos = Math.max(0, Math.min(1, (e.touches[0].clientX - rect.left) / rect.width));
+              updateScrubUI(pos);
+            }
+          }
+        }, { passive: true });
+
+        window.addEventListener('touchend', (e) => {
+          if (isScrubbing) {
+            isScrubbing = false;
+            progressWrap.classList.remove('is-scrubbing');
+            if (e.changedTouches && e.changedTouches[0]) {
+              commitSeek(e.changedTouches[0].clientX);
+            }
+            if (wasPlayingBeforeScrub) {
+              adVideo.play().catch(() => {});
+            }
+          }
+        });
+      }
+
+      // Playback events
+      adVideo.addEventListener('waiting', () => {
+        if (bufferingPill) bufferingPill.classList.add('active');
       });
 
       adVideo.addEventListener('playing', () => {
         if (bufferingPill) bufferingPill.classList.remove('active');
         if (videoOverlay) videoOverlay.classList.add('hidden');
-        cinemaPlayer.classList.add('playing');
+        if (cinemaPlayer) cinemaPlayer.classList.add('playing');
         if (playIconSvg) playIconSvg.style.display = 'none';
         if (pauseIconSvg) pauseIconSvg.style.display = 'block';
       });
@@ -665,70 +678,19 @@
 
       adVideo.addEventListener('pause', () => {
         if (bufferingPill) bufferingPill.classList.remove('active');
-        if (!isBufferingPreload && videoOverlay) videoOverlay.classList.remove('hidden');
-        cinemaPlayer.classList.remove('playing', 'idle');
+        if (videoOverlay) videoOverlay.classList.remove('hidden');
+        if (cinemaPlayer) cinemaPlayer.classList.remove('playing', 'idle');
         if (playIconSvg) playIconSvg.style.display = 'block';
         if (pauseIconSvg) pauseIconSvg.style.display = 'none';
       });
 
-      if (audioToggleBtn) {
-        audioToggleBtn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          adVideo.muted = !adVideo.muted;
-          if (adVideo.muted) {
-            if (audioMutedSvg) audioMutedSvg.style.display = 'block';
-            if (audioHighSvg) audioHighSvg.style.display = 'none';
-          } else {
-            if (audioMutedSvg) audioMutedSvg.style.display = 'none';
-            if (audioHighSvg) audioHighSvg.style.display = 'block';
-          }
-        });
-      }
-
-
-      adVideo.addEventListener('timeupdate', () => {
-        if (adVideo.duration && progressBar) {
-          const pct = (adVideo.currentTime / adVideo.duration) * 100;
-          progressBar.style.width = pct + '%';
-          if (timeDisplay) {
-            timeDisplay.textContent = `${formatTime(adVideo.currentTime)} / ${formatTime(adVideo.duration)}`;
-          }
-        }
-      });
-
-      adVideo.addEventListener('loadedmetadata', () => {
-        if (timeDisplay && adVideo.duration) {
-          timeDisplay.textContent = `0:00 / ${formatTime(adVideo.duration)}`;
-        }
-      });
-
-      if (progressWrap) {
-        progressWrap.addEventListener('click', (e) => {
-          if (!isVideoLoaded && adVideo) {
-            adVideo.src = adVideo.dataset.src || 'ad.mp4';
-            adVideo.load();
-            isVideoLoaded = true;
-          }
-          const rect = progressWrap.getBoundingClientRect();
-          const pos = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
-          if (adVideo.duration) {
-            adVideo.currentTime = pos * adVideo.duration;
-          }
-        });
-      }
-
+      // Fullscreen Controller
       if (fullscreenBtn && cinemaPlayer) {
         fullscreenBtn.addEventListener('click', () => {
           if (!document.fullscreenElement) {
-            cinemaPlayer.requestFullscreen().then(() => {
-              if (expandSvg) expandSvg.style.display = 'none';
-              if (compressSvg) compressSvg.style.display = 'block';
-            }).catch(() => {});
+            cinemaPlayer.requestFullscreen().catch(() => {});
           } else {
-            document.exitFullscreen().then(() => {
-              if (expandSvg) expandSvg.style.display = 'block';
-              if (compressSvg) compressSvg.style.display = 'none';
-            }).catch(() => {});
+            document.exitFullscreen().catch(() => {});
           }
         });
 
@@ -738,45 +700,54 @@
           if (compressSvg) compressSvg.style.display = isFs ? 'block' : 'none';
         });
       }
-    }
 
-    // ── Global Theme & Language Controller (Clean SVG Icons, Zero Emojis) ──
-    document.addEventListener('DOMContentLoaded', () => {
-      initThemeAndLang();
-    });
+      // Auto-Open on Scroll Observer
+      if ('IntersectionObserver' in window) {
+        let hasAutoOpened = false;
+        const autoScrollObserver = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting && !hasAutoOpened) {
+              hasAutoOpened = true;
+              executePlay(false);
+            }
+          });
+        }, { threshold: 0.35 });
 
-    function initThemeAndLang() {
-      const themeBtn = document.getElementById('themeToggleBtn');
-      const langBtn = document.getElementById('langToggleBtn');
-
-      const savedTheme = localStorage.getItem('velox_theme') || 'dark';
-      document.documentElement.setAttribute('data-theme', savedTheme);
-
-      if (themeBtn) {
-        themeBtn.addEventListener('click', () => {
-          const current = document.documentElement.getAttribute('data-theme') || 'dark';
-          const next = current === 'dark' ? 'light' : 'dark';
-          document.documentElement.setAttribute('data-theme', next);
-          localStorage.setItem('velox_theme', next);
-        });
+        const reelSection = document.getElementById('cinematic');
+        if (reelSection) autoScrollObserver.observe(reelSection);
       }
 
-      // Language Controller powered by i18n.js
-      const savedLang = localStorage.getItem('velox_lang') || 'en';
-      if (typeof applyVeloxLanguage === 'function') {
-        applyVeloxLanguage(savedLang);
-      }
-
-      if (langBtn) {
-        langBtn.addEventListener('click', () => {
-          if (typeof toggleVeloxLanguage === 'function') {
-            toggleVeloxLanguage();
-          } else {
-            const current = localStorage.getItem('velox_lang') || 'en';
-            const next = current === 'en' ? 'ar' : 'en';
-            if (typeof applyVeloxLanguage === 'function') applyVeloxLanguage(next);
-          }
-        });
+      // Pre-cache video in background to save cellular data on re-visits and enable instant seek
+      if ('caches' in window) {
+        caches.open('velox-video-cache-v1').then(cache => {
+          cache.match('ad.mp4').then(match => {
+            if (match) {
+              match.blob().then(blob => {
+                const blobUrl = URL.createObjectURL(blob);
+                const cur = adVideo.currentTime;
+                const wasPaused = adVideo.paused;
+                adVideo.src = blobUrl;
+                try { adVideo.currentTime = cur; } catch (e) {}
+                if (!wasPaused) adVideo.play().catch(() => {});
+              });
+            } else {
+              fetch('ad.mp4').then(res => {
+                if (res.ok) {
+                  const clone = res.clone();
+                  cache.put('ad.mp4', clone);
+                  res.blob().then(blob => {
+                    const blobUrl = URL.createObjectURL(blob);
+                    const cur = adVideo.currentTime;
+                    const wasPaused = adVideo.paused;
+                    adVideo.src = blobUrl;
+                    try { adVideo.currentTime = cur; } catch (e) {}
+                    if (!wasPaused) adVideo.play().catch(() => {});
+                  });
+                }
+              }).catch(() => {});
+            }
+          });
+        }).catch(() => {});
       }
     }
 
