@@ -16,10 +16,10 @@
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
 
   <!-- Shared Style with Cache Buster -->
-  <link rel="stylesheet" href="style.css?v=3.4" />
+  <link rel="stylesheet" href="style.css?v=3.8" />
 
   <!-- Localization Engine -->
-  <script src="i18n.js?v=3.4"></script>
+  <script src="i18n.js?v=3.8"></script>
 </head>
 <body>
 
@@ -39,6 +39,7 @@
           <li><a href="/" class="nav-link" data-i18n="nav.home">Home</a></li>
           <li><a href="/#about" class="nav-link" data-i18n="nav.about">About</a></li>
           <li><a href="/team" class="nav-link active" data-i18n="nav.team">Team</a></li>
+          <li><a href="/portal" class="nav-link" data-i18n="nav.portal">Portal</a></li>
           <li><a href="/sponsorship" class="nav-link" data-i18n="nav.sponsors">Sponsors</a></li>
           <li class="mobile-menu-cta"><a href="/join" class="btn btn-primary btn-full" data-i18n="nav.joinFull">Join the Team &rarr;</a></li>
         </ul>
@@ -106,6 +107,7 @@
             <li><a href="/team" data-i18n="nav.team">Team Structure</a></li>
             <li><a href="/sponsorship" data-i18n="nav.sponsors">Sponsorship</a></li>
             <li><a href="/join" data-i18n="nav.join">Join the Team</a></li>
+            <li><a href="/portal" data-i18n="nav.portal">Inside Portal</a></li>
             <li><a href="/hr">HR Portal</a></li>
           </ul>
         </div>
@@ -129,7 +131,7 @@
   </footer>
 
   <!-- Team Data Source -->
-  <script src="team.js?v=3.4"></script>
+  <script src="team.js?v=3.8"></script>
 
   <script>
     // Minimal mobile navigation toggle
@@ -282,22 +284,22 @@
             </div>
           </div>
 
-          <!-- BRANCH 2: OPERATIONS & NON-TECHNICAL -->
+          <!-- BRANCH 2: MANAGERIAL & OPERATIONS -->
           <div class="tree-branch-col branch-operations" id="branchOps">
             <div class="branch-header-badge ops">
               <span class="badge-dot"></span>
-              <span>${dict['team.branchOpsTitle'] || 'Operations & Business Branch'}</span>
+              <span>${dict['team.branchOpsTitle'] || 'Managerial & Operations Branch'}</span>
             </div>
 
-            <!-- Operations / Media Leader Card -->
+            <!-- Managerial Leader Card -->
             <div class="tree-tier tree-tier-lead" style="width: 100%;">
-              <div class="person-card clickable-member" data-member-id="mohamed-hassan" role="button" tabindex="0" title="${dict['modal.viewProfile'] || 'Click to view overview'}" style="width: 100%;">
+              <div class="person-card clickable-member" data-member-id="${data.managerialLeader.id}" role="button" tabindex="0" title="${dict['modal.viewProfile'] || 'Click to view overview'}" style="width: 100%;">
                 <div class="avatar-circle">
-                  ${(data.nonTechnical.find(d => d.id === 'media') && data.nonTechnical.find(d => d.id === 'media').leader && data.nonTechnical.find(d => d.id === 'media').leader.photo) ? `<img src="${data.nonTechnical.find(d => d.id === 'media').leader.photo}" alt="Mohamed Hassan" class="avatar-img" />` : getInitials("Mohamed Hassan")}
+                  ${data.managerialLeader.photo ? `<img src="${data.managerialLeader.photo}" alt="${data.managerialLeader.name}" class="avatar-img" />` : getInitials(data.managerialLeader.name)}
                 </div>
-                <span class="person-role" style="color: #38BDF8;">${tRole('Media Lead')}</span>
-                <h3 class="person-name">Mohamed Hassan</h3>
-                <p class="person-bio">${(currentLang === 'ar' && data.nonTechnical.find(d => d.id === 'media') && data.nonTechnical.find(d => d.id === 'media').leader && data.nonTechnical.find(d => d.id === 'media').leader.bio_ar) ? data.nonTechnical.find(d => d.id === 'media').leader.bio_ar : (data.nonTechnical.find(d => d.id === 'media') && data.nonTechnical.find(d => d.id === 'media').leader && data.nonTechnical.find(d => d.id === 'media').leader.bio ? data.nonTechnical.find(d => d.id === 'media').leader.bio : 'Directs external relations, visual brand identity, digital broadcasting, and operational sponsorship logistics.')}</p>
+                <span class="person-role" style="color: #38BDF8;">${tRole(data.managerialLeader.role)}</span>
+                <h3 class="person-name">${data.managerialLeader.name}</h3>
+                <p class="person-bio">${(currentLang === 'ar' && data.managerialLeader.bio_ar) ? data.managerialLeader.bio_ar : (data.managerialLeader.bio || '')}</p>
                 <div class="person-view-cue" style="color: #38BDF8; background: rgba(56, 189, 248, 0.08); border-color: rgba(56, 189, 248, 0.22);">
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                   <span data-i18n="modal.viewProfile">${dict['modal.viewProfile'] || 'Click to view overview'}</span>

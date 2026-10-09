@@ -16,9 +16,9 @@
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
 
   <!-- Shared Style with Cache Buster -->
-  <link rel="stylesheet" href="style.css?v=3.4" />
+  <link rel="stylesheet" href="style.css?v=3.8" />
   <!-- Localization Engine -->
-  <script src="i18n.js?v=3.4"></script>
+  <script src="i18n.js?v=3.8"></script>
   <!-- Supabase JS Client (CDN) -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -40,6 +40,7 @@
           <li><a href="/" class="nav-link" data-i18n="nav.home">Home</a></li>
           <li><a href="/#about" class="nav-link" data-i18n="nav.about">About</a></li>
           <li><a href="/team" class="nav-link" data-i18n="nav.team">Team</a></li>
+          <li><a href="/portal" class="nav-link" data-i18n="nav.portal">Portal</a></li>
           <li><a href="/sponsorship" class="nav-link" data-i18n="nav.sponsors">Sponsors</a></li>
           <li class="mobile-menu-cta"><a href="/join" class="btn btn-primary btn-full" data-i18n="nav.joinFull">Join the Team &rarr;</a></li>
         </ul>
@@ -105,12 +106,8 @@
               </div>
             </div>
 
-            <!-- 3. University ID & Faculty -->
+            <!-- 3. Faculty & Academic Year -->
             <div class="form-row">
-              <div class="form-group">
-                <label for="universityId" data-i18n="join.universityId">University ID / Student ID<span class="req">*</span></label>
-                <input type="text" id="universityId" class="form-control" data-i18n-ph="join.universityIdPh" placeholder="e.g. 202300123" required />
-              </div>
               <div class="form-group">
                 <label for="faculty" data-i18n="join.faculty">Faculty / Department<span class="req">*</span></label>
                 <select id="faculty" class="form-control" required>
@@ -123,20 +120,18 @@
                   <option value="Other Faculty" data-i18n="join.facOther">Other Faculty</option>
                 </select>
               </div>
-            </div>
-
-            <!-- 4. Academic Year -->
-            <div class="form-group">
-              <label for="academicYear" data-i18n="join.academicYear">Academic Level / Year<span class="req">*</span></label>
-              <select id="academicYear" class="form-control" required>
-                <option value="" disabled selected data-i18n="join.yearSelect">Select your current year</option>
-                <option value="Level 0 / Preparatory (Prep Year)" data-i18n="join.lvl0">Level 0 / Preparatory (Prep Year)</option>
-                <option value="Level 100 / Second Year" data-i18n="join.lvl100">Level 100 / Second Year</option>
-                <option value="Level 200 / Third Year" data-i18n="join.lvl200">Level 200 / Third Year</option>
-                <option value="Level 300 / Fourth Year" data-i18n="join.lvl300">Level 300 / Fourth Year</option>
-                <option value="Level 400 / Fifth Year (Senior)" data-i18n="join.lvl400">Level 400 / Fifth Year (Senior)</option>
-                <option value="Graduate / Alumni" data-i18n="join.alumni">Graduate / Alumni</option>
-              </select>
+              <div class="form-group">
+                <label for="academicYear" data-i18n="join.academicYear">Academic Level / Year<span class="req">*</span></label>
+                <select id="academicYear" class="form-control" required>
+                  <option value="" disabled selected data-i18n="join.yearSelect">Select your current year</option>
+                  <option value="Level 0 / Preparatory (Prep Year)" data-i18n="join.lvl0">Level 0 / Preparatory (Prep Year)</option>
+                  <option value="Level 100 / Second Year" data-i18n="join.lvl100">Level 100 / Second Year</option>
+                  <option value="Level 200 / Third Year" data-i18n="join.lvl200">Level 200 / Third Year</option>
+                  <option value="Level 300 / Fourth Year" data-i18n="join.lvl300">Level 300 / Fourth Year</option>
+                  <option value="Level 400 / Fifth Year (Senior)" data-i18n="join.lvl400">Level 400 / Fifth Year (Senior)</option>
+                  <option value="Graduate / Alumni" data-i18n="join.alumni">Graduate / Alumni</option>
+                </select>
+              </div>
             </div>
 
             <!-- 5. Sub-team Choices -->
@@ -197,13 +192,7 @@
               <input type="text" id="skillsCustom" class="form-control" style="margin-top: 10px;" data-i18n-ph="join.skillsCustomPh" placeholder="Other skills (e.g. Python, STM32, CBOM Costing, etc.)" />
             </div>
 
-            <!-- 8. Why Join Velox -->
-            <div class="form-group">
-              <label for="whyJoin" data-i18n="join.whyJoin">Why do you want to join Velox Racing?<span class="req">*</span></label>
-              <textarea id="whyJoin" rows="4" class="form-control" data-i18n-ph="join.whyJoinPh" placeholder="Share your motivation, goals, and what you hope to contribute to Chassis VX-01..." required></textarea>
-            </div>
-
-            <!-- 9. Optional CV / Portfolio -->
+            <!-- 8. Optional CV / Portfolio -->
             <div class="form-group">
               <label for="portfolioUrl" data-i18n="join.portfolio">CV, Portfolio, or LinkedIn Profile (Optional)</label>
               <input type="url" id="portfolioUrl" class="form-control" data-i18n-ph="join.portfolioPh" placeholder="https://drive.google.com/... or https://linkedin.com/in/..." />
@@ -255,6 +244,7 @@
             <li><a href="/#about" data-i18n="nav.about">About</a></li>
             <li><a href="/team" data-i18n="nav.team">Team Structure</a></li>
             <li><a href="/join" data-i18n="nav.join">Join the Team</a></li>
+            <li><a href="/portal" data-i18n="nav.portal">Inside Portal</a></li>
             <li><a href="/sponsorship" data-i18n="nav.sponsors">Sponsors</a></li>
           </ul>
         </div>
@@ -279,7 +269,7 @@
 
   <!-- App Configuration & Team Data -->
   <script src="config.js"></script>
-  <script src="team.js?v=3.4"></script>
+  <script src="team.js?v=3.8"></script>
 
   <script>
     // Timestamp on load to prevent bot / instant submissions
@@ -407,12 +397,10 @@
       const fullName = document.getElementById('fullName').value.trim();
       const email = document.getElementById('email').value.trim().toLowerCase();
       const phone = document.getElementById('phone').value.trim();
-      const universityId = document.getElementById('universityId').value.trim();
       const faculty = document.getElementById('faculty').value;
       const academicYear = document.getElementById('academicYear').value;
       const subteamFirst = document.getElementById('subteamFirst').value;
       const subteamSecond = document.getElementById('subteamSecond').value;
-      const whyJoin = document.getElementById('whyJoin').value.trim();
       const portfolioUrl = document.getElementById('portfolioUrl').value.trim();
 
       const timeInput = document.querySelector('input[name="timeCommitment"]:checked');
@@ -420,7 +408,7 @@
 
       const isAr = document.documentElement.getAttribute('lang') === 'ar';
 
-      if (!fullName || !email || !phone || !universityId || !faculty || !academicYear || !subteamFirst || !subteamSecond || !whyJoin) {
+      if (!fullName || !email || !phone || !faculty || !academicYear || !subteamFirst || !subteamSecond) {
         showError(isAr ? 'يرجى ملء جميع الحقول المطلوبة المميزة بعلامة (*).' : 'Please fill in all required fields marked with an asterisk (*).');
         return;
       }
@@ -442,14 +430,14 @@
         full_name: fullName,
         email: email,
         phone: phone,
-        university_id: universityId,
+        university_id: 'N/A',
         faculty: faculty,
         academic_year: academicYear,
         subteam_first: subteamFirst,
         subteam_second: subteamSecond,
         time_commitment: timeCommitment,
         skills: skillsStr,
-        why_join: whyJoin,
+        why_join: 'Applicant Profile (Direct Submission)',
         portfolio_url: portfolioUrl || null,
         status: 'New',
         hr_notes: ''

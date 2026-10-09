@@ -12,11 +12,11 @@ const VELOX_TEAM = {
       id: "fatima-salman",
       role: "Team Leader",
       name: "Fatima Salman",
-      photo: "",
+      photo: "photos/Fatima Salman.jpeg",
       department: "Executive Management & Institutional Governance",
       department_ar: "الإدارة التنفيذية والحوكمة المؤسسية",
-      bio: "Leads the overall strategic vision and institutional governance of VELOX Racing. Spearheads university administration relations, international competition entry protocols, cross-discipline milestone synergy, and external representation for Formula Student at Silverstone Circuit.",
-      bio_ar: "تقود الرؤية الاستراتيجية والحوكمة التنفيذية لفريق فيلوكس. تدير التنسيق المؤسسي مع إدارة الجامعة وكلية الهندسة، وإجراءات التسجيل في المسابقات الدولية، والتكامل الإداري بين كافة القطاعات لتمثيل مصر والجامعة في حلبة سيلفرستون.",
+      bio: "Leads the overall strategic vision, university partnerships, and international competition governance for Formula Student at Silverstone.",
+      bio_ar: "تقود الرؤية الاستراتيجية للفريق والتنسيق المؤسسي مع إدارة الجامعة والتمثيل الدولي في سيلفرستون.",
       responsibilities: [
         "Executive team vision, roadmap governance, and organizational leadership",
         "Official liaison with Zagazig National University & Faculty of Engineering",
@@ -39,8 +39,8 @@ const VELOX_TEAM = {
       photo: "photos/Karim Shaprawy.jpeg",
       department: "Operations, Build Management & Partnerships",
       department_ar: "العمليات التنفيذية وإدارة التصنيع والشراكات",
-      bio: "Drives the operational heartbeat of VELOX Racing. Orchestrates inter-subsystem engineering sprints, workshop manufacturing logistics, static event business presentation readiness, and high-impact corporate sponsorship alliances.",
-      bio_ar: "يدير الشريان التشغيلي اليومي لفريق فيلوكس. ينسق مسارات العمل الهندسية بين الأقسام، وجداول التصنيع داخل الورش، وتجهيز عروض إدارة الأعمال والمسابقات الثابتة، وبناء الشراكات الاستراتيجية مع الرعاة.",
+      bio: "Drives day-to-day operations, workshop manufacturing schedules, static event preparation, and strategic sponsorship alliances.",
+      bio_ar: "يدير العمليات اليومية وجداول التصنيع بالورشة وتجهيز المسابقات الثابتة واستقطاب الرعاة.",
       responsibilities: [
         "Operational roadmap execution, timeline synchronization, and sprint governance",
         "Workshop manufacturing discipline, resource allocation, and build progress",
@@ -64,8 +64,8 @@ const VELOX_TEAM = {
     photo: "photos/Mohamed Romy.jpeg",
     department: "Chief Vehicle Engineering & Systems Architecture",
     department_ar: "الهندسة المعمارية الرئيسية وتكامل أنظمة السيارة",
-    bio: "Chief engineer commanding the technical architecture of Chassis VX-01. Leads overall vehicle design packaging, FEA/CFD multi-physics simulation validation, Formula Student technical regulations compliance, and seamless cross-subsystem mechanical integration.",
-    bio_ar: "المهندس الفني الرئيسي المشرف على البنية المعمارية لشاسيه VX-01. يقود التصميم الهيكلي للمركبة، والتحقق من حسابات الإجهادات ومحاكاة الانسيابية (FEA & CFD)، والامتثال للوائح الأمان الدولية، والتكامل الميكانيكي الدقيق بين جميع الأنظمة.",
+    bio: "Commands vehicle engineering architecture, FEA/CFD simulations, rules compliance, and overall mechanical integration.",
+    bio_ar: "يقود البنية الهندسية للسيارة ومحاكاة الإجهادات والانسيابية وتطبيق لوائح الأمان والتكامل الميكانيكي.",
     responsibilities: [
       "Overall vehicle engineering architecture and master CAD assembly packaging",
       "Formula Student technical regulations compliance and SES structural safety submission",
@@ -80,6 +80,32 @@ const VELOX_TEAM = {
     ],
     quote: "Every bolt, bracket, and millimeter of carbon fiber has a calculated purpose. We engineer for speed, structural rigidity, and uncompromising safety.",
     quote_ar: "كل مسمار وكل ملليمتر في هيكل السيارة مصمم لغرض حسابي دقيق. نحن نصمم للسرعة، والصلابة، والأمان التام."
+  },
+  managerialLeader: {
+    id: "moaaz-elghamry",
+    role: "Managerial Leader",
+    name: "Moaaz Elghamry",
+    photo: "photos/Moaaz Elghamry.jpeg",
+    linkedin: "https://www.linkedin.com/in/moaaz-mohamed-elghamry-164a00303/?isSelfProfile=true",
+    instagram: "https://www.instagram.com/moaaz_8amry?mdxt=MTIxdzJpcXVjYXhwbQ==",
+    department: "Executive Management & Operations Division",
+    department_ar: "قطاع الإدارة التشغيلية والتنظيمية",
+    bio: "Directs organizational management, inter-departmental workflows, budget governance, and operational execution.",
+    bio_ar: "يقود الإدارة التنظيمية للفريق، ومتابعة العمليات وسير العمل بين كافة القطاعات وحوكمة الميزانية.",
+    responsibilities: [
+      "Operational workflow coordination and inter-subsystem execution tracking",
+      "Resource allocation, budget governance, and department milestones",
+      "Institutional coordination, administrative planning, and internal logistics",
+      "Cross-discipline team accountability and strategic project reviews"
+    ],
+    responsibilities_ar: [
+      "التنسيق التنظيمي وسير العمل ومتابعة خطط التنفيذ بين كافة الأقسام",
+      "حوكمة الميزانية وتوزيع الموارد ومتابعة المواعيد والمراحل النهائية",
+      "التنسيق المؤسسي والتخطيط الإداري واللوجستيات الداخلية للفريق",
+      "متابعة التزام الأقسام والمراجعات الاستراتيجية الدورية للمشاريع"
+    ],
+    quote: "Operational excellence and razor-sharp discipline turn ambitious ideas into podium results.",
+    quote_ar: "الانضباط التنظيمي والعمل الجماعي المحكم هما السبيل لتحويل الأفكار الطموحة إلى إنجازات حقيقية على الحلبة."
   },
   technicalDepartments: [
     {
@@ -101,32 +127,7 @@ const VELOX_TEAM = {
     {
       id: "powertrain",
       name: "Powertrain",
-      leader: {
-        id: "moaaz-elghamry",
-        name: "Moaaz Elghamry",
-        role: "Powertrain Leader",
-        photo: "photos/Moaaz Elghamry.jpeg",
-        linkedin: "https://www.linkedin.com/in/moaaz-mohamed-elghamry-164a00303/?isSelfProfile=true",
-        instagram: "https://www.instagram.com/moaaz_8amry?mdxt=MTIxdzJpcXVjYXhwbQ==",
-        department: "Powertrain & Thermal Systems Division",
-        department_ar: "قسم منظومة الدفع والأنظمة الحرارية",
-        bio: "Leading the heartbeat and propulsion of the VELOX racecar. Directs powertrain structural mounting architecture, thermodynamic CFD cooling loops, custom drivetrain chain reduction, and differential torque transmission to maximize acceleration and thermal reliability.",
-        bio_ar: "يقود قلب وقوة الدفع في سيارة سباق فيلوكس. يشرف على هندسة تثبيت منظومة الحركة، ودورات التبريد الديناميكية الحرارية، ونظام نقل الحركة والجنزير عالي الكفاءة، ومعايرة الترس التفاضلي لضمان أقصى تسارع واعتمادية على الحلبة.",
-        responsibilities: [
-          "Powertrain structural mounting, torsional stiffness integration, and mass balancing",
-          "Thermodynamic CFD cooling circuit design and heat exchanger optimization",
-          "Final drive chain reduction calculations, sprocket sizing, and torque transfer",
-          "Limited-slip differential calibration, throttle response tuning, and bench dyno validation"
-        ],
-        responsibilities_ar: [
-          "هندسة تثبيت وتكامل محرك الدفع هيكلياً داخل الشاسيه مع ضبط توازن الكتلة",
-          "تصميم وتحليل دورات التبريد الديناميكية الحرارية والمبادلات الحرارية",
-          "حسابات نسب تخفيض الجنزير واختيار مقاسات التروس لنقل أقصى عزم",
-          "معايرة الترس التفاضلي (LSD) واستجابة دواسة الوقود واختبارات الأداء"
-        ],
-        quote: "Power is nothing without precision delivery. Our mission is to extract every kilowatt and deliver razor-sharp throttle response straight to the tarmac.",
-        quote_ar: "القوة بلا توجيه دقيق لا تعني شيئاً. مهمتنا استخراج أقصى طاقة ونقلها باستجابة لحظية حاسمة إلى أرض الحلبة."
-      },
+      leader: null,
       subteams: ["Motor", "Transmission"],
       description: "Powertrain mounting, cooling thermal loops, torque transfer, chain drive ratio optimization, and differential assembly.",
       description_ar: "تثبيت المحرك، دورات التبريد الحرارية، نقل العزم، تحسين نسب نقل الحركة، وتجميع الترس التفاضلي."
@@ -141,8 +142,8 @@ const VELOX_TEAM = {
         photo: "",
         department: "Electrical Infrastructure & Electronics Division",
         department_ar: "قسم البنية التحتية الكهربائية والإلكترونيات",
-        bio: "Directs low-voltage motorsport electrical infrastructure, Raychem Mil-Spec wiring harnesses, real-time wireless pit-wall DAQ telemetry, ECU parameter logging, and critical safety shutdown interlocks.",
-        bio_ar: "يقود البنية التحتية الكهربائية للسيارة، وتصنيع الضفائر بمواصفات Raychem Mil-Spec العسكرية، وأنظمة القياس عن بُعد (Telemetry) المباشرة مع منصة الصيانة، وبرمجة دوائر الأمان وفصل التيار.",
+        bio: "Directs low-voltage motorsport wiring harnesses, power distribution, sensor calibration, and live trackside telemetry.",
+        bio_ar: "يشرف على الضفائر الكهربائية وتوزيع الطاقة ومعايرة الحساسات وأنظمة التيليمتري المباشرة.",
         responsibilities: [
           "Motorsport-grade Raychem wiring loom architecture and water-resistant packaging",
           "Real-time wireless pit-wall telemetry system (DAQ) and sensor bus calibration",
@@ -179,11 +180,11 @@ const VELOX_TEAM = {
         id: "mohamed-hassan",
         name: "Mohamed Hassan",
         role: "Media Lead",
-        photo: "",
+        photo: "photos/Mohamed Hassan.jpeg",
         department: "Media, Public Relations & Brand Architecture",
         department_ar: "قسم الإعلام والعلاقات العامة والهوية البصرية",
-        bio: "Architect of VELOX Racing's visual identity and international brand presence. Directs cinematic build documentaries, high-octane motorsport photography, public relations broadcasting, and digital community engagement across all platforms.",
-        bio_ar: "مهندس الهوية البصرية والحضور الإعلامي لفريق فيلوكس. يقود إنتاج الأفلام الوثائقية لتصنيع السيارة، والتصوير الاحترافي، والتغطية الصحفية والإعلامية، وإدارة المنصات الرقمية للتواصل مع الجماهير والشركاء.",
+        bio: "Architect of visual identity, cinematic build documentaries, motorsport photography, and official public relations broadcasting.",
+        bio_ar: "يشرف على الهوية البصرية وإنتاج الأفلام الوثائقية لتصنيع السيارة والتصوير وإدارة المنصات الإعلامية.",
         responsibilities: [
           "Cinematic racecar build documentaries, motion graphics, and trackside media capture",
           "Brand style guide governance, social media campaigns, and international fan engagement",
@@ -225,6 +226,9 @@ function getMemberById(id) {
   if (!id) return null;
   if (VELOX_TEAM.technicalLeader && (VELOX_TEAM.technicalLeader.id === id || VELOX_TEAM.technicalLeader.name === id)) {
     return VELOX_TEAM.technicalLeader;
+  }
+  if (VELOX_TEAM.managerialLeader && (VELOX_TEAM.managerialLeader.id === id || VELOX_TEAM.managerialLeader.name === id)) {
+    return VELOX_TEAM.managerialLeader;
   }
   const exec = VELOX_TEAM.executives.find(m => m.id === id || m.name === id);
   if (exec) return exec;

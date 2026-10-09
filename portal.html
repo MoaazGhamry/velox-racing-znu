@@ -1,0 +1,3595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Inside Portal — Velox Racing | Zagazig National University</title>
+  <meta name="description" content="Official internal team portal for Velox Racing members and leadership. Data vault, task center, competition leaderboard, and team structure governance." />
+  <link rel="icon" type="image/png" href="pwa-icon-192.png" />
+  
+  <!-- PWA & Mobile Web App Meta -->
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#0A0A0A" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Velox Portal" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+
+  <!-- Shared Style with Cache Buster -->
+  <link rel="stylesheet" href="style.css?v=3.8" />
+  <!-- Localization Engine -->
+  <script src="i18n.js?v=3.8"></script>
+  <!-- Team Data -->
+  <script src="team.js?v=3.8"></script>
+
+  <style>
+    /* ==========================================================================
+       VELOX INSIDE PORTAL — EXCLUSIVE MOTORSPORT INTERFACE STYLES
+       ========================================================================== */
+    .portal-wrapper {
+      padding-top: calc(var(--nav-height) + 16px);
+      padding-bottom: 60px;
+      min-height: 90vh;
+    }
+
+    /* ==================== PORTAL AUTHENTICATION GATE STYLES ==================== */
+    .portal-login-section {
+      max-width: 540px;
+      margin: 30px auto 60px;
+      padding: 0 16px;
+      animation: fadeInAuth 0.3s ease;
+    }
+
+    @keyframes fadeInAuth {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .portal-login-card {
+      background: linear-gradient(160deg, rgba(20, 20, 24, 0.95) 0%, rgba(10, 10, 12, 0.98) 100%);
+      border: 1px solid rgba(197, 34, 31, 0.4);
+      border-radius: var(--radius-lg);
+      padding: 36px 30px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85), 0 0 35px rgba(197, 34, 31, 0.12);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .portal-login-card::before {
+      content: '';
+      position: absolute;
+      top: -80px;
+      right: -80px;
+      width: 220px;
+      height: 220px;
+      background: radial-gradient(circle, rgba(197, 34, 31, 0.22) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .portal-login-header {
+      text-align: center;
+      margin-bottom: 26px;
+    }
+
+    .portal-login-logo {
+      height: 44px;
+      margin: 0 auto 12px;
+      display: block;
+    }
+
+    .portal-login-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #FFFFFF;
+      margin: 0 0 6px 0;
+      letter-spacing: -0.02em;
+    }
+
+    .portal-login-subtitle {
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: #EAB308;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .portal-auth-alert {
+      background: rgba(220, 38, 38, 0.14);
+      border: 1px solid rgba(220, 38, 38, 0.45);
+      color: #FCA5A5;
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 0.82rem;
+      margin-bottom: 18px;
+      display: none;
+      line-height: 1.4;
+    }
+
+    .portal-auth-alert.show {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .portal-login-quick {
+      margin-top: 28px;
+      border-top: 1px dashed rgba(255, 255, 255, 0.12);
+      padding-top: 20px;
+    }
+
+    .portal-login-quick-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .demo-account-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+
+    @media (max-width: 520px) {
+      .demo-account-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .demo-account-chip {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 8px 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: left;
+    }
+
+    .demo-account-chip:hover {
+      background: rgba(197, 34, 31, 0.12);
+      border-color: rgba(197, 34, 31, 0.5);
+      transform: translateY(-1px);
+    }
+
+    .demo-account-name {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #FFF;
+      display: block;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .demo-account-meta {
+      font-size: 0.68rem;
+      display: block;
+      margin-top: 2px;
+    }
+
+    .demo-account-cred {
+      font-size: 0.66rem;
+      color: #EAB308;
+      font-family: monospace;
+      margin-top: 3px;
+      display: block;
+    }
+
+    /* Persona / Active User Switcher Bar */
+    .portal-user-bar {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 16px 22px;
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+    }
+
+    .portal-user-profile {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .portal-user-avatar {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: rgba(197, 34, 31, 0.15);
+      border: 2px solid var(--red);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: #FFFFFF;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .portal-user-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .portal-user-meta h3 {
+      font-size: 1.15rem;
+      margin: 0 0 4px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .portal-role-pill {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 3px 9px;
+      border-radius: 9999px;
+      letter-spacing: 0.04em;
+    }
+
+    .role-executive { background: rgba(197, 34, 31, 0.18); color: #FF4D4D; border: 1px solid rgba(197, 34, 31, 0.45); }
+    .role-tech { background: rgba(56, 189, 248, 0.18); color: #38BDF8; border: 1px solid rgba(56, 189, 248, 0.45); }
+    .role-ops { background: rgba(251, 191, 36, 0.18); color: #FBBF24; border: 1px solid rgba(251, 191, 36, 0.45); }
+    .role-member { background: rgba(34, 197, 94, 0.18); color: #22C55E; border: 1px solid rgba(34, 197, 94, 0.45); }
+
+    .portal-user-dept {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    .portal-switcher-select {
+      background: var(--bg-input);
+      color: var(--text);
+      border: 1px solid var(--border-hover);
+      border-radius: var(--radius-sm);
+      padding: 8px 14px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    /* Main Portal Tabs Navigation */
+    .portal-tabs-nav {
+      display: flex;
+      gap: 8px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 12px;
+      margin-bottom: 28px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .portal-tabs-nav::-webkit-scrollbar { display: none; }
+
+    .portal-tab-btn {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-muted);
+      padding: 10px 18px;
+      border-radius: var(--radius-md);
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+
+    .portal-tab-btn:hover {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .portal-tab-btn.active {
+      color: #FFFFFF;
+      background: var(--bg-card);
+      border-color: var(--border-hover);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+    }
+
+    .portal-tab-badge {
+      background: var(--red);
+      color: #FFFFFF;
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: 9999px;
+      line-height: 1;
+    }
+
+    /* Tab Panels */
+    .portal-panel { display: none; animation: fadeIn 0.25s ease forwards; }
+    .portal-panel.active { display: block; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* KPI Stats Grid */
+    .portal-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .portal-stat-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .portal-stat-box::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--red);
+    }
+
+    .portal-stat-lbl {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .portal-stat-val {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1.1;
+    }
+
+    .portal-stat-sub {
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      margin-top: 6px;
+    }
+
+    /* Data Vault Section */
+    .vault-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .vault-filters {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .vault-filter-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 6px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 0.82rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .vault-filter-btn.active {
+      background: var(--red-subtle);
+      border-color: var(--red);
+      color: #FFFFFF;
+    }
+
+    .vault-table-wrap {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      overflow-x: auto;
+    }
+
+    .vault-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.88rem;
+    }
+
+    [dir="rtl"] .vault-table { text-align: right; }
+
+    .vault-table th {
+      background: rgba(255, 255, 255, 0.03);
+      padding: 14px 18px;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .vault-table td {
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+
+    .vault-table tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .file-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.78rem;
+      padding: 4px 10px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.05);
+      font-weight: 600;
+    }
+
+    .access-status-badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 9999px;
+      font-size: 0.72rem;
+      font-weight: 700;
+    }
+    .status-unlocked { background: rgba(34, 197, 94, 0.15); color: #22C55E; border: 1px solid rgba(34, 197, 94, 0.3); }
+    .status-locked { background: rgba(239, 68, 68, 0.15); color: #EF4444; border: 1px solid rgba(239, 68, 68, 0.3); }
+    .status-pending { background: rgba(251, 191, 36, 0.15); color: #FBBF24; border: 1px solid rgba(251, 191, 36, 0.3); }
+
+    /* Competition Leaderboard Podiums */
+    .podium-container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 32px;
+      align-items: flex-end;
+    }
+
+    @media (max-width: 768px) {
+      .podium-container { grid-template-columns: 1fr; }
+    }
+
+    .podium-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      text-align: center;
+      position: relative;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    .podium-card.gold {
+      border-color: rgba(234, 179, 8, 0.5);
+      background: linear-gradient(180deg, rgba(234, 179, 8, 0.08) 0%, var(--bg-card) 100%);
+      transform: translateY(-8px);
+    }
+
+    .podium-card.silver {
+      border-color: rgba(203, 213, 225, 0.4);
+      background: linear-gradient(180deg, rgba(203, 213, 225, 0.06) 0%, var(--bg-card) 100%);
+    }
+
+    .podium-card.bronze {
+      border-color: rgba(217, 119, 6, 0.4);
+      background: linear-gradient(180deg, rgba(217, 119, 6, 0.06) 0%, var(--bg-card) 100%);
+    }
+
+    .podium-medal {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      margin: 0 auto 12px auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1.3rem;
+    }
+
+    .podium-card.gold .podium-medal { background: #EAB308; color: #000; box-shadow: 0 0 20px rgba(234, 179, 8, 0.4); }
+    .podium-card.silver .podium-medal { background: #94A3B8; color: #000; box-shadow: 0 0 15px rgba(148, 163, 184, 0.3); }
+    .podium-card.bronze .podium-medal { background: #D97706; color: #FFF; box-shadow: 0 0 15px rgba(217, 119, 6, 0.3); }
+
+    .podium-points {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--text);
+      margin: 8px 0;
+    }
+
+    /* Uniquely Designed Invitation Pass */
+    .invitation-pass-preview {
+      max-width: 650px;
+      margin: 24px auto;
+      background: linear-gradient(145deg, #121214 0%, #0a0a0c 100%);
+      border: 2px solid rgba(197, 34, 31, 0.45);
+      border-radius: 20px;
+      padding: 36px 32px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 30px rgba(197, 34, 31, 0.15);
+    }
+
+    .invitation-pass-preview::before {
+      content: '';
+      position: absolute;
+      top: -100px;
+      right: -100px;
+      width: 250px;
+      height: 250px;
+      background: radial-gradient(circle, rgba(197, 34, 31, 0.22) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .pass-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px dashed rgba(255, 255, 255, 0.15);
+      padding-bottom: 20px;
+      margin-bottom: 24px;
+    }
+
+    .pass-crest {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .pass-crest img {
+      height: 38px;
+    }
+
+    .pass-security-seal {
+      border: 1px solid rgba(234, 179, 8, 0.4);
+      background: rgba(234, 179, 8, 0.08);
+      color: #EAB308;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 4px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .pass-body {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .pass-guest-name {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: #FFFFFF;
+      margin: 8px 0;
+      letter-spacing: -0.02em;
+    }
+
+    .pass-assignment-box {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 16px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 20px 0;
+      text-align: left;
+    }
+
+    [dir="rtl"] .pass-assignment-box { text-align: right; }
+
+    .pass-meta-field span {
+      display: block;
+      font-size: 0.72rem;
+      color: var(--text-dim);
+      text-transform: uppercase;
+    }
+
+    .pass-meta-field strong {
+      font-size: 0.95rem;
+      color: var(--text);
+    }
+
+    .pass-footer {
+      border-top: 1px dashed rgba(255, 255, 255, 0.15);
+      padding-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    /* Modal standard */
+    .portal-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.82);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .portal-modal-backdrop.active { display: flex; }
+
+    .portal-modal-box {
+      background: #141418;
+      border: 1px solid var(--border-hover);
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 580px;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 28px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9);
+      position: relative;
+    }
+
+    .portal-modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 14px;
+    }
+
+    .portal-modal-close {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.4rem;
+      cursor: pointer;
+    }
+
+    .portal-modal-close:hover { color: #FFF; }
+  </style>
+</head>
+<body>
+
+  <!-- Sticky Minimal Navbar -->
+  <header>
+    <nav class="navbar" id="navbar">
+      <div class="nav-container">
+        <a href="/" class="nav-brand" aria-label="Velox Racing Home">
+          <img src="VeloxLogoWeb.png" alt="Velox Racing Crest" class="nav-logo" onerror="this.src='VeloxForWeb_dark.png'" />
+          <span class="nav-title">
+            <span data-i18n="nav.brand">VELOX RACING</span>
+            <span class="nav-title-badge">ZNU</span>
+          </span>
+        </a>
+
+        <ul class="nav-menu" id="navMenu">
+          <li><a href="/" class="nav-link" data-i18n="nav.home">Home</a></li>
+          <li><a href="/#about" class="nav-link" data-i18n="nav.about">About</a></li>
+          <li><a href="/team" class="nav-link" data-i18n="nav.team">Team</a></li>
+          <li><a href="/portal" class="nav-link active" data-i18n="nav.portal">Portal</a></li>
+          <li><a href="/sponsorship" class="nav-link" data-i18n="nav.sponsors">Sponsors</a></li>
+          <li class="mobile-menu-cta"><a href="/join" class="btn btn-primary btn-full" data-i18n="nav.joinFull">Join the Team &rarr;</a></li>
+        </ul>
+
+        <div class="nav-cta">
+          <div class="nav-tools">
+            <button id="themeToggleBtn" class="nav-tool-btn" title="Toggle Theme" aria-label="Toggle Theme">
+              <svg class="theme-icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+              <svg class="theme-icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+            </button>
+            <button id="langToggleBtn" class="nav-tool-btn" title="Language" aria-label="Toggle Language">
+              <svg class="lang-icon-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+              <span class="lang-label" id="langLabel">AR</span>
+            </button>
+          </div>
+          <a href="/join" class="btn btn-primary" data-i18n="nav.join">Join Us</a>
+          <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation menu" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="portal-wrapper">
+    <div class="container">
+
+      <!-- ==================== 1. PORTAL LOGIN / AUTHENTICATION GATE ==================== -->
+      <section class="portal-login-section" id="portalLoginSection">
+        <div class="portal-login-card">
+          <div class="portal-login-header">
+            <img src="VeloxLogoWeb.png" alt="Velox Racing Crest" class="portal-login-logo" onerror="this.src='VeloxForWeb_dark.png'" />
+            <h2 class="portal-login-title">VELOX RACING PORTAL</h2>
+            <div class="portal-login-subtitle">
+              <span>Formula Student Telemetry & Team Vault</span>
+            </div>
+            <p style="font-size: 0.84rem; color: var(--text-dim); margin-top: 8px;">
+              Internal engineering gateway. Enter your member credentials to access files, sprint tasks, and leaderboards.
+            </p>
+          </div>
+
+          <!-- Alert for failed login -->
+          <div class="portal-auth-alert" id="loginAlert">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink: 0;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+            <span id="loginAlertMsg">Invalid username or password. Please verify your credentials or select a verified crew account.</span>
+          </div>
+
+          <form id="portalLoginForm" autocomplete="on">
+            <div class="form-group" style="margin-bottom: 16px;">
+              <label for="loginUsername" style="display: flex; justify-content: space-between; font-size: 0.82rem; font-weight: 600; color: #FFF; margin-bottom: 6px;">
+                <span>Username or Email</span>
+                <span style="color: var(--text-dim); font-weight: 400; font-size: 0.74rem;">e.g. fatima / romy / moaaz</span>
+              </label>
+              <div style="position: relative;">
+                <input type="text" id="loginUsername" class="form-control" placeholder="Enter member username" required autocomplete="username" style="padding-left: 38px;" />
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted); pointer-events: none;">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+              </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 20px;">
+              <label for="loginPassword" style="display: flex; justify-content: space-between; font-size: 0.82rem; font-weight: 600; color: #FFF; margin-bottom: 6px;">
+                <span>Password</span>
+                <span style="color: var(--text-dim); font-weight: 400; font-size: 0.74rem;">Encrypted</span>
+              </label>
+              <div style="position: relative;">
+                <input type="password" id="loginPassword" class="form-control" placeholder="Enter password" required autocomplete="current-password" style="padding-left: 38px; padding-right: 40px;" />
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted); pointer-events: none;">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+                <button type="button" id="togglePasswordBtn" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-muted); cursor: pointer; padding: 4px;" aria-label="Toggle password visibility">
+                  <svg id="eyeIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                </button>
+              </div>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; font-size: 0.82rem;">
+              <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; color: var(--text-muted);">
+                <input type="checkbox" id="rememberMe" checked style="accent-color: var(--red);" />
+                Remember this workstation
+              </label>
+              <span style="color: var(--text-dim); font-size: 0.76rem;">256-Bit TLS</span>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-full" style="padding: 12px; font-weight: 700; font-size: 0.95rem; letter-spacing: 0.02em;">
+              Sign In to Member Portal &rarr;
+            </button>
+          </form>
+
+          <!-- Authorized Crew Directory & Fast Login (Clean Accordion for Testing & Roster Access) -->
+          <div style="margin-top: 22px; text-align: center;">
+            <a href="javascript:void(0)" onclick="openPortalModal('forgotPassModal')" style="font-size: 0.78rem; color: var(--text-dim); text-decoration: underline;">
+              Need Access Credentials or Password Assistance?
+            </a>
+          </div>
+
+          <details style="margin-top: 24px; border-top: 1px dashed rgba(255, 255, 255, 0.12); padding-top: 16px;">
+            <summary style="font-size: 0.76rem; font-weight: 700; color: var(--text-muted); cursor: pointer; text-transform: uppercase; letter-spacing: 0.08em; display: flex; justify-content: space-between; align-items: center; user-select: none;">
+              <span>Authorized Team Roster & Fast Access</span>
+              <span style="color: #38BDF8; font-size: 0.72rem; text-transform: none;">View Directory &darr;</span>
+            </summary>
+            <div class="demo-account-grid" style="margin-top: 14px;">
+              <!-- Fatima -->
+              <div class="demo-account-chip" onclick="quickLogin('fatima', 'velox2026')">
+                <span class="demo-account-name">Fatima Salman</span>
+                <span class="demo-account-meta" style="color: #FF4D4D;">Team Leader (Executive)</span>
+                <span class="demo-account-cred">@fatima</span>
+              </div>
+              <!-- Karim -->
+              <div class="demo-account-chip" onclick="quickLogin('karim', 'velox2026')">
+                <span class="demo-account-name">Karim Shaprawy</span>
+                <span class="demo-account-meta" style="color: #FF4D4D;">Vice Team Leader</span>
+                <span class="demo-account-cred">@karim</span>
+              </div>
+              <!-- Romy -->
+              <div class="demo-account-chip" onclick="quickLogin('romy', 'velox2026')">
+                <span class="demo-account-name">Mohamed Romy</span>
+                <span class="demo-account-meta" style="color: #38BDF8;">Technical Leader</span>
+                <span class="demo-account-cred">@romy</span>
+              </div>
+              <!-- Moaaz -->
+              <div class="demo-account-chip" onclick="quickLogin('moaaz', 'velox2026')">
+                <span class="demo-account-name">Moaaz Elghamry</span>
+                <span class="demo-account-meta" style="color: #FBBF24;">Managerial Leader</span>
+                <span class="demo-account-cred">@moaaz</span>
+              </div>
+              <!-- Ali -->
+              <div class="demo-account-chip" onclick="quickLogin('ali', 'velox2026')">
+                <span class="demo-account-name">Ali Elgohary</span>
+                <span class="demo-account-meta" style="color: #38BDF8;">Electrical Subteam Lead</span>
+                <span class="demo-account-cred">@ali</span>
+              </div>
+              <!-- Hassan -->
+              <div class="demo-account-chip" onclick="quickLogin('hassan', 'velox2026')">
+                <span class="demo-account-name">Mohamed Hassan</span>
+                <span class="demo-account-meta" style="color: #FBBF24;">Media & PR Lead</span>
+                <span class="demo-account-cred">@hassan</span>
+              </div>
+              <!-- Ahmed -->
+              <div class="demo-account-chip" onclick="quickLogin('ahmed', 'velox2026')">
+                <span class="demo-account-name">Ahmed Youssef</span>
+                <span class="demo-account-meta" style="color: #22C55E;">Powertrain Member</span>
+                <span class="demo-account-cred">@ahmed</span>
+              </div>
+              <!-- Sarah -->
+              <div class="demo-account-chip" onclick="quickLogin('sarah', 'velox2026')">
+                <span class="demo-account-name">Sarah El-Sayed</span>
+                <span class="demo-account-meta" style="color: #A855F7;">Shared Member (Aero/Media)</span>
+                <span class="demo-account-cred">@sarah</span>
+              </div>
+            </div>
+          </details>
+        </div>
+      </section>
+
+      <!-- ==================== 2. AUTHENTICATED PORTAL WORKSPACE ==================== -->
+      <div id="portalMainSection" style="display: none;">
+
+        <!-- ACTIVE USER CONTEXT & FAST ROLE SWITCHER -->
+        <div class="portal-user-bar">
+          <div class="portal-user-profile">
+            <div class="portal-user-avatar" id="activeAvatar">FS</div>
+            <div class="portal-user-meta">
+              <h3 id="activeUserName">
+                Fatima Salman
+                <span class="portal-role-pill role-executive" id="activeRoleBadge">Team Leader</span>
+              </h3>
+              <span class="portal-user-dept" id="activeUserDept">Executive Governance & Overall Leadership &bull; Access: All Divisions</span>
+            </div>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+            <div style="font-size: 0.78rem; color: var(--text-muted); background: rgba(255,255,255,0.04); padding: 5px 10px; border-radius: 6px; border: 1px solid var(--border); display: flex; align-items: center; gap: 6px;">
+              <span>Signed In:</span>
+              <strong style="color: #38BDF8; font-family: monospace;" id="activeAuthUsername">@fatima</strong>
+            </div>
+
+            <label for="personaSelect" style="font-size: 0.8rem; color: var(--text-dim);">Role Switcher:</label>
+            <select id="personaSelect" class="portal-switcher-select">
+              <option value="fatima">Fatima Salman (Team Leader - Executive)</option>
+              <option value="karim">Karim Shaprawy (Vice Team Leader - Executive)</option>
+              <option value="romy">Mohamed Romy (Technical Leader)</option>
+              <option value="moaaz">Moaaz Elghamry (Managerial Leader)</option>
+              <option value="ali">Ali Elgohary (Electrical Subteam Lead)</option>
+              <option value="hassan">Mohamed Hassan (Media & PR Subteam Lead)</option>
+              <option value="member_tech">Ahmed Youssef (Member - Powertrain)</option>
+              <option value="member_shared">Sarah El-Sayed (Member - Shared in Aero & Media)</option>
+            </select>
+
+            <button type="button" class="btn btn-outline" id="openUploadBtn" style="padding: 6px 14px; font-size: 0.82rem;">
+              + Upload Data
+            </button>
+
+            <button type="button" class="btn btn-outline" id="openChangePassBtn" onclick="openChangePasswordModal()" style="padding: 6px 14px; font-size: 0.82rem; color: #38BDF8; border-color: rgba(56, 189, 248, 0.4);" title="Change my account password">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 4px;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+              Change Password
+            </button>
+
+            <button type="button" class="btn btn-outline" id="portalLogoutBtn" onclick="portalLogout()" style="padding: 6px 14px; font-size: 0.82rem; color: #FF4D4D; border-color: rgba(197, 34, 31, 0.45);" title="Sign out of your portal session">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 4px;"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+              Sign Out
+            </button>
+          </div>
+        </div>
+
+      <!-- 2. PORTAL NAVIGATION TABS -->
+      <nav class="portal-tabs-nav" aria-label="Portal Divisions">
+        <button type="button" class="portal-tab-btn active" data-tab="dashboard">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+          Dashboard & Overview
+        </button>
+        <button type="button" class="portal-tab-btn" data-tab="vault">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+          Data Vault & Files
+          <span class="portal-tab-badge" id="tabVaultBadge">8</span>
+        </button>
+        <button type="button" class="portal-tab-btn" data-tab="tasks">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+          Task Center & Tasks
+          <span class="portal-tab-badge" id="tabTasksBadge" style="background: #38BDF8;">4</span>
+        </button>
+        <button type="button" class="portal-tab-btn" data-tab="competition">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+          Competition & Speed Points
+        </button>
+        <button type="button" class="portal-tab-btn" data-tab="invitations">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+          Send Invitations
+        </button>
+        <button type="button" class="portal-tab-btn" data-tab="admin" id="tabAdminBtn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"></path><path d="M12 6v6l4 2"></path></svg>
+          Admin Dashboard
+          <span class="portal-tab-badge" id="adminRequestsBadge" style="background: #E11D48;">0</span>
+        </button>
+      </nav>
+
+      <!-- 3. TAB 1: DASHBOARD & OVERVIEW -->
+      <section class="portal-panel active" id="panel-dashboard">
+        <div class="portal-stats-grid">
+          <div class="portal-stat-box">
+            <div class="portal-stat-lbl">
+              <span>My Velocity Points</span>
+              <span style="color: #EAB308;">★ Rank #1</span>
+            </div>
+            <div class="portal-stat-val" id="kpiPoints">1,250</div>
+            <div class="portal-stat-sub">+180 pts earned this sprint</div>
+          </div>
+          <div class="portal-stat-box">
+            <div class="portal-stat-lbl">
+              <span>Accessible Files</span>
+              <span style="color: #38BDF8;">Vault</span>
+            </div>
+            <div class="portal-stat-val" id="kpiFiles">18</div>
+            <div class="portal-stat-sub" id="kpiFilesSub">Filtered by clearance</div>
+          </div>
+          <div class="portal-stat-box">
+            <div class="portal-stat-lbl">
+              <span>Active Sprints</span>
+              <span style="color: #22C55E;">In Progress</span>
+            </div>
+            <div class="portal-stat-val" id="kpiTasks">5</div>
+            <div class="portal-stat-sub">3 high speed targets</div>
+          </div>
+          <div class="portal-stat-box">
+            <div class="portal-stat-lbl">
+              <span>Pending Requests</span>
+              <span style="color: #FBBF24;">Approvals</span>
+            </div>
+            <div class="portal-stat-val" id="kpiRequests">2</div>
+            <div class="portal-stat-sub" id="kpiRequestsSub">Access requests awaiting review</div>
+          </div>
+        </div>
+
+        <!-- Quick Info Banner -->
+        <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px; margin-bottom: 28px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 12px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--red);"></span>
+              <h3 style="margin: 0; font-size: 1.1rem;">VELOX Silverstone 2026 Milestone Tracker</h3>
+            </div>
+            <span style="font-size: 0.8rem; color: var(--text-dim);">Chassis VX-01 &bull; Active Sprint #4</span>
+          </div>
+          <p style="color: var(--text-muted); font-size: 0.88rem; margin: 0 0 16px 0; line-height: 1.6;">
+            Welcome to the internal engineering and management portal. Data is categorized strictly by branch and subteam. Team Leader and Vice Team Leader have omni-directional oversight; Technical Leader commands all technical archives; Managerial Leader commands all operational records. Normal members access their assigned categories and can submit tasks to gain speed points on the leaderboards!
+          </p>
+          <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+            <button type="button" class="btn btn-primary" onclick="switchPortalTab('vault')">Browse Data Vault</button>
+            <button type="button" class="btn btn-outline" onclick="switchPortalTab('tasks')">View Active Tasks</button>
+            <button type="button" class="btn btn-outline" onclick="switchPortalTab('competition')">Check Leaderboard</button>
+          </div>
+        </div>
+
+        <!-- Access Requests Queue (For Leaders) -->
+        <div id="accessRequestsQueueCard" style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px; margin-bottom: 28px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+            <h4 style="margin: 0; font-size: 1rem; display: flex; align-items: center; gap: 8px;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+              Data Download Access Approvals
+            </h4>
+            <span style="font-size: 0.78rem; color: var(--text-dim);">Requires Leader Authorization</span>
+          </div>
+          <div id="accessRequestsList" style="display: flex; flex-direction: column; gap: 10px;">
+            <!-- Rendered from JS -->
+          </div>
+        </div>
+
+        <!-- Executive Notifications Feed -->
+        <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px;">
+          <h4 style="margin: 0 0 16px 0; font-size: 1rem; display: flex; align-items: center; gap: 8px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+            System & Executive Notification Log
+          </h4>
+          <div id="notificationsLog" style="display: flex; flex-direction: column; gap: 8px; font-size: 0.86rem;">
+            <!-- Populated from JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. TAB 2: DATA VAULT & FILES -->
+      <section class="portal-panel" id="panel-vault">
+        <div class="vault-toolbar">
+          <div>
+            <h2 style="font-size: 1.4rem; margin: 0 0 4px 0;">Engineering & Operations Vault</h2>
+            <p style="font-size: 0.84rem; color: var(--text-muted); margin: 0;">
+              Upload, organize, and access files. Protected files require leader clearance to download.
+            </p>
+          </div>
+          <div style="display: flex; gap: 10px;">
+            <button type="button" class="btn btn-primary" id="openUploadBtn2">+ Upload New Deliverable</button>
+          </div>
+        </div>
+
+        <!-- Scope and Filter Buttons -->
+        <div class="vault-filters" id="vaultFilterButtons">
+          <button type="button" class="vault-filter-btn active" data-vfilter="all">All Accessible</button>
+          <button type="button" class="vault-filter-btn" data-vfilter="technical">Technical Engineering</button>
+          <button type="button" class="vault-filter-btn" data-vfilter="managerial">Managerial & Operations</button>
+        </div>
+
+        <!-- Vault Data Table -->
+        <div class="vault-table-wrap">
+          <table class="vault-table" id="vaultTable">
+            <thead>
+              <tr>
+                <th>File / Deliverable Name</th>
+                <th>Branch & Category</th>
+                <th>Uploaded By</th>
+                <th>Date</th>
+                <th>Access Clearance</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="vaultTableBody">
+              <!-- Populated dynamically based on role -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 5. TAB 3: TASK CENTER & SPRINT ASSIGNMENTS -->
+      <section class="portal-panel" id="panel-tasks">
+        <div class="vault-toolbar">
+          <div>
+            <h2 style="font-size: 1.4rem; margin: 0 0 4px 0;">Task Center & Sprint Assignments</h2>
+            <p style="font-size: 0.84rem; color: var(--text-muted); margin: 0;">
+              Leaders assign tasks to members. Complete early to win Speed Bonus Points for the leaderboard!
+            </p>
+          </div>
+          <div id="assignTaskBtnWrap">
+            <button type="button" class="btn btn-primary" id="openAssignTaskBtn">+ Assign New Task</button>
+          </div>
+        </div>
+
+        <!-- Task List Cards -->
+        <div id="tasksListContainer" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px;">
+          <!-- Populated from JS -->
+        </div>
+      </section>
+
+      <!-- 6. TAB 4: COMPETITION & SPEED LEADERBOARD -->
+      <section class="portal-panel" id="panel-competition">
+        <div style="text-align: center; max-width: 680px; margin: 0 auto 36px auto;">
+          <span class="section-kicker" style="color: #EAB308;">★ VELOX VELOCITY CHAMPIONSHIP ★</span>
+          <h2 style="font-size: 1.8rem; margin: 6px 0 10px 0;">Sprint Speed & Deliverables Leaderboard</h2>
+          <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6;">
+            Formula Student excellence is measured in speed, precision, and relentless execution. The faster you deliver verified engineering designs and operations tasks, the more bonus points and badges you gain!
+          </p>
+        </div>
+
+        <!-- Podium Showcase -->
+        <div class="podium-container" id="leaderboardPodium">
+          <!-- Populated from JS -->
+        </div>
+
+        <!-- Full Standings Table -->
+        <div class="vault-table-wrap">
+          <table class="vault-table" id="leaderboardTable">
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Crew Member</th>
+                <th>Branch & Subteam</th>
+                <th>Completed Tasks</th>
+                <th>Speed Bonus</th>
+                <th>Total Velocity Points</th>
+                <th>Badges</th>
+              </tr>
+            </thead>
+            <tbody id="leaderboardTableBody">
+              <!-- Populated dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 7. TAB 5: UNIQUELY DESIGNED INVITATION CENTER -->
+      <section class="portal-panel" id="panel-invitations">
+        <div style="text-align: center; max-width: 650px; margin: 0 auto 24px auto;">
+          <span class="section-kicker">Formula Student Official Enlistment</span>
+          <h2 style="font-size: 1.8rem; margin: 6px 0 10px 0;">Official VELOX Team Invitation Generator</h2>
+          <p style="font-size: 0.88rem; color: var(--text-muted);">
+            Generate a uniquely designed motorsport credential pass. When the recipient accepts, they are automatically enrolled into the team structure.
+          </p>
+        </div>
+
+        <!-- Invitation Creation Form -->
+        <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px; max-width: 650px; margin: 0 auto 32px auto;">
+          <form id="invitationForm">
+            <div class="form-group">
+              <label for="invGuestName">Invitee Full Name<span class="req">*</span></label>
+              <input type="text" id="invGuestName" class="form-control" placeholder="e.g. Ziad Mahmoud" required />
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="invRoleSelect">Assigned Role<span class="req">*</span></label>
+                <select id="invRoleSelect" class="form-control" required>
+                  <!-- Populated dynamically according to user's authority -->
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="invSubteamSelect">Assigned Subteam / Department<span class="req">*</span></label>
+                <select id="invSubteamSelect" class="form-control" required>
+                  <!-- Populated dynamically -->
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="invNote">Personal Message / Mission Statement</label>
+              <input type="text" id="invNote" class="form-control" placeholder="e.g. Welcome to Chassis VX-01 Powertrain Sprint crew." value="You are officially invited to engineer the future of Egyptian motorsport." />
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-full" id="generateInviteBtn">
+              Generate Motorsport Invitation Pass
+            </button>
+          </form>
+        </div>
+
+        <!-- Live Generated Pass Preview -->
+        <div id="invitationPassContainer">
+          <!-- Populated from JS -->
+        </div>
+      </section>
+
+      <!-- 8. TAB 6: EXECUTIVE ADMIN DASHBOARD (LEADERSHIP COMMAND CENTER) -->
+      <section class="portal-panel" id="panel-admin">
+        <div class="admin-dashboard-header" style="background: linear-gradient(135deg, rgba(197,34,31,0.12) 0%, rgba(10,10,12,0.85) 100%); border: 1px solid rgba(197,34,31,0.35); border-radius: 14px; padding: 24px; margin-bottom: 26px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+          <div>
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px;">
+              <span class="portal-role-pill role-executive">Admin Command Center</span>
+              <span style="font-size: 0.76rem; color: #22C55E; display: flex; align-items: center; gap: 6px;">
+                <span style="width: 8px; height: 8px; border-radius: 50%; background: #22C55E; display: inline-block;"></span> 256-Bit TLS Secured &bull; Live Operations
+              </span>
+            </div>
+            <h2 style="font-size: 1.5rem; margin: 0 0 6px 0; color: #FFF;">Executive Admin Dashboard</h2>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin: 0;">
+              Centralized governance center for Formula Student leadership to manage member credentials, authorize file access, inspect task submissions, and audit system security.
+            </p>
+          </div>
+          <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <button type="button" class="btn btn-primary" id="addNewMemberModalBtn" style="padding: 8px 16px; font-size: 0.85rem;">
+              + New Member Account
+            </button>
+            <button type="button" class="btn btn-outline" onclick="openPortalModal('uploadModal')" style="padding: 8px 16px; font-size: 0.85rem;">
+              + Upload File
+            </button>
+          </div>
+        </div>
+
+        <!-- Admin Overview KPI Cards -->
+        <div class="portal-stats-grid" style="margin-bottom: 28px;">
+          <div class="portal-stat-box">
+            <div class="portal-stat-lbl">Active Roster Accounts</div>
+            <div class="portal-stat-val" id="adminKpiMembers" style="color: #FFF;">8</div>
+            <div class="portal-stat-desc">Provisioned team accounts</div>
+          </div>
+          <div class="portal-stat-box">
+            <div class="portal-stat-lbl">Data Vault Deliverables</div>
+            <div class="portal-stat-val" id="adminKpiFiles" style="color: #38BDF8;">7</div>
+            <div class="portal-stat-desc">Engineering assets & CAD</div>
+          </div>
+          <div class="portal-stat-box">
+            <div class="portal-stat-lbl">Pending Access Requests</div>
+            <div class="portal-stat-val" id="adminKpiRequests" style="color: #E11D48;">0</div>
+            <div class="portal-stat-desc">Awaiting leader review</div>
+          </div>
+          <div class="portal-stat-box">
+            <div class="portal-stat-lbl">Completed Sprints</div>
+            <div class="portal-stat-val" id="adminKpiTasks" style="color: #22C55E;">1</div>
+            <div class="portal-stat-desc">Verified deliverables</div>
+          </div>
+        </div>
+
+        <!-- Admin Module 1: Access Authorization Queue -->
+        <div class="portal-panel-card" style="margin-bottom: 28px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid var(--border); padding-bottom: 12px; flex-wrap: wrap; gap: 10px;">
+            <div>
+              <h3 style="margin: 0 0 4px 0; font-size: 1.15rem; color: #FFF; display: flex; align-items: center; gap: 8px;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E11D48" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                Download Access Authorization Queue
+              </h3>
+              <p style="margin: 0; font-size: 0.8rem; color: var(--text-muted);">
+                Normal team members cannot download restricted engineering data without approval. Leaders approve requests here to immediately grant download clearance.
+              </p>
+            </div>
+            <span class="portal-role-pill" id="adminQueueCountBadge" style="background: rgba(225,29,72,0.15); color: #FB7185; border: 1px solid rgba(225,29,72,0.4);">0 Pending Requests</span>
+          </div>
+          <div id="adminAccessQueueContainer">
+            <!-- Populated dynamically via renderAdminDashboard() -->
+          </div>
+        </div>
+
+        <!-- Admin Module 2: Team Roster & Account Credentials Governance -->
+        <div class="portal-panel-card" style="margin-bottom: 28px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid var(--border); padding-bottom: 12px; flex-wrap: wrap; gap: 12px;">
+            <div>
+              <h3 style="margin: 0 0 4px 0; font-size: 1.15rem; color: #FFF; display: flex; align-items: center; gap: 8px;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                Team Accounts & Credential Governance
+              </h3>
+              <p style="margin: 0; font-size: 0.8rem; color: var(--text-muted);">
+                Manage usernames, reset passwords, suspend/activate accounts, or adjust roles across branches.
+              </p>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <input type="text" id="adminRosterSearch" placeholder="Filter by name, username, or role..." class="form-control" style="padding: 6px 12px; font-size: 0.82rem; width: 220px;" oninput="renderStructure()" />
+            </div>
+          </div>
+          <div class="vault-table-wrap">
+            <table class="vault-table" id="structureTable">
+              <thead>
+                <tr>
+                  <th>Member Name</th>
+                  <th>Role</th>
+                  <th>Branch</th>
+                  <th>Department</th>
+                  <th>Account Username</th>
+                  <th>Points</th>
+                  <th>Account Status</th>
+                  <th>Governance Actions</th>
+                </tr>
+              </thead>
+              <tbody id="structureTableBody">
+                <!-- Populated dynamically via renderStructure() -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Admin Module 3: Sprint Deliverable Verification -->
+        <div class="portal-panel-card" style="margin-bottom: 28px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid var(--border); padding-bottom: 12px;">
+            <div>
+              <h3 style="margin: 0 0 4px 0; font-size: 1.15rem; color: #FFF; display: flex; align-items: center; gap: 8px;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+                Sprint Deliverable Verification Queue
+              </h3>
+              <p style="margin: 0; font-size: 0.8rem; color: var(--text-muted);">
+                Review completed deliverables submitted by team members to approve points or request revisions.
+              </p>
+            </div>
+          </div>
+          <div id="adminDeliverablesContainer">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+
+        <!-- Admin Module 4: Security & Audit Telemetry Log -->
+        <div class="portal-panel-card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; border-bottom: 1px solid var(--border); padding-bottom: 10px;">
+            <h3 style="margin: 0; font-size: 1.1rem; color: #FFF; display: flex; align-items: center; gap: 8px;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#EAB308" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+              Security & Audit Telemetry Log
+            </h3>
+            <button type="button" class="btn btn-outline" style="padding: 3px 10px; font-size: 0.74rem;" onclick="clearAuditLog()">Clear Audit Log</button>
+          </div>
+          <div id="adminAuditLogContainer" style="max-height: 220px; overflow-y: auto; font-family: monospace; font-size: 0.8rem; line-height: 1.8; color: var(--text-dim); background: rgba(0,0,0,0.25); padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+      </section>
+
+      </div> <!-- /#portalMainSection -->
+    </div> <!-- /.container -->
+  </main>
+
+  <!-- ==================== MODALS ==================== -->
+
+  <!-- 1. Upload File Modal -->
+  <div class="portal-modal-backdrop" id="uploadModal">
+    <div class="portal-modal-box">
+      <div class="portal-modal-header">
+        <h3 style="margin: 0; font-size: 1.2rem;">Upload Data to Vault</h3>
+        <button type="button" class="portal-modal-close" onclick="closePortalModal('uploadModal')">&times;</button>
+      </div>
+      <form id="uploadForm">
+        <div class="form-group">
+          <label for="upTitle">Document / Deliverable Title<span class="req">*</span></label>
+          <input type="text" id="upTitle" class="form-control" placeholder="e.g. VX-01 Front Suspension Kinematics FEA" required />
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="upBranch">Branch<span class="req">*</span></label>
+            <select id="upBranch" class="form-control" required>
+              <option value="Technical">Technical Engineering</option>
+              <option value="Managerial">Managerial & Operations</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="upDept">Category / Subteam<span class="req">*</span></label>
+            <select id="upDept" class="form-control" required>
+              <option value="Body & Chassis">Body & Chassis</option>
+              <option value="Vehicle Dynamics">Vehicle Dynamics</option>
+              <option value="Powertrain">Powertrain</option>
+              <option value="Electrical">Electrical</option>
+              <option value="Human Resources (HR)">Human Resources (HR)</option>
+              <option value="Media & PR">Media & PR</option>
+              <option value="Business (Team Director)">Business (Team Director)</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="upDesc">Description & Scope</label>
+          <textarea id="upDesc" rows="3" class="form-control" placeholder="Details about this dataset or CAD revision..."></textarea>
+        </div>
+        <div class="form-group">
+          <label for="upRealFile">Attach Local File (CAD, PDF, Code, Zip, Sheet, Telemetry)</label>
+          <input type="file" id="upRealFile" class="form-control" style="padding: 8px;" />
+          <small style="color: var(--text-dim); font-size: 0.74rem;">Direct browser upload. Instant downloadable asset for authorized crew.</small>
+        </div>
+        <div class="form-group">
+          <label for="upFileUrl">Or External Cloud URL (Onshape / Drive / GitHub / Sheet)</label>
+          <input type="url" id="upFileUrl" class="form-control" placeholder="https://drive.google.com/... or https://cad.onshape.com/..." />
+        </div>
+        <button type="submit" class="btn btn-primary btn-full" style="margin-top: 10px;">Upload & Store Deliverable</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 2. Assign Task Modal -->
+  <div class="portal-modal-backdrop" id="assignTaskModal">
+    <div class="portal-modal-box">
+      <div class="portal-modal-header">
+        <h3 style="margin: 0; font-size: 1.2rem;">Assign Engineering / Ops Task</h3>
+        <button type="button" class="portal-modal-close" onclick="closePortalModal('assignTaskModal')">&times;</button>
+      </div>
+      <form id="assignTaskForm">
+        <div class="form-group">
+          <label for="taskTitle">Task Title<span class="req">*</span></label>
+          <input type="text" id="taskTitle" class="form-control" placeholder="e.g. Complete Rear Wing CFD Mesh Validation" required />
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="taskAssignee">Assign To<span class="req">*</span></label>
+            <select id="taskAssignee" class="form-control" required>
+              <!-- Populated dynamically -->
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="taskPriority">Priority</label>
+            <select id="taskPriority" class="form-control">
+              <option value="Critical">Critical (P1)</option>
+              <option value="High" selected>High (P2)</option>
+              <option value="Normal">Normal</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="taskDeadline">Deadline Date & Time<span class="req">*</span></label>
+            <input type="datetime-local" id="taskDeadline" class="form-control" required />
+          </div>
+          <div class="form-group">
+            <label for="taskPoints">Base Points</label>
+            <input type="number" id="taskPoints" class="form-control" value="100" min="20" max="500" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="taskDesc">Task Instructions & Deliverable Criteria</label>
+          <textarea id="taskDesc" rows="3" class="form-control" placeholder="Specify deliverables, standards, or links..." required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-full">Dispatch Task & Award Points</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 3. Submit Task Completion Modal -->
+  <div class="portal-modal-backdrop" id="submitTaskModal">
+    <div class="portal-modal-box">
+      <div class="portal-modal-header">
+        <h3 style="margin: 0; font-size: 1.2rem;">Submit Completed Task</h3>
+        <button type="button" class="portal-modal-close" onclick="closePortalModal('submitTaskModal')">&times;</button>
+      </div>
+      <form id="submitTaskForm">
+        <input type="hidden" id="submitTaskId" />
+        <div style="background: rgba(255,255,255,0.04); border-radius: 8px; padding: 12px; margin-bottom: 16px;">
+          <h4 id="submitTaskDisplayTitle" style="margin: 0 0 6px 0;">Task Title</h4>
+          <span style="font-size: 0.8rem; color: #38BDF8;" id="submitTaskPointsBadge">Eligible for +100 Base Points + 50 Speed Bonus</span>
+        </div>
+        <div class="form-group">
+          <label for="submitDeliverableUrl">Deliverable Link / Documentation URL<span class="req">*</span></label>
+          <input type="url" id="submitDeliverableUrl" class="form-control" placeholder="https://drive.google.com/... or https://github.com/..." required />
+        </div>
+        <div class="form-group">
+          <label for="submitNotes">Completion Notes & Summary<span class="req">*</span></label>
+          <textarea id="submitNotes" rows="3" class="form-control" placeholder="Describe the outcome, conclusions, and calculations done..." required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-full">Claim Velocity Points & Submit</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 4. Request Data Access Modal -->
+  <div class="portal-modal-backdrop" id="requestAccessModal">
+    <div class="portal-modal-box">
+      <div class="portal-modal-header">
+        <h3 style="margin: 0; font-size: 1.2rem;">Request Download Authorization</h3>
+        <button type="button" class="portal-modal-close" onclick="closePortalModal('requestAccessModal')">&times;</button>
+      </div>
+      <form id="requestAccessForm">
+        <input type="hidden" id="reqFileId" />
+        <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 16px;">
+          Normal team members require authorization from a Team Leader, Vice Leader, or Subsystem Lead to install/download protected engineering files.
+        </p>
+        <div class="form-group">
+          <label>File Requested:</label>
+          <input type="text" id="reqFileTitle" class="form-control" readonly style="opacity: 0.8;" />
+        </div>
+        <div class="form-group">
+          <label for="reqReason">Reason for Data Access<span class="req">*</span></label>
+          <textarea id="reqReason" rows="3" class="form-control" placeholder="Explain why you require local install/download access..." required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-full">Send Access Request to Leaders</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 5. Edit Member Modal -->
+  <div class="portal-modal-backdrop" id="editMemberModal">
+    <div class="portal-modal-box">
+      <div class="portal-modal-header">
+        <h3 style="margin: 0; font-size: 1.2rem;">Edit Team Member Control</h3>
+        <button type="button" class="portal-modal-close" onclick="closePortalModal('editMemberModal')">&times;</button>
+      </div>
+      <form id="editMemberForm">
+        <input type="hidden" id="editMemberId" />
+        <div class="form-group">
+          <label for="editMemberName">Full Name</label>
+          <input type="text" id="editMemberName" class="form-control" required />
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="editMemberRole">Role</label>
+            <select id="editMemberRole" class="form-control">
+              <option value="Team Leader">Team Leader</option>
+              <option value="Vice Team Leader">Vice Team Leader</option>
+              <option value="Technical Leader">Technical Leader</option>
+              <option value="Managerial Leader">Managerial Leader</option>
+              <option value="Subteam Leader">Subteam Leader</option>
+              <option value="Team Member">Team Member</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="editMemberBranch">Branch</label>
+            <select id="editMemberBranch" class="form-control">
+              <option value="Executive">Executive</option>
+              <option value="Technical">Technical Engineering</option>
+              <option value="Managerial">Managerial & Operations</option>
+              <option value="Shared">Shared Multi-Group</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="editMemberSubteam">Department / Subteams</label>
+          <input type="text" id="editMemberSubteam" class="form-control" placeholder="e.g. Powertrain, or Aero & Media" />
+        </div>
+        <button type="submit" class="btn btn-primary btn-full">Save Changes to Roster</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 6. Enlist Invitation & Register Account Modal -->
+  <div class="portal-modal-backdrop" id="enlistModal">
+    <div class="portal-modal-box">
+      <div class="portal-modal-header">
+        <h3 style="margin: 0; font-size: 1.2rem;">Enlist Member & Create Account</h3>
+        <button type="button" class="portal-modal-close" onclick="closePortalModal('enlistModal')">&times;</button>
+      </div>
+      <form id="enlistForm">
+        <div style="background: rgba(197, 34, 31, 0.1); border: 1px solid rgba(197, 34, 31, 0.35); border-radius: 8px; padding: 12px 16px; margin-bottom: 16px;">
+          <h4 id="enlistNameDisplay" style="margin: 0 0 4px 0; color: #FFF;">Candidate Name</h4>
+          <span id="enlistRoleDeptDisplay" style="font-size: 0.82rem; color: #EAB308;">Role &bull; Department</span>
+        </div>
+        <input type="hidden" id="enlistHiddenName" />
+        <input type="hidden" id="enlistHiddenRole" />
+        <input type="hidden" id="enlistHiddenBranch" />
+        <input type="hidden" id="enlistHiddenDept" />
+
+        <div class="form-group">
+          <label for="enlistUsername">Choose Your Portal Username<span class="req">*</span></label>
+          <input type="text" id="enlistUsername" class="form-control" placeholder="e.g. znu_recruit" required pattern="^[a-zA-Z0-9_\.\-]+$" />
+          <small style="color: var(--text-dim); font-size: 0.74rem;">Letters, numbers, underscores, dots, or dashes only.</small>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="enlistPassword">Create Password<span class="req">*</span></label>
+            <input type="password" id="enlistPassword" class="form-control" placeholder="Min. 4 characters" required minlength="4" />
+          </div>
+          <div class="form-group">
+            <label for="enlistConfirmPassword">Confirm Password<span class="req">*</span></label>
+            <input type="password" id="enlistConfirmPassword" class="form-control" placeholder="Re-enter password" required minlength="4" />
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-full" style="margin-top: 8px;">
+          ✓ Confirm Enlistment & Enter Portal
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 7. Reset Member Password Modal (Executive Only) -->
+  <div class="portal-modal-backdrop" id="resetPasswordModal">
+    <div class="portal-modal-box">
+      <div class="portal-modal-header">
+        <h3 style="margin: 0; font-size: 1.2rem;">Account Credentials & Password Reset</h3>
+        <button type="button" class="portal-modal-close" onclick="closePortalModal('resetPasswordModal')">&times;</button>
+      </div>
+      <form id="resetPasswordForm">
+        <input type="hidden" id="resetMemberId" />
+        <div style="background: rgba(255, 255, 255, 0.04); border-radius: 8px; padding: 12px 16px; margin-bottom: 16px;">
+          <h4 id="resetMemberDisplayName" style="margin: 0 0 4px 0; color: #FFF;">Member Name</h4>
+          <span style="font-size: 0.82rem; color: var(--text-dim);">Portal Username: <strong id="resetMemberDisplayUsername" style="color: #38BDF8;">user</strong></span>
+        </div>
+
+        <div class="form-group">
+          <label for="resetNewPassword">Set New Password<span class="req">*</span></label>
+          <input type="text" id="resetNewPassword" class="form-control" placeholder="e.g. velox2026 or newPassword" required minlength="4" />
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-full">Update Password & Notify</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 8. Add Member Manually Modal (Executive Only) -->
+  <div class="portal-modal-backdrop" id="addMemberModal">
+    <div class="portal-modal-box">
+      <div class="portal-modal-header">
+        <h3 style="margin: 0; font-size: 1.2rem;">Add New Team Member & Credentials</h3>
+        <button type="button" class="portal-modal-close" onclick="closePortalModal('addMemberModal')">&times;</button>
+      </div>
+      <form id="addMemberForm">
+        <div class="form-group">
+          <label for="newMemName">Full Name<span class="req">*</span></label>
+          <input type="text" id="newMemName" class="form-control" placeholder="e.g. Ziad Tariq" required />
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="newMemRole">Role<span class="req">*</span></label>
+            <select id="newMemRole" class="form-control">
+              <option value="Team Member">Team Member</option>
+              <option value="Subteam Leader">Subteam Leader</option>
+              <option value="Technical Leader">Technical Leader</option>
+              <option value="Managerial Leader">Managerial Leader</option>
+              <option value="Vice Team Leader">Vice Team Leader</option>
+              <option value="Team Leader">Team Leader</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="newMemBranch">Branch<span class="req">*</span></label>
+            <select id="newMemBranch" class="form-control">
+              <option value="Technical">Technical Engineering</option>
+              <option value="Managerial">Managerial & Operations</option>
+              <option value="Executive">Executive</option>
+              <option value="Shared">Shared Multi-Group</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="newMemDept">Department / Subteams<span class="req">*</span></label>
+          <input type="text" id="newMemDept" class="form-control" placeholder="e.g. Vehicle Dynamics or HR" required />
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="newMemUser">Portal Username<span class="req">*</span></label>
+            <input type="text" id="newMemUser" class="form-control" placeholder="e.g. ziad" required />
+          </div>
+          <div class="form-group">
+            <label for="newMemPass">Initial Password<span class="req">*</span></label>
+            <input type="text" id="newMemPass" class="form-control" value="velox2026" required />
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-full">Register Member & Issue Credentials</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 9. Member Self-Service Change Password Modal -->
+  <div class="portal-modal-backdrop" id="changePasswordModal">
+    <div class="portal-modal-box">
+      <div class="portal-modal-header">
+        <h3 style="margin: 0; font-size: 1.2rem;">Change Account Password</h3>
+        <button type="button" class="portal-modal-close" onclick="closePortalModal('changePasswordModal')">&times;</button>
+      </div>
+      <form id="changePasswordForm">
+        <div style="background: rgba(56, 189, 248, 0.08); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 8px; padding: 12px 16px; margin-bottom: 16px;">
+          <span style="font-size: 0.82rem; color: var(--text-dim);">Authenticated Member Account:</span>
+          <h4 id="changePassUserDisplay" style="margin: 4px 0 0 0; color: #38BDF8; font-family: monospace;">@username</h4>
+        </div>
+
+        <div class="form-group">
+          <label for="currPassword">Current Password<span class="req">*</span></label>
+          <input type="password" id="currPassword" class="form-control" placeholder="Enter your current password" required />
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="newPasswordSelf">New Password<span class="req">*</span></label>
+            <input type="password" id="newPasswordSelf" class="form-control" placeholder="Min. 4 characters" required minlength="4" />
+          </div>
+          <div class="form-group">
+            <label for="confirmNewPasswordSelf">Confirm New Password<span class="req">*</span></label>
+            <input type="password" id="confirmNewPasswordSelf" class="form-control" placeholder="Re-enter new password" required minlength="4" />
+          </div>
+        </div>
+
+        <div id="changePassAlert" class="portal-auth-alert" style="margin-top: 10px; display: none;">
+          <span id="changePassAlertMsg"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-full" style="margin-top: 12px;">
+          Save & Update My Password
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 10. Forgot Password & Support Modal -->
+  <div class="portal-modal-backdrop" id="forgotPassModal">
+    <div class="portal-modal-box">
+      <div class="portal-modal-header">
+        <h3 style="margin: 0; font-size: 1.2rem;">Credentials & Access Support</h3>
+        <button type="button" class="portal-modal-close" onclick="closePortalModal('forgotPassModal')">&times;</button>
+      </div>
+      <div>
+        <div style="text-align: center; margin-bottom: 20px;">
+          <div style="width: 52px; height: 52px; border-radius: 50%; background: rgba(197,34,31,0.15); border: 2px solid var(--red); display: inline-flex; align-items: center; justify-content: center; color: var(--red); margin-bottom: 12px;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+          </div>
+          <h4 style="margin: 0 0 6px 0; color: #FFF;">Protected Team Infrastructure</h4>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin: 0;">
+            Velox Inside Portal access is restricted to official student engineers and executive leaders.
+          </p>
+        </div>
+
+        <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 8px; padding: 16px; margin-bottom: 16px; font-size: 0.84rem; line-height: 1.6;">
+          <p style="margin: 0 0 10px 0; color: #FFF; font-weight: 600;">How to get your credentials or reset your password:</p>
+          <ul style="margin: 0; padding-left: 20px; color: var(--text-muted);">
+            <li><strong>Official Invitation:</strong> If you are newly recruited, request an official invitation link from <strong>Fatima Salman</strong> (Team Leader) or <strong>Karim Shaprawy</strong> (Vice Leader).</li>
+            <li><strong>Password Reset:</strong> Contact your Subteam Leader or Team Executive to issue a password reset token from the Admin Dashboard.</li>
+            <li><strong>Official Contact:</strong> <a href="mailto:velox.racing.znu@gmail.com" style="color: var(--red);">velox.racing.znu@gmail.com</a></li>
+          </ul>
+        </div>
+
+        <button type="button" class="btn btn-primary btn-full" onclick="closePortalModal('forgotPassModal')">Understood & Back to Login</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Consistent Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="/" class="nav-brand">
+            <img src="VeloxLogoWeb.png" alt="Velox Racing" class="nav-logo" onerror="this.src='VeloxForWeb_dark.png'" />
+            <span class="nav-title" data-i18n="nav.brand">VELOX RACING</span>
+          </a>
+          <p data-i18n="footer.desc">
+            The official Formula Student racing team of Zagazig National University (ZNU), competing internationally in Formula Student competitions.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h5 data-i18n="footer.navTitle">Navigation</h5>
+          <ul>
+            <li><a href="/" data-i18n="nav.home">Home</a></li>
+            <li><a href="/#about" data-i18n="nav.about">About</a></li>
+            <li><a href="/team" data-i18n="nav.team">Team Structure</a></li>
+            <li><a href="/portal" data-i18n="nav.portal">Inside Portal</a></li>
+            <li><a href="/sponsorship" data-i18n="nav.sponsors">Sponsorship</a></li>
+            <li><a href="/join" data-i18n="nav.join">Join the Team</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h5 data-i18n="footer.connectTitle">Connect</h5>
+          <ul>
+            <li><a href="mailto:velox.racing.znu@gmail.com">velox.racing.znu@gmail.com</a></li>
+            <li><a href="https://www.linkedin.com/company/velox-racing-team/" target="_blank" rel="noopener">LinkedIn</a></li>
+            <li><a href="https://www.facebook.com/share/19Xcwun8Di/?mibextid=wwXIfr" target="_blank" rel="noopener">Facebook</a></li>
+            <li><a href="https://www.instagram.com/velox_racing_znu?srtk=MWl2azlianJlZ3J3bg==" target="_blank" rel="noopener">Instagram</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span data-i18n="footer.copy">&copy; 2026 Velox Racing — Zagazig National University. All rights reserved.</span>
+        <span data-i18n="footer.arena">Formula Student &bull; Silverstone</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==================== PORTAL JAVASCRIPT ENGINE ==================== -->
+  <script>
+    // Initial Seed Data for Portal
+    const PORTAL_SEED = {
+      personas: {
+        fatima: {
+          id: 'fatima-salman',
+          name: 'Fatima Salman',
+          role: 'Team Leader',
+          roleType: 'executive',
+          branch: 'Executive',
+          departments: ['All'],
+          avatar: 'photos/Fatima Salman.jpeg',
+          deptDesc: 'Executive Governance & Overall Leadership • Omni-Clearance'
+        },
+        karim: {
+          id: 'karim-shaprawy',
+          name: 'Karim Shaprawy',
+          role: 'Vice Team Leader',
+          roleType: 'executive',
+          branch: 'Executive',
+          departments: ['All'],
+          avatar: 'photos/Karim Shaprawy.jpeg',
+          deptDesc: 'Operations, Build Management & Sponsorship • Omni-Clearance'
+        },
+        romy: {
+          id: 'mohamed-romy',
+          name: 'Mohamed Romy',
+          role: 'Technical Leader',
+          roleType: 'technical_lead',
+          branch: 'Technical',
+          departments: ['Body & Chassis', 'Vehicle Dynamics', 'Powertrain', 'Electrical'],
+          avatar: 'photos/Mohamed Romy.jpeg',
+          deptDesc: 'Technical Engineering Branch • Full Technical Archive Access'
+        },
+        moaaz: {
+          id: 'moaaz-elghamry',
+          name: 'Moaaz Elghamry',
+          role: 'Managerial Leader',
+          roleType: 'managerial_lead',
+          branch: 'Managerial',
+          departments: ['Human Resources (HR)', 'Media & PR', 'Business (Team Director)'],
+          avatar: 'photos/Moaaz Elghamry.jpeg',
+          deptDesc: 'Managerial & Operations Branch • Full Operations Archive Access'
+        },
+        ali: {
+          id: 'ali-elgohary',
+          name: 'Ali Elgohary',
+          role: 'Electrical Leader',
+          roleType: 'subteam_lead',
+          branch: 'Technical',
+          departments: ['Electrical'],
+          avatar: '',
+          deptDesc: 'Electrical Infrastructure & Electronics Lead'
+        },
+        hassan: {
+          id: 'mohamed-hassan',
+          name: 'Mohamed Hassan',
+          role: 'Media Lead',
+          roleType: 'subteam_lead',
+          branch: 'Managerial',
+          departments: ['Media & PR'],
+          avatar: 'photos/Mohamed Hassan.jpeg',
+          deptDesc: 'Media & Public Relations Lead'
+        },
+        member_tech: {
+          id: 'ahmed-youssef',
+          name: 'Ahmed Youssef',
+          role: 'Team Member',
+          roleType: 'member',
+          branch: 'Technical',
+          departments: ['Powertrain'],
+          avatar: '',
+          deptDesc: 'Powertrain Subsystem Member (Standard Clearance)'
+        },
+        member_shared: {
+          id: 'sarah-el-sayed',
+          name: 'Sarah El-Sayed',
+          role: 'Team Member',
+          roleType: 'member',
+          branch: 'Shared',
+          departments: ['Body & Chassis', 'Media & PR'],
+          avatar: '',
+          deptDesc: 'Cross-Discipline Member: Aerodynamics & Visual Media'
+        }
+      },
+
+      files: [
+        {
+          id: 'F-101',
+          title: 'Chassis VX-01 Master CAD Assembly (Parasolid x_t)',
+          branch: 'Technical',
+          dept: 'Body & Chassis',
+          uploadedBy: 'Mohamed Romy',
+          date: '2026-10-06',
+          url: '#',
+          restricted: true,
+          approvedUsers: ['fatima-salman', 'karim-shaprawy', 'mohamed-romy']
+        },
+        {
+          id: 'F-102',
+          title: 'Suspension Kinematics & Ackermann Angle Telemetry',
+          branch: 'Technical',
+          dept: 'Vehicle Dynamics',
+          uploadedBy: 'Mohamed Romy',
+          date: '2026-10-07',
+          url: '#',
+          restricted: true,
+          approvedUsers: ['fatima-salman', 'karim-shaprawy', 'mohamed-romy']
+        },
+        {
+          id: 'F-103',
+          title: 'Powertrain Chain Reduction & Torque Differential Spec',
+          branch: 'Technical',
+          dept: 'Powertrain',
+          uploadedBy: 'Ahmed Youssef',
+          date: '2026-10-08',
+          url: '#',
+          restricted: true,
+          approvedUsers: ['fatima-salman', 'karim-shaprawy', 'mohamed-romy']
+        },
+        {
+          id: 'F-104',
+          title: 'Raychem Mil-Spec Wiring Loom Schematic & DAQ Map',
+          branch: 'Technical',
+          dept: 'Electrical',
+          uploadedBy: 'Ali Elgohary',
+          date: '2026-10-08',
+          url: '#',
+          restricted: true,
+          approvedUsers: ['fatima-salman', 'karim-shaprawy', 'mohamed-romy', 'ali-elgohary']
+        },
+        {
+          id: 'F-201',
+          title: 'Formula Student 2026 CBOM Cost & Materials Ledger',
+          branch: 'Managerial',
+          dept: 'Business (Team Director)',
+          uploadedBy: 'Moaaz Elghamry',
+          date: '2026-10-07',
+          url: '#',
+          restricted: true,
+          approvedUsers: ['fatima-salman', 'karim-shaprawy', 'moaaz-elghamry']
+        },
+        {
+          id: 'F-202',
+          title: 'Institutional Recruitment Evaluation Matrix (Round 1)',
+          branch: 'Managerial',
+          dept: 'Human Resources (HR)',
+          uploadedBy: 'Moaaz Elghamry',
+          date: '2026-10-08',
+          url: '#',
+          restricted: true,
+          approvedUsers: ['fatima-salman', 'karim-shaprawy', 'moaaz-elghamry']
+        },
+        {
+          id: 'F-203',
+          title: 'Silverstone 4K Documentary Teaser & Sponsor Deck',
+          branch: 'Managerial',
+          dept: 'Media & PR',
+          uploadedBy: 'Mohamed Hassan',
+          date: '2026-10-09',
+          url: '#',
+          restricted: false,
+          approvedUsers: ['fatima-salman', 'karim-shaprawy', 'moaaz-elghamry', 'mohamed-hassan', 'sarah-el-sayed']
+        }
+      ],
+
+      tasks: [
+        {
+          id: 'T-301',
+          title: 'Execute Front Wing Endplate CFD Mesh Refinement',
+          dept: 'Body & Chassis',
+          branch: 'Technical',
+          assignedToId: 'sarah-el-sayed',
+          assignedToName: 'Sarah El-Sayed',
+          priority: 'Critical',
+          deadline: '2026-10-12T18:00',
+          basePoints: 120,
+          speedBonus: 60,
+          desc: 'Refine boundary layer inflation layers in Ansys Fluent to assess vortex generation at 80 km/h.',
+          status: 'In Progress',
+          completedAt: null
+        },
+        {
+          id: 'T-302',
+          title: 'Differential Mount Torsional Stiffness FEA',
+          dept: 'Powertrain',
+          branch: 'Technical',
+          assignedToId: 'ahmed-youssef',
+          assignedToName: 'Ahmed Youssef',
+          priority: 'High',
+          deadline: '2026-10-14T12:00',
+          basePoints: 100,
+          speedBonus: 50,
+          desc: 'Verify safety factor > 2.5 on 6061-T6 aluminum differential mounting brackets under maximum chain tension.',
+          status: 'In Progress',
+          completedAt: null
+        },
+        {
+          id: 'T-303',
+          title: 'Telemetry DAQ Wireless Communication Benchmark',
+          dept: 'Electrical',
+          branch: 'Technical',
+          assignedToId: 'ali-elgohary',
+          assignedToName: 'Ali Elgohary',
+          priority: 'High',
+          deadline: '2026-10-15T20:00',
+          basePoints: 100,
+          speedBonus: 40,
+          desc: 'Test 2.4GHz RF packet drop rate across 300 meters line-of-sight in campus engineering grounds.',
+          status: 'Completed',
+          completedAt: '2026-10-09T14:30'
+        },
+        {
+          id: 'T-304',
+          title: 'Sponsorship Pitch Video Cut for Corporate Partners',
+          dept: 'Media & PR',
+          branch: 'Managerial',
+          assignedToId: 'sarah-el-sayed',
+          assignedToName: 'Sarah El-Sayed',
+          priority: 'Normal',
+          deadline: '2026-10-16T18:00',
+          basePoints: 90,
+          speedBonus: 45,
+          desc: 'Export 90-second widescreen teaser highlighting mechanical workshop engineering moments.',
+          status: 'In Progress',
+          completedAt: null
+        }
+      ],
+
+      accessRequests: [
+        {
+          id: 'REQ-1',
+          fileId: 'F-101',
+          fileTitle: 'Chassis VX-01 Master CAD Assembly (Parasolid x_t)',
+          userId: 'ahmed-youssef',
+          userName: 'Ahmed Youssef',
+          userDept: 'Powertrain',
+          reason: 'Need master clearance to verify motor sprocket alignment with the chassis stay tubes.',
+          timestamp: '2026-10-09 11:20',
+          status: 'Pending'
+        }
+      ],
+
+      notifications: [
+        'Fatima Salman verified Milestone #3: Structural CAD Frozen.',
+        'Moaaz Elghamry updated CBOM Costing entries for Silverstone Static Events.',
+        'Mohamed Romy approved Ali Elgohary DAQ Telemetry Schema.',
+        'Karim Shaprawy confirmed sponsorship presentation with manufacturing partner.'
+      ],
+
+      accounts: [
+        { username: 'fatima', password: 'velox2026', personaKey: 'fatima', name: 'Fatima Salman', status: 'Active' },
+        { username: 'karim', password: 'velox2026', personaKey: 'karim', name: 'Karim Shaprawy', status: 'Active' },
+        { username: 'romy', password: 'velox2026', personaKey: 'romy', name: 'Mohamed Romy', status: 'Active' },
+        { username: 'moaaz', password: 'velox2026', personaKey: 'moaaz', name: 'Moaaz Elghamry', status: 'Active' },
+        { username: 'ali', password: 'velox2026', personaKey: 'ali', name: 'Ali Elgohary', status: 'Active' },
+        { username: 'hassan', password: 'velox2026', personaKey: 'hassan', name: 'Mohamed Hassan', status: 'Active' },
+        { username: 'ahmed', password: 'velox2026', personaKey: 'member_tech', name: 'Ahmed Youssef', status: 'Active' },
+        { username: 'sarah', password: 'velox2026', personaKey: 'member_shared', name: 'Sarah El-Sayed', status: 'Active' }
+      ],
+
+      membersRoster: [
+        { id: 'fatima-salman', name: 'Fatima Salman', role: 'Team Leader', branch: 'Executive', dept: 'Executive Governance', username: 'fatima', points: 1540, status: 'Active' },
+        { id: 'karim-shaprawy', name: 'Karim Shaprawy', role: 'Vice Team Leader', branch: 'Executive', dept: 'Operations & Build', username: 'karim', points: 1480, status: 'Active' },
+        { id: 'mohamed-romy', name: 'Mohamed Romy', role: 'Technical Leader', branch: 'Technical', dept: 'Chief Engineering', username: 'romy', points: 1620, status: 'Active' },
+        { id: 'moaaz-elghamry', name: 'Moaaz Elghamry', role: 'Managerial Leader', branch: 'Managerial', dept: 'Operations Management', username: 'moaaz', points: 1590, status: 'Active' },
+        { id: 'ali-elgohary', name: 'Ali Elgohary', role: 'Subteam Leader', branch: 'Technical', dept: 'Electrical', username: 'ali', points: 1240, status: 'Active' },
+        { id: 'mohamed-hassan', name: 'Mohamed Hassan', role: 'Subteam Leader', branch: 'Managerial', dept: 'Media & PR', username: 'hassan', points: 1190, status: 'Active' },
+        { id: 'ahmed-youssef', name: 'Ahmed Youssef', role: 'Team Member', branch: 'Technical', dept: 'Powertrain', username: 'ahmed', points: 880, status: 'Active' },
+        { id: 'sarah-el-sayed', name: 'Sarah El-Sayed', role: 'Team Member', branch: 'Shared', dept: 'Body & Chassis, Media & PR', username: 'sarah', points: 940, status: 'Active' }
+      ],
+
+      auditLog: [
+        `[2026-10-09 17:40:00] SYSTEM: 256-Bit TLS Tunnel Established. Portal Engine Active.`,
+        `[2026-10-09 17:35:12] AUTH: Fatima Salman authenticated to Executive Portal.`,
+        `[2026-10-09 17:20:45] ACCESS: Mohamed Romy uploaded VX-01 Master CAD Assembly.`
+      ]
+    };
+
+    // Load or Initialize Local Storage Database
+    function getPortalDb() {
+      const stored = localStorage.getItem('velox_portal_db_v4');
+      if (stored) {
+        try {
+          const parsed = JSON.parse(stored);
+          if (parsed && parsed.accounts && parsed.accounts.length) {
+            // Ensure schema integrity & backwards compatibility
+            parsed.accounts.forEach(a => { if (!a.status) a.status = 'Active'; });
+            if (!parsed.auditLog) {
+              parsed.auditLog = [
+                `[2026-10-09 17:40:00] SYSTEM: 256-Bit TLS Tunnel Established. Portal Engine Active.`,
+                `[2026-10-09 17:35:12] AUTH: Fatima Salman authenticated to Executive Portal.`,
+                `[2026-10-09 17:20:45] ACCESS: Mohamed Romy uploaded VX-01 Master CAD Assembly.`
+              ];
+            }
+            return parsed;
+          }
+        } catch (e) { console.warn(e); }
+      }
+      localStorage.setItem('velox_portal_db_v4', JSON.stringify(PORTAL_SEED));
+      return PORTAL_SEED;
+    }
+
+    function savePortalDb(db) {
+      localStorage.setItem('velox_portal_db_v4', JSON.stringify(db));
+    }
+
+    // Telemetry & Audit Logger
+    function logAuditEvent(message) {
+      const db = getPortalDb();
+      if (!db.auditLog) db.auditLog = [];
+      const timestamp = new Date().toISOString().replace('T', ' ').substring(0, 19);
+      db.auditLog.unshift(`[${timestamp}] ${message}`);
+      if (db.auditLog.length > 60) db.auditLog.length = 60;
+      savePortalDb(db);
+      renderAuditLog();
+    }
+
+    function renderAuditLog() {
+      const db = getPortalDb();
+      const container = document.getElementById('adminAuditLogContainer');
+      if (!container) return;
+      if (!db.auditLog || db.auditLog.length === 0) {
+        container.innerHTML = `<div style="color: var(--text-dim);">No telemetry entries recorded yet.</div>`;
+        return;
+      }
+      container.innerHTML = db.auditLog.map(item => `<div>${item}</div>`).join('');
+    }
+
+    function clearAuditLog() {
+      const db = getPortalDb();
+      db.auditLog = [`[${new Date().toISOString().replace('T', ' ').substring(0, 19)}] AUDIT LOG: Reset by Executive Administrator.`];
+      savePortalDb(db);
+      renderAuditLog();
+    }
+
+    // Current Authenticated User & Persona State
+    let currentAuthUser = localStorage.getItem('velox_auth_user') || null;
+    let currentPersonaKey = localStorage.getItem('velox_active_persona') || 'fatima';
+
+    function checkAuth() {
+      const db = getPortalDb();
+      const loginSection = document.getElementById('portalLoginSection');
+      const mainSection = document.getElementById('portalMainSection');
+
+      if (currentAuthUser) {
+        const acct = db.accounts.find(a => a.username.toLowerCase() === currentAuthUser.toLowerCase());
+        if (acct) {
+          if (acct.status === 'Suspended') {
+            portalLogout();
+            alert('Your account is currently suspended. Please contact Executive Administration.');
+            return false;
+          }
+          currentPersonaKey = acct.personaKey;
+          localStorage.setItem('velox_active_persona', currentPersonaKey);
+          if (loginSection) loginSection.style.display = 'none';
+          if (mainSection) mainSection.style.display = 'block';
+          const authBadge = document.getElementById('activeAuthUsername');
+          if (authBadge) authBadge.textContent = '@' + acct.username;
+          renderUserBar();
+          return true;
+        }
+      }
+
+      // Not authenticated: reveal login gate
+      if (loginSection) loginSection.style.display = 'block';
+      if (mainSection) mainSection.style.display = 'none';
+      return false;
+    }
+
+    function portalLogin(username, password) {
+      const db = getPortalDb();
+      const u = (username || '').trim().toLowerCase();
+      const p = (password || '').trim();
+
+      const acct = db.accounts.find(a => a.username.toLowerCase() === u && a.password === p);
+      if (acct) {
+        if (acct.status === 'Suspended') {
+          const alertEl = document.getElementById('loginAlert');
+          const alertMsg = document.getElementById('loginAlertMsg');
+          if (alertEl && alertMsg) {
+            alertMsg.textContent = 'Account suspended by Executive Administration. Please contact Team Leadership.';
+            alertEl.classList.add('show');
+          }
+          return false;
+        }
+
+        currentAuthUser = acct.username;
+        currentPersonaKey = acct.personaKey;
+        localStorage.setItem('velox_auth_user', currentAuthUser);
+        localStorage.setItem('velox_active_persona', currentPersonaKey);
+
+        const alertEl = document.getElementById('loginAlert');
+        if (alertEl) alertEl.classList.remove('show');
+
+        logAuditEvent(`AUTH: Member ${acct.name} (@${acct.username}) signed in.`);
+        checkAuth();
+        return true;
+      } else {
+        const alertEl = document.getElementById('loginAlert');
+        const alertMsg = document.getElementById('loginAlertMsg');
+        if (alertEl && alertMsg) {
+          alertMsg.textContent = 'Invalid username or password. Please verify your credentials or select a verified crew account.';
+          alertEl.classList.add('show');
+        }
+        return false;
+      }
+    }
+
+    function quickLogin(username, password) {
+      const uInput = document.getElementById('loginUsername');
+      const pInput = document.getElementById('loginPassword');
+      if (uInput) uInput.value = username;
+      if (pInput) pInput.value = password;
+      portalLogin(username, password);
+    }
+
+    function portalLogout() {
+      if (currentAuthUser) {
+        logAuditEvent(`AUTH: Member @${currentAuthUser} signed out.`);
+      }
+      localStorage.removeItem('velox_auth_user');
+      currentAuthUser = null;
+      const uInput = document.getElementById('loginUsername');
+      const pInput = document.getElementById('loginPassword');
+      if (uInput) uInput.value = '';
+      if (pInput) pInput.value = '';
+      const alertEl = document.getElementById('loginAlert');
+      if (alertEl) alertEl.classList.remove('show');
+      checkAuth();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function getActivePersona() {
+      const db = getPortalDb();
+      return db.personas[currentPersonaKey] || db.personas.fatima;
+    }
+
+    // Helper: Initials
+    function getInitials(name) {
+      if (!name) return 'VL';
+      return name.split(' ').map(n => n[0]).slice(0, 2).join('').toUpperCase();
+    }
+
+    // Update Header Bar with Active Persona
+    function renderUserBar() {
+      const p = getActivePersona();
+      const db = getPortalDb();
+      const avatarEl = document.getElementById('activeAvatar');
+      const nameEl = document.getElementById('activeUserName');
+      const deptEl = document.getElementById('activeUserDept');
+      const personaSelect = document.getElementById('personaSelect');
+
+      personaSelect.value = currentPersonaKey;
+
+      if (p.avatar) {
+        avatarEl.innerHTML = `<img src="${p.avatar}" alt="${p.name}" />`;
+      } else {
+        avatarEl.textContent = getInitials(p.name);
+      }
+
+      let badgeClass = 'role-member';
+      if (p.roleType === 'executive') badgeClass = 'role-executive';
+      else if (p.roleType === 'technical_lead' || (p.roleType === 'subteam_lead' && p.branch === 'Technical')) badgeClass = 'role-tech';
+      else if (p.roleType === 'managerial_lead' || (p.roleType === 'subteam_lead' && p.branch === 'Managerial')) badgeClass = 'role-ops';
+
+      nameEl.innerHTML = `${p.name} <span class="portal-role-pill ${badgeClass}">${p.role}</span>`;
+      deptEl.textContent = p.deptDesc || p.branch;
+
+      const isLeader = (p.roleType === 'executive' || p.roleType === 'technical_lead' || p.roleType === 'managerial_lead' || p.roleType === 'subteam_lead');
+
+      // Show/Hide Admin Tab for Leaders only
+      const adminTabBtn = document.getElementById('tabAdminBtn');
+      if (adminTabBtn) {
+        adminTabBtn.style.display = isLeader ? 'inline-flex' : 'none';
+      }
+
+      // Show/Hide Assign Task button for Leaders only
+      const assignWrap = document.getElementById('assignTaskBtnWrap');
+      if (assignWrap) {
+        assignWrap.style.display = isLeader ? 'block' : 'none';
+      }
+
+      // Show/Hide Access Requests Queue for Leaders only
+      const queueCard = document.getElementById('accessRequestsQueueCard');
+      if (queueCard) {
+        queueCard.style.display = isLeader ? 'block' : 'none';
+      }
+
+      // Update KPIs
+      const memberEntry = db.membersRoster.find(m => m.id === p.id);
+      const points = memberEntry ? memberEntry.points : 800;
+      document.getElementById('kpiPoints').textContent = points.toLocaleString();
+
+      renderDashboard();
+      renderVault();
+      renderTasks();
+      renderCompetition();
+      renderInvitationsRoleOptions();
+      if (isLeader) {
+        renderAdminDashboard();
+      }
+    }
+
+    // Tab Switching
+    function switchPortalTab(tabKey) {
+      document.querySelectorAll('.portal-tab-btn').forEach(b => {
+        b.classList.toggle('active', b.dataset.tab === tabKey);
+      });
+      document.querySelectorAll('.portal-panel').forEach(panel => {
+        panel.classList.toggle('active', panel.id === 'panel-' + tabKey);
+      });
+      window.scrollTo({ top: 120, behavior: 'smooth' });
+    }
+
+    // Modal helpers
+    function openPortalModal(id) {
+      const modal = document.getElementById(id);
+      if (modal) modal.classList.add('active');
+    }
+    function closePortalModal(id) {
+      const modal = document.getElementById(id);
+      if (modal) modal.classList.remove('active');
+    }
+
+    // Self-Service Change Password Modal
+    function openChangePasswordModal() {
+      const alertEl = document.getElementById('changePassAlert');
+      if (alertEl) alertEl.style.display = 'none';
+      const userDisplay = document.getElementById('changePassUserDisplay');
+      if (userDisplay) userDisplay.textContent = '@' + (currentAuthUser || 'member');
+      const form = document.getElementById('changePasswordForm');
+      if (form) form.reset();
+      openPortalModal('changePasswordModal');
+    }
+
+    // ==================== DASHBOARD TAB ====================
+    function renderDashboard() {
+      const db = getPortalDb();
+      const p = getActivePersona();
+
+      // Access requests list
+      const requestsListEl = document.getElementById('accessRequestsList');
+      if (requestsListEl) {
+        const pending = db.accessRequests.filter(r => r.status === 'Pending');
+        document.getElementById('kpiRequests').textContent = pending.length;
+        if (pending.length === 0) {
+          requestsListEl.innerHTML = `<div style="color: var(--text-dim); font-size: 0.85rem; padding: 8px 0;">No pending access authorizations. All systems clear.</div>`;
+        } else {
+          requestsListEl.innerHTML = pending.map(req => `
+            <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 8px; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+              <div>
+                <strong style="color: #FFF; font-size: 0.9rem;">${req.userName}</strong> (${req.userDept}) requested access to:
+                <div style="color: #38BDF8; font-size: 0.85rem; margin-top: 2px;">${req.fileTitle}</div>
+                <div style="font-size: 0.78rem; color: var(--text-dim); margin-top: 4px;">Reason: "${req.reason}" &bull; ${req.timestamp}</div>
+              </div>
+              <div style="display: flex; gap: 8px;">
+                <button type="button" class="btn btn-primary" style="padding: 4px 12px; font-size: 0.78rem;" onclick="approveAccessRequest('${req.id}')">Approve</button>
+                <button type="button" class="btn btn-outline" style="padding: 4px 12px; font-size: 0.78rem; color: var(--status-rejected);" onclick="denyAccessRequest('${req.id}')">Deny</button>
+              </div>
+            </div>
+          `).join('');
+        }
+      }
+
+      // Notifications Log
+      const notifLogEl = document.getElementById('notificationsLog');
+      if (notifLogEl) {
+        notifLogEl.innerHTML = db.notifications.slice(0, 8).map(n => `
+          <div style="display: flex; align-items: center; gap: 10px; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.04);">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            <span>${n}</span>
+          </div>
+        `).join('');
+      }
+    }
+
+    function approveAccessRequest(reqId) {
+      const db = getPortalDb();
+      const p = getActivePersona();
+      const req = db.accessRequests.find(r => r.id === reqId);
+      if (!req) return;
+      req.status = 'Approved';
+      // Grant file access
+      const file = db.files.find(f => f.id === req.fileId);
+      if (file && !file.approvedUsers.includes(req.userId)) {
+        file.approvedUsers.push(req.userId);
+      }
+      db.notifications.unshift(`Access granted: ${req.userName} authorized to download "${req.fileTitle}".`);
+      logAuditEvent(`AUTHORIZATION: ${p.name} approved download access for ${req.userName} on "${req.fileTitle}".`);
+      savePortalDb(db);
+      renderUserBar();
+      renderAdminDashboard();
+      alert(`Access successfully approved for ${req.userName}!`);
+    }
+
+    function denyAccessRequest(reqId) {
+      const db = getPortalDb();
+      const p = getActivePersona();
+      const req = db.accessRequests.find(r => r.id === reqId);
+      if (!req) return;
+      req.status = 'Denied';
+      db.notifications.unshift(`Access denied: request from ${req.userName} for "${req.fileTitle}" was declined.`);
+      logAuditEvent(`AUTHORIZATION: ${p.name} declined download access for ${req.userName} on "${req.fileTitle}".`);
+      savePortalDb(db);
+      renderUserBar();
+      renderAdminDashboard();
+    }
+
+    // ==================== DATA VAULT TAB (WITH RBAC & REAL DOWNLOADS) ====================
+    let activeVaultFilter = 'all';
+
+    function isFileAccessibleToPersona(file, persona) {
+      // 1. Executive sees EVERYTHING
+      if (persona.roleType === 'executive') return true;
+      // 2. Technical Leader sees ALL Technical branch files
+      if (persona.roleType === 'technical_lead' && file.branch === 'Technical') return true;
+      // 3. Managerial Leader sees ALL Managerial branch files
+      if (persona.roleType === 'managerial_lead' && file.branch === 'Managerial') return true;
+      // 4. Subteam Leader sees files within their assigned departments
+      if (persona.roleType === 'subteam_lead' && persona.departments.includes(file.dept)) return true;
+      // 5. Normal member sees files INSIDE their department category (or shared categories)
+      if (persona.departments.includes(file.dept)) return true;
+      return false;
+    }
+
+    function generateEngineeringPayload(file) {
+      const dateStr = file.date || new Date().toISOString().split('T')[0];
+      return [
+        '================================================================================',
+        'VELOX FORMULA RACING — ZAGAZIG NATIONAL UNIVERSITY (ZNU)',
+        'FORMULA STUDENT UK — SILVERSTONE 2026 OFFICIAL ENGINEERING DELIVERABLE',
+        '================================================================================',
+        `DELIVERABLE TITLE : ${file.title}`,
+        `BRANCH            : ${file.branch} Division`,
+        `DEPARTMENT        : ${file.dept}`,
+        `AUTHOR / ENGR     : ${file.uploadedBy}`,
+        `RELEASE DATE      : ${dateStr}`,
+        `SECURITY STATUS   : VERIFIED AUTHORIZED ACCESS`,
+        `CLEARANCE ID      : ${file.id}`,
+        `CHECKSUM          : SHA-256-${Math.random().toString(36).substring(2, 10).toUpperCase()}-VX01`,
+        '================================================================================',
+        '',
+        '[SPECIFICATION & TECHNICAL METRICS]',
+        '- Vehicle Architecture : Velox VX-01 Spaceframe Hybrid Monocoque',
+        '- Class Alignment     : Formula Student UK Class 1 (Silverstone 2026)',
+        `- Category Scope      : ${file.desc || 'Standard verified engineering telemetry and CAD data release.'}`,
+        '- Compliance Status   : FSAE / Formula Student 2026 Technical Regulations Approved',
+        '',
+        '[VALIDATION & CAD SIGN-OFF]',
+        '- Structural FEA Factor of Safety : > 2.25',
+        '- Torsional Stiffness Rating      : > 1,850 Nm/deg',
+        '- Weight Distribution Target      : 48% Front / 52% Rear',
+        '- Executive Sign-off              : Fatima Salman (Team Leader) & Karim Shaprawy (Vice Leader)',
+        '- Chief Engineering Verification  : Mohamed Romy (Technical Leader)',
+        '- Operational Compliance          : Moaaz Elghamry (Managerial Leader)',
+        '',
+        'CONFIDENTIAL: Authorized for internal Velox Racing ZNU use only.',
+        '================================================================================'
+      ].join('\r\n');
+    }
+
+    function downloadVaultFile(fileId) {
+      const db = getPortalDb();
+      const p = getActivePersona();
+      const file = db.files.find(f => f.id === fileId);
+      if (!file) return;
+
+      logAuditEvent(`DOWNLOAD: ${p.name} downloaded "${file.title}" (ID: ${file.id}).`);
+
+      // 1. If file has base64 dataUrl from direct upload
+      if (file.fileData) {
+        const a = document.createElement('a');
+        a.href = file.fileData;
+        a.download = file.fileName || (file.title.replace(/[^a-zA-Z0-9_\-\.]/g, '_') + '.dat');
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        return;
+      }
+
+      // 2. If file has external link (e.g., Google Drive, Onshape CAD)
+      if (file.url && file.url !== '#' && file.url.startsWith('http')) {
+        window.open(file.url, '_blank');
+        return;
+      }
+
+      // 3. Generate genuine, authentic engineering asset payload
+      const payload = generateEngineeringPayload(file);
+      const blob = new Blob([payload], { type: 'text/plain;charset=utf-8' });
+      const blobUrl = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = blobUrl;
+      const safeName = file.title.replace(/[^a-zA-Z0-9_\-\.]/g, '_') + '_VELOX_SPEC.txt';
+      a.download = safeName;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(blobUrl), 2000);
+    }
+
+    function renderVault() {
+      const db = getPortalDb();
+      const p = getActivePersona();
+      const tbody = document.getElementById('vaultTableBody');
+      if (!tbody) return;
+
+      // Filter by accessibility
+      let files = db.files.filter(f => isFileAccessibleToPersona(f, p));
+
+      // Filter by branch toolbar
+      if (activeVaultFilter === 'technical') {
+        files = files.filter(f => f.branch === 'Technical');
+      } else if (activeVaultFilter === 'managerial') {
+        files = files.filter(f => f.branch === 'Managerial');
+      }
+
+      document.getElementById('kpiFiles').textContent = files.length;
+      document.getElementById('tabVaultBadge').textContent = files.length;
+
+      if (files.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-dim); padding: 30px;">No files accessible under your current clearance or filter.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = files.map(file => {
+        // Can this user download/install?
+        const isLeader = (p.roleType === 'executive' || p.roleType === 'technical_lead' || p.roleType === 'managerial_lead' || p.roleType === 'subteam_lead');
+        const hasApprovedAccess = file.approvedUsers && file.approvedUsers.includes(p.id);
+        const canDownload = !file.restricted || isLeader || hasApprovedAccess;
+
+        let statusBadge = '';
+        let actionBtn = '';
+
+        if (canDownload) {
+          statusBadge = `<span class="access-status-badge status-unlocked">Authorized</span>`;
+          actionBtn = `
+            <button type="button" class="btn btn-outline" style="padding: 4px 10px; font-size: 0.78rem; color: #22C55E; border-color: rgba(34,197,94,0.4);" onclick="downloadVaultFile('${file.id}')">
+              Download File &darr;
+            </button>
+          `;
+        } else {
+          // Check if pending request exists
+          const existingReq = db.accessRequests.find(r => r.fileId === file.id && r.userId === p.id && r.status === 'Pending');
+          if (existingReq) {
+            statusBadge = `<span class="access-status-badge status-pending">Pending Review</span>`;
+            actionBtn = `<span style="font-size: 0.78rem; color: #FBBF24;">Requested</span>`;
+          } else {
+            statusBadge = `<span class="access-status-badge status-locked">Restricted</span>`;
+            actionBtn = `
+              <button type="button" class="btn btn-outline" style="padding: 4px 10px; font-size: 0.78rem; color: var(--red); border-color: rgba(197,34,31,0.4);" onclick="openRequestAccessModal('${file.id}', '${file.title.replace(/'/g, "\\'")}')">
+                Request Access
+              </button>
+            `;
+          }
+        }
+
+        return `
+          <tr>
+            <td>
+              <div style="font-weight: 600; color: #FFF;">${file.title}</div>
+            </td>
+            <td>
+              <span class="file-badge" style="color: ${file.branch === 'Technical' ? '#38BDF8' : '#FBBF24'};">
+                ${file.branch} &bull; ${file.dept}
+              </span>
+            </td>
+            <td style="color: var(--text-muted);">${file.uploadedBy}</td>
+            <td style="color: var(--text-dim);">${file.date}</td>
+            <td>${statusBadge}</td>
+            <td>${actionBtn}</td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function openRequestAccessModal(fileId, fileTitle) {
+      document.getElementById('reqFileId').value = fileId;
+      document.getElementById('reqFileTitle').value = fileTitle;
+      openPortalModal('requestAccessModal');
+    }
+
+    // ==================== TASK CENTER & COMPETITION TAB ====================
+    function renderTasks() {
+      const db = getPortalDb();
+      const p = getActivePersona();
+      const container = document.getElementById('tasksListContainer');
+      if (!container) return;
+
+      // Filter tasks: Leaders see all or branch tasks; Members see tasks assigned to them or their dept
+      let tasks = db.tasks;
+      if (p.roleType === 'member') {
+        tasks = tasks.filter(t => t.assignedToId === p.id || p.departments.includes(t.dept));
+      } else if (p.roleType === 'technical_lead') {
+        tasks = tasks.filter(t => t.branch === 'Technical');
+      } else if (p.roleType === 'managerial_lead') {
+        tasks = tasks.filter(t => t.branch === 'Managerial');
+      }
+
+      document.getElementById('tabTasksBadge').textContent = tasks.filter(t => t.status === 'In Progress').length;
+      document.getElementById('kpiTasks').textContent = tasks.filter(t => t.status === 'In Progress').length;
+
+      if (tasks.length === 0) {
+        container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--text-dim); padding: 40px; background: var(--bg-card); border-radius: 12px;">No active sprint tasks for this department.</div>`;
+        return;
+      }
+
+      container.innerHTML = tasks.map(task => {
+        const isCompleted = task.status === 'Completed';
+        const priorityColor = task.priority === 'Critical' ? '#EF4444' : (task.priority === 'High' ? '#FBBF24' : '#38BDF8');
+
+        return `
+          <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px; position: relative; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <span style="font-size: 0.72rem; font-weight: 700; color: ${priorityColor}; background: rgba(255,255,255,0.04); padding: 2px 8px; border-radius: 4px; border: 1px solid ${priorityColor}44;">
+                  ${task.priority} Priority
+                </span>
+                <span style="font-size: 0.78rem; color: #EAB308; font-weight: 700;">
+                  +${task.basePoints} pts (+${task.speedBonus} bonus)
+                </span>
+              </div>
+              <h4 style="margin: 0 0 8px 0; font-size: 1.05rem; color: #FFF;">${task.title}</h4>
+              <p style="font-size: 0.82rem; color: var(--text-muted); margin: 0 0 14px 0; line-height: 1.5;">${task.desc}</p>
+              
+              <div style="font-size: 0.78rem; color: var(--text-dim); margin-bottom: 16px;">
+                <div><strong>Assigned To:</strong> ${task.assignedToName} (${task.dept})</div>
+                <div><strong>Deadline:</strong> ${task.deadline.replace('T', ' at ')}</div>
+              </div>
+            </div>
+
+            <div>
+              ${isCompleted ? `
+                <div style="background: rgba(34,197,94,0.12); color: #22C55E; border: 1px solid rgba(34,197,94,0.3); border-radius: 6px; padding: 8px; text-align: center; font-size: 0.82rem; font-weight: 700;">
+                  ✓ Completed & Points Awarded
+                </div>
+              ` : `
+                <button type="button" class="btn btn-primary btn-full" style="padding: 8px 14px; font-size: 0.82rem;" onclick="openSubmitTaskModal('${task.id}', '${task.title.replace(/'/g, "\\'")}', ${task.basePoints + task.speedBonus})">
+                  Upload Deliverables & Claim Points
+                </button>
+              `}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function openSubmitTaskModal(taskId, title, maxPoints) {
+      document.getElementById('submitTaskId').value = taskId;
+      document.getElementById('submitTaskDisplayTitle').textContent = title;
+      document.getElementById('submitTaskPointsBadge').textContent = `Eligible for up to +${maxPoints} Velocity Points`;
+      openPortalModal('submitTaskModal');
+    }
+
+    // ==================== COMPETITION LEADERBOARD ====================
+    function renderCompetition() {
+      const db = getPortalDb();
+      const podiumEl = document.getElementById('leaderboardPodium');
+      const tableBody = document.getElementById('leaderboardTableBody');
+      if (!podiumEl || !tableBody) return;
+
+      // Sort roster by points descending
+      const sorted = [...db.membersRoster].sort((a, b) => b.points - a.points);
+
+      // Top 3 for podium
+      const top3 = sorted.slice(0, 3);
+      if (top3.length >= 3) {
+        podiumEl.innerHTML = `
+          <!-- 2nd Place -->
+          <div class="podium-card silver">
+            <div class="podium-medal">2</div>
+            <h3 style="font-size: 1.15rem; margin: 0 0 4px 0; color: #FFF;">${top3[1].name}</h3>
+            <span style="font-size: 0.78rem; color: var(--text-muted);">${top3[1].role} &bull; ${top3[1].dept}</span>
+            <div class="podium-points">${top3[1].points} pts</div>
+            <div style="font-size: 0.74rem; color: #38BDF8; font-weight: 700;">Silverstone Apex Contributor</div>
+          </div>
+
+          <!-- 1st Place (Gold) -->
+          <div class="podium-card gold">
+            <div class="podium-medal">1</div>
+            <h3 style="font-size: 1.3rem; margin: 0 0 4px 0; color: #FFF;">${top3[0].name}</h3>
+            <span style="font-size: 0.82rem; color: var(--text-muted);">${top3[0].role} &bull; ${top3[0].dept}</span>
+            <div class="podium-points">${top3[0].points} pts</div>
+            <div style="font-size: 0.78rem; color: #EAB308; font-weight: 800;">⚡ P1 Velocity Champion</div>
+          </div>
+
+          <!-- 3rd Place -->
+          <div class="podium-card bronze">
+            <div class="podium-medal">3</div>
+            <h3 style="font-size: 1.15rem; margin: 0 0 4px 0; color: #FFF;">${top3[2].name}</h3>
+            <span style="font-size: 0.78rem; color: var(--text-muted);">${top3[2].role} &bull; ${top3[2].dept}</span>
+            <div class="podium-points">${top3[2].points} pts</div>
+            <div style="font-size: 0.74rem; color: #D97706; font-weight: 700;">High Precision Finisher</div>
+          </div>
+        `;
+      }
+
+      // Standings Table
+      tableBody.innerHTML = sorted.map((member, idx) => {
+        const badges = [
+          idx === 0 ? '🏆 P1 Champion' : (idx < 3 ? '⚡ Podium Sprint' : '🛠️ Fast Turnaround'),
+          member.points > 1200 ? '⭐ Gold Engineer' : '🏁 Track Certified'
+        ];
+
+        return `
+          <tr>
+            <td style="font-weight: 800; color: ${idx === 0 ? '#EAB308' : (idx === 1 ? '#94A3B8' : (idx === 2 ? '#D97706' : 'var(--text-dim)'))};">
+              #${idx + 1}
+            </td>
+            <td>
+              <div style="font-weight: 700; color: #FFF;">${member.name}</div>
+              <div style="font-size: 0.75rem; color: var(--text-dim);">${member.role}</div>
+            </td>
+            <td>
+              <span class="file-badge" style="color: ${member.branch === 'Technical' ? '#38BDF8' : '#FBBF24'};">
+                ${member.dept}
+              </span>
+            </td>
+            <td>${Math.floor(member.points / 120)} Tasks</td>
+            <td style="color: #22C55E; font-weight: 700;">+${Math.floor(member.points * 0.35)} pts</td>
+            <td style="font-size: 1rem; font-weight: 800; color: #FFF;">${member.points.toLocaleString()}</td>
+            <td>
+              ${badges.map(b => `<span style="display: inline-block; font-size: 0.72rem; padding: 2px 7px; border-radius: 4px; background: rgba(255,255,255,0.06); margin-right: 4px; font-weight: 600;">${b}</span>`).join('')}
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // ==================== INVITATION GENERATOR ====================
+    function renderInvitationsRoleOptions() {
+      const p = getActivePersona();
+      const roleSelect = document.getElementById('invRoleSelect');
+      const subteamSelect = document.getElementById('invSubteamSelect');
+      if (!roleSelect || !subteamSelect) return;
+
+      if (p.roleType === 'executive') {
+        roleSelect.innerHTML = `
+          <option value="Team Member">Team Member</option>
+          <option value="Subteam Leader">Subteam Leader</option>
+          <option value="Technical Leader">Technical Leader</option>
+          <option value="Managerial Leader">Managerial Leader</option>
+          <option value="Vice Team Leader">Vice Team Leader</option>
+        `;
+        subteamSelect.innerHTML = `
+          <option value="Body & Chassis">Body & Chassis</option>
+          <option value="Vehicle Dynamics">Vehicle Dynamics</option>
+          <option value="Powertrain">Powertrain</option>
+          <option value="Electrical">Electrical</option>
+          <option value="Human Resources (HR)">Human Resources (HR)</option>
+          <option value="Media & PR">Media & PR</option>
+          <option value="Business (Team Director)">Business (Team Director)</option>
+        `;
+      } else if (p.roleType === 'subteam_lead') {
+        roleSelect.innerHTML = `<option value="Team Member">Team Member (Subteam Specialist)</option>`;
+        subteamSelect.innerHTML = p.departments.map(d => `<option value="${d}">${d}</option>`).join('');
+      } else {
+        roleSelect.innerHTML = `<option value="Team Member">Team Member Candidate</option>`;
+        subteamSelect.innerHTML = p.departments.map(d => `<option value="${d}">${d}</option>`).join('');
+      }
+    }
+
+    // Generate Pass Action
+    document.addEventListener('DOMContentLoaded', () => {
+      const invForm = document.getElementById('invitationForm');
+      if (invForm) {
+        invForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const p = getActivePersona();
+          const guestName = document.getElementById('invGuestName').value.trim();
+          const role = document.getElementById('invRoleSelect').value;
+          const dept = document.getElementById('invSubteamSelect').value;
+          const note = document.getElementById('invNote').value.trim();
+
+          const serial = 'FS-ZNU-' + Math.floor(100000 + Math.random() * 900000);
+          const branch = (dept.includes('HR') || dept.includes('Media') || dept.includes('Business')) ? 'Managerial' : 'Technical';
+
+          const passHtml = `
+            <div class="invitation-pass-preview" id="activePassCard">
+              <div class="pass-header">
+                <div class="pass-crest">
+                  <img src="VeloxLogoWeb.png" alt="Velox" onerror="this.src='VeloxForWeb_dark.png'" />
+                  <div>
+                    <strong style="color: #FFF; font-size: 0.95rem; display: block;">VELOX FORMULA RACING</strong>
+                    <span style="font-size: 0.72rem; color: var(--text-dim);">Zagazig National University &bull; Silverstone 2026</span>
+                  </div>
+                </div>
+                <div class="pass-security-seal">${serial}</div>
+              </div>
+
+              <div class="pass-body">
+                <span style="font-size: 0.78rem; text-transform: uppercase; color: var(--red); font-weight: 800; letter-spacing: 0.08em;">
+                  OFFICIAL TEAM CREDENTIAL INVITATION
+                </span>
+                <div class="pass-guest-name">${guestName}</div>
+                <p style="font-size: 0.86rem; color: var(--text-muted); margin: 6px 0 16px 0; font-style: italic;">
+                  &ldquo;${note}&rdquo;
+                </p>
+
+                <div class="pass-assignment-box">
+                  <div class="pass-meta-field">
+                    <span>Designated Role</span>
+                    <strong>${role}</strong>
+                  </div>
+                  <div class="pass-meta-field">
+                    <span>Branch & Department</span>
+                    <strong>${branch} &bull; ${dept}</strong>
+                  </div>
+                  <div class="pass-meta-field">
+                    <span>Authorized By</span>
+                    <strong>${p.name} (${p.role})</strong>
+                  </div>
+                  <div class="pass-meta-field">
+                    <span>Enlistment Status</span>
+                    <strong style="color: #22C55E;">Ready for Acceptance</strong>
+                  </div>
+                </div>
+
+                <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 20px;">
+                  <button type="button" class="btn btn-primary" onclick="acceptInvitationDirect('${guestName.replace(/'/g, "\\'")}', '${role}', '${branch}', '${dept}')">
+                    ✓ Accept Invitation & Enlist Into Team
+                  </button>
+                  <button type="button" class="btn btn-outline" onclick="copyInvitationLink('${serial}')">
+                    Copy Invitation Link
+                  </button>
+                </div>
+              </div>
+
+              <div class="pass-footer">
+                <span>Formula Student UK Candidate</span>
+                <span>Issued: ${new Date().toISOString().split('T')[0]}</span>
+              </div>
+            </div>
+          `;
+
+          const passContainer = document.getElementById('invitationPassContainer');
+          if (passContainer) {
+            passContainer.innerHTML = passHtml;
+            passContainer.scrollIntoView({ behavior: 'smooth' });
+          }
+
+          // If invited by Subteam Leader, notify Executive Leaders automatically!
+          if (p.roleType === 'subteam_lead') {
+            const db = getPortalDb();
+            db.notifications.unshift(`Executive Alert: Subteam Leader ${p.name} invited ${guestName} to ${dept}.`);
+            savePortalDb(db);
+            renderDashboard();
+          }
+        });
+      }
+    });
+
+    function acceptInvitationDirect(name, role, branch, dept) {
+      document.getElementById('enlistHiddenName').value = name;
+      document.getElementById('enlistHiddenRole').value = role;
+      document.getElementById('enlistHiddenBranch').value = branch;
+      document.getElementById('enlistHiddenDept').value = dept;
+
+      document.getElementById('enlistNameDisplay').textContent = name;
+      document.getElementById('enlistRoleDeptDisplay').textContent = `${role} • ${branch} (${dept})`;
+
+      const suggestedUsername = name.toLowerCase().replace(/[^a-z0-9]/g, '') || 'velox_member';
+      document.getElementById('enlistUsername').value = suggestedUsername;
+      document.getElementById('enlistPassword').value = 'velox2026';
+      document.getElementById('enlistConfirmPassword').value = 'velox2026';
+
+      openPortalModal('enlistModal');
+    }
+
+    function copyInvitationLink(serial) {
+      const link = `${window.location.origin}/portal.html?invite=${serial}`;
+      navigator.clipboard.writeText(link).then(() => {
+        alert(`Invitation link copied to clipboard:\n${link}`);
+      }).catch(() => {
+        prompt('Copy your invitation link:', link);
+      });
+    }
+
+    // ==================== EXECUTIVE ADMIN DASHBOARD MODULES ====================
+    function renderAdminDashboard() {
+      const db = getPortalDb();
+      const p = getActivePersona();
+      const isLeader = (p.roleType === 'executive' || p.roleType === 'technical_lead' || p.roleType === 'managerial_lead' || p.roleType === 'subteam_lead');
+
+      // Update Admin KPI Cards
+      const pendingReqs = db.accessRequests.filter(r => r.status === 'Pending');
+      const completedTasks = db.tasks.filter(t => t.status === 'Completed');
+
+      const kpiMembers = document.getElementById('adminKpiMembers');
+      if (kpiMembers) kpiMembers.textContent = db.accounts.length;
+
+      const kpiFiles = document.getElementById('adminKpiFiles');
+      if (kpiFiles) kpiFiles.textContent = db.files.length;
+
+      const kpiReqs = document.getElementById('adminKpiRequests');
+      if (kpiReqs) kpiReqs.textContent = pendingReqs.length;
+
+      const kpiTasks = document.getElementById('adminKpiTasks');
+      if (kpiTasks) kpiTasks.textContent = completedTasks.length;
+
+      const queueBadge = document.getElementById('adminQueueCountBadge');
+      if (queueBadge) queueBadge.textContent = `${pendingReqs.length} Pending Request${pendingReqs.length === 1 ? '' : 's'}`;
+
+      const tabBadge = document.getElementById('adminRequestsBadge');
+      if (tabBadge) {
+        tabBadge.textContent = pendingReqs.length;
+        tabBadge.style.display = pendingReqs.length > 0 ? 'inline-block' : 'none';
+      }
+
+      // 1. Render Access Authorization Queue
+      const queueContainer = document.getElementById('adminAccessQueueContainer');
+      if (queueContainer) {
+        if (pendingReqs.length === 0) {
+          queueContainer.innerHTML = `<div style="color: var(--text-dim); font-size: 0.85rem; padding: 12px 0;">All access requests resolved. No pending authorizations in the queue.</div>`;
+        } else {
+          queueContainer.innerHTML = pendingReqs.map(req => `
+            <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 8px; padding: 14px 18px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+              <div>
+                <div style="font-weight: 700; color: #FFF; font-size: 0.95rem;">${req.userName} <span style="font-size: 0.78rem; color: #38BDF8; font-weight: 400;">(${req.userDept})</span></div>
+                <div style="color: #E2E8F0; font-size: 0.85rem; margin: 3px 0;">Requested File: <strong style="color: #FBBF24;">${req.fileTitle}</strong></div>
+                <div style="font-size: 0.78rem; color: var(--text-dim);">Reason: &ldquo;${req.reason}&rdquo; &bull; ${req.timestamp}</div>
+              </div>
+              <div style="display: flex; gap: 8px;">
+                <button type="button" class="btn btn-primary" style="padding: 6px 14px; font-size: 0.82rem;" onclick="approveAccessRequest('${req.id}')">
+                  ✓ Approve Access
+                </button>
+                <button type="button" class="btn btn-outline" style="padding: 6px 14px; font-size: 0.82rem; color: var(--status-rejected); border-color: rgba(197,34,31,0.4);" onclick="denyAccessRequest('${req.id}')">
+                  ✕ Deny
+                </button>
+              </div>
+            </div>
+          `).join('');
+        }
+      }
+
+      // 2. Render Team Accounts Governance Table
+      renderStructure();
+
+      // 3. Render Deliverable Verification Queue
+      renderDeliverablesReview();
+
+      // 4. Render Audit Telemetry Log
+      renderAuditLog();
+    }
+
+    // Team Accounts & Credentials Table
+    function renderStructure() {
+      const db = getPortalDb();
+      const tbody = document.getElementById('structureTableBody');
+      if (!tbody) return;
+
+      const searchInput = document.getElementById('adminRosterSearch');
+      const query = searchInput ? searchInput.value.trim().toLowerCase() : '';
+
+      let roster = db.membersRoster;
+      if (query) {
+        roster = roster.filter(m => 
+          (m.name && m.name.toLowerCase().includes(query)) ||
+          (m.username && m.username.toLowerCase().includes(query)) ||
+          (m.role && m.role.toLowerCase().includes(query)) ||
+          (m.dept && m.dept.toLowerCase().includes(query)) ||
+          (m.branch && m.branch.toLowerCase().includes(query))
+        );
+      }
+
+      if (roster.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; color: var(--text-dim); padding: 24px;">No members matching "${query}".</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = roster.map(m => {
+        const acct = (db.accounts || []).find(a => a.personaKey === m.id || a.name === m.name || a.username === m.username);
+        const uName = m.username || (acct ? acct.username : m.id.split('-')[0]);
+        const isSuspended = m.status === 'Suspended' || (acct && acct.status === 'Suspended');
+        const statusClass = isSuspended ? 'status-locked' : 'status-unlocked';
+        const statusText = isSuspended ? 'Suspended' : 'Active';
+
+        return `
+        <tr>
+          <td>
+            <strong style="color: #FFF;">${m.name}</strong>
+          </td>
+          <td>
+            <span class="portal-role-pill ${m.branch === 'Executive' ? 'role-executive' : (m.branch === 'Technical' ? 'role-tech' : 'role-ops')}">
+              ${m.role}
+            </span>
+          </td>
+          <td>${m.branch}</td>
+          <td>${m.dept}</td>
+          <td>
+            <code style="color: #38BDF8; background: rgba(56, 189, 248, 0.1); padding: 3px 8px; border-radius: 4px; font-size: 0.78rem;">@${uName}</code>
+          </td>
+          <td style="color: #EAB308; font-weight: 700;">${m.points} pts</td>
+          <td><span class="access-status-badge ${statusClass}">${statusText}</span></td>
+          <td>
+            <div style="display: flex; gap: 4px; flex-wrap: wrap;">
+              <button type="button" class="btn btn-outline" style="padding: 3px 8px; font-size: 0.74rem;" onclick="openEditMemberModal('${m.id}')" title="Edit member role & branch">
+                Edit
+              </button>
+              <button type="button" class="btn btn-outline" style="padding: 3px 8px; font-size: 0.74rem; color: #EAB308; border-color: rgba(234, 179, 8, 0.4);" onclick="openResetPasswordModal('${m.id}', '${uName}')" title="Reset Member Password">
+                Pass
+              </button>
+              <button type="button" class="btn btn-outline" style="padding: 3px 8px; font-size: 0.74rem; color: ${isSuspended ? '#22C55E' : '#FB7185'}; border-color: ${isSuspended ? 'rgba(34,197,94,0.4)' : 'rgba(251,113,133,0.4)'};" onclick="toggleAccountStatus('${m.id}')" title="Toggle active/suspended status">
+                ${isSuspended ? 'Activate' : 'Suspend'}
+              </button>
+              <button type="button" class="btn btn-outline" style="padding: 3px 8px; font-size: 0.74rem; color: var(--status-rejected);" onclick="deleteMember('${m.id}')" title="Remove member from roster">
+                Remove
+              </button>
+            </div>
+          </td>
+        </tr>
+      `;
+      }).join('');
+    }
+
+    // Toggle Account Suspension
+    function toggleAccountStatus(memberId) {
+      const db = getPortalDb();
+      const m = db.membersRoster.find(x => x.id === memberId);
+      if (!m) return;
+      const acct = db.accounts.find(a => a.personaKey === memberId || a.username === m.username || a.name === m.name);
+      
+      const newStatus = (m.status === 'Suspended') ? 'Active' : 'Suspended';
+      m.status = newStatus;
+      if (acct) acct.status = newStatus;
+
+      logAuditEvent(`GOVERNANCE: Member ${m.name} (@${m.username || 'user'}) status changed to ${newStatus}.`);
+      savePortalDb(db);
+      renderStructure();
+      renderAdminDashboard();
+      alert(`Account status for ${m.name} is now: ${newStatus}`);
+    }
+
+    // Sprint Deliverables Verification Queue
+    function renderDeliverablesReview() {
+      const db = getPortalDb();
+      const container = document.getElementById('adminDeliverablesContainer');
+      if (!container) return;
+
+      const completedTasks = db.tasks.filter(t => t.status === 'Completed');
+      if (completedTasks.length === 0) {
+        container.innerHTML = `<div style="color: var(--text-dim); font-size: 0.85rem; padding: 12px 0;">No completed sprint deliverables awaiting review.</div>`;
+        return;
+      }
+
+      container.innerHTML = completedTasks.map(task => `
+        <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 8px; padding: 14px 18px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+          <div>
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+              <span style="font-size: 0.74rem; font-weight: 700; color: #22C55E; background: rgba(34,197,94,0.1); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(34,197,94,0.3);">
+                ✓ Verified Complete
+              </span>
+              <span style="color: #FFF; font-weight: 700; font-size: 0.95rem;">${task.title}</span>
+            </div>
+            <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px;">
+              Submitted By: <strong style="color: #38BDF8;">${task.assignedToName}</strong> &bull; Branch: ${task.branch} (${task.dept}) &bull; Base: ${task.basePoints} pts + Speed Bonus: ${task.speedBonus} pts
+            </div>
+            <div style="font-size: 0.78rem; color: var(--text-dim);">
+              Deliverable: <a href="${task.deliverableUrl || '#'}" target="_blank" rel="noopener" style="color: #38BDF8; text-decoration: underline;">${task.deliverableUrl || 'Engineering documentation link'}</a>
+              ${task.completionNotes ? ` &bull; Notes: "${task.completionNotes}"` : ''}
+            </div>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button type="button" class="btn btn-outline" style="padding: 4px 10px; font-size: 0.78rem; color: #EAB308; border-color: rgba(234,179,8,0.4);" onclick="awardBonusPoints('${task.id}', 25)">
+              +25 Speed Bonus
+            </button>
+            <button type="button" class="btn btn-outline" style="padding: 4px 10px; font-size: 0.78rem; color: #FB7185; border-color: rgba(251,113,133,0.4);" onclick="requestTaskRevision('${task.id}')">
+              Request Revision
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function awardBonusPoints(taskId, extra) {
+      const db = getPortalDb();
+      const task = db.tasks.find(t => t.id === taskId);
+      if (!task) return;
+      const member = db.membersRoster.find(m => m.id === task.assignedToId);
+      if (member) {
+        member.points += extra;
+        db.notifications.unshift(`Executive Award: +${extra} additional bonus points awarded to ${member.name} for "${task.title}".`);
+        logAuditEvent(`POINTS: +${extra} bonus points awarded to ${member.name}.`);
+        savePortalDb(db);
+        renderAdminDashboard();
+        renderCompetition();
+        renderUserBar();
+        alert(`+${extra} extra velocity points credited to ${member.name}!`);
+      }
+    }
+
+    function requestTaskRevision(taskId) {
+      const db = getPortalDb();
+      const task = db.tasks.find(t => t.id === taskId);
+      if (!task) return;
+      task.status = 'In Progress';
+      task.completedAt = null;
+      db.notifications.unshift(`Revision Requested: Executive Leader requested revisions on "${task.title}" from ${task.assignedToName}.`);
+      logAuditEvent(`TASK: Revisions requested for task "${task.title}".`);
+      savePortalDb(db);
+      renderAdminDashboard();
+      renderTasks();
+      renderUserBar();
+      alert(`Task returned to "In Progress" for revisions.`);
+    }
+
+    function openEditMemberModal(memberId) {
+      const db = getPortalDb();
+      const m = db.membersRoster.find(x => x.id === memberId);
+      if (!m) return;
+      document.getElementById('editMemberId').value = m.id;
+      document.getElementById('editMemberName').value = m.name;
+      document.getElementById('editMemberRole').value = m.role;
+      document.getElementById('editMemberBranch').value = m.branch;
+      document.getElementById('editMemberSubteam').value = m.dept;
+      openPortalModal('editMemberModal');
+    }
+
+    function openResetPasswordModal(memberId, username) {
+      const db = getPortalDb();
+      const m = db.membersRoster.find(x => x.id === memberId);
+      if (!m) return;
+      document.getElementById('resetMemberId').value = m.id;
+      document.getElementById('resetMemberDisplayName').textContent = m.name;
+      document.getElementById('resetMemberDisplayUsername').textContent = '@' + (username || m.username || 'member');
+      document.getElementById('resetNewPassword').value = 'velox2026';
+      openPortalModal('resetPasswordModal');
+    }
+
+    function deleteMember(memberId) {
+      if (!confirm('Are you sure you want to remove this member from the active roster?')) return;
+      const db = getPortalDb();
+      const target = db.membersRoster.find(m => m.id === memberId);
+      const name = target ? target.name : memberId;
+      db.membersRoster = db.membersRoster.filter(m => m.id !== memberId);
+      logAuditEvent(`GOVERNANCE: Member ${name} removed from active roster.`);
+      db.notifications.unshift(`Team Structure Update: ${name} removed from roster.`);
+      savePortalDb(db);
+      renderStructure();
+      renderAdminDashboard();
+      renderCompetition();
+    }
+
+    // ==================== FORM SUBMISSIONS & EVENT LISTENERS ====================
+    document.addEventListener('DOMContentLoaded', () => {
+      // Check for incoming invite in URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const inviteCode = urlParams.get('invite');
+      if (inviteCode) {
+        switchPortalTab('invitations');
+      }
+
+      // 1. Portal Login Form
+      const loginForm = document.getElementById('portalLoginForm');
+      if (loginForm) {
+        loginForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const u = document.getElementById('loginUsername').value.trim();
+          const p = document.getElementById('loginPassword').value.trim();
+          portalLogin(u, p);
+        });
+      }
+
+      // Password Toggle Visibility Button
+      const toggleBtn = document.getElementById('togglePasswordBtn');
+      const passInput = document.getElementById('loginPassword');
+      if (toggleBtn && passInput) {
+        toggleBtn.addEventListener('click', () => {
+          const isPassword = passInput.type === 'password';
+          passInput.type = isPassword ? 'text' : 'password';
+          toggleBtn.innerHTML = isPassword 
+            ? `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>`
+            : `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>`;
+        });
+      }
+
+      // 2. Member Self-Service Change Password Form Submit
+      const changePassForm = document.getElementById('changePasswordForm');
+      if (changePassForm) {
+        changePassForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const db = getPortalDb();
+          const currPass = document.getElementById('currPassword').value.trim();
+          const newPass = document.getElementById('newPasswordSelf').value.trim();
+          const confirmPass = document.getElementById('confirmNewPasswordSelf').value.trim();
+          const alertEl = document.getElementById('changePassAlert');
+          const alertMsg = document.getElementById('changePassAlertMsg');
+
+          const acct = db.accounts.find(a => a.username.toLowerCase() === currentAuthUser.toLowerCase());
+          if (!acct) {
+            if (alertEl && alertMsg) {
+              alertMsg.textContent = 'Account error: unable to resolve session.';
+              alertEl.style.display = 'flex';
+            }
+            return;
+          }
+
+          if (acct.password !== currPass) {
+            if (alertEl && alertMsg) {
+              alertMsg.textContent = 'Current password is incorrect. Please re-enter your existing password.';
+              alertEl.style.display = 'flex';
+            }
+            return;
+          }
+
+          if (newPass.length < 4) {
+            if (alertEl && alertMsg) {
+              alertMsg.textContent = 'New password must be at least 4 characters long.';
+              alertEl.style.display = 'flex';
+            }
+            return;
+          }
+
+          if (newPass !== confirmPass) {
+            if (alertEl && alertMsg) {
+              alertMsg.textContent = 'New passwords do not match. Please verify confirmation.';
+              alertEl.style.display = 'flex';
+            }
+            return;
+          }
+
+          // Update password
+          acct.password = newPass;
+          logAuditEvent(`SECURITY: Member @${acct.username} changed account password.`);
+          db.notifications.unshift(`Security update: Password changed successfully for @${acct.username}.`);
+          savePortalDb(db);
+          closePortalModal('changePasswordModal');
+          alert(`Success: Your password for @${acct.username} has been updated! Use your new password on subsequent logins.`);
+        });
+      }
+
+      // 3. Enlist Invitation & Register Account Form Submit
+      const enlistForm = document.getElementById('enlistForm');
+      if (enlistForm) {
+        enlistForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const db = getPortalDb();
+          const name = document.getElementById('enlistHiddenName').value;
+          const role = document.getElementById('enlistHiddenRole').value;
+          const branch = document.getElementById('enlistHiddenBranch').value;
+          const dept = document.getElementById('enlistHiddenDept').value;
+          const username = document.getElementById('enlistUsername').value.trim().toLowerCase();
+          const pass = document.getElementById('enlistPassword').value;
+          const passConfirm = document.getElementById('enlistConfirmPassword').value;
+
+          if (pass !== passConfirm) {
+            alert('Passwords do not match. Please verify your password entry.');
+            return;
+          }
+
+          if (db.accounts.find(a => a.username.toLowerCase() === username)) {
+            alert(`The username "@${username}" is already taken. Please choose another username.`);
+            return;
+          }
+
+          const newId = username.replace(/[^a-z0-9\-]/g, '-');
+          const personaKey = 'user_' + newId;
+
+          // Add Account
+          db.accounts.push({
+            username: username,
+            password: pass,
+            personaKey: personaKey,
+            name: name,
+            status: 'Active'
+          });
+
+          // Determine Role Type
+          let roleType = 'member';
+          if (role === 'Technical Leader') roleType = 'technical_lead';
+          else if (role === 'Managerial Leader') roleType = 'managerial_lead';
+          else if (role.includes('Vice Team Leader') || role.includes('Team Leader')) roleType = 'executive';
+          else if (role.includes('Leader')) roleType = 'subteam_lead';
+
+          // Add Persona
+          db.personas[personaKey] = {
+            id: newId,
+            name: name,
+            role: role,
+            roleType: roleType,
+            branch: branch,
+            departments: [dept],
+            avatar: '',
+            deptDesc: `${branch} • ${dept} (Enlisted Member)`
+          };
+
+          // Add Roster Entry
+          db.membersRoster.push({
+            id: newId,
+            name: name,
+            role: role,
+            branch: branch,
+            dept: dept,
+            username: username,
+            points: 500,
+            status: 'Active'
+          });
+
+          db.notifications.unshift(`New Enlistment: ${name} (@${username}) enrolled into ${dept} as ${role}!`);
+          logAuditEvent(`ENLISTMENT: ${name} registered account @${username} (${dept}).`);
+          savePortalDb(db);
+
+          closePortalModal('enlistModal');
+          currentAuthUser = username;
+          currentPersonaKey = personaKey;
+          localStorage.setItem('velox_auth_user', currentAuthUser);
+          localStorage.setItem('velox_active_persona', currentPersonaKey);
+
+          alert(`Welcome to VELOX Racing, ${name}!\nYour account @${username} has been verified with 500 starting Velocity Points.\nEntering inside portal.`);
+          checkAuth();
+          switchPortalTab('dashboard');
+        });
+      }
+
+      // 4. Reset Password Form Submit (Executive Reset)
+      const resetForm = document.getElementById('resetPasswordForm');
+      if (resetForm) {
+        resetForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const db = getPortalDb();
+          const memberId = document.getElementById('resetMemberId').value;
+          const newPass = document.getElementById('resetNewPassword').value.trim();
+
+          const m = db.membersRoster.find(x => x.id === memberId);
+          if (!m) return;
+
+          const acct = db.accounts.find(a => a.personaKey === memberId || a.username === m.username || a.name === m.name);
+          if (acct) {
+            acct.password = newPass;
+            db.notifications.unshift(`Security: Password reset by Executive Leader for member ${m.name} (@${acct.username}).`);
+            logAuditEvent(`SECURITY: Admin reset password for ${m.name} (@${acct.username}).`);
+            savePortalDb(db);
+            closePortalModal('resetPasswordModal');
+            alert(`Password successfully updated for ${m.name} (@${acct.username})!`);
+          } else {
+            alert('Could not locate linked account for this member.');
+          }
+        });
+      }
+
+      // 5. Add Member Manually Trigger & Submit
+      const addMemBtn = document.getElementById('addNewMemberModalBtn');
+      if (addMemBtn) {
+        addMemBtn.addEventListener('click', () => openPortalModal('addMemberModal'));
+      }
+
+      const addMemForm = document.getElementById('addMemberForm');
+      if (addMemForm) {
+        addMemForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const db = getPortalDb();
+          const name = document.getElementById('newMemName').value.trim();
+          const role = document.getElementById('newMemRole').value;
+          const branch = document.getElementById('newMemBranch').value;
+          const dept = document.getElementById('newMemDept').value.trim();
+          const user = document.getElementById('newMemUser').value.trim().toLowerCase();
+          const pass = document.getElementById('newMemPass').value.trim();
+
+          if (db.accounts.find(a => a.username.toLowerCase() === user)) {
+            alert(`Username @${user} is already assigned. Please choose another username.`);
+            return;
+          }
+
+          const newId = user.replace(/[^a-z0-9\-]/g, '-');
+          const personaKey = 'user_' + newId;
+
+          db.accounts.push({
+            username: user,
+            password: pass,
+            personaKey: personaKey,
+            name: name,
+            status: 'Active'
+          });
+
+          let roleType = 'member';
+          if (role === 'Technical Leader') roleType = 'technical_lead';
+          else if (role === 'Managerial Leader') roleType = 'managerial_lead';
+          else if (role.includes('Vice Team Leader') || role.includes('Team Leader')) roleType = 'executive';
+          else if (role.includes('Leader')) roleType = 'subteam_lead';
+
+          db.personas[personaKey] = {
+            id: newId,
+            name: name,
+            role: role,
+            roleType: roleType,
+            branch: branch,
+            departments: [dept],
+            avatar: '',
+            deptDesc: `${branch} • ${dept}`
+          };
+
+          db.membersRoster.push({
+            id: newId,
+            name: name,
+            role: role,
+            branch: branch,
+            dept: dept,
+            username: user,
+            points: 500,
+            status: 'Active'
+          });
+
+          db.notifications.unshift(`Executive Action: Added new member ${name} (@${user}) to ${dept}.`);
+          logAuditEvent(`GOVERNANCE: Executive registered member ${name} (@${user}) in ${dept}.`);
+          savePortalDb(db);
+          closePortalModal('addMemberModal');
+          addMemForm.reset();
+          renderStructure();
+          renderAdminDashboard();
+          alert(`Member ${name} added successfully with username @${user}!`);
+        });
+      }
+
+      // Persona selector change
+      document.getElementById('personaSelect').addEventListener('change', (e) => {
+        currentPersonaKey = e.target.value;
+        const db = getPortalDb();
+        const acct = db.accounts.find(a => a.personaKey === currentPersonaKey);
+        if (acct) {
+          currentAuthUser = acct.username;
+          localStorage.setItem('velox_auth_user', currentAuthUser);
+          const authBadge = document.getElementById('activeAuthUsername');
+          if (authBadge) authBadge.textContent = '@' + acct.username;
+        }
+        localStorage.setItem('velox_active_persona', currentPersonaKey);
+        renderUserBar();
+      });
+
+      // Tabs click
+      document.querySelectorAll('.portal-tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => switchPortalTab(btn.dataset.tab));
+      });
+
+      // Vault filter buttons
+      document.querySelectorAll('.vault-filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.vault-filter-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          activeVaultFilter = btn.dataset.vfilter;
+          renderVault();
+        });
+      });
+
+      // Upload Modal triggers
+      document.getElementById('openUploadBtn').addEventListener('click', () => openPortalModal('uploadModal'));
+      document.getElementById('openUploadBtn2').addEventListener('click', () => openPortalModal('uploadModal'));
+
+      // Real File Upload Form Submit
+      document.getElementById('uploadForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const p = getActivePersona();
+        const db = getPortalDb();
+        const title = document.getElementById('upTitle').value.trim();
+        const branch = document.getElementById('upBranch').value;
+        const dept = document.getElementById('upDept').value;
+        const desc = document.getElementById('upDesc').value.trim();
+        const url = document.getElementById('upFileUrl').value.trim() || '#';
+        const fileInput = document.getElementById('upRealFile');
+        const chosenFile = fileInput && fileInput.files && fileInput.files[0];
+
+        function finalizeUpload(fileData, fileName, fileSize) {
+          const newFile = {
+            id: 'F-' + (db.files.length + 101),
+            title: title,
+            branch: branch,
+            dept: dept,
+            desc: desc,
+            uploadedBy: p.name,
+            date: new Date().toISOString().split('T')[0],
+            url: url,
+            fileData: fileData || null,
+            fileName: fileName || null,
+            fileSize: fileSize || null,
+            restricted: true,
+            approvedUsers: [p.id, 'fatima-salman', 'karim-shaprawy']
+          };
+
+          db.files.unshift(newFile);
+          db.notifications.unshift(`New Deliverable Uploaded: "${title}" by ${p.name} in ${dept}.`);
+          logAuditEvent(`VAULT: ${p.name} uploaded deliverable "${title}" (${branch}/${dept}).`);
+          savePortalDb(db);
+          closePortalModal('uploadModal');
+          document.getElementById('uploadForm').reset();
+          renderVault();
+          renderAdminDashboard();
+          alert(`File "${title}" successfully stored in the Engineering Vault!`);
+        }
+
+        if (chosenFile) {
+          const reader = new FileReader();
+          reader.onload = function(evt) {
+            finalizeUpload(evt.target.result, chosenFile.name, chosenFile.size);
+          };
+          reader.onerror = function() {
+            finalizeUpload(null, chosenFile.name, chosenFile.size);
+          };
+          reader.readAsDataURL(chosenFile);
+        } else {
+          finalizeUpload(null, null, null);
+        }
+      });
+
+      // Assign Task Modal trigger
+      const openAssignBtn = document.getElementById('openAssignTaskBtn');
+      if (openAssignBtn) {
+        openAssignBtn.addEventListener('click', () => {
+          const db = getPortalDb();
+          const p = getActivePersona();
+          const select = document.getElementById('taskAssignee');
+          select.innerHTML = db.membersRoster.map(m => `<option value="${m.id}|${m.name}|${m.dept}|${m.branch}">${m.name} (${m.dept})</option>`).join('');
+          openPortalModal('assignTaskModal');
+        });
+      }
+
+      // Assign Task Form Submit
+      document.getElementById('assignTaskForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const db = getPortalDb();
+        const p = getActivePersona();
+        const title = document.getElementById('taskTitle').value.trim();
+        const assigneeVal = document.getElementById('taskAssignee').value.split('|');
+        const priority = document.getElementById('taskPriority').value;
+        const deadline = document.getElementById('taskDeadline').value;
+        const points = parseInt(document.getElementById('taskPoints').value, 10) || 100;
+        const desc = document.getElementById('taskDesc').value.trim();
+
+        const newTask = {
+          id: 'T-' + (db.tasks.length + 301),
+          title: title,
+          dept: assigneeVal[2],
+          branch: assigneeVal[3],
+          assignedToId: assigneeVal[0],
+          assignedToName: assigneeVal[1],
+          priority: priority,
+          deadline: deadline,
+          basePoints: points,
+          speedBonus: Math.round(points * 0.5),
+          desc: desc,
+          status: 'In Progress',
+          completedAt: null
+        };
+
+        db.tasks.unshift(newTask);
+        db.notifications.unshift(`Sprint Task Assigned: "${title}" assigned to ${assigneeVal[1]} by ${p.name}.`);
+        logAuditEvent(`TASK: ${p.name} assigned "${title}" to ${assigneeVal[1]}.`);
+        savePortalDb(db);
+        closePortalModal('assignTaskModal');
+        document.getElementById('assignTaskForm').reset();
+        renderTasks();
+        renderAdminDashboard();
+        alert(`Task successfully assigned to ${assigneeVal[1]}!`);
+      });
+
+      // Submit Task Completion Form
+      document.getElementById('submitTaskForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const db = getPortalDb();
+        const taskId = document.getElementById('submitTaskId').value;
+        const deliverableUrl = document.getElementById('submitDeliverableUrl').value.trim();
+        const notes = document.getElementById('submitNotes').value.trim();
+        const task = db.tasks.find(t => t.id === taskId);
+        if (!task) return;
+
+        task.status = 'Completed';
+        task.completedAt = new Date().toISOString();
+        task.deliverableUrl = deliverableUrl;
+        task.completionNotes = notes;
+
+        // Calculate Speed Bonus Points
+        const earned = task.basePoints + task.speedBonus;
+
+        // Credit points to the member
+        const member = db.membersRoster.find(m => m.id === task.assignedToId);
+        if (member) {
+          member.points += earned;
+        }
+
+        db.notifications.unshift(`Task Completed: ${task.assignedToName} finished "${task.title}" and earned +${earned} Velocity Points!`);
+        logAuditEvent(`TASK: ${task.assignedToName} submitted completed task "${task.title}" (+${earned} pts).`);
+        savePortalDb(db);
+        closePortalModal('submitTaskModal');
+        document.getElementById('submitTaskForm').reset();
+        renderTasks();
+        renderCompetition();
+        renderAdminDashboard();
+        renderUserBar();
+        alert(`Congratulations! Deliverables submitted. You have earned +${earned} Velocity Points on the Silverstone Leaderboard!`);
+      });
+
+      // Request Access Form Submit
+      document.getElementById('requestAccessForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const db = getPortalDb();
+        const p = getActivePersona();
+        const fileId = document.getElementById('reqFileId').value;
+        const fileTitle = document.getElementById('reqFileTitle').value;
+        const reason = document.getElementById('reqReason').value.trim();
+
+        const newReq = {
+          id: 'REQ-' + (db.accessRequests.length + 1),
+          fileId: fileId,
+          fileTitle: fileTitle,
+          userId: p.id,
+          userName: p.name,
+          userDept: p.branch,
+          reason: reason,
+          timestamp: new Date().toLocaleString(),
+          status: 'Pending'
+        };
+
+        db.accessRequests.unshift(newReq);
+        db.notifications.unshift(`New Access Request: ${p.name} requested download authorization for "${fileTitle}".`);
+        logAuditEvent(`ACCESS_REQ: ${p.name} requested download clearance for "${fileTitle}".`);
+        savePortalDb(db);
+        closePortalModal('requestAccessModal');
+        renderVault();
+        renderDashboard();
+        renderAdminDashboard();
+        alert('Access request submitted. A Team Leader will review your request.');
+      });
+
+      // Edit Member Form Submit
+      document.getElementById('editMemberForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const db = getPortalDb();
+        const id = document.getElementById('editMemberId').value;
+        const member = db.membersRoster.find(m => m.id === id);
+        if (member) {
+          member.name = document.getElementById('editMemberName').value.trim();
+          member.role = document.getElementById('editMemberRole').value;
+          member.branch = document.getElementById('editMemberBranch').value;
+          member.dept = document.getElementById('editMemberSubteam').value.trim();
+        }
+        db.notifications.unshift(`Member Updated: ${member.name} role changed to ${member.role}.`);
+        logAuditEvent(`GOVERNANCE: Member ${member.name} details updated.`);
+        savePortalDb(db);
+        closePortalModal('editMemberModal');
+        renderStructure();
+        renderAdminDashboard();
+        renderCompetition();
+      });
+
+      // Initialize Authentication Gate & User Session
+      checkAuth();
+    });
+  </script>
+</body>
+</html>

@@ -17,17 +17,17 @@
   
   --border: rgba(255, 255, 255, 0.08);
   --border-hover: rgba(255, 255, 255, 0.22);
-  --border-focus: #E10600;
+  --border-focus: #C5221F;
   --glass-blur: blur(20px) saturate(180%);
 
   --text: #FFFFFF;
   --text-muted: #9CA3AF;
   --text-dim: #6B7280;
   
-  --red: #E10600;
-  --red-hover: #C50500;
-  --red-subtle: rgba(225, 6, 0, 0.12);
-  --red-glow: rgba(225, 6, 0, 0.25);
+  --red: #C5221F;
+  --red-hover: #A81B18;
+  --red-subtle: rgba(197, 34, 31, 0.12);
+  --red-glow: rgba(197, 34, 31, 0.20);
 
   /* Status Badges */
   --status-new: #38BDF8;
@@ -59,15 +59,15 @@
   --bg-glass: rgba(255, 255, 255, 0.92);
   
   --border: rgba(0, 0, 0, 0.09);
-  --border-hover: rgba(225, 6, 0, 0.4);
-  --border-focus: #E10600;
+  --border-hover: rgba(197, 34, 31, 0.35);
+  --border-focus: #C5221F;
 
   --text: #0F172A;
   --text-muted: #475569;
   --text-dim: #64748B;
 
-  --red-subtle: rgba(225, 6, 0, 0.08);
-  --red-glow: rgba(225, 6, 0, 0.16);
+  --red-subtle: rgba(197, 34, 31, 0.08);
+  --red-glow: rgba(197, 34, 31, 0.14);
 }
 
 /* Light Mode Overrides for Crisp Appearance */
@@ -912,8 +912,8 @@ p {
 }
 
 .cinema-player:hover {
-  border-color: rgba(225, 6, 0, 0.4);
-  box-shadow: 0 30px 75px -15px rgba(0, 0, 0, 0.95), 0 0 50px rgba(225, 6, 0, 0.22);
+  border-color: rgba(197, 34, 31, 0.35);
+  box-shadow: 0 30px 75px -15px rgba(0, 0, 0, 0.95), 0 0 35px rgba(197, 34, 31, 0.16);
 }
 
 .cinema-video {
@@ -953,7 +953,7 @@ p {
   backdrop-filter: blur(24px) saturate(180%);
   -webkit-backdrop-filter: blur(24px) saturate(180%);
   border: 1.5px solid rgba(255, 255, 255, 0.25);
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.6), 0 0 25px rgba(225, 6, 0, 0.35);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.6), 0 0 18px rgba(197, 34, 31, 0.22);
   color: #FFFFFF;
   display: flex;
   align-items: center;
@@ -974,7 +974,7 @@ p {
   transform: scale(1.12);
   background: var(--red);
   border-color: var(--red);
-  box-shadow: 0 14px 45px rgba(225, 6, 0, 0.75), 0 0 35px var(--red);
+  box-shadow: 0 10px 30px rgba(197, 34, 31, 0.4), 0 0 20px var(--red-glow);
 }
 
 .cinema-play-btn:active {
@@ -1110,9 +1110,9 @@ p {
 .cinema-loader-bar {
   height: 100%;
   width: 0%;
-  background: linear-gradient(90deg, #E10600, #FF3B30);
+  background: linear-gradient(90deg, #C5221F, #D63030);
   border-radius: 9999px;
-  box-shadow: 0 0 12px rgba(225, 6, 0, 0.6);
+  box-shadow: 0 0 10px rgba(197, 34, 31, 0.4);
   transition: width 0.15s ease-out;
 }
 
@@ -3329,7 +3329,7 @@ p {
 .member-modal-accent-bar {
   height: 3px;
   width: 100%;
-  background: linear-gradient(90deg, #E10600, #FF453A, #E10600);
+  background: linear-gradient(90deg, #C5221F, #D63030, #C5221F);
   flex-shrink: 0;
 }
 

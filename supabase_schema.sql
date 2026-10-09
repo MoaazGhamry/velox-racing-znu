@@ -11,14 +11,14 @@ create table if not exists public.applications (
   full_name text not null,
   email text not null,
   phone text not null,
-  university_id text not null,
+  university_id text default 'N/A',
   faculty text not null,
   academic_year text not null,
   subteam_first text not null,
   subteam_second text not null,
   time_commitment text default '5 to 10 hours',
   skills text,
-  why_join text not null,
+  why_join text default '',
   portfolio_url text,
   status text not null default 'New' check (status in ('New', 'Reviewed', 'Interview', 'Accepted', 'Rejected')),
   hr_notes text default '',
@@ -26,6 +26,10 @@ create table if not exists public.applications (
   -- Prevent duplicate applications by enforcing unique email
   constraint applications_email_unique unique (email)
 );
+
+-- Migration for existing databases:
+-- alter table public.applications alter column university_id drop not null;
+-- alter table public.applications alter column why_join drop not null;
 
 -- 2. Create search & filtering performance indexes
 create index if not exists idx_applications_email on public.applications (email);
