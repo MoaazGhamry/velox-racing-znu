@@ -723,12 +723,14 @@ p {
 .team-avatars-preview {
   display: inline-flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
+  max-width: 100%;
 }
 
 .avatar-stack {
-  display: flex;
+  display: inline-flex;
   align-items: center;
+  flex-shrink: 0;
 }
 
 .stack-avatar {
@@ -743,6 +745,11 @@ p {
   transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), z-index 0.25s ease;
   position: relative;
   background: var(--bg-elevated);
+  flex-shrink: 0;
+}
+
+.stack-avatar:last-child {
+  margin-inline-end: 0;
 }
 
 .stack-avatar:hover {
@@ -757,12 +764,47 @@ p {
   font-weight: 700;
   color: var(--text-muted);
   letter-spacing: 0.02em;
-  margin-inline-start: 18px;
+  margin-inline-start: 2px;
+  line-height: 1.4;
 }
 
 [data-theme="light"] .stack-avatar {
   border-color: #FFFFFF;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+}
+
+/* Mobile Responsiveness for Avatar Stack Preview */
+@media (max-width: 640px) {
+  .team-avatars-preview {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .avatar-stack {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .stack-avatar {
+    width: 40px;
+    height: 40px;
+    margin-inline-end: -10px;
+  }
+
+  .stack-avatar:last-child {
+    margin-inline-end: 0;
+  }
+
+  .avatar-stack-text {
+    font-size: 0.82rem;
+    margin-inline-start: 0;
+    line-height: 1.35;
+    color: var(--text-muted);
+  }
 }
 
 /* ── Content Sections ── */
