@@ -161,20 +161,12 @@ const VELOX_TEAM = {
       id: "electrical",
       name: "Electrical",
       leader: null,
-      subteams: ["Wiring Loom", "DAQ & Telemetry"],
-      description: "Motorsport Raychem wiring harness, low-voltage power distribution, sensors calibration, and pit wall wireless DAQ.",
-      description_ar: "ضفيرة أسلاك السباقات Raychem، وتوزيع الطاقة ذات الجهد المنخفض، ومعايرة الحساسات، والقياس اللاسلكي من منصة الصيانة."
+      subteams: ["Wiring & Harness", "Control & Embedded System"],
+      description: "Motorsport Raychem wiring harness, low-voltage power distribution, ECU / embedded controllers, and pit wall wireless telemetry.",
+      description_ar: "ضفيرة أسلاك السباقات Raychem، وتوزيع الطاقة ذات الجهد المنخفض، وأنظمة التحكم والمتحكمات المدمجة، والقياس اللاسلكي من منصة الصيانة."
     }
   ],
   nonTechnical: [
-    {
-      id: "hr",
-      name: "Human Resources (HR)",
-      leader: null,
-      subteams: ["Recruitment & Interviews", "Member Operations"],
-      description: "Talent recruitment, screening, onboarding, attendance tracking, and internal team welfare.",
-      description_ar: "استقطاب الكفاءات، المقابلات الشخصية، تهيئة الأعضاء الجدد، متابعة الحضور، وتطوير بيئة العمل بالفريق."
-    },
     {
       id: "media",
       name: "Media & PR",
@@ -254,7 +246,6 @@ function getSubteamsList() {
     });
   });
   VELOX_TEAM.nonTechnical.forEach(dept => {
-    if (dept.id === 'hr') return; // Exclude HR from recruitment subteam choices
     dept.subteams.forEach(sub => {
       list.push(`${dept.name} — ${sub}`);
     });

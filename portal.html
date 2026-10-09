@@ -1431,7 +1431,6 @@
               <option value="Vehicle Dynamics">Vehicle Dynamics</option>
               <option value="Powertrain">Powertrain</option>
               <option value="Electrical">Electrical</option>
-              <option value="Human Resources (HR)">Human Resources (HR)</option>
               <option value="Media & PR">Media & PR</option>
               <option value="Business (Team Director)">Business (Team Director)</option>
             </select>
@@ -1903,10 +1902,10 @@
           role: 'Managerial Leader & Powertrain Lead',
           roleType: 'managerial_lead',
           branch: 'Managerial & Technical',
-          departments: ['Human Resources (HR)', 'Media & PR', 'Business (Team Director)', 'Powertrain'],
+          departments: ['Media & PR', 'Business (Team Director)', 'Powertrain'],
           avatar: 'photos/Moaaz Elghamry.jpeg',
           deptDesc: 'Managerial Leader & Powertrain Leader • Dual Operational & Powertrain Authority',
-          scopeDesc: 'Dual leadership command: Managerial Branch (HR, Media & PR, Business) plus Powertrain Subteam Lead. Authorized to assign deliverables, oversee operational workflows, and manage members within jurisdiction. Governance actions automatically notify Team Leaders.'
+          scopeDesc: 'Dual leadership command: Managerial Branch (Media & PR, Business) plus Powertrain Subteam Lead. Authorized to assign deliverables, oversee operational workflows, and manage members within jurisdiction. Governance actions automatically notify Team Leaders.'
         },
         hassan: {
           id: 'mohamed-hassan',
@@ -2000,6 +1999,7 @@
                 if (!parsed.personas.moaaz.departments.includes('Powertrain')) {
                   parsed.personas.moaaz.departments.push('Powertrain');
                 }
+                parsed.personas.moaaz.departments = parsed.personas.moaaz.departments.filter(d => !d.includes('HR') && !d.includes('Human Resources'));
               }
               if (parsed.personas.hassan) parsed.personas.hassan.avatar = 'photos/Mohamed Hassan.jpeg';
             }
@@ -3052,7 +3052,6 @@
         <option value="Vehicle Dynamics">Vehicle Dynamics</option>
         <option value="Powertrain">Powertrain</option>
         <option value="Electrical">Electrical</option>
-        <option value="Human Resources (HR)">Human Resources (HR)</option>
         <option value="Media & PR">Media & PR</option>
         <option value="Business (Team Director)">Business (Team Director)</option>
       `;
@@ -3083,7 +3082,17 @@
           ? `<span class="access-status-badge status-pending" style="background: rgba(251,191,36,0.12); color: #FBBF24; border: 1px solid rgba(251,191,36,0.3);">Pending Acceptance</span>`
           : `<span class="access-status-badge status-unlocked" style="background: rgba(34,197,94,0.12); color: #22C55E; border: 1px solid rgba(34,197,94,0.3);">Accepted & Active</span>`;
 
-        const standAloneUrl = `invite.html?code=${inv.code}`;
+        const inviteParams = new URLSearchParams({
+          code: inv.code,
+          name: inv.inviteeName || 'Team Candidate',
+          role: inv.role || 'Team Member',
+          branch: inv.branch || 'Technical',
+          dept: inv.department || '',
+          by: inv.authorizer || 'Fatima Salman (Team Leader)',
+          issued: inv.issued || '2026-10-09'
+        });
+        if (inv.note) inviteParams.set('note', inv.note);
+        const standAloneUrl = `invite.html?${inviteParams.toString()}`;
 
         return `
           <tr>
@@ -3145,7 +3154,21 @@
     }
 
     function copyInvitationLink(serial) {
-      const link = `${window.location.origin}/invite.html?code=${serial}`;
+      const db = getPortalDb();
+      const inv = (db.invitations || []).find(i => i.code === serial);
+      const inviteParams = new URLSearchParams({
+        code: serial
+      });
+      if (inv) {
+        if (inv.inviteeName) inviteParams.set('name', inv.inviteeName);
+        if (inv.role) inviteParams.set('role', inv.role);
+        if (inv.branch) inviteParams.set('branch', inv.branch);
+        if (inv.department) inviteParams.set('dept', inv.department);
+        if (inv.authorizer) inviteParams.set('by', inv.authorizer);
+        if (inv.issued) inviteParams.set('issued', inv.issued);
+        if (inv.note) inviteParams.set('note', inv.note);
+      }
+      const link = `${window.location.origin}/invite.html?${inviteParams.toString()}`;
       if (navigator.clipboard) {
         navigator.clipboard.writeText(link).then(() => {
           alert(`Invitation link copied to clipboard:\n${link}`);
@@ -4619,7 +4642,21 @@
           const note = document.getElementById('invNote').value.trim();
 
           const serial = 'FS-ZNU-' + Math.floor(100000 + Math.random() * 900000);
-          const branch = (dept.includes('HR') || dept.includes('Media') || dept.includes('Business')) ? 'Managerial' : 'Technical';
+          const branch = (dept.includes('Media') || dept.includes('Business')) ? 'Managerial' : 'Technical';
+          const authorizerStr = `${p.name} (${p.role})`;
+          const issuedDateStr = new Date().toISOString().substring(0, 10);
+
+          const inviteParams = new URLSearchParams({
+            code: serial,
+            name: guestName,
+            role: role,
+            branch: branch,
+            dept: dept,
+            by: authorizerStr,
+            issued: issuedDateStr
+          });
+          if (note) inviteParams.set('note', note);
+          const fullInviteUrl = `invite.html?${inviteParams.toString()}`;
 
           const newInvite = {
             code: serial,
@@ -4628,10 +4665,10 @@
             branch: branch,
             department: dept,
             note: note,
-            authorizer: `${p.name} (${p.role})`,
+            authorizer: authorizerStr,
             status: 'Pending',
-            issued: new Date().toISOString().substring(0, 10),
-            link: `invite.html?code=${serial}`
+            issued: issuedDateStr,
+            link: fullInviteUrl
           };
 
           if (!db.invitations) db.invitations = [];
@@ -4671,7 +4708,7 @@
                   </div>
                   <div class="pass-meta-field">
                     <span>Authorized By</span>
-                    <strong>${p.name} (${p.role})</strong>
+                    <strong>${authorizerStr}</strong>
                   </div>
                   <div class="pass-meta-field">
                     <span>Enlistment Status</span>
@@ -4680,7 +4717,7 @@
                 </div>
 
                 <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 20px;">
-                  <a href="invite.html?code=${serial}" target="_blank" rel="noopener" class="btn btn-primary" style="text-decoration: none;">
+                  <a href="${fullInviteUrl}" target="_blank" rel="noopener" class="btn btn-primary" style="text-decoration: none;">
                     ✓ Open Standalone Invitation Page ↗
                   </a>
                   <button type="button" class="btn btn-outline" onclick="copyInvitationLink('${serial}')">

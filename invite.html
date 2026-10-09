@@ -327,13 +327,18 @@
   </div>
 
   <script>
-    const DB_KEY = 'velox_portal_db_v6';
+    function getActiveDbKey() {
+      if (localStorage.getItem('velox_portal_db_v8')) return 'velox_portal_db_v8';
+      for (let v = 20; v >= 1; v--) {
+        const k = 'velox_portal_db_v' + v;
+        if (localStorage.getItem(k)) return k;
+      }
+      return 'velox_portal_db_v8';
+    }
+
+    const DB_KEY = getActiveDbKey();
 
     function getDb() {
-      // Clear legacy
-      ['velox_portal_db_v1', 'velox_portal_db_v2', 'velox_portal_db_v3', 'velox_portal_db_v4', 'velox_portal_db_v5'].forEach(k => {
-        try { localStorage.removeItem(k); } catch (e) {}
-      });
       const stored = localStorage.getItem(DB_KEY);
       if (stored) {
         try { return JSON.parse(stored); } catch (e) {}
@@ -345,9 +350,16 @@
       localStorage.setItem(DB_KEY, JSON.stringify(db));
     }
 
-    // Read invite code from URL
+    // Read invite parameters from URL
     const params = new URLSearchParams(window.location.search);
-    const code = params.get('code') || 'FS-ZNU-DEFAULT';
+    const code = params.get('code') || 'FS-ZNU-000000';
+    const queryName = params.get('name');
+    const queryRole = params.get('role');
+    const queryBranch = params.get('branch');
+    const queryDept = params.get('dept');
+    const queryBy = params.get('by');
+    const queryIssued = params.get('issued');
+    const queryNote = params.get('note');
 
     const db = getDb();
     let currentInvite = null;
@@ -356,27 +368,43 @@
       currentInvite = db.invitations.find(i => i.code === code);
     }
 
-    // Fallback if not found in db but code provided in URL
+    // Fallback if not found in db or synthesize from URL parameters
     if (!currentInvite) {
       currentInvite = {
         code: code,
-        inviteeName: params.get('name') || 'Team Engineer',
-        role: params.get('role') || 'Team Member',
-        branch: params.get('branch') || 'Technical',
-        department: params.get('dept') || 'Body & Chassis',
-        authorizer: params.get('by') || 'Fatima Salman (Team Leader)',
+        inviteeName: queryName || 'Team Candidate',
+        role: queryRole || 'Team Member',
+        branch: queryBranch || 'Technical',
+        department: queryDept || 'Body & Chassis',
+        authorizer: queryBy || 'Fatima Salman (Team Leader)',
         status: 'Pending',
-        issued: new Date().toISOString().substring(0, 10)
+        issued: queryIssued || new Date().toISOString().substring(0, 10),
+        note: queryNote || 'You are officially invited to engineer the future of Egyptian motorsport.'
       };
+    } else {
+      // If query parameters are present in the URL, merge/override them so the standalone page is always up to date
+      if (queryName) currentInvite.inviteeName = queryName;
+      if (queryRole) currentInvite.role = queryRole;
+      if (queryBranch) currentInvite.branch = queryBranch;
+      if (queryDept) currentInvite.department = queryDept;
+      if (queryBy) currentInvite.authorizer = queryBy;
+      if (queryIssued) currentInvite.issued = queryIssued;
+      if (queryNote) currentInvite.note = queryNote;
     }
 
-    // Populate UI
+    // Update document title and UI with candidate details
+    document.title = `${currentInvite.inviteeName} — Official Team Invitation | Velox Racing`;
     document.getElementById('inviteSerial').textContent = currentInvite.code;
     document.getElementById('inviteeName').textContent = currentInvite.inviteeName;
     document.getElementById('inviteRole').textContent = currentInvite.role;
-    document.getElementById('inviteDept').textContent = `${currentInvite.branch} • ${currentInvite.department}`;
+    document.getElementById('inviteDept').textContent = currentInvite.department ? `${currentInvite.branch} • ${currentInvite.department}` : currentInvite.branch;
     document.getElementById('inviteAuthorizer').textContent = currentInvite.authorizer || 'Fatima Salman (Team Leader)';
     document.getElementById('inviteIssuedDate').textContent = 'Issued: ' + (currentInvite.issued || new Date().toISOString().substring(0, 10));
+
+    const quoteEl = document.querySelector('.invite-quote');
+    if (quoteEl && currentInvite.note) {
+      quoteEl.innerHTML = `&ldquo;${currentInvite.note}&rdquo;`;
+    }
 
     const statusEl = document.getElementById('inviteStatus');
     const acceptBtn = document.getElementById('acceptBtn');
@@ -422,10 +450,33 @@
 
       let activeDb = getDb();
       if (!activeDb) {
-        // Redirect to portal.html to initialize or fallback
-        window.location.href = 'portal.html';
-        return;
+        activeDb = {
+          personas: {},
+          accounts: [
+            { username: 'admin', password: 'admin2026', personaKey: 'admin', name: 'Executive Administrator', status: 'Active' },
+            { username: 'fatima', password: 'velox2026', personaKey: 'fatima', name: 'Fatima Salman', status: 'Active' },
+            { username: 'karim', password: 'velox2026', personaKey: 'karim', name: 'Karim Shaprawy', status: 'Active' },
+            { username: 'romy', password: 'velox2026', personaKey: 'romy', name: 'Mohamed Romy', status: 'Active' },
+            { username: 'moaaz', password: 'velox2026', personaKey: 'moaaz', name: 'Moaaz Elghamry', status: 'Active' },
+            { username: 'hassan', password: 'velox2026', personaKey: 'hassan', name: 'Mohamed Hassan', status: 'Active' }
+          ],
+          membersRoster: [
+            { id: 'admin-director', name: 'Executive Administrator', role: 'Executive Administrator', branch: 'Executive', dept: 'Executive Governance', username: 'admin', points: 0, status: 'Active' },
+            { id: 'fatima-salman', name: 'Fatima Salman', role: 'Team Leader', branch: 'Executive', dept: 'Executive Governance', username: 'fatima', points: 0, status: 'Active' },
+            { id: 'karim-shaprawy', name: 'Karim Shaprawy', role: 'Vice Team Leader', branch: 'Executive', dept: 'Operations & Build', username: 'karim', points: 0, status: 'Active' },
+            { id: 'mohamed-romy', name: 'Mohamed Romy', role: 'Technical Leader', branch: 'Technical', dept: 'Chief Engineering', username: 'romy', points: 0, status: 'Active' },
+            { id: 'moaaz-elghamry', name: 'Moaaz Elghamry', role: 'Managerial Leader & Powertrain Lead', branch: 'Managerial & Technical', dept: 'Operations Management & Powertrain', username: 'moaaz', points: 0, status: 'Active' },
+            { id: 'mohamed-hassan', name: 'Mohamed Hassan', role: 'Media & PR Lead', branch: 'Managerial', dept: 'Media & PR', username: 'hassan', points: 0, status: 'Active' }
+          ],
+          invitations: [currentInvite],
+          notifications: [],
+          auditLog: []
+        };
       }
+
+      if (!activeDb.accounts) activeDb.accounts = [];
+      if (!activeDb.personas) activeDb.personas = {};
+      if (!activeDb.membersRoster) activeDb.membersRoster = [];
 
       if (activeDb.accounts.some(a => a.username.toLowerCase() === username)) {
         alert(`The username @${username} is already taken. Please choose another username.`);
@@ -437,6 +488,11 @@
       if (invIdx >= 0) {
         activeDb.invitations[invIdx].status = 'Accepted';
         activeDb.invitations[invIdx].acceptedAt = new Date().toLocaleString();
+      } else {
+        currentInvite.status = 'Accepted';
+        currentInvite.acceptedAt = new Date().toLocaleString();
+        if (!activeDb.invitations) activeDb.invitations = [];
+        activeDb.invitations.unshift(currentInvite);
       }
 
       // 2. Add persona
