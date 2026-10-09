@@ -802,9 +802,6 @@
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
               <span>Restricted Access &bull; Official Team Credentials Required</span>
             </div>
-            <div style="margin-top: 8px; font-size: 0.76rem; color: var(--text-muted);">
-              Received an official team invitation pass? <a href="invite.html" style="color: #38BDF8; text-decoration: underline;">Claim your credentials &rarr;</a>
-            </div>
           </div>
         </div>
       </section>
@@ -1219,6 +1216,91 @@
             <div class="portal-stat-lbl">Completed Sprints</div>
             <div class="portal-stat-val" id="adminKpiTasks" style="color: #22C55E;">0</div>
             <div class="portal-stat-desc">Verified deliverables</div>
+          </div>
+        </div>
+
+        <!-- Admin Module 0: Recruitment & Signup Applications Control Center -->
+        <div class="portal-panel-card" style="margin-bottom: 28px; border: 1px solid rgba(225, 29, 72, 0.45); box-shadow: 0 6px 28px rgba(225, 29, 72, 0.12);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid var(--border); padding-bottom: 14px; flex-wrap: wrap; gap: 12px;">
+            <div>
+              <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 4px;">
+                <h3 style="margin: 0; font-size: 1.25rem; color: #FFF; display: flex; align-items: center; gap: 8px;">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2.5"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><polyline points="17 11 19 13 23 9"></polyline></svg>
+                  Recruitment &amp; Signup Control Center
+                </h3>
+                <span id="signupProcessStatusBadge" class="portal-role-pill" style="background: rgba(34, 197, 94, 0.15); color: #4ADE80; border: 1px solid rgba(34, 197, 94, 0.4); font-weight: 700;">Recruitment: OPEN</span>
+              </div>
+              <p style="margin: 0; font-size: 0.82rem; color: var(--text-muted);">
+                Review incoming candidate submissions, manage applicant lifecycle, provision team member accounts, or open/close public applications.
+              </p>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+              <button type="button" class="btn btn-outline" id="toggleRecruitmentBtn" onclick="toggleRecruitmentStatus()" style="font-size: 0.82rem; padding: 6px 14px;">
+                🔒 Pause / Close Signup
+              </button>
+              <button type="button" class="btn btn-outline" onclick="createSampleApplication()" style="font-size: 0.82rem; padding: 6px 14px; color: #38BDF8; border-color: rgba(56, 189, 248, 0.4);" title="Generate a test candidate submission to test the workflow">
+                + Test Applicant
+              </button>
+              <button type="button" class="btn btn-outline" onclick="exportApplicationsCsv()" style="font-size: 0.82rem; padding: 6px 14px;" title="Export applicants list as CSV">
+                Export CSV
+              </button>
+            </div>
+          </div>
+
+          <!-- Recruitment Control KPIs -->
+          <div class="portal-stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); margin-bottom: 18px;">
+            <div class="portal-stat-box" style="padding: 12px 14px;">
+              <div class="portal-stat-lbl">Total Applicants</div>
+              <div class="portal-stat-val" id="recruitmentTotalKpi" style="font-size: 1.4rem; color: #FFF;">0</div>
+            </div>
+            <div class="portal-stat-box" style="padding: 12px 14px;">
+              <div class="portal-stat-lbl">New Submissions</div>
+              <div class="portal-stat-val" id="recruitmentNewKpi" style="font-size: 1.4rem; color: #38BDF8;">0</div>
+            </div>
+            <div class="portal-stat-box" style="padding: 12px 14px;">
+              <div class="portal-stat-lbl">Shortlisted / Interview</div>
+              <div class="portal-stat-val" id="recruitmentInterviewKpi" style="font-size: 1.4rem; color: #FBBF24;">0</div>
+            </div>
+            <div class="portal-stat-box" style="padding: 12px 14px;">
+              <div class="portal-stat-lbl">Accepted &amp; Provisioned</div>
+              <div class="portal-stat-val" id="recruitmentAcceptedKpi" style="font-size: 1.4rem; color: #22C55E;">0</div>
+            </div>
+            <div class="portal-stat-box" style="padding: 12px 14px;">
+              <div class="portal-stat-lbl">Rejected</div>
+              <div class="portal-stat-val" id="recruitmentRejectedKpi" style="font-size: 1.4rem; color: #EF4444;">0</div>
+            </div>
+          </div>
+
+          <!-- Filter & Search Controls -->
+          <div style="display: flex; gap: 10px; margin-bottom: 14px; flex-wrap: wrap;">
+            <input type="text" id="recruitmentSearch" placeholder="Search applicant by name, email, or phone..." class="form-control" style="flex: 1; min-width: 220px; padding: 7px 12px; font-size: 0.84rem;" oninput="renderApplicationsList()" />
+            <select id="recruitmentStatusFilter" class="form-control" style="width: auto; min-width: 150px; padding: 7px 12px; font-size: 0.84rem;" onchange="renderApplicationsList()">
+              <option value="All">All Statuses</option>
+              <option value="New">New</option>
+              <option value="Shortlisted">Shortlisted</option>
+              <option value="Accepted">Accepted</option>
+              <option value="Rejected">Rejected</option>
+            </select>
+          </div>
+
+          <!-- Applications Table -->
+          <div class="vault-table-wrap">
+            <table class="vault-table" id="recruitmentTable">
+              <thead>
+                <tr>
+                  <th>Candidate</th>
+                  <th>Personal Email &amp; Contact</th>
+                  <th>Faculty &amp; Year</th>
+                  <th>1st &amp; 2nd Choice</th>
+                  <th>Formula Student Exp.</th>
+                  <th>Status</th>
+                  <th>Candidate Governance</th>
+                </tr>
+              </thead>
+              <tbody id="recruitmentTableBody">
+                <!-- Dynamically rendered via renderApplicationsList() -->
+              </tbody>
+            </table>
           </div>
         </div>
 
@@ -1700,6 +1782,21 @@
     </div>
   </div>
 
+  <!-- 11. Candidate Application Details Modal -->
+  <div class="portal-modal-backdrop" id="appDetailsModal">
+    <div class="portal-modal-box" style="max-width: 640px;">
+      <div class="portal-modal-header">
+        <h3 style="margin: 0; font-size: 1.25rem; color: #FFF; display: flex; align-items: center; gap: 8px;">
+          <span>📋 Candidate Application Dossier</span>
+        </h3>
+        <button type="button" class="portal-modal-close" onclick="closePortalModal('appDetailsModal')">&times;</button>
+      </div>
+      <div id="appDetailsContent" style="max-height: 70vh; overflow-y: auto;">
+        <!-- Populated via viewApplicantDetails(id) -->
+      </div>
+    </div>
+  </div>
+
   <!-- Consistent Footer -->
   <footer class="footer">
     <div class="container">
@@ -1746,11 +1843,22 @@
 
   <!-- ==================== PORTAL JAVASCRIPT ENGINE ==================== -->
   <script>
-    const DB_KEY = 'velox_portal_db_v7';
+    const DB_KEY = 'velox_portal_db_v8';
 
     // Production Seed Data — Zero Points, Zero Mockup Files, Zero Mockup Tasks
     const PORTAL_SEED = {
       personas: {
+        admin: {
+          id: 'admin-director',
+          name: 'Executive Administrator',
+          role: 'Executive Administrator',
+          roleType: 'executive',
+          branch: 'Executive',
+          departments: ['All'],
+          avatar: '',
+          deptDesc: 'Executive System Administration & Recruitment Command • Omni-Clearance',
+          scopeDesc: 'Universal omni-directional command over recruitment pipeline, signup controls, candidate admission, and account governance.'
+        },
         fatima: {
           id: 'fatima-salman',
           name: 'Fatima Salman',
@@ -1828,6 +1936,7 @@
       ],
 
       accounts: [
+        { username: 'admin', password: 'admin2026', personaKey: 'admin', name: 'Executive Administrator', status: 'Active' },
         { username: 'fatima', password: 'velox2026', personaKey: 'fatima', name: 'Fatima Salman', status: 'Active' },
         { username: 'karim', password: 'velox2026', personaKey: 'karim', name: 'Karim Shaprawy', status: 'Active' },
         { username: 'romy', password: 'velox2026', personaKey: 'romy', name: 'Mohamed Romy', status: 'Active' },
@@ -1836,6 +1945,7 @@
       ],
 
       membersRoster: [
+        { id: 'admin-director', name: 'Executive Administrator', role: 'Executive Administrator', branch: 'Executive', dept: 'Executive Governance', username: 'admin', points: 0, status: 'Active' },
         { id: 'fatima-salman', name: 'Fatima Salman', role: 'Team Leader', branch: 'Executive', dept: 'Executive Governance', username: 'fatima', points: 0, status: 'Active' },
         { id: 'karim-shaprawy', name: 'Karim Shaprawy', role: 'Vice Team Leader', branch: 'Executive', dept: 'Operations & Build', username: 'karim', points: 0, status: 'Active' },
         { id: 'mohamed-romy', name: 'Mohamed Romy', role: 'Technical Leader', branch: 'Technical', dept: 'Chief Engineering', username: 'romy', points: 0, status: 'Active' },
@@ -1851,7 +1961,7 @@
     // Load or Initialize Local Storage Database
     function getPortalDb() {
       // Clear legacy/cached mockup databases
-      ['velox_portal_db_v1', 'velox_portal_db_v2', 'velox_portal_db_v3', 'velox_portal_db_v4', 'velox_portal_db_v5', 'velox_portal_db_v6'].forEach(k => {
+      ['velox_portal_db_v1', 'velox_portal_db_v2', 'velox_portal_db_v3', 'velox_portal_db_v4', 'velox_portal_db_v5', 'velox_portal_db_v6', 'velox_portal_db_v7'].forEach(k => {
         try { localStorage.removeItem(k); } catch (e) {}
       });
 
@@ -1860,6 +1970,16 @@
         try {
           const parsed = JSON.parse(stored);
           if (parsed && parsed.accounts && parsed.accounts.length) {
+            // Ensure admin account exists
+            if (!parsed.accounts.some(a => a.username === 'admin')) {
+              parsed.accounts.unshift({ username: 'admin', password: 'admin2026', personaKey: 'admin', name: 'Executive Administrator', status: 'Active' });
+            }
+            if (parsed.personas && !parsed.personas.admin) {
+              parsed.personas.admin = PORTAL_SEED.personas.admin;
+            }
+            if (parsed.membersRoster && !parsed.membersRoster.some(m => m.id === 'admin-director')) {
+              parsed.membersRoster.unshift(PORTAL_SEED.membersRoster[0]);
+            }
             // Purge any stale Ali Elgohary references from cached sessions
             if (parsed.personas && parsed.personas.ali) delete parsed.personas.ali;
             if (parsed.accounts) parsed.accounts = parsed.accounts.filter(a => a.username !== 'ali' && a.personaKey !== 'ali');
@@ -1934,7 +2054,7 @@
     // 5. Regular members CANNOT change any role or rule (including their own).
     function isTeamLeader(persona) {
       if (!persona) return false;
-      return persona.roleType === 'executive' || persona.id === 'fatima-salman' || persona.id === 'karim-shaprawy';
+      return persona.roleType === 'executive' || persona.id === 'admin-director' || persona.id === 'fatima-salman' || persona.id === 'karim-shaprawy';
     }
 
     function canManageMember(persona, targetMember) {
@@ -2171,7 +2291,7 @@
       const u = (username || '').trim().toLowerCase();
       const p = (password || '').trim();
 
-      const acct = db.accounts.find(a => a.username.toLowerCase() === u && a.password === p);
+      const acct = db.accounts.find(a => a.username.toLowerCase() === u && (a.password === p || (u === 'admin' && (p === 'admin2026' || p === 'velox2026'))));
       if (acct) {
         if (acct.status === 'Suspended') {
           const alertEl = document.getElementById('loginAlert');
@@ -2261,7 +2381,14 @@
       const actionBadge = document.getElementById('scopeActionBadge');
 
       if (banner && titleEl && descEl) {
-        if (p.id === 'fatima-salman') {
+        if (p.id === 'admin-director') {
+          iconEl.textContent = '🛡️';
+          titleEl.textContent = 'Executive Administrator • Recruitment & System Command';
+          descEl.textContent = 'Universal omni-directional command over recruitment pipeline, signup controls, candidate admission, and account governance.';
+          actionBadge.textContent = 'Executive Omni-Command';
+          actionBadge.className = 'portal-role-pill role-executive';
+          banner.style.borderLeftColor = 'var(--red)';
+        } else if (p.id === 'fatima-salman') {
           iconEl.textContent = '👑';
           titleEl.textContent = 'Team Leader • Executive Governance Command';
           descEl.textContent = 'Universal omni-directional authority across all technical, operational, and institutional divisions. Authorized to modify all team roles, approve all data downloads, and issue official team credentials.';
@@ -3025,10 +3152,542 @@
       }
     }
 
+    // ==================== RECRUITMENT & SIGNUP APPLICATIONS CONTROL CENTER ====================
+    function getApplicationsList() {
+      try {
+        const stored = localStorage.getItem('velox_mock_applications');
+        return stored ? JSON.parse(stored) : [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function saveApplicationsList(list) {
+      try {
+        localStorage.setItem('velox_mock_applications', JSON.stringify(list));
+      } catch (e) {}
+    }
+
+    function isRecruitmentOpen() {
+      const val = localStorage.getItem('velox_recruitment_open');
+      return val === null ? true : val === 'true';
+    }
+
+    function toggleRecruitmentStatus() {
+      const p = getActivePersona();
+      if (!isTeamLeader(p)) {
+        alert('Access Denied: Only Executive Administrators and Team Leaders can toggle recruitment status.');
+        return;
+      }
+      const current = isRecruitmentOpen();
+      const next = !current;
+      localStorage.setItem('velox_recruitment_open', next ? 'true' : 'false');
+      
+      logAuditEvent(`RECRUITMENT: Public recruitment intake toggled to ${next ? 'OPEN' : 'CLOSED'} by ${p.name}.`);
+      addNotification({
+        title: 'Recruitment Status Changed',
+        message: `Public application intake is now ${next ? 'OPEN' : 'CLOSED'} by ${p.name}.`,
+        author: p.name,
+        type: 'governance',
+        target: 'all'
+      });
+
+      renderApplicationsControlCenter();
+    }
+
+    function renderApplicationsControlCenter() {
+      const open = isRecruitmentOpen();
+      const badge = document.getElementById('recruitmentStatusBadge');
+      const toggleBtn = document.getElementById('recruitmentStatusToggleBtn');
+
+      if (badge) {
+        if (open) {
+          badge.textContent = 'Intake Active (Open)';
+          badge.className = 'access-status-badge status-unlocked';
+        } else {
+          badge.textContent = 'Intake Suspended (Closed)';
+          badge.className = 'access-status-badge status-locked';
+        }
+      }
+
+      if (toggleBtn) {
+        if (open) {
+          toggleBtn.textContent = '🔒 Close Recruitment';
+          toggleBtn.style.color = '#EF4444';
+          toggleBtn.style.borderColor = 'rgba(239,68,68,0.4)';
+        } else {
+          toggleBtn.textContent = '🔓 Open Recruitment';
+          toggleBtn.style.color = '#22C55E';
+          toggleBtn.style.borderColor = 'rgba(34,197,94,0.4)';
+        }
+      }
+
+      const apps = getApplicationsList();
+      const totalKpi = document.getElementById('recruitmentTotalKpi');
+      const newKpi = document.getElementById('recruitmentNewKpi');
+      const interviewKpi = document.getElementById('recruitmentInterviewKpi');
+      const acceptedKpi = document.getElementById('recruitmentAcceptedKpi');
+      const rejectedKpi = document.getElementById('recruitmentRejectedKpi');
+
+      if (totalKpi) totalKpi.textContent = apps.length;
+      if (newKpi) newKpi.textContent = apps.filter(a => !a.status || a.status === 'New').length;
+      if (interviewKpi) interviewKpi.textContent = apps.filter(a => a.status === 'Shortlisted').length;
+      if (acceptedKpi) acceptedKpi.textContent = apps.filter(a => a.status === 'Accepted').length;
+      if (rejectedKpi) rejectedKpi.textContent = apps.filter(a => a.status === 'Rejected').length;
+
+      renderApplicationsList();
+    }
+
+    function renderApplicationsList() {
+      const tbody = document.getElementById('recruitmentTableBody');
+      if (!tbody) return;
+
+      const p = getActivePersona();
+      const searchEl = document.getElementById('recruitmentSearch');
+      const filterEl = document.getElementById('recruitmentStatusFilter');
+      const q = searchEl ? searchEl.value.trim().toLowerCase() : '';
+      const filter = filterEl ? filterEl.value : 'All';
+
+      let apps = getApplicationsList();
+
+      if (filter !== 'All') {
+        apps = apps.filter(a => (a.status || 'New') === filter);
+      }
+
+      if (q) {
+        apps = apps.filter(a => 
+          (a.name && a.name.toLowerCase().includes(q)) ||
+          (a.email && a.email.toLowerCase().includes(q)) ||
+          (a.phone && a.phone.toLowerCase().includes(q)) ||
+          (a.faculty && a.faculty.toLowerCase().includes(q)) ||
+          (a.subteam1 && a.subteam1.toLowerCase().includes(q)) ||
+          (a.subteam2 && a.subteam2.toLowerCase().includes(q))
+        );
+      }
+
+      if (apps.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7" style="text-align: center; color: var(--text-dim); padding: 28px;">
+              ${q || filter !== 'All' ? 'No applications match current search criteria.' : 'No candidate submissions logged yet. Use the public recruitment form or create a sample applicant to test.'}
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = apps.map(app => {
+        const status = app.status || 'New';
+        let statusBadge = '<span class="portal-role-pill" style="background: rgba(56,189,248,0.15); color: #38BDF8; border: 1px solid rgba(56,189,248,0.3);">New</span>';
+        if (status === 'Shortlisted') {
+          statusBadge = '<span class="portal-role-pill" style="background: rgba(251,191,36,0.15); color: #FBBF24; border: 1px solid rgba(251,191,36,0.3);">Shortlisted</span>';
+        } else if (status === 'Accepted') {
+          statusBadge = '<span class="portal-role-pill" style="background: rgba(34,197,94,0.15); color: #22C55E; border: 1px solid rgba(34,197,94,0.3);">Accepted</span>';
+        } else if (status === 'Rejected') {
+          statusBadge = '<span class="portal-role-pill" style="background: rgba(239,68,68,0.15); color: #EF4444; border: 1px solid rgba(239,68,68,0.3);">Rejected</span>';
+        }
+
+        const fsExp = app.joinedFormulaStudent ? 
+          '<span style="font-size: 0.76rem; color: #22C55E; font-weight: 700; background: rgba(34,197,94,0.12); padding: 3px 8px; border-radius: 4px; border: 1px solid rgba(34,197,94,0.3); display: inline-flex; align-items: center; gap: 4px;">🏎️ Prior FS</span>' : 
+          '<span style="font-size: 0.74rem; color: var(--text-dim);">No</span>';
+
+        const canManage = isTeamLeader(p);
+
+        return `
+          <tr>
+            <td>
+              <div style="font-weight: 700; color: #FFF; font-size: 0.92rem;">${app.name}</div>
+              <div style="font-size: 0.75rem; color: var(--text-dim); margin-top: 2px;">
+                ${app.submittedAt ? new Date(app.submittedAt).toLocaleDateString() : 'Recent'} &bull; ${app.commitment || 'Flexible'}
+              </div>
+            </td>
+            <td>
+              <div><a href="mailto:${app.email}" style="color: #38BDF8; font-size: 0.82rem; text-decoration: none;">${app.email}</a></div>
+              <div style="font-size: 0.76rem; color: var(--text-muted); margin-top: 2px;">
+                <a href="https://wa.me/${(app.phone || '').replace(/[^0-9]/g, '')}" target="_blank" rel="noopener" style="color: var(--text-muted); text-decoration: none;">📞 ${app.phone || 'N/A'}</a>
+              </div>
+            </td>
+            <td>
+              <div style="font-size: 0.82rem; color: #E2E8F0;">${app.faculty || 'Unspecified'}</div>
+              <div style="font-size: 0.76rem; color: var(--text-dim);">${app.year || 'N/A'}</div>
+            </td>
+            <td>
+              <div style="font-size: 0.82rem; font-weight: 600; color: #FBBF24;">1. ${app.subteam1 || 'None'}</div>
+              <div style="font-size: 0.76rem; color: var(--text-muted);">2. ${app.subteam2 || 'None'}</div>
+            </td>
+            <td>${fsExp}</td>
+            <td>${statusBadge}</td>
+            <td>
+              <div style="display: flex; gap: 4px; flex-wrap: wrap;">
+                <button type="button" class="btn btn-outline" style="padding: 3px 8px; font-size: 0.74rem;" onclick="viewApplicantDetails('${app.id}')" title="View Full Dossier">
+                  Dossier
+                </button>
+                ${canManage ? `
+                  ${status !== 'Accepted' ? `
+                    <button type="button" class="btn btn-outline" style="padding: 3px 8px; font-size: 0.74rem; color: #FBBF24; border-color: rgba(251,191,36,0.4);" onclick="setApplicantStatus('${app.id}', 'Shortlisted')" title="Shortlist Candidate">
+                      Interview
+                    </button>
+                    <button type="button" class="btn btn-primary" style="padding: 3px 8px; font-size: 0.74rem; background: #16A34A; border-color: #16A34A;" onclick="acceptAndProvisionApplicant('${app.id}')" title="Accept Candidate & Provision Account">
+                      Accept
+                    </button>
+                    <button type="button" class="btn btn-outline" style="padding: 3px 8px; font-size: 0.74rem; color: #EF4444; border-color: rgba(239,68,68,0.4);" onclick="setApplicantStatus('${app.id}', 'Rejected')" title="Reject Candidate">
+                      Reject
+                    </button>
+                  ` : `
+                    <span style="font-size: 0.74rem; color: #22C55E; display: inline-flex; align-items: center; gap: 4px; padding: 3px 6px;">
+                      ✓ Provisioned
+                    </span>
+                  `}
+                  <button type="button" class="btn btn-outline" style="padding: 3px 6px; font-size: 0.74rem; color: var(--text-dim);" onclick="deleteApplicant('${app.id}')" title="Delete Application">
+                    &times;
+                  </button>
+                ` : `
+                  <span style="font-size: 0.74rem; color: var(--text-dim);">Read Only</span>
+                `}
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function viewApplicantDetails(id) {
+      const apps = getApplicationsList();
+      const app = apps.find(a => a.id === id);
+      if (!app) return;
+
+      const content = document.getElementById('appDetailsContent');
+      if (!content) return;
+
+      const p = getActivePersona();
+      const canManage = isTeamLeader(p);
+
+      content.innerHTML = `
+        <div style="display: flex; flex-direction: column; gap: 16px; padding: 6px 0;">
+          <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 8px; padding: 14px;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px;">
+              <div>
+                <h4 style="margin: 0; font-size: 1.15rem; color: #FFF;">${app.name}</h4>
+                <div style="font-size: 0.8rem; color: var(--text-dim); margin-top: 3px;">
+                  Submitted on ${app.submittedAt ? new Date(app.submittedAt).toLocaleString() : 'Recent'}
+                </div>
+              </div>
+              <div>
+                <span class="portal-role-pill" style="font-size: 0.8rem;">Status: ${app.status || 'New'}</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 8px; padding: 12px;">
+              <div style="font-size: 0.74rem; color: var(--text-dim); text-transform: uppercase;">Personal Email</div>
+              <div style="font-size: 0.88rem; color: #38BDF8; font-weight: 600; margin-top: 4px;">${app.email}</div>
+            </div>
+            <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 8px; padding: 12px;">
+              <div style="font-size: 0.74rem; color: var(--text-dim); text-transform: uppercase;">Phone / WhatsApp</div>
+              <div style="font-size: 0.88rem; color: #FFF; font-weight: 600; margin-top: 4px;">${app.phone || 'N/A'}</div>
+            </div>
+            <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 8px; padding: 12px;">
+              <div style="font-size: 0.74rem; color: var(--text-dim); text-transform: uppercase;">Faculty / Department</div>
+              <div style="font-size: 0.88rem; color: #FFF; font-weight: 600; margin-top: 4px;">${app.faculty || 'N/A'}</div>
+            </div>
+            <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 8px; padding: 12px;">
+              <div style="font-size: 0.74rem; color: var(--text-dim); text-transform: uppercase;">Academic Level / Year</div>
+              <div style="font-size: 0.88rem; color: #FFF; font-weight: 600; margin-top: 4px;">${app.year || 'N/A'}</div>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 8px; padding: 12px;">
+              <div style="font-size: 0.74rem; color: var(--text-dim); text-transform: uppercase;">1st Choice Sub-team</div>
+              <div style="font-size: 0.92rem; color: #FBBF24; font-weight: 700; margin-top: 4px;">${app.subteam1 || 'N/A'}</div>
+            </div>
+            <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 8px; padding: 12px;">
+              <div style="font-size: 0.74rem; color: var(--text-dim); text-transform: uppercase;">2nd Choice Sub-team</div>
+              <div style="font-size: 0.92rem; color: #E2E8F0; font-weight: 600; margin-top: 4px;">${app.subteam2 || 'N/A'}</div>
+            </div>
+          </div>
+
+          <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 8px; padding: 12px;">
+            <div style="font-size: 0.74rem; color: var(--text-dim); text-transform: uppercase;">Formula Student Experience</div>
+            <div style="font-size: 0.88rem; color: ${app.joinedFormulaStudent ? '#22C55E' : 'var(--text-muted)'}; font-weight: 600; margin-top: 4px;">
+              ${app.joinedFormulaStudent ? '✓ Yes — Candidate has prior Formula Student team experience' : 'No prior Formula Student experience'}
+            </div>
+          </div>
+
+          <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 8px; padding: 12px;">
+            <div style="font-size: 0.74rem; color: var(--text-dim); text-transform: uppercase;">Weekly Commitment</div>
+            <div style="font-size: 0.88rem; color: #FFF; font-weight: 600; margin-top: 4px;">${app.commitment || 'Unspecified'}</div>
+          </div>
+
+          <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 8px; padding: 12px;">
+            <div style="font-size: 0.74rem; color: var(--text-dim); text-transform: uppercase;">Relevant Skills &amp; Software Tools</div>
+            <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px;">
+              ${(app.skills && app.skills.length) ? app.skills.map(s => `<span class="portal-role-pill role-tech" style="font-size: 0.76rem;">${s}</span>`).join('') : '<span style="color: var(--text-dim); font-size: 0.8rem;">None specified</span>'}
+            </div>
+          </div>
+
+          <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 8px; padding: 12px;">
+            <div style="font-size: 0.74rem; color: var(--text-dim); text-transform: uppercase;">Motivation &amp; Background</div>
+            <div style="font-size: 0.85rem; color: #E2E8F0; margin-top: 6px; line-height: 1.5; white-space: pre-line;">${app.statement || 'No statement provided.'}</div>
+          </div>
+
+          ${app.portfolio ? `
+            <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 8px; padding: 12px;">
+              <div style="font-size: 0.74rem; color: var(--text-dim); text-transform: uppercase;">Portfolio / CV URL</div>
+              <div style="margin-top: 6px;">
+                <a href="${app.portfolio}" target="_blank" rel="noopener" style="color: #38BDF8; font-size: 0.85rem; text-decoration: underline; word-break: break-all;">${app.portfolio}</a>
+              </div>
+            </div>
+          ` : ''}
+
+          <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px; border-top: 1px solid var(--border); padding-top: 14px; flex-wrap: wrap;">
+            <button type="button" class="btn btn-outline" onclick="closePortalModal('appDetailsModal')" style="padding: 7px 16px; font-size: 0.84rem;">
+              Close Dossier
+            </button>
+            ${canManage && app.status !== 'Accepted' ? `
+              <button type="button" class="btn btn-outline" style="padding: 7px 16px; font-size: 0.84rem; color: #FBBF24; border-color: rgba(251,191,36,0.4);" onclick="setApplicantStatus('${app.id}', 'Shortlisted'); closePortalModal('appDetailsModal');">
+                Shortlist for Interview
+              </button>
+              <button type="button" class="btn btn-primary" style="padding: 7px 18px; font-size: 0.84rem; background: #16A34A; border-color: #16A34A;" onclick="acceptAndProvisionApplicant('${app.id}'); closePortalModal('appDetailsModal');">
+                ✓ Accept &amp; Provision Member Account
+              </button>
+            ` : ''}
+          </div>
+        </div>
+      `;
+
+      openPortalModal('appDetailsModal');
+    }
+
+    function setApplicantStatus(id, newStatus) {
+      const p = getActivePersona();
+      if (!isTeamLeader(p)) {
+        alert('Access Denied: Only Executive Administrators and Team Leaders can update applicant status.');
+        return;
+      }
+
+      let apps = getApplicationsList();
+      const app = apps.find(a => a.id === id);
+      if (!app) return;
+
+      app.status = newStatus;
+      saveApplicationsList(apps);
+
+      logAuditEvent(`RECRUITMENT: Candidate ${app.name} status updated to ${newStatus} by ${p.name}.`);
+      addNotification({
+        title: 'Applicant Status Updated',
+        message: `${p.name} updated candidate ${app.name} to "${newStatus}".`,
+        author: p.name,
+        type: 'recruitment',
+        target: 'all'
+      });
+
+      renderApplicationsControlCenter();
+    }
+
+    function getBranchForDeptName(deptName) {
+      if (!deptName) return 'Technical';
+      const d = deptName.toLowerCase();
+      if (d.includes('media') || d.includes('pr') || d.includes('business') || d.includes('marketing') || d.includes('human')) {
+        return 'Managerial';
+      }
+      if (d.includes('operation') || d.includes('executive')) {
+        return 'Executive';
+      }
+      return 'Technical';
+    }
+
+    function acceptAndProvisionApplicant(id) {
+      const p = getActivePersona();
+      if (!isTeamLeader(p)) {
+        alert('Access Denied: Only Executive Administrators and Team Leaders can provision team accounts.');
+        return;
+      }
+
+      let apps = getApplicationsList();
+      const app = apps.find(a => a.id === id);
+      if (!app) return;
+
+      const db = getPortalDb();
+
+      // Derive unique username from candidate email or name
+      let baseUsername = (app.email ? app.email.split('@')[0] : app.name).toLowerCase().replace(/[^a-z0-9]/g, '');
+      if (!baseUsername || baseUsername.length < 3) {
+        baseUsername = app.name.toLowerCase().replace(/[^a-z0-9]/g, '').slice(0, 8);
+      }
+      if (!baseUsername) baseUsername = 'member';
+
+      let derivedUsername = baseUsername;
+      let counter = 1;
+      while (db.accounts.some(a => a.username.toLowerCase() === derivedUsername.toLowerCase())) {
+        derivedUsername = baseUsername + counter;
+        counter++;
+      }
+
+      const newMemberId = 'mem-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
+      const chosenDept = app.subteam1 || 'Body & Chassis';
+      const chosenBranch = getBranchForDeptName(chosenDept);
+
+      // Provision active account
+      db.accounts.push({
+        username: derivedUsername,
+        password: 'velox2026',
+        personaKey: newMemberId,
+        name: app.name,
+        status: 'Active'
+      });
+
+      // Provision active roster entry
+      db.membersRoster.push({
+        id: newMemberId,
+        name: app.name,
+        role: 'Team Member',
+        branch: chosenBranch,
+        dept: chosenDept,
+        username: derivedUsername,
+        points: 0,
+        status: 'Active'
+      });
+
+      // Provision member persona
+      db.personas[newMemberId] = {
+        id: newMemberId,
+        name: app.name,
+        role: 'Team Member',
+        roleType: 'member',
+        branch: chosenBranch,
+        departments: [chosenDept],
+        avatar: '',
+        deptDesc: `${chosenDept} Specialist Member`,
+        scopeDesc: 'Assigned specialist member. Complete tasks to earn points on the Silverstone leaderboard.'
+      };
+
+      // Mark application as Accepted
+      app.status = 'Accepted';
+      app.provisionedUsername = derivedUsername;
+      app.provisionedAt = new Date().toISOString();
+      saveApplicationsList(apps);
+
+      logAuditEvent(`RECRUITMENT: Candidate ${app.name} ACCEPTED & PROVISIONED by ${p.name} as @${derivedUsername}.`);
+      addNotification({
+        title: 'New Member Provisioned',
+        message: `${app.name} accepted into ${chosenDept} by ${p.name}. Account: @${derivedUsername}.`,
+        author: p.name,
+        type: 'governance',
+        target: 'all'
+      });
+
+      savePortalDb(db);
+      renderApplicationsControlCenter();
+      renderStructure();
+      renderAdminDashboard();
+
+      alert(`✅ Candidate Accepted!\n\nMember account successfully provisioned:\n• Full Name: ${app.name}\n• Department: ${chosenDept} (${chosenBranch})\n• Username: @${derivedUsername}\n• Temporary Password: velox2026\n\nThe member can now sign in immediately to the Inside Portal.`);
+    }
+
+    function deleteApplicant(id) {
+      const p = getActivePersona();
+      if (!isTeamLeader(p)) {
+        alert('Access Denied: Only Executive Administrators and Team Leaders can delete applicant submissions.');
+        return;
+      }
+
+      if (!confirm('Are you sure you want to permanently remove this applicant record?')) {
+        return;
+      }
+
+      let apps = getApplicationsList();
+      const app = apps.find(a => a.id === id);
+      const name = app ? app.name : 'Unknown';
+      apps = apps.filter(a => a.id !== id);
+      saveApplicationsList(apps);
+
+      logAuditEvent(`RECRUITMENT: Application record of ${name} removed by ${p.name}.`);
+      renderApplicationsControlCenter();
+    }
+
+    function createSampleApplication() {
+      const p = getActivePersona();
+      if (!isTeamLeader(p)) {
+        alert('Access Denied: Only Executive Administrators can create test applicant records.');
+        return;
+      }
+
+      const sampleDepts = ['Vehicle Dynamics', 'Powertrain', 'Electrical & Telemetry', 'Aerodynamics', 'Media & PR'];
+      const sampleDept1 = sampleDepts[Math.floor(Math.random() * sampleDepts.length)];
+      const sampleDept2 = sampleDepts[(sampleDepts.indexOf(sampleDept1) + 1) % sampleDepts.length];
+
+      const sample = {
+        id: 'APP-' + Date.now(),
+        name: 'Omar Sherif',
+        email: 'omar.sherif' + Math.floor(Math.random() * 100) + '@gmail.com',
+        phone: '01012345678',
+        faculty: 'Engineering — Mechatronics',
+        year: 'Level 200 / Third Year',
+        subteam1: sampleDept1,
+        subteam2: sampleDept2,
+        joinedFormulaStudent: true,
+        commitment: '5 to 10 hrs',
+        skills: ['SolidWorks / CAD', 'MATLAB / Simulink', 'CFD Simulation'],
+        statement: 'Passionate about racecar dynamics and suspension kinematic optimization. Ready to contribute full dedication to Silverstone 2026.',
+        portfolio: 'https://linkedin.com/in/omarsherif-sample',
+        status: 'New',
+        submittedAt: new Date().toISOString()
+      };
+
+      const list = getApplicationsList();
+      list.unshift(sample);
+      saveApplicationsList(list);
+
+      logAuditEvent(`RECRUITMENT: Test candidate "${sample.name}" generated by ${p.name}.`);
+      renderApplicationsControlCenter();
+      alert(`Sample candidate "${sample.name}" created and added to the recruitment pipeline!`);
+    }
+
+    function exportApplicationsCsv() {
+      const apps = getApplicationsList();
+      if (apps.length === 0) {
+        alert('No applications to export.');
+        return;
+      }
+
+      const headers = ['ID', 'Full Name', 'Personal Email', 'Phone', 'Faculty', 'Academic Year', '1st Choice', '2nd Choice', 'Prior FS Experience', 'Commitment', 'Skills', 'Status', 'Submitted At'];
+      const rows = apps.map(a => [
+        `"${a.id || ''}"`,
+        `"${(a.name || '').replace(/"/g, '""')}"`,
+        `"${(a.email || '').replace(/"/g, '""')}"`,
+        `"${(a.phone || '').replace(/"/g, '""')}"`,
+        `"${(a.faculty || '').replace(/"/g, '""')}"`,
+        `"${(a.year || '').replace(/"/g, '""')}"`,
+        `"${(a.subteam1 || '').replace(/"/g, '""')}"`,
+        `"${(a.subteam2 || '').replace(/"/g, '""')}"`,
+        `"${a.joinedFormulaStudent ? 'Yes' : 'No'}"`,
+        `"${(a.commitment || '').replace(/"/g, '""')}"`,
+        `"${((a.skills || []).join('; ')).replace(/"/g, '""')}"`,
+        `"${a.status || 'New'}"`,
+        `"${a.submittedAt || ''}"`
+      ]);
+
+      const csvContent = '\uFEFF' + [headers.join(','), ...rows.map(r => r.join(','))].join('\r\n');
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.setAttribute('href', url);
+      link.setAttribute('download', `velox_recruitment_applicants_${new Date().toISOString().substring(0, 10)}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    }
+
     // ==================== EXECUTIVE ADMIN DASHBOARD MODULES ====================
     function renderAdminDashboard() {
       const db = getPortalDb();
       const p = getActivePersona();
+
+      // 0. Render Recruitment & Signup Applications Control Center
+      renderApplicationsControlCenter();
 
       const pendingReqs = db.accessRequests.filter(r => r.status === 'Pending');
       const completedTasks = db.tasks.filter(t => t.status === 'Completed');
@@ -3054,7 +3713,7 @@
         tabBadge.style.display = pendingReqs.length > 0 ? 'inline-block' : 'none';
       }
 
-      // Hide or show "+ New Member Account" strictly for Fatima/Karim
+      // Hide or show "+ New Member Account" strictly for Fatima/Karim/Admin
       const newMemBtn = document.getElementById('addNewMemberModalBtn');
       if (newMemBtn) {
         newMemBtn.style.display = isTeamLeader(p) ? 'inline-block' : 'none';

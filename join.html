@@ -96,7 +96,7 @@
             <!-- 2. Email & Phone -->
             <div class="form-row">
               <div class="form-group">
-                <label for="email" data-i18n="join.email">University / Personal Email<span class="req">*</span></label>
+                <label for="email" data-i18n="join.email">Personal Email<span class="req">*</span></label>
                 <input type="email" id="email" class="form-control" placeholder="name@domain.com" required />
                 <span class="hint" data-i18n="join.emailHint">Only one application allowed per email</span>
               </div>
@@ -113,8 +113,6 @@
                 <select id="faculty" class="form-control" required>
                   <option value="" disabled selected data-i18n="join.facultySelect">Select your faculty</option>
                   <option value="Engineering — Mechatronics" data-i18n="join.facMecha">Engineering — Mechatronics</option>
-                  <option value="Engineering — Mechanical" data-i18n="join.facMech">Engineering — Mechanical</option>
-                  <option value="Engineering — Electrical" data-i18n="join.facElec">Engineering — Electrical</option>
                   <option value="Computer & Information Sciences (AI / Aviation)" data-i18n="join.facCs">Computer & Information Sciences (AI / Aviation)</option>
                   <option value="Business / Commerce" data-i18n="join.facBus">Business / Commerce</option>
                   <option value="Other Faculty" data-i18n="join.facOther">Other Faculty</option>
@@ -230,6 +228,16 @@
             </p>
             <a href="/" class="btn btn-outline" data-i18n="join.backHome">Back to Home</a>
           </div>
+
+          <!-- Recruitment Closed Notice (Controlled via Admin Dashboard) -->
+          <div id="recruitmentClosedNotice" style="display: none; background: rgba(225, 29, 72, 0.08); border: 1px solid rgba(225, 29, 72, 0.35); border-radius: var(--radius-md); padding: 40px 28px; text-align: center; margin-top: 10px;">
+            <div style="font-size: 2.5rem; margin-bottom: 14px;">🔒</div>
+            <h2 style="font-size: 1.7rem; margin-bottom: 12px; color: #FFF;">Recruitment Currently Closed</h2>
+            <p style="color: var(--text-muted); max-width: 540px; margin: 0 auto 24px auto; font-size: 0.95rem; line-height: 1.6;">
+              Applications for VELOX Racing are temporarily closed by the Administration for applicant evaluations. Please follow our official Instagram and LinkedIn pages for updates on the next recruitment cycle.
+            </p>
+            <a href="/" class="btn btn-outline">Back to Homepage &rarr;</a>
+          </div>
         </div>
       </div>
     </section>
@@ -342,10 +350,69 @@
       });
     }
 
-    // Re-populate subteams when language changes
+    // Re-populate subteams & academic year when language changes
     window.addEventListener('veloxLanguageChanged', () => {
       initSubteamOptions();
+      updateAcademicYearOptions();
     });
+
+    // Dynamic Academic Year based on Selected Faculty
+    function updateAcademicYearOptions() {
+      const facultySelect = document.getElementById('faculty');
+      const yearSelect = document.getElementById('academicYear');
+      if (!facultySelect || !yearSelect) return;
+
+      const isAr = document.documentElement.getAttribute('lang') === 'ar';
+      const facultyVal = facultySelect.value;
+      const prevVal = yearSelect.value;
+      const placeholder = isAr ? 'اختر مستواك الدراسي الحالي' : 'Select your current year';
+
+      // Check if Business or Computer & Information Sciences
+      const isFourYearCollege = facultyVal.includes('Business') || facultyVal.includes('Computer');
+
+      let options = [];
+      if (isFourYearCollege) {
+        options = [
+          { val: 'Year 1', text: isAr ? 'السنة الأولى (Year 1)' : 'Year 1' },
+          { val: 'Year 2', text: isAr ? 'السنة الثانية (Year 2)' : 'Year 2' },
+          { val: 'Year 3', text: isAr ? 'السنة الثالثة (Year 3)' : 'Year 3' },
+          { val: 'Year 4', text: isAr ? 'السنة الرابعة (Year 4)' : 'Year 4' },
+          { val: 'Graduate / Alumni', text: isAr ? 'خريج / Alumni' : 'Graduate / Alumni' }
+        ];
+      } else {
+        // Engineering Mechatronics and default
+        options = [
+          { val: 'Level 0 / Preparatory (Prep Year)', text: isAr ? 'Level 0 / إعدادي (Prep Year)' : 'Level 0 / Preparatory (Prep Year)' },
+          { val: 'Level 100 / Second Year', text: isAr ? 'Level 100 / الفرقة الثانية (Second Year)' : 'Level 100 / Second Year' },
+          { val: 'Level 200 / Third Year', text: isAr ? 'Level 200 / الفرقة الثالثة (Third Year)' : 'Level 200 / Third Year' },
+          { val: 'Level 300 / Fourth Year', text: isAr ? 'Level 300 / الفرقة الرابعة (Fourth Year)' : 'Level 300 / Fourth Year' },
+          { val: 'Level 400 / Fifth Year (Senior)', text: isAr ? 'Level 400 / بكالوريوس (Senior)' : 'Level 400 / Fifth Year (Senior)' },
+          { val: 'Graduate / Alumni', text: isAr ? 'خريج / Alumni' : 'Graduate / Alumni' }
+        ];
+      }
+
+      yearSelect.innerHTML = `<option value="" disabled ${!prevVal ? 'selected' : ''}>${placeholder}</option>` +
+        options.map(opt => `<option value="${opt.val}" ${prevVal === opt.val ? 'selected' : ''}>${opt.text}</option>`).join('');
+    }
+
+    const facultySelectEl = document.getElementById('faculty');
+    if (facultySelectEl) {
+      facultySelectEl.addEventListener('change', updateAcademicYearOptions);
+    }
+
+    // Check if Recruitment Process was Toggled Closed in Admin Dashboard
+    function checkRecruitmentStatus() {
+      const isClosed = localStorage.getItem('velox_recruitment_open') === 'false';
+      const formEl = document.getElementById('joinForm');
+      const closedNotice = document.getElementById('recruitmentClosedNotice');
+      if (isClosed) {
+        if (formEl) formEl.style.display = 'none';
+        if (closedNotice) closedNotice.style.display = 'block';
+      } else {
+        if (formEl && (!successScreen || successScreen.style.display !== 'block')) formEl.style.display = 'block';
+        if (closedNotice) closedNotice.style.display = 'none';
+      }
+    }
 
     // Interactive Skill Chips & Radio Pills
     document.querySelectorAll('.chip-label input').forEach(input => {
@@ -529,6 +596,8 @@
 
     document.addEventListener('DOMContentLoaded', () => {
       initSubteamOptions();
+      updateAcademicYearOptions();
+      checkRecruitmentStatus();
       initThemeAndLang();
     });
 

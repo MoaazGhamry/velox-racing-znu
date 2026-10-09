@@ -254,6 +254,7 @@ function getSubteamsList() {
     });
   });
   VELOX_TEAM.nonTechnical.forEach(dept => {
+    if (dept.id === 'hr') return; // Exclude HR from recruitment subteam choices
     dept.subteams.forEach(sub => {
       list.push(`${dept.name} — ${sub}`);
     });
