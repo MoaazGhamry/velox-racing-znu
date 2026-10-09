@@ -127,7 +127,32 @@ const VELOX_TEAM = {
     {
       id: "powertrain",
       name: "Powertrain",
-      leader: null,
+      leader: {
+        id: "moaaz-elghamry-pt",
+        name: "Moaaz Elghamry",
+        role: "Powertrain Leader",
+        photo: "photos/Moaaz Elghamry.jpeg",
+        linkedin: "https://www.linkedin.com/in/moaaz-mohamed-elghamry-164a00303/?isSelfProfile=true",
+        instagram: "https://www.instagram.com/moaaz_8amry?mdxt=MTIxdzJpcXVjYXhwbQ==",
+        department: "Powertrain & Transmission Division",
+        department_ar: "قسم أنظمة الدفع ونقل الحركة",
+        bio: "Commands powertrain mounting, cooling thermal loops, torque transfer, chain drive reduction ratio optimization, and differential assembly.",
+        bio_ar: "يشرف على تثبيت المحرك، دورات التبريد الحرارية، نقل العزم، تحسين نسب تخفيض سلاسل الحركة، وتجميع الترس التفاضلي.",
+        responsibilities: [
+          "Engine mounting geometry, vibration damping, and chain tensioner calibration",
+          "Cooling loop thermodynamics, radiator shroud ducting, and water-pump flow",
+          "Drivetrain differential setup, chain sprocket ratio tuning, and half-shaft packaging",
+          "Torque delivery analysis and engine dyno calibration for sprint acceleration"
+        ],
+        responsibilities_ar: [
+          "هندسة تثبيت المحرك وتخميد الاهتزازات ومعايرة شدادات السلاسل",
+          "الديناميكا الحرارية لدورات التبريد ومسارات تدفق الهواء بالردياتير",
+          "معايرة الترس التفاضلي ونسب التخفيض وتجميع أعمدة نقل الحركة",
+          "تحليل توزيع العزم ومعايرة دايو المحرك لتحقيق أعلى تسارع على الحلبة"
+        ],
+        quote: "Power is nothing without efficient mechanical transfer. Every Nm of torque delivered to the asphalt matters.",
+        quote_ar: "القوة لا تعني شيئاً بدون نقل ميكانيكي عالي الكفاءة. كل نيوتن-متر يُنقل إلى الأسفلت له فارق حاسم."
+      },
       subteams: ["Motor", "Transmission"],
       description: "Powertrain mounting, cooling thermal loops, torque transfer, chain drive ratio optimization, and differential assembly.",
       description_ar: "تثبيت المحرك، دورات التبريد الحرارية، نقل العزم، تحسين نسب نقل الحركة، وتجميع الترس التفاضلي."

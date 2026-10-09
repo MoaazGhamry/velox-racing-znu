@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Official Team Invitation — Velox Racing | ZNU Formula Student</title>
+  <meta name="description" content="Official credentials invitation to join Velox Racing Formula Student Team at Zagazig National University." />
+  <link rel="icon" type="image/png" href="pwa-icon-192.png" />
+
+  <!-- Shared Design Tokens & Typography -->
+  <link rel="stylesheet" href="style.css?v=4.0" />
+
+  <style>
+    body {
+      background: #060709 radial-gradient(ellipse 80% 60% at 50% -10%, rgba(197, 34, 31, 0.22), transparent 70%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 30px 16px;
+      color: var(--text-main);
+      font-family: var(--font-main);
+    }
+
+    .invite-container {
+      width: 100%;
+      max-width: 680px;
+      position: relative;
+    }
+
+    .invite-card {
+      background: rgba(13, 15, 20, 0.94);
+      border: 1px solid rgba(197, 34, 31, 0.4);
+      border-radius: 20px;
+      padding: 36px 32px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.75), 0 0 35px rgba(197, 34, 31, 0.18);
+      backdrop-filter: blur(16px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .invite-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--red), transparent);
+    }
+
+    .invite-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .invite-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .invite-brand img {
+      width: 38px;
+      height: auto;
+      filter: drop-shadow(0 0 8px rgba(197, 34, 31, 0.6));
+    }
+
+    .invite-brand-title {
+      font-size: 1.05rem;
+      font-weight: 900;
+      letter-spacing: 1.5px;
+      color: #FFFFFF;
+      text-transform: uppercase;
+      margin: 0;
+    }
+
+    .invite-brand-sub {
+      font-size: 0.74rem;
+      color: var(--text-dim);
+      margin: 0;
+    }
+
+    .invite-serial {
+      font-family: monospace;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #EAB308;
+      background: rgba(234, 179, 8, 0.1);
+      border: 1px solid rgba(234, 179, 8, 0.35);
+      padding: 5px 12px;
+      border-radius: 6px;
+      letter-spacing: 1px;
+    }
+
+    .invite-body {
+      text-align: center;
+      padding: 32px 0 20px 0;
+    }
+
+    .invite-kicker {
+      font-size: 0.76rem;
+      font-weight: 900;
+      letter-spacing: 2px;
+      color: var(--red);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .invite-name {
+      font-size: 2.4rem;
+      font-weight: 900;
+      color: #FFFFFF;
+      letter-spacing: 0.5px;
+      margin: 0 0 10px 0;
+      text-shadow: 0 0 25px rgba(255, 255, 255, 0.15);
+      word-break: break-word;
+    }
+
+    .invite-quote {
+      font-style: italic;
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      margin: 0 auto 28px auto;
+      max-width: 520px;
+    }
+
+    .invite-grid {
+      background: rgba(0, 0, 0, 0.45);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 22px 24px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px 24px;
+      text-align: left;
+      margin-bottom: 28px;
+    }
+
+    @media (max-width: 560px) {
+      .invite-grid {
+        grid-template-columns: 1fr;
+        padding: 18px 16px;
+      }
+      .invite-card {
+        padding: 26px 18px;
+      }
+      .invite-name {
+        font-size: 1.8rem;
+      }
+    }
+
+    .invite-item-lbl {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .invite-item-val {
+      font-size: 0.96rem;
+      font-weight: 700;
+      color: #FFFFFF;
+    }
+
+    .invite-status-ready {
+      color: #22C55E;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .invite-status-ready::before {
+      content: '';
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #22C55E;
+      box-shadow: 0 0 10px #22C55E;
+    }
+
+    .invite-status-claimed {
+      color: #38BDF8;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .invite-status-claimed::before {
+      content: '';
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #38BDF8;
+    }
+
+    .invite-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .invite-footer-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 24px;
+      margin-top: 24px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 0.76rem;
+      color: var(--text-dim);
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    /* Modal / Onboarding Form */
+    .onboarding-box {
+      margin-top: 20px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      display: none;
+      text-align: left;
+    }
+    .onboarding-box.active {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="invite-container">
+    <div class="invite-card">
+      <!-- Header -->
+      <div class="invite-header">
+        <div class="invite-brand">
+          <img src="VeloxLogoWeb.png" alt="Velox Racing Crest" onerror="this.src='VeloxForWeb_dark.png'" />
+          <div>
+            <h2 class="invite-brand-title">VELOX FORMULA RACING</h2>
+            <p class="invite-brand-sub">Zagazig National University &bull; Silverstone 2026</p>
+          </div>
+        </div>
+        <div class="invite-serial" id="inviteSerial">FS-ZNU-000000</div>
+      </div>
+
+      <!-- Body -->
+      <div class="invite-body">
+        <div class="invite-kicker">OFFICIAL TEAM CREDENTIAL INVITATION</div>
+        <h1 class="invite-name" id="inviteeName">Candidate</h1>
+        <p class="invite-quote">&ldquo;You are officially invited to engineer the future of Egyptian motorsport.&rdquo;</p>
+
+        <!-- Details Grid -->
+        <div class="invite-grid">
+          <div>
+            <div class="invite-item-lbl">Designated Role</div>
+            <div class="invite-item-val" id="inviteRole">Team Member</div>
+          </div>
+          <div>
+            <div class="invite-item-lbl">Branch & Department</div>
+            <div class="invite-item-val" id="inviteDept">Technical &bull; Body & Chassis</div>
+          </div>
+          <div>
+            <div class="invite-item-lbl">Authorized By</div>
+            <div class="invite-item-val" id="inviteAuthorizer">Fatima Salman (Team Leader)</div>
+          </div>
+          <div>
+            <div class="invite-item-lbl">Enlistment Status</div>
+            <div class="invite-item-val" id="inviteStatus">
+              <span class="invite-status-ready">Ready for Acceptance</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Onboarding Acceptance Form -->
+        <div class="onboarding-box" id="onboardingBox">
+          <h3 style="margin: 0 0 8px 0; font-size: 1.1rem; color: #FFF;">Complete Your Team Onboarding</h3>
+          <p style="font-size: 0.82rem; color: var(--text-muted); margin: 0 0 16px 0;">
+            Set up your official Velox Inside Portal login credentials to activate your membership.
+          </p>
+          <form id="enlistmentForm">
+            <div class="form-group" style="margin-bottom: 12px;">
+              <label for="regUsername" style="font-size: 0.8rem; color: var(--text-dim); display: block; margin-bottom: 4px;">Choose Username (Lowercase, e.g. ziad)</label>
+              <input type="text" id="regUsername" class="form-control" style="width: 100%; padding: 8px 12px; background: #0A0D14; border: 1px solid var(--border); border-radius: 6px; color: #FFF;" required />
+            </div>
+            <div class="form-group" style="margin-bottom: 16px;">
+              <label for="regPassword" style="font-size: 0.8rem; color: var(--text-dim); display: block; margin-bottom: 4px;">Set Password (Minimum 6 characters)</label>
+              <input type="password" id="regPassword" class="form-control" style="width: 100%; padding: 8px 12px; background: #0A0D14; border: 1px solid var(--border); border-radius: 6px; color: #FFF;" value="velox2026" required />
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%; padding: 10px; font-weight: 700;">
+              Confirm Enlistment & Launch Inside Portal &rarr;
+            </button>
+          </form>
+        </div>
+
+        <!-- Main Buttons -->
+        <div class="invite-actions" id="inviteActions">
+          <button type="button" class="btn btn-primary" id="acceptBtn" style="padding: 12px 24px; font-weight: 700; font-size: 0.94rem;">
+            ✓ Accept Invitation & Enlist Into Team
+          </button>
+          <button type="button" class="btn btn-outline" id="copyLinkBtn" style="padding: 12px 20px; font-size: 0.94rem;">
+            Copy Invitation Link
+          </button>
+        </div>
+      </div>
+
+      <!-- Footer Info -->
+      <div class="invite-footer-row">
+        <span>Formula Student UK Candidate</span>
+        <span id="inviteIssuedDate">Issued: 2026-10-09</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const DB_KEY = 'velox_portal_db_v6';
+
+    function getDb() {
+      // Clear legacy
+      ['velox_portal_db_v1', 'velox_portal_db_v2', 'velox_portal_db_v3', 'velox_portal_db_v4', 'velox_portal_db_v5'].forEach(k => {
+        try { localStorage.removeItem(k); } catch (e) {}
+      });
+      const stored = localStorage.getItem(DB_KEY);
+      if (stored) {
+        try { return JSON.parse(stored); } catch (e) {}
+      }
+      return null;
+    }
+
+    function saveDb(db) {
+      localStorage.setItem(DB_KEY, JSON.stringify(db));
+    }
+
+    // Read invite code from URL
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get('code') || 'FS-ZNU-DEFAULT';
+
+    const db = getDb();
+    let currentInvite = null;
+
+    if (db && db.invitations) {
+      currentInvite = db.invitations.find(i => i.code === code);
+    }
+
+    // Fallback if not found in db but code provided in URL
+    if (!currentInvite) {
+      currentInvite = {
+        code: code,
+        inviteeName: params.get('name') || 'Team Engineer',
+        role: params.get('role') || 'Team Member',
+        branch: params.get('branch') || 'Technical',
+        department: params.get('dept') || 'Body & Chassis',
+        authorizer: params.get('by') || 'Fatima Salman (Team Leader)',
+        status: 'Pending',
+        issued: new Date().toISOString().substring(0, 10)
+      };
+    }
+
+    // Populate UI
+    document.getElementById('inviteSerial').textContent = currentInvite.code;
+    document.getElementById('inviteeName').textContent = currentInvite.inviteeName;
+    document.getElementById('inviteRole').textContent = currentInvite.role;
+    document.getElementById('inviteDept').textContent = `${currentInvite.branch} • ${currentInvite.department}`;
+    document.getElementById('inviteAuthorizer').textContent = currentInvite.authorizer || 'Fatima Salman (Team Leader)';
+    document.getElementById('inviteIssuedDate').textContent = 'Issued: ' + (currentInvite.issued || new Date().toISOString().substring(0, 10));
+
+    const statusEl = document.getElementById('inviteStatus');
+    const acceptBtn = document.getElementById('acceptBtn');
+    const onboardingBox = document.getElementById('onboardingBox');
+
+    if (currentInvite.status === 'Accepted') {
+      statusEl.innerHTML = '<span class="invite-status-claimed" style="color: #22C55E; background: rgba(34,197,94,0.12); padding: 4px 10px; border-radius: 6px; font-weight: 700; border: 1px solid rgba(34,197,94,0.3);">✓ Enlisted & Active</span>';
+      acceptBtn.textContent = 'Go to Inside Portal →';
+      acceptBtn.onclick = () => { window.location.href = 'portal.html'; };
+    } else {
+      statusEl.innerHTML = '<span class="invite-status-ready" style="color: #FBBF24; background: rgba(251,191,36,0.12); padding: 4px 10px; border-radius: 6px; font-weight: 700; border: 1px solid rgba(251,191,36,0.3);">Pending Acceptance</span>';
+      acceptBtn.onclick = () => {
+        onboardingBox.classList.add('active');
+        acceptBtn.style.display = 'none';
+        // Suggest a username based on invitee name
+        const cleanUser = currentInvite.inviteeName.toLowerCase().replace(/[^a-z0-9]/g, '');
+        document.getElementById('regUsername').value = cleanUser || 'member';
+      };
+    }
+
+    // Copy invitation link button
+    document.getElementById('copyLinkBtn').onclick = () => {
+      const fullUrl = window.location.href;
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(fullUrl).then(() => {
+          alert('Official invitation link copied to clipboard:\n' + fullUrl);
+        });
+      } else {
+        alert('Invitation link: ' + fullUrl);
+      }
+    };
+
+    // Onboarding form submit
+    document.getElementById('enlistmentForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const username = document.getElementById('regUsername').value.trim().toLowerCase();
+      const password = document.getElementById('regPassword').value.trim();
+
+      if (!username || password.length < 4) {
+        alert('Please enter a valid username and password (at least 4 characters).');
+        return;
+      }
+
+      let activeDb = getDb();
+      if (!activeDb) {
+        // Redirect to portal.html to initialize or fallback
+        window.location.href = 'portal.html';
+        return;
+      }
+
+      if (activeDb.accounts.some(a => a.username.toLowerCase() === username)) {
+        alert(`The username @${username} is already taken. Please choose another username.`);
+        return;
+      }
+
+      // 1. Mark invitation accepted
+      const invIdx = (activeDb.invitations || []).findIndex(i => i.code === currentInvite.code);
+      if (invIdx >= 0) {
+        activeDb.invitations[invIdx].status = 'Accepted';
+        activeDb.invitations[invIdx].acceptedAt = new Date().toLocaleString();
+      }
+
+      // 2. Add persona
+      const personaKey = 'user_' + username;
+      activeDb.personas[personaKey] = {
+        id: 'mem-' + username,
+        name: currentInvite.inviteeName,
+        role: currentInvite.role,
+        roleType: 'member',
+        branch: currentInvite.branch,
+        departments: [currentInvite.department],
+        avatar: '',
+        deptDesc: `${currentInvite.branch} Division • ${currentInvite.department}`
+      };
+
+      // 3. Add account
+      activeDb.accounts.push({
+        username: username,
+        password: password,
+        personaKey: personaKey,
+        name: currentInvite.inviteeName,
+        status: 'Active'
+      });
+
+      // 4. Add roster entry with 0 points
+      activeDb.membersRoster.push({
+        id: 'mem-' + username,
+        name: currentInvite.inviteeName,
+        role: currentInvite.role,
+        branch: currentInvite.branch,
+        dept: currentInvite.department,
+        username: username,
+        points: 0,
+        status: 'Active'
+      });
+
+      // 5. Notify Team Leaders
+      if (!activeDb.notifications) activeDb.notifications = [];
+      activeDb.notifications.unshift({
+        id: 'NOTIF-' + Date.now(),
+        title: 'New Member Enlisted',
+        message: `${currentInvite.inviteeName} accepted invitation ${currentInvite.code} and enlisted into ${currentInvite.department} as ${currentInvite.role}!`,
+        author: currentInvite.inviteeName,
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        date: new Date().toISOString().substring(0, 10),
+        type: 'governance',
+        target: ['fatima', 'karim'],
+        readBy: []
+      });
+
+      // 6. Log Audit Event
+      if (!activeDb.auditLog) activeDb.auditLog = [];
+      activeDb.auditLog.unshift(`[${new Date().toISOString().replace('T', ' ').substring(0, 19)}] ENLISTMENT: ${currentInvite.inviteeName} accepted invitation ${currentInvite.code} and registered @${username}.`);
+
+      saveDb(activeDb);
+
+      // 7. Set auto-login session
+      localStorage.setItem('velox_auth_user', username);
+      localStorage.setItem('velox_active_persona', personaKey);
+      localStorage.setItem('velox_portal_session_user', username);
+
+      alert(`Congratulations ${currentInvite.inviteeName}! You are officially enlisted into Velox Racing. Redirecting to your Inside Portal...`);
+      window.location.href = 'portal.html';
+    });
+  </script>
+</body>
+</html>

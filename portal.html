@@ -797,64 +797,22 @@
             </button>
           </form>
 
-          <!-- Authorized Crew Directory & Fast Login (Clean Accordion for Testing & Roster Access) -->
-          <div style="margin-top: 22px; text-align: center;">
-            <a href="javascript:void(0)" onclick="openPortalModal('forgotPassModal')" style="font-size: 0.78rem; color: var(--text-dim); text-decoration: underline;">
-              Need Access Credentials or Password Assistance?
-            </a>
-          </div>
-
-          <details style="margin-top: 24px; border-top: 1px dashed rgba(255, 255, 255, 0.12); padding-top: 16px;">
-            <summary style="font-size: 0.76rem; font-weight: 700; color: var(--text-muted); cursor: pointer; text-transform: uppercase; letter-spacing: 0.08em; display: flex; justify-content: space-between; align-items: center; user-select: none;">
-              <span>Authorized Team Roster & Fast Access</span>
-              <span style="color: #38BDF8; font-size: 0.72rem; text-transform: none;">View Directory &darr;</span>
-            </summary>
-            <div class="demo-account-grid" style="margin-top: 14px;">
-              <!-- Fatima -->
-              <div class="demo-account-chip" onclick="quickLogin('fatima', 'velox2026')">
-                <span class="demo-account-name">Fatima Salman</span>
-                <span class="demo-account-meta" style="color: #FF4D4D;">Team Leader (Executive)</span>
-                <span class="demo-account-cred">@fatima</span>
-              </div>
-              <!-- Karim -->
-              <div class="demo-account-chip" onclick="quickLogin('karim', 'velox2026')">
-                <span class="demo-account-name">Karim Shaprawy</span>
-                <span class="demo-account-meta" style="color: #FF4D4D;">Vice Team Leader</span>
-                <span class="demo-account-cred">@karim</span>
-              </div>
-              <!-- Romy -->
-              <div class="demo-account-chip" onclick="quickLogin('romy', 'velox2026')">
-                <span class="demo-account-name">Mohamed Romy</span>
-                <span class="demo-account-meta" style="color: #38BDF8;">Technical Leader</span>
-                <span class="demo-account-cred">@romy</span>
-              </div>
-              <!-- Moaaz -->
-              <div class="demo-account-chip" onclick="quickLogin('moaaz', 'velox2026')">
-                <span class="demo-account-name">Moaaz Elghamry</span>
-                <span class="demo-account-meta" style="color: #FBBF24;">Managerial Leader</span>
-                <span class="demo-account-cred">@moaaz</span>
-              </div>
-              <!-- Ali -->
-              <div class="demo-account-chip" onclick="quickLogin('ali', 'velox2026')">
-                <span class="demo-account-name">Ali Elgohary</span>
-                <span class="demo-account-meta" style="color: #38BDF8;">Electrical Subteam Lead</span>
-                <span class="demo-account-cred">@ali</span>
-              </div>
-              <!-- Hassan -->
-              <div class="demo-account-chip" onclick="quickLogin('hassan', 'velox2026')">
-                <span class="demo-account-name">Mohamed Hassan</span>
-                <span class="demo-account-meta" style="color: #FBBF24;">Media & PR Lead</span>
-                <span class="demo-account-cred">@hassan</span>
-              </div>
+          <div style="margin-top: 24px; border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 18px; text-align: center;">
+            <div style="font-size: 0.8rem; color: var(--text-dim); display: flex; align-items: center; justify-content: center; gap: 6px;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+              <span>Restricted Access &bull; Official Team Credentials Required</span>
             </div>
-          </details>
+            <div style="margin-top: 8px; font-size: 0.76rem; color: var(--text-muted);">
+              Received an official team invitation pass? <a href="invite.html" style="color: #38BDF8; text-decoration: underline;">Claim your credentials &rarr;</a>
+            </div>
+          </div>
         </div>
       </section>
 
       <!-- ==================== 2. AUTHENTICATED PORTAL WORKSPACE ==================== -->
       <div id="portalMainSection" style="display: none;">
 
-        <!-- ACTIVE USER CONTEXT & FAST ROLE SWITCHER -->
+        <!-- ACTIVE USER CONTEXT & NOTIFICATION CENTER -->
         <div class="portal-user-bar">
           <div class="portal-user-profile">
             <div class="portal-user-avatar" id="activeAvatar"><img src="photos/Fatima Salman.jpeg" alt="Fatima Salman" onerror="this.style.display='none'; this.parentElement.textContent='FS';" /></div>
@@ -873,15 +831,23 @@
               <strong style="color: #38BDF8; font-family: monospace;" id="activeAuthUsername">@fatima</strong>
             </div>
 
-            <label for="personaSelect" style="font-size: 0.8rem; color: var(--text-dim);">Role Switcher:</label>
-            <select id="personaSelect" class="portal-switcher-select">
-              <option value="fatima">Fatima Salman (Team Leader - Executive)</option>
-              <option value="karim">Karim Shaprawy (Vice Team Leader - Executive)</option>
-              <option value="romy">Mohamed Romy (Technical Leader)</option>
-              <option value="moaaz">Moaaz Elghamry (Managerial Leader)</option>
-              <option value="ali">Ali Elgohary (Electrical Subteam Lead)</option>
-              <option value="hassan">Mohamed Hassan (Media & PR Subteam Lead)</option>
-            </select>
+            <!-- Live Notification Bell -->
+            <div style="position: relative;">
+              <button type="button" class="btn btn-outline" id="notifBellBtn" onclick="toggleNotificationDropdown()" style="padding: 6px 12px; font-size: 0.82rem; position: relative;" title="View Notifications">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                <span id="notifBellBadge" style="display: none; position: absolute; top: -5px; right: -5px; background: var(--red); color: #FFF; font-size: 0.65rem; font-weight: 800; border-radius: 10px; padding: 1px 6px; border: 2px solid #060709;">0</span>
+              </button>
+              <!-- Notification Dropdown Menu -->
+              <div id="notifDropdown" style="display: none; position: absolute; right: 0; top: 38px; width: 340px; background: #0E1118; border: 1px solid var(--border); border-radius: 12px; box-shadow: 0 15px 35px rgba(0,0,0,0.7); z-index: 1000; padding: 14px; max-height: 420px; overflow-y: auto;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 8px;">
+                  <strong style="font-size: 0.88rem; color: #FFF;">Notifications</strong>
+                  <button type="button" onclick="clearAllNotifications()" style="background: none; border: none; color: #38BDF8; font-size: 0.74rem; cursor: pointer;">Clear All</button>
+                </div>
+                <div id="notifDropdownList" style="display: flex; flex-direction: column; gap: 8px; font-size: 0.8rem;">
+                  <!-- Populated from JS -->
+                </div>
+              </div>
+            </div>
 
             <button type="button" class="btn btn-outline" id="openUploadBtn" style="padding: 6px 14px; font-size: 0.82rem;">
               + Upload Data
@@ -897,6 +863,18 @@
               Sign Out
             </button>
           </div>
+        </div>
+
+        <!-- Clearance & Jurisdiction Scope Banner -->
+        <div id="userScopeBanner" style="background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border); border-left: 4px solid var(--red); border-radius: var(--radius-md); padding: 14px 18px; margin-bottom: 22px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <span id="scopeBadgeIcon" style="font-size: 1.4rem;">⭐</span>
+            <div>
+              <strong id="scopeTitle" style="color: #FFF; font-size: 0.92rem; display: block; margin-bottom: 2px;">Executive Omni-Clearance</strong>
+              <span id="scopeDesc" style="color: var(--text-dim); font-size: 0.8rem; line-height: 1.4;">Full omni-directional command over all engineering and operational divisions.</span>
+            </div>
+          </div>
+          <span id="scopeActionBadge" class="portal-role-pill role-executive" style="font-size: 0.72rem; letter-spacing: 0.05em;">Universal Command</span>
         </div>
 
       <!-- 2. PORTAL NAVIGATION TABS -->
@@ -919,7 +897,7 @@
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
           Competition & Speed Points
         </button>
-        <button type="button" class="portal-tab-btn" data-tab="invitations">
+        <button type="button" class="portal-tab-btn" data-tab="invitations" id="tabInvitationsBtn">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
           Send Invitations
         </button>
@@ -1156,6 +1134,42 @@
         <!-- Live Generated Pass Preview -->
         <div id="invitationPassContainer">
           <!-- Populated from JS -->
+        </div>
+
+        <!-- Issued Invitations Registry Table -->
+        <div style="margin-top: 36px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid var(--border); padding-bottom: 12px; flex-wrap: wrap; gap: 10px;">
+            <div>
+              <h3 style="margin: 0 0 4px 0; font-size: 1.15rem; color: #FFF; display: flex; align-items: center; gap: 8px;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#EAB308" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                Issued Team Credentials &amp; Invitations Registry
+              </h3>
+              <p style="margin: 0; font-size: 0.8rem; color: var(--text-muted);">
+                Official credentials issued by Team Leadership. Status displays as &ldquo;Pending Acceptance&rdquo; until accepted by the candidate on the separate invitation page. Team Leaders can delete or revoke invitations at any time.
+              </p>
+            </div>
+            <span class="portal-role-pill" id="invitationsCountBadge" style="background: rgba(234,179,8,0.15); color: #FBBF24; border: 1px solid rgba(234,179,8,0.4);">0 Issued Passes</span>
+          </div>
+
+          <div class="vault-table-wrap">
+            <table class="vault-table" id="invitationsTable">
+              <thead>
+                <tr>
+                  <th>Pass Serial</th>
+                  <th>Invitee Candidate</th>
+                  <th>Designated Role &amp; Subteam</th>
+                  <th>Authorized By</th>
+                  <th>Issued Date</th>
+                  <th>Enlistment Status</th>
+                  <th>Standalone Link</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="invitationsTableBody">
+                <!-- Populated dynamically via renderInvitationsTable() -->
+              </tbody>
+            </table>
+          </div>
         </div>
       </section>
 
@@ -1732,7 +1746,9 @@
 
   <!-- ==================== PORTAL JAVASCRIPT ENGINE ==================== -->
   <script>
-    // Initial Seed Data for Portal (Production State - Real Users Only, Empty Mockup Data)
+    const DB_KEY = 'velox_portal_db_v6';
+
+    // Production Seed Data — Zero Points, Zero Mockup Files, Zero Mockup Tasks
     const PORTAL_SEED = {
       personas: {
         fatima: {
@@ -1743,7 +1759,8 @@
           branch: 'Executive',
           departments: ['All'],
           avatar: 'photos/Fatima Salman.jpeg',
-          deptDesc: 'Executive Governance & Overall Leadership • Omni-Clearance'
+          deptDesc: 'Executive Governance & Overall Leadership • Omni-Clearance',
+          scopeDesc: 'Universal omni-directional authority across all technical, operational, and institutional divisions. Authorized to modify all team roles, approve all data downloads, and issue official team credentials.'
         },
         karim: {
           id: 'karim-shaprawy',
@@ -1753,7 +1770,8 @@
           branch: 'Executive',
           departments: ['All'],
           avatar: 'photos/Karim Shaprawy.jpeg',
-          deptDesc: 'Operations, Build Management & Sponsorship • Omni-Clearance'
+          deptDesc: 'Operations, Build Management & Sponsorship • Omni-Clearance',
+          scopeDesc: 'Omni-directional operational oversight, workshop manufacturing discipline, and static event strategy. Authorized with Team Leader to manage team roles, approve downloads, and issue invitations.'
         },
         romy: {
           id: 'mohamed-romy',
@@ -1763,48 +1781,61 @@
           branch: 'Technical',
           departments: ['Body & Chassis', 'Vehicle Dynamics', 'Powertrain', 'Electrical'],
           avatar: 'photos/Mohamed Romy.jpeg',
-          deptDesc: 'Technical Engineering Branch • Full Technical Archive Access'
+          deptDesc: 'Technical Engineering Branch • Full Technical Archive Access',
+          scopeDesc: 'Full authority over Technical Branch (Body & Chassis, Vehicle Dynamics, Powertrain, Electrical). Authorized to assign technical sprint deliverables, manage technical subteams, and approve technical downloads. Governance actions automatically notify Team Leaders.'
         },
         moaaz: {
           id: 'moaaz-elghamry',
           name: 'Moaaz Elghamry',
-          role: 'Managerial Leader',
+          role: 'Managerial Leader & Powertrain Lead',
           roleType: 'managerial_lead',
-          branch: 'Managerial',
-          departments: ['Human Resources (HR)', 'Media & PR', 'Business (Team Director)'],
+          branch: 'Managerial & Technical',
+          departments: ['Human Resources (HR)', 'Media & PR', 'Business (Team Director)', 'Powertrain'],
           avatar: 'photos/Moaaz Elghamry.jpeg',
-          deptDesc: 'Managerial & Operations Branch • Full Operations Archive Access'
+          deptDesc: 'Managerial Leader & Powertrain Leader • Dual Operational & Powertrain Authority',
+          scopeDesc: 'Dual leadership command: Managerial Branch (HR, Media & PR, Business) plus Powertrain Subteam Lead. Authorized to assign deliverables, oversee operational workflows, and manage members within jurisdiction. Governance actions automatically notify Team Leaders.'
         },
         ali: {
           id: 'ali-elgohary',
           name: 'Ali Elgohary',
-          role: 'Electrical Leader',
+          role: 'Electrical Subteam Lead',
           roleType: 'subteam_lead',
           branch: 'Technical',
           departments: ['Electrical'],
           avatar: '',
-          deptDesc: 'Electrical Infrastructure & Electronics Lead'
+          deptDesc: 'Electrical Infrastructure & Electronics Lead',
+          scopeDesc: 'Subteam command over Electrical, Raychem wiring harnesses, sensors, and live DAQ telemetry. Authorized to assign electrical sprint tasks and manage electrical crew. Actions automatically notify Technical Leader and Team Leaders.'
         },
         hassan: {
           id: 'mohamed-hassan',
           name: 'Mohamed Hassan',
-          role: 'Media Lead',
+          role: 'Media & PR Lead',
           roleType: 'subteam_lead',
           branch: 'Managerial',
           departments: ['Media & PR'],
           avatar: 'photos/Mohamed Hassan.jpeg',
-          deptDesc: 'Media & Public Relations Lead'
+          deptDesc: 'Media & Public Relations Lead',
+          scopeDesc: 'Subteam command over Media, photography, racecar documentary films, and public relations. Authorized to assign media deliverables and manage media crew. Actions automatically notify Managerial Leader and Team Leaders.'
         }
       },
 
       files: [],
-
       tasks: [],
-
       accessRequests: [],
+      invitations: [],
 
       notifications: [
-        'VELOX Formula Student Inside Portal initialized for active season operations.'
+        {
+          id: 'NOTIF-INIT-1',
+          title: 'Season Initialized',
+          message: 'VELOX Formula Student Inside Portal initialized for active Silverstone 2026 operations.',
+          author: 'Executive Administration',
+          timestamp: '12:00 PM',
+          date: new Date().toISOString().substring(0, 10),
+          type: 'system',
+          target: 'all',
+          readBy: []
+        }
       ],
 
       accounts: [
@@ -1820,24 +1851,24 @@
         { id: 'fatima-salman', name: 'Fatima Salman', role: 'Team Leader', branch: 'Executive', dept: 'Executive Governance', username: 'fatima', points: 0, status: 'Active' },
         { id: 'karim-shaprawy', name: 'Karim Shaprawy', role: 'Vice Team Leader', branch: 'Executive', dept: 'Operations & Build', username: 'karim', points: 0, status: 'Active' },
         { id: 'mohamed-romy', name: 'Mohamed Romy', role: 'Technical Leader', branch: 'Technical', dept: 'Chief Engineering', username: 'romy', points: 0, status: 'Active' },
-        { id: 'moaaz-elghamry', name: 'Moaaz Elghamry', role: 'Managerial Leader', branch: 'Managerial', dept: 'Operations Management', username: 'moaaz', points: 0, status: 'Active' },
-        { id: 'ali-elgohary', name: 'Ali Elgohary', role: 'Subteam Leader', branch: 'Technical', dept: 'Electrical', username: 'ali', points: 0, status: 'Active' },
-        { id: 'mohamed-hassan', name: 'Mohamed Hassan', role: 'Subteam Leader', branch: 'Managerial', dept: 'Media & PR', username: 'hassan', points: 0, status: 'Active' }
+        { id: 'moaaz-elghamry', name: 'Moaaz Elghamry', role: 'Managerial Leader & Powertrain Lead', branch: 'Managerial & Technical', dept: 'Operations Management & Powertrain', username: 'moaaz', points: 0, status: 'Active' },
+        { id: 'ali-elgohary', name: 'Ali Elgohary', role: 'Electrical Subteam Lead', branch: 'Technical', dept: 'Electrical', username: 'ali', points: 0, status: 'Active' },
+        { id: 'mohamed-hassan', name: 'Mohamed Hassan', role: 'Media & PR Lead', branch: 'Managerial', dept: 'Media & PR', username: 'hassan', points: 0, status: 'Active' }
       ],
 
       auditLog: [
-        `[${new Date().toISOString().replace('T', ' ').substring(0, 19)}] SYSTEM: VELOX Inside Portal initialized. Production environment ready for live operations.`
+        `[${new Date().toISOString().replace('T', ' ').substring(0, 19)}] SYSTEM: VELOX Inside Portal initialized. Production environment ready with 0 mock data.`
       ]
     };
 
     // Load or Initialize Local Storage Database
     function getPortalDb() {
       // Clear legacy/cached mockup databases
-      ['velox_portal_db_v1', 'velox_portal_db_v2', 'velox_portal_db_v3', 'velox_portal_db_v4'].forEach(k => {
+      ['velox_portal_db_v1', 'velox_portal_db_v2', 'velox_portal_db_v3', 'velox_portal_db_v4', 'velox_portal_db_v5'].forEach(k => {
         try { localStorage.removeItem(k); } catch (e) {}
       });
 
-      const stored = localStorage.getItem('velox_portal_db_v5');
+      const stored = localStorage.getItem(DB_KEY);
       if (stored) {
         try {
           const parsed = JSON.parse(stored);
@@ -1847,9 +1878,16 @@
               if (parsed.personas.fatima) parsed.personas.fatima.avatar = 'photos/Fatima Salman.jpeg';
               if (parsed.personas.karim) parsed.personas.karim.avatar = 'photos/Karim Shaprawy.jpeg';
               if (parsed.personas.romy) parsed.personas.romy.avatar = 'photos/Mohamed Romy.jpeg';
-              if (parsed.personas.moaaz) parsed.personas.moaaz.avatar = 'photos/Moaaz Elghamry.jpeg';
+              if (parsed.personas.moaaz) {
+                parsed.personas.moaaz.avatar = 'photos/Moaaz Elghamry.jpeg';
+                parsed.personas.moaaz.role = 'Managerial Leader & Powertrain Lead';
+                if (!parsed.personas.moaaz.departments.includes('Powertrain')) {
+                  parsed.personas.moaaz.departments.push('Powertrain');
+                }
+              }
               if (parsed.personas.hassan) parsed.personas.hassan.avatar = 'photos/Mohamed Hassan.jpeg';
             }
+            if (!parsed.invitations) parsed.invitations = [];
             parsed.accounts.forEach(a => { if (!a.status) a.status = 'Active'; });
             if (!parsed.auditLog) {
               parsed.auditLog = [
@@ -1860,12 +1898,12 @@
           }
         } catch (e) { console.warn(e); }
       }
-      localStorage.setItem('velox_portal_db_v5', JSON.stringify(PORTAL_SEED));
+      localStorage.setItem(DB_KEY, JSON.stringify(PORTAL_SEED));
       return PORTAL_SEED;
     }
 
     function savePortalDb(db) {
-      localStorage.setItem('velox_portal_db_v5', JSON.stringify(db));
+      localStorage.setItem(DB_KEY, JSON.stringify(db));
     }
 
     // Telemetry & Audit Logger
@@ -1897,7 +1935,222 @@
       renderAuditLog();
     }
 
-    // Current Authenticated User & Persona State
+    // ==================== STRICT HIERARCHICAL PERMISSIONS MATRIX ====================
+    // 1. Team Leader (Fatima) and Vice Leader (Karim) have omni-access.
+    // 2. Technical Leader (Mohamed Romy) can change what is under him (Technical branch).
+    // 3. Managerial Leader & Powertrain Lead (Moaaz Elghamry) can change Managerial + Powertrain.
+    // 4. Electrical Lead (Ali Elgohary) can change what is under him (Electrical).
+    // 5. Media Lead (Mohamed Hassan) can change what is under him (Media & PR).
+    // 6. Regular members CANNOT change any role or rule (including their own).
+    function isTeamLeader(persona) {
+      if (!persona) return false;
+      return persona.roleType === 'executive' || persona.id === 'fatima-salman' || persona.id === 'karim-shaprawy';
+    }
+
+    function canManageMember(persona, targetMember) {
+      if (!persona || !targetMember) return false;
+      // Regular members have NO authority to change anyone or themselves
+      if (persona.roleType === 'member') return false;
+      // No member can change themselves unless they are Fatima or Karim
+      if (persona.id === targetMember.id && !isTeamLeader(persona)) return false;
+      // Team Leader and Vice Team Leader change anything
+      if (isTeamLeader(persona)) return true;
+
+      // Mohamed Romy can change what is under him (Technical branch, non-exec)
+      if (persona.id === 'mohamed-romy') {
+        return targetMember.branch === 'Technical' && targetMember.role !== 'Technical Leader' && targetMember.role !== 'Team Leader' && targetMember.role !== 'Vice Team Leader';
+      }
+
+      // Moaaz Elghamry can change what is under him (Managerial branch + Powertrain)
+      if (persona.id === 'moaaz-elghamry') {
+        const isManagerial = targetMember.branch === 'Managerial' && targetMember.role !== 'Managerial Leader' && targetMember.role !== 'Team Leader' && targetMember.role !== 'Vice Team Leader';
+        const isPowertrain = targetMember.dept && targetMember.dept.includes('Powertrain') && targetMember.id !== 'moaaz-elghamry';
+        return isManagerial || isPowertrain;
+      }
+
+      // Ali Elgohary can change what is under him (Electrical)
+      if (persona.id === 'ali-elgohary') {
+        return targetMember.dept && targetMember.dept.includes('Electrical') && targetMember.id !== 'ali-elgohary';
+      }
+
+      // Mohamed Hassan can change what is under him (Media & PR)
+      if (persona.id === 'mohamed-hassan') {
+        return targetMember.dept && targetMember.dept.includes('Media') && targetMember.id !== 'mohamed-hassan';
+      }
+
+      return false;
+    }
+
+    function canAssignToMember(persona, targetMember) {
+      if (!persona || !targetMember) return false;
+      if (persona.roleType === 'member') return false;
+      if (isTeamLeader(persona)) return true;
+      if (persona.id === 'mohamed-romy') return targetMember.branch === 'Technical';
+      if (persona.id === 'moaaz-elghamry') return targetMember.branch === 'Managerial' || (targetMember.dept && targetMember.dept.includes('Powertrain'));
+      if (persona.id === 'ali-elgohary') return targetMember.dept && targetMember.dept.includes('Electrical');
+      if (persona.id === 'mohamed-hassan') return targetMember.dept && targetMember.dept.includes('Media');
+      return false;
+    }
+
+    function canDeleteTask(persona, task) {
+      if (!persona || !task) return false;
+      // Either the assigned member OR authorized leader can delete
+      if (task.assignedToId === persona.id) return true;
+      if (isTeamLeader(persona)) return true;
+      if (persona.id === 'mohamed-romy' && task.branch === 'Technical') return true;
+      if (persona.id === 'moaaz-elghamry' && (task.branch === 'Managerial' || (task.dept && task.dept.includes('Powertrain')))) return true;
+      if (persona.id === 'ali-elgohary' && task.dept && task.dept.includes('Electrical')) return true;
+      if (persona.id === 'mohamed-hassan' && task.dept && task.dept.includes('Media')) return true;
+      return false;
+    }
+
+    function canApproveAccessRequest(persona, req) {
+      if (!persona || !req) return false;
+      if (isTeamLeader(persona)) return true;
+      const db = getPortalDb();
+      const file = db.files.find(f => f.id === req.fileId);
+      if (!file) return false;
+      if (persona.id === 'mohamed-romy' && file.branch === 'Technical') return true;
+      if (persona.id === 'moaaz-elghamry' && (file.branch === 'Managerial' || (file.dept && file.dept.includes('Powertrain')))) return true;
+      if (persona.id === 'ali-elgohary' && file.dept && file.dept.includes('Electrical')) return true;
+      if (persona.id === 'mohamed-hassan' && file.dept && file.dept.includes('Media')) return true;
+      return false;
+    }
+
+    // Invitations strictly for Fatima and Karim
+    function canManageInvitations(persona) {
+      return isTeamLeader(persona);
+    }
+
+    // ==================== LIVE NOTIFICATION ENGINE ====================
+    function addNotification(notifObj) {
+      const db = getPortalDb();
+      if (!db.notifications) db.notifications = [];
+      const entry = {
+        id: 'NOTIF-' + Date.now() + '-' + Math.floor(Math.random() * 1000),
+        title: notifObj.title || 'System Notification',
+        message: notifObj.message,
+        author: notifObj.author || 'System',
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        date: new Date().toISOString().substring(0, 10),
+        type: notifObj.type || 'info',
+        target: notifObj.target || 'all',
+        readBy: []
+      };
+      db.notifications.unshift(entry);
+      if (db.notifications.length > 50) db.notifications.length = 50;
+      savePortalDb(db);
+      renderNotifications();
+    }
+
+    function renderNotifications() {
+      const db = getPortalDb();
+      const p = getActivePersona();
+      const notifList = document.getElementById('notifDropdownList');
+      const badgeEl = document.getElementById('notifBellBadge');
+      const dashLogEl = document.getElementById('notificationsLog');
+
+      if (!db.notifications) db.notifications = [];
+
+      const relevant = db.notifications.filter(n => {
+        if (typeof n === 'string') return true;
+        if (!n.target || n.target === 'all') return true;
+        if (Array.isArray(n.target)) {
+          return n.target.includes(currentPersonaKey) || n.target.includes(p.id) || 
+            (isTeamLeader(p) && (n.target.includes('fatima') || n.target.includes('karim') || n.target.includes('executive'))) ||
+            (p.id === 'mohamed-romy' && (n.target.includes('romy') || n.target.includes('technical_lead'))) ||
+            (p.id === 'moaaz-elghamry' && (n.target.includes('moaaz') || n.target.includes('managerial_lead')));
+        }
+        return false;
+      });
+
+      const unreadCount = relevant.filter(n => {
+        if (typeof n === 'string') return false;
+        return !n.readBy || !n.readBy.includes(currentPersonaKey);
+      }).length;
+
+      if (badgeEl) {
+        if (unreadCount > 0) {
+          badgeEl.textContent = unreadCount > 9 ? '9+' : unreadCount;
+          badgeEl.style.display = 'inline-block';
+        } else {
+          badgeEl.style.display = 'none';
+        }
+      }
+
+      if (notifList) {
+        if (relevant.length === 0) {
+          notifList.innerHTML = `<div style="color: var(--text-dim); text-align: center; padding: 16px 0;">No notifications yet.</div>`;
+        } else {
+          notifList.innerHTML = relevant.slice(0, 12).map(n => {
+            const text = typeof n === 'string' ? n : n.message;
+            const title = typeof n === 'object' && n.title ? n.title : 'System Notice';
+            const time = typeof n === 'object' && n.timestamp ? n.timestamp : '';
+            const isUnread = typeof n === 'object' && (!n.readBy || !n.readBy.includes(currentPersonaKey));
+
+            return `
+              <div style="background: ${isUnread ? 'rgba(197,34,31,0.08)' : 'rgba(255,255,255,0.02)'}; border: 1px solid ${isUnread ? 'rgba(197,34,31,0.3)' : 'var(--border)'}; border-radius: 8px; padding: 10px 12px; position: relative;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 3px;">
+                  <strong style="color: ${isUnread ? '#FFF' : 'var(--text-muted)'}; font-size: 0.8rem;">${title}</strong>
+                  <span style="font-size: 0.7rem; color: var(--text-dim);">${time}</span>
+                </div>
+                <p style="margin: 0; font-size: 0.78rem; color: var(--text-muted); line-height: 1.4;">${text}</p>
+              </div>
+            `;
+          }).join('');
+        }
+      }
+
+      if (dashLogEl) {
+        if (relevant.length === 0) {
+          dashLogEl.innerHTML = `<div style="color: var(--text-dim); font-size: 0.84rem; padding: 12px 0;">No activity log entries yet. Systems operational.</div>`;
+        } else {
+          dashLogEl.innerHTML = relevant.slice(0, 8).map(n => {
+            const text = typeof n === 'string' ? n : n.message;
+            const time = typeof n === 'object' && n.timestamp ? n.timestamp : '';
+            return `
+              <div style="display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.04);">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2.5" style="margin-top: 3px; flex-shrink: 0;"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <div style="flex-grow: 1;">
+                  <span style="color: #E2E8F0;">${text}</span>
+                  ${time ? `<span style="font-size: 0.72rem; color: var(--text-dim); margin-left: 8px;">(${time})</span>` : ''}
+                </div>
+              </div>
+            `;
+          }).join('');
+        }
+      }
+    }
+
+    function toggleNotificationDropdown() {
+      const dd = document.getElementById('notifDropdown');
+      if (!dd) return;
+      const isHidden = dd.style.display === 'none' || !dd.style.display;
+      dd.style.display = isHidden ? 'block' : 'none';
+      if (isHidden) {
+        const db = getPortalDb();
+        if (db.notifications) {
+          db.notifications.forEach(n => {
+            if (typeof n === 'object') {
+              if (!n.readBy) n.readBy = [];
+              if (!n.readBy.includes(currentPersonaKey)) n.readBy.push(currentPersonaKey);
+            }
+          });
+          savePortalDb(db);
+        }
+        const badgeEl = document.getElementById('notifBellBadge');
+        if (badgeEl) badgeEl.style.display = 'none';
+      }
+    }
+
+    function clearAllNotifications() {
+      const db = getPortalDb();
+      db.notifications = [];
+      savePortalDb(db);
+      renderNotifications();
+    }
+
+    // ==================== AUTHENTICATED STATE & SESSION ====================
     let currentAuthUser = localStorage.getItem('velox_auth_user') || null;
     let currentPersonaKey = localStorage.getItem('velox_active_persona') || 'fatima';
 
@@ -1911,7 +2164,7 @@
         if (acct) {
           if (acct.status === 'Suspended') {
             portalLogout();
-            alert('Your account is currently suspended. Please contact Executive Administration.');
+            alert('Your account is currently suspended by Executive Administration. Please contact Team Leadership.');
             return false;
           }
           currentPersonaKey = acct.personaKey;
@@ -1963,19 +2216,11 @@
         const alertEl = document.getElementById('loginAlert');
         const alertMsg = document.getElementById('loginAlertMsg');
         if (alertEl && alertMsg) {
-          alertMsg.textContent = 'Invalid username or password. Please verify your credentials or select a verified crew account.';
+          alertMsg.textContent = 'Invalid username or password. Please verify your credentials.';
           alertEl.classList.add('show');
         }
         return false;
       }
-    }
-
-    function quickLogin(username, password) {
-      const uInput = document.getElementById('loginUsername');
-      const pInput = document.getElementById('loginPassword');
-      if (uInput) uInput.value = username;
-      if (pInput) pInput.value = password;
-      portalLogin(username, password);
     }
 
     function portalLogout() {
@@ -1999,22 +2244,18 @@
       return db.personas[currentPersonaKey] || db.personas.fatima;
     }
 
-    // Helper: Initials
     function getInitials(name) {
       if (!name) return 'VL';
       return name.split(' ').map(n => n[0]).slice(0, 2).join('').toUpperCase();
     }
 
-    // Update Header Bar with Active Persona
+    // ==================== DISTINCT PROFILE & COMMAND BAR ====================
     function renderUserBar() {
       const p = getActivePersona();
       const db = getPortalDb();
       const avatarEl = document.getElementById('activeAvatar');
       const nameEl = document.getElementById('activeUserName');
       const deptEl = document.getElementById('activeUserDept');
-      const personaSelect = document.getElementById('personaSelect');
-
-      personaSelect.value = currentPersonaKey;
 
       if (p.avatar) {
         avatarEl.innerHTML = `<img src="${p.avatar}" alt="${p.name}" onerror="this.style.display='none'; this.parentElement.textContent='${getInitials(p.name)}';" />`;
@@ -2030,43 +2271,123 @@
       nameEl.innerHTML = `${p.name} <span class="portal-role-pill ${badgeClass}">${p.role}</span>`;
       deptEl.textContent = p.deptDesc || p.branch;
 
+      // Update Distinct Clearance & Jurisdiction Scope Banner
+      const banner = document.getElementById('userScopeBanner');
+      const iconEl = document.getElementById('scopeBadgeIcon');
+      const titleEl = document.getElementById('scopeTitle');
+      const descEl = document.getElementById('scopeDesc');
+      const actionBadge = document.getElementById('scopeActionBadge');
+
+      if (banner && titleEl && descEl) {
+        if (p.id === 'fatima-salman') {
+          iconEl.textContent = '👑';
+          titleEl.textContent = 'Team Leader • Executive Governance Command';
+          descEl.textContent = 'Universal omni-directional authority across all technical, operational, and institutional divisions. Authorized to modify all team roles, approve all data downloads, and issue official team credentials.';
+          actionBadge.textContent = 'Universal Authority';
+          actionBadge.className = 'portal-role-pill role-executive';
+          banner.style.borderLeftColor = 'var(--red)';
+        } else if (p.id === 'karim-shaprawy') {
+          iconEl.textContent = '⚡';
+          titleEl.textContent = 'Vice Team Leader • Operations & Build Governance';
+          descEl.textContent = 'Omni-directional operational oversight, workshop manufacturing discipline, and static event strategy. Authorized with Team Leader to manage team roles, approve downloads, and issue invitations.';
+          actionBadge.textContent = 'Executive Operations';
+          actionBadge.className = 'portal-role-pill role-executive';
+          banner.style.borderLeftColor = 'var(--red)';
+        } else if (p.id === 'mohamed-romy') {
+          iconEl.textContent = '🏎️';
+          titleEl.textContent = 'Technical Leader • Chief Engineering Command';
+          descEl.textContent = 'Full command over Technical Branch (Body & Chassis, Vehicle Dynamics, Powertrain, Electrical). Authorized to assign technical deliverables, manage subteam members, and approve technical file downloads. Changes automatically notify Team Leaders.';
+          actionBadge.textContent = 'Technical Command';
+          actionBadge.className = 'portal-role-pill role-tech';
+          banner.style.borderLeftColor = '#38BDF8';
+        } else if (p.id === 'moaaz-elghamry') {
+          iconEl.textContent = '⚙️';
+          titleEl.textContent = 'Dual Command • Managerial Leader & Powertrain Subteam Lead';
+          descEl.textContent = 'Dual leadership command: Managerial Branch (HR, Media & PR, Business) plus Powertrain engineering. Authorized to assign deliverables, oversee operational workflows, and manage members within jurisdiction. Changes automatically notify Team Leaders.';
+          actionBadge.textContent = 'Dual Branch Command';
+          actionBadge.className = 'portal-role-pill role-ops';
+          banner.style.borderLeftColor = '#FBBF24';
+        } else if (p.id === 'ali-elgohary') {
+          iconEl.textContent = '🔌';
+          titleEl.textContent = 'Electrical Subteam Lead • Raychem Harness & Telemetry';
+          descEl.textContent = 'Subteam command over Electrical, wiring harnesses, sensor bus, and wireless DAQ. Authorized to manage electrical crew and assign electrical tasks. Changes automatically notify Technical Leader and Team Leaders.';
+          actionBadge.textContent = 'Electrical Lead';
+          actionBadge.className = 'portal-role-pill role-tech';
+          banner.style.borderLeftColor = '#38BDF8';
+        } else if (p.id === 'mohamed-hassan') {
+          iconEl.textContent = '📸';
+          titleEl.textContent = 'Media & PR Lead • Visual Identity & Brand Architecture';
+          descEl.textContent = 'Subteam command over Media, photography, racecar documentary films, and social campaigns. Authorized to assign media deliverables and manage media crew. Changes automatically notify Managerial Leader and Team Leaders.';
+          actionBadge.textContent = 'Media & PR Lead';
+          actionBadge.className = 'portal-role-pill role-ops';
+          banner.style.borderLeftColor = '#FBBF24';
+        } else {
+          iconEl.textContent = '🛠️';
+          titleEl.textContent = `Team Member • ${p.branch} (${p.departments.join(', ')})`;
+          descEl.textContent = 'Assigned engineer/operations member. Read-only roster view. Complete assigned sprint tasks on time to earn Velocity Points and badges on the Silverstone Leaderboard.';
+          actionBadge.textContent = 'Specialist Member';
+          actionBadge.className = 'portal-role-pill role-member';
+          banner.style.borderLeftColor = 'rgba(255,255,255,0.2)';
+        }
+      }
+
       const isLeader = (p.roleType === 'executive' || p.roleType === 'technical_lead' || p.roleType === 'managerial_lead' || p.roleType === 'subteam_lead');
 
-      // Show/Hide Admin Tab for Leaders only
+      // Admin Tab visible only for Leaders
       const adminTabBtn = document.getElementById('tabAdminBtn');
       if (adminTabBtn) {
         adminTabBtn.style.display = isLeader ? 'inline-flex' : 'none';
       }
 
-      // Show/Hide Assign Task button for Leaders only
+      // Invitations Tab strictly for Fatima and Karim
+      const invTabBtn = document.getElementById('tabInvitationsBtn');
+      if (invTabBtn) {
+        invTabBtn.style.display = isTeamLeader(p) ? 'inline-flex' : 'none';
+      }
+
+      // If active tab is invitations but user is not team leader, switch to dashboard
+      const activeTabBtn = document.querySelector('.portal-tab-btn.active');
+      if (activeTabBtn && activeTabBtn.dataset.tab === 'invitations' && !isTeamLeader(p)) {
+        switchPortalTab('dashboard');
+      }
+
+      // Assign Task button visible only for Leaders
       const assignWrap = document.getElementById('assignTaskBtnWrap');
       if (assignWrap) {
         assignWrap.style.display = isLeader ? 'block' : 'none';
       }
 
-      // Show/Hide Access Requests Queue for Leaders only
+      // Access Requests Queue visible only for Leaders
       const queueCard = document.getElementById('accessRequestsQueueCard');
       if (queueCard) {
         queueCard.style.display = isLeader ? 'block' : 'none';
       }
 
-      // Update KPIs
+      // Update Points KPI
       const memberEntry = db.membersRoster.find(m => m.id === p.id);
       const points = memberEntry ? memberEntry.points : 0;
       document.getElementById('kpiPoints').textContent = points.toLocaleString();
 
+      renderNotifications();
       renderDashboard();
       renderVault();
       renderTasks();
       renderCompetition();
-      renderInvitationsRoleOptions();
+      if (isTeamLeader(p)) {
+        renderInvitationsRoleOptions();
+        renderInvitationsTable();
+      }
       if (isLeader) {
         renderAdminDashboard();
       }
     }
 
-    // Tab Switching
     function switchPortalTab(tabKey) {
+      const p = getActivePersona();
+      if (tabKey === 'invitations' && !isTeamLeader(p)) {
+        alert('Access Denied: Team invitations are restricted to Team Leaders (Fatima & Karim).');
+        return;
+      }
       document.querySelectorAll('.portal-tab-btn').forEach(b => {
         b.classList.toggle('active', b.dataset.tab === tabKey);
       });
@@ -2076,7 +2397,6 @@
       window.scrollTo({ top: 120, behavior: 'smooth' });
     }
 
-    // Modal helpers
     function openPortalModal(id) {
       const modal = document.getElementById(id);
       if (modal) modal.classList.add('active');
@@ -2086,7 +2406,6 @@
       if (modal) modal.classList.remove('active');
     }
 
-    // Self-Service Change Password Modal
     function openChangePasswordModal() {
       const alertEl = document.getElementById('changePassAlert');
       if (alertEl) alertEl.style.display = 'none';
@@ -2102,7 +2421,6 @@
       const db = getPortalDb();
       const p = getActivePersona();
 
-      // Access requests list
       const requestsListEl = document.getElementById('accessRequestsList');
       if (requestsListEl) {
         const pending = db.accessRequests.filter(r => r.status === 'Pending');
@@ -2110,31 +2428,27 @@
         if (pending.length === 0) {
           requestsListEl.innerHTML = `<div style="color: var(--text-dim); font-size: 0.85rem; padding: 8px 0;">No pending access authorizations. All systems clear.</div>`;
         } else {
-          requestsListEl.innerHTML = pending.map(req => `
-            <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 8px; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
-              <div>
-                <strong style="color: #FFF; font-size: 0.9rem;">${req.userName}</strong> (${req.userDept}) requested access to:
-                <div style="color: #38BDF8; font-size: 0.85rem; margin-top: 2px;">${req.fileTitle}</div>
-                <div style="font-size: 0.78rem; color: var(--text-dim); margin-top: 4px;">Reason: "${req.reason}" &bull; ${req.timestamp}</div>
+          requestsListEl.innerHTML = pending.map(req => {
+            const canApprove = canApproveAccessRequest(p, req);
+            return `
+              <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 8px; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                <div>
+                  <strong style="color: #FFF; font-size: 0.9rem;">${req.userName}</strong> (${req.userDept}) requested access to:
+                  <div style="color: #38BDF8; font-size: 0.85rem; margin-top: 2px;">${req.fileTitle}</div>
+                  <div style="font-size: 0.78rem; color: var(--text-dim); margin-top: 4px;">Reason: "${req.reason}" &bull; ${req.timestamp}</div>
+                </div>
+                <div style="display: flex; gap: 8px;">
+                  ${canApprove ? `
+                    <button type="button" class="btn btn-primary" style="padding: 4px 12px; font-size: 0.78rem;" onclick="approveAccessRequest('${req.id}')">Approve</button>
+                    <button type="button" class="btn btn-outline" style="padding: 4px 12px; font-size: 0.78rem; color: var(--status-rejected);" onclick="denyAccessRequest('${req.id}')">Deny</button>
+                  ` : `
+                    <span style="font-size: 0.76rem; color: var(--text-dim);">Outside Jurisdiction</span>
+                  `}
+                </div>
               </div>
-              <div style="display: flex; gap: 8px;">
-                <button type="button" class="btn btn-primary" style="padding: 4px 12px; font-size: 0.78rem;" onclick="approveAccessRequest('${req.id}')">Approve</button>
-                <button type="button" class="btn btn-outline" style="padding: 4px 12px; font-size: 0.78rem; color: var(--status-rejected);" onclick="denyAccessRequest('${req.id}')">Deny</button>
-              </div>
-            </div>
-          `).join('');
+            `;
+          }).join('');
         }
-      }
-
-      // Notifications Log
-      const notifLogEl = document.getElementById('notificationsLog');
-      if (notifLogEl) {
-        notifLogEl.innerHTML = db.notifications.slice(0, 8).map(n => `
-          <div style="display: flex; align-items: center; gap: 10px; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.04);">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-            <span>${n}</span>
-          </div>
-        `).join('');
       }
     }
 
@@ -2143,13 +2457,26 @@
       const p = getActivePersona();
       const req = db.accessRequests.find(r => r.id === reqId);
       if (!req) return;
+
+      if (!canApproveAccessRequest(p, req)) {
+        alert('Access Denied: You do not have authority to approve downloads for this department.');
+        return;
+      }
+
       req.status = 'Approved';
-      // Grant file access
       const file = db.files.find(f => f.id === req.fileId);
       if (file && !file.approvedUsers.includes(req.userId)) {
         file.approvedUsers.push(req.userId);
       }
-      db.notifications.unshift(`Access granted: ${req.userName} authorized to download "${req.fileTitle}".`);
+
+      addNotification({
+        title: 'Download Clearance Approved',
+        message: `${p.name} (${p.role}) approved download clearance for ${req.userName} on "${req.fileTitle}".`,
+        author: p.name,
+        type: 'access',
+        target: !isTeamLeader(p) ? ['fatima', 'karim'] : 'all'
+      });
+
       logAuditEvent(`AUTHORIZATION: ${p.name} approved download access for ${req.userName} on "${req.fileTitle}".`);
       savePortalDb(db);
       renderUserBar();
@@ -2162,27 +2489,35 @@
       const p = getActivePersona();
       const req = db.accessRequests.find(r => r.id === reqId);
       if (!req) return;
+
+      if (!canApproveAccessRequest(p, req)) {
+        alert('Access Denied: You do not have authority to review downloads for this department.');
+        return;
+      }
+
       req.status = 'Denied';
-      db.notifications.unshift(`Access denied: request from ${req.userName} for "${req.fileTitle}" was declined.`);
+      addNotification({
+        title: 'Download Request Denied',
+        message: `Download request from ${req.userName} for "${req.fileTitle}" was declined by ${p.name}.`,
+        author: p.name,
+        type: 'access',
+        target: !isTeamLeader(p) ? ['fatima', 'karim'] : 'all'
+      });
+
       logAuditEvent(`AUTHORIZATION: ${p.name} declined download access for ${req.userName} on "${req.fileTitle}".`);
       savePortalDb(db);
       renderUserBar();
       renderAdminDashboard();
     }
 
-    // ==================== DATA VAULT TAB (WITH RBAC & REAL DOWNLOADS) ====================
+    // ==================== DATA VAULT TAB ====================
     let activeVaultFilter = 'all';
 
     function isFileAccessibleToPersona(file, persona) {
-      // 1. Executive sees EVERYTHING
       if (persona.roleType === 'executive') return true;
-      // 2. Technical Leader sees ALL Technical branch files
       if (persona.roleType === 'technical_lead' && file.branch === 'Technical') return true;
-      // 3. Managerial Leader sees ALL Managerial branch files
-      if (persona.roleType === 'managerial_lead' && file.branch === 'Managerial') return true;
-      // 4. Subteam Leader sees files within their assigned departments
+      if (persona.roleType === 'managerial_lead' && (file.branch === 'Managerial' || file.dept.includes('Powertrain'))) return true;
       if (persona.roleType === 'subteam_lead' && persona.departments.includes(file.dept)) return true;
-      // 5. Normal member sees files INSIDE their department category (or shared categories)
       if (persona.departments.includes(file.dept)) return true;
       return false;
     }
@@ -2216,7 +2551,7 @@
         '- Weight Distribution Target      : 48% Front / 52% Rear',
         '- Executive Sign-off              : Fatima Salman (Team Leader) & Karim Shaprawy (Vice Leader)',
         '- Chief Engineering Verification  : Mohamed Romy (Technical Leader)',
-        '- Operational Compliance          : Moaaz Elghamry (Managerial Leader)',
+        '- Operational Compliance          : Moaaz Elghamry (Managerial Leader & Powertrain Lead)',
         '',
         'CONFIDENTIAL: Authorized for internal Velox Racing ZNU use only.',
         '================================================================================'
@@ -2231,7 +2566,6 @@
 
       logAuditEvent(`DOWNLOAD: ${p.name} downloaded "${file.title}" (ID: ${file.id}).`);
 
-      // 1. If file has base64 dataUrl from direct upload
       if (file.fileData) {
         const a = document.createElement('a');
         a.href = file.fileData;
@@ -2242,13 +2576,11 @@
         return;
       }
 
-      // 2. If file has external link (e.g., Google Drive, Onshape CAD)
       if (file.url && file.url !== '#' && file.url.startsWith('http')) {
         window.open(file.url, '_blank');
         return;
       }
 
-      // 3. Generate genuine, authentic engineering asset payload
       const payload = generateEngineeringPayload(file);
       const blob = new Blob([payload], { type: 'text/plain;charset=utf-8' });
       const blobUrl = URL.createObjectURL(blob);
@@ -2268,10 +2600,8 @@
       const tbody = document.getElementById('vaultTableBody');
       if (!tbody) return;
 
-      // Filter by accessibility
       let files = db.files.filter(f => isFileAccessibleToPersona(f, p));
 
-      // Filter by branch toolbar
       if (activeVaultFilter === 'technical') {
         files = files.filter(f => f.branch === 'Technical');
       } else if (activeVaultFilter === 'managerial') {
@@ -2285,13 +2615,12 @@
         tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-dim); padding: 48px 20px;">
           <div style="font-size: 1.8rem; margin-bottom: 8px;">📂</div>
           <strong style="color: #FFF; display: block; margin-bottom: 4px; font-size: 0.95rem;">Vault Ready for Real Season Files</strong>
-          <span style="font-size: 0.84rem;">No files uploaded yet. Leaders and authorized crew can click "+ Upload New Deliverable" to store engineering CAD, telemetry data, or PR materials.</span>
+          <span style="font-size: 0.84rem;">Zero files currently uploaded. Leaders and authorized crew can click "+ Upload New Deliverable" to store engineering CAD, telemetry data, or PR materials.</span>
         </td></tr>`;
         return;
       }
 
       tbody.innerHTML = files.map(file => {
-        // Can this user download/install?
         const isLeader = (p.roleType === 'executive' || p.roleType === 'technical_lead' || p.roleType === 'managerial_lead' || p.roleType === 'subteam_lead');
         const hasApprovedAccess = file.approvedUsers && file.approvedUsers.includes(p.id);
         const canDownload = !file.restricted || isLeader || hasApprovedAccess;
@@ -2307,7 +2636,6 @@
             </button>
           `;
         } else {
-          // Check if pending request exists
           const existingReq = db.accessRequests.find(r => r.fileId === file.id && r.userId === p.id && r.status === 'Pending');
           if (existingReq) {
             statusBadge = `<span class="access-status-badge status-pending">Pending Review</span>`;
@@ -2347,21 +2675,20 @@
       openPortalModal('requestAccessModal');
     }
 
-    // ==================== TASK CENTER & COMPETITION TAB ====================
+    // ==================== TASK CENTER & DEADLINE PROGRESS ====================
     function renderTasks() {
       const db = getPortalDb();
       const p = getActivePersona();
       const container = document.getElementById('tasksListContainer');
       if (!container) return;
 
-      // Filter tasks: Leaders see all or branch tasks; Members see tasks assigned to them or their dept
       let tasks = db.tasks;
       if (p.roleType === 'member') {
         tasks = tasks.filter(t => t.assignedToId === p.id || p.departments.includes(t.dept));
       } else if (p.roleType === 'technical_lead') {
         tasks = tasks.filter(t => t.branch === 'Technical');
       } else if (p.roleType === 'managerial_lead') {
-        tasks = tasks.filter(t => t.branch === 'Managerial');
+        tasks = tasks.filter(t => t.branch === 'Managerial' || (t.dept && t.dept.includes('Powertrain')));
       }
 
       document.getElementById('tabTasksBadge').textContent = tasks.filter(t => t.status === 'In Progress').length;
@@ -2371,14 +2698,50 @@
         container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--text-dim); padding: 50px 20px; background: var(--bg-card); border: 1px dashed var(--border); border-radius: 12px;">
           <div style="font-size: 1.8rem; margin-bottom: 8px;">⚡</div>
           <strong style="color: #FFF; display: block; margin-bottom: 4px; font-size: 0.95rem;">Sprint Board Ready for Live Deliverables</strong>
-          <span style="font-size: 0.84rem;">No sprint tasks active. Department leaders can assign engineering and operations deliverables using "+ Assign New Task".</span>
+          <span style="font-size: 0.84rem;">Zero active sprint tasks. Department leaders can assign engineering and operations deliverables with deadlines using "+ Assign New Task".</span>
         </div>`;
         return;
       }
 
+      const now = new Date();
+
       container.innerHTML = tasks.map(task => {
         const isCompleted = task.status === 'Completed';
         const priorityColor = task.priority === 'Critical' ? '#EF4444' : (task.priority === 'High' ? '#FBBF24' : '#38BDF8');
+
+        // Interactive Deadline Progress Calculation
+        const deadlineDate = new Date(task.deadline);
+        const createdDate = task.createdAt ? new Date(task.createdAt) : new Date(now.getTime() - 2 * 86400000);
+        const totalDuration = Math.max(1, deadlineDate.getTime() - createdDate.getTime());
+        const elapsed = Math.max(0, now.getTime() - createdDate.getTime());
+        const remainingMs = deadlineDate.getTime() - now.getTime();
+        const pctElapsed = Math.min(100, Math.max(0, Math.round((elapsed / totalDuration) * 100)));
+
+        const isOverdue = remainingMs < 0 && !isCompleted;
+        let barColor = '#22C55E';
+        let timeRemainingText = '';
+
+        if (isCompleted) {
+          barColor = '#22C55E';
+          timeRemainingText = '✓ Completed On Time';
+        } else if (isOverdue) {
+          barColor = '#EF4444';
+          const overdueHours = Math.abs(Math.round(remainingMs / (1000 * 60 * 60)));
+          const overdueDays = Math.floor(overdueHours / 24);
+          timeRemainingText = overdueDays > 0 ? `⚠️ Overdue by ${overdueDays}d ${overdueHours % 24}h` : `⚠️ Overdue by ${overdueHours}h`;
+        } else {
+          const remHours = Math.round(remainingMs / (1000 * 60 * 60));
+          const remDays = Math.floor(remHours / 24);
+          if (remHours <= 48) {
+            barColor = '#FBBF24';
+            timeRemainingText = `⏳ ${remDays > 0 ? remDays + 'd ' : ''}${remHours % 24}h remaining (Urgent)`;
+          } else {
+            timeRemainingText = `📅 ${remDays} days remaining`;
+          }
+        }
+
+        const canDelete = canDeleteTask(p, task);
+        const formattedDeadline = task.deadline ? task.deadline.replace('T', ' at ') : 'No deadline';
 
         return `
           <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px; position: relative; display: flex; flex-direction: column; justify-content: space-between;">
@@ -2394,26 +2757,78 @@
               <h4 style="margin: 0 0 8px 0; font-size: 1.05rem; color: #FFF;">${task.title}</h4>
               <p style="font-size: 0.82rem; color: var(--text-muted); margin: 0 0 14px 0; line-height: 1.5;">${task.desc}</p>
               
-              <div style="font-size: 0.78rem; color: var(--text-dim); margin-bottom: 16px;">
+              <div style="font-size: 0.78rem; color: var(--text-dim); margin-bottom: 14px;">
                 <div><strong>Assigned To:</strong> ${task.assignedToName} (${task.dept})</div>
-                <div><strong>Deadline:</strong> ${task.deadline.replace('T', ' at ')}</div>
+                <div><strong>Deadline Target:</strong> ${formattedDeadline}</div>
+              </div>
+
+              <!-- Interactive Sprint Deadline Progress Bar -->
+              <div style="margin: 8px 0 18px 0; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; font-size: 0.76rem;">
+                  <span style="color: var(--text-dim); font-weight: 600;">Sprint Progress</span>
+                  <span style="color: ${barColor}; font-weight: 700;">${timeRemainingText}</span>
+                </div>
+                <div style="height: 6px; background: rgba(255,255,255,0.08); border-radius: 999px; overflow: hidden;">
+                  <div style="height: 100%; width: ${isCompleted ? 100 : (isOverdue ? 100 : pctElapsed)}%; background: ${barColor}; border-radius: 999px; transition: width 0.3s ease;"></div>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-top: 4px; font-size: 0.7rem; color: var(--text-dim);">
+                  <span>Target: ${task.deadline ? task.deadline.split('T')[0] : 'N/A'}</span>
+                  <span>${isCompleted ? '100% verified' : (isOverdue ? 'Overdue' : pctElapsed + '% sprint elapsed')}</span>
+                </div>
               </div>
             </div>
 
-            <div>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center; justify-content: space-between; margin-top: 10px;">
               ${isCompleted ? `
-                <div style="background: rgba(34,197,94,0.12); color: #22C55E; border: 1px solid rgba(34,197,94,0.3); border-radius: 6px; padding: 8px; text-align: center; font-size: 0.82rem; font-weight: 700;">
+                <div style="background: rgba(34,197,94,0.12); color: #22C55E; border: 1px solid rgba(34,197,94,0.3); border-radius: 6px; padding: 8px 14px; font-size: 0.8rem; font-weight: 700; flex-grow: 1; text-align: center;">
                   ✓ Completed & Points Awarded
                 </div>
               ` : `
-                <button type="button" class="btn btn-primary btn-full" style="padding: 8px 14px; font-size: 0.82rem;" onclick="openSubmitTaskModal('${task.id}', '${task.title.replace(/'/g, "\\'")}', ${task.basePoints + task.speedBonus})">
+                <button type="button" class="btn btn-primary" style="padding: 8px 14px; font-size: 0.82rem; flex-grow: 1;" onclick="openSubmitTaskModal('${task.id}', '${task.title.replace(/'/g, "\\'")}', ${task.basePoints + task.speedBonus})">
                   Upload Deliverables & Claim Points
                 </button>
               `}
+
+              ${canDelete ? `
+                <button type="button" class="btn btn-outline" style="padding: 8px 12px; font-size: 0.8rem; color: #EF4444; border-color: rgba(239,68,68,0.4);" onclick="deleteTask('${task.id}')" title="Delete this sprint task">
+                  🗑️ Delete
+                </button>
+              ` : ''}
             </div>
           </div>
         `;
       }).join('');
+    }
+
+    function deleteTask(taskId) {
+      const db = getPortalDb();
+      const p = getActivePersona();
+      const task = db.tasks.find(t => t.id === taskId);
+      if (!task) return;
+
+      if (!canDeleteTask(p, task)) {
+        alert('Access Denied: Only the assigned member or an authorized department leader can delete this task.');
+        return;
+      }
+
+      if (!confirm(`Are you sure you want to delete the task "${task.title}"?`)) return;
+
+      db.tasks = db.tasks.filter(t => t.id !== taskId);
+      logAuditEvent(`TASK: Task "${task.title}" deleted by ${p.name}.`);
+
+      addNotification({
+        title: 'Task Deleted',
+        message: `Task "${task.title}" was deleted by ${p.name}.`,
+        author: p.name,
+        type: 'task',
+        target: !isTeamLeader(p) ? ['fatima', 'karim'] : 'all'
+      });
+
+      savePortalDb(db);
+      renderTasks();
+      renderAdminDashboard();
+      renderUserBar();
+      alert(`Task "${task.title}" successfully deleted.`);
     }
 
     function openSubmitTaskModal(taskId, title, maxPoints) {
@@ -2430,25 +2845,22 @@
       const tableBody = document.getElementById('leaderboardTableBody');
       if (!podiumEl || !tableBody) return;
 
-      // Sort roster by points descending
       const sorted = [...db.membersRoster].sort((a, b) => b.points - a.points);
       const hasPoints = sorted.some(m => m.points > 0);
-
-      // Top 3 for podium
       const top3 = sorted.slice(0, 3);
+
       if (!hasPoints) {
         podiumEl.innerHTML = `
           <div style="grid-column: 1 / -1; background: rgba(255,255,255,0.02); border: 1px dashed var(--border); border-radius: var(--radius-lg); padding: 36px 20px; text-align: center;">
             <div style="font-size: 2.2rem; margin-bottom: 10px;">🏁</div>
             <h4 style="font-size: 1.15rem; color: #FFF; margin: 0 0 6px 0;">VELOX Season 2026 Standings Open</h4>
             <p style="font-size: 0.86rem; color: var(--text-dim); max-width: 540px; margin: 0 auto; line-height: 1.5;">
-              Podium positions and Velocity Points will be awarded dynamically as engineering and managerial deliverables are submitted, verified, and approved.
+              Points currently zeroed for authentic season start. Podium positions and Velocity Points will be awarded dynamically as engineering and managerial sprint deliverables are submitted, verified, and approved!
             </p>
           </div>
         `;
       } else if (top3.length >= 3) {
         podiumEl.innerHTML = `
-          <!-- 2nd Place -->
           <div class="podium-card silver">
             <div class="podium-medal">2</div>
             <h3 style="font-size: 1.15rem; margin: 0 0 4px 0; color: #FFF;">${top3[1].name}</h3>
@@ -2456,8 +2868,6 @@
             <div class="podium-points">${top3[1].points} pts</div>
             <div style="font-size: 0.74rem; color: #38BDF8; font-weight: 700;">Silverstone Apex Contributor</div>
           </div>
-
-          <!-- 1st Place (Gold) -->
           <div class="podium-card gold">
             <div class="podium-medal">1</div>
             <h3 style="font-size: 1.3rem; margin: 0 0 4px 0; color: #FFF;">${top3[0].name}</h3>
@@ -2465,8 +2875,6 @@
             <div class="podium-points">${top3[0].points} pts</div>
             <div style="font-size: 0.78rem; color: #EAB308; font-weight: 800;">⚡ P1 Velocity Champion</div>
           </div>
-
-          <!-- 3rd Place -->
           <div class="podium-card bronze">
             <div class="podium-medal">3</div>
             <h3 style="font-size: 1.15rem; margin: 0 0 4px 0; color: #FFF;">${top3[2].name}</h3>
@@ -2477,7 +2885,6 @@
         `;
       }
 
-      // Standings Table
       tableBody.innerHTML = sorted.map((member, idx) => {
         const badges = [];
         if (member.points > 0) {
@@ -2514,162 +2921,140 @@
       }).join('');
     }
 
-    // ==================== INVITATION GENERATOR ====================
+    // ==================== INVITATIONS (FATIMA & KARIM ONLY) ====================
     function renderInvitationsRoleOptions() {
       const p = getActivePersona();
       const roleSelect = document.getElementById('invRoleSelect');
       const subteamSelect = document.getElementById('invSubteamSelect');
       if (!roleSelect || !subteamSelect) return;
 
-      if (p.roleType === 'executive') {
-        roleSelect.innerHTML = `
-          <option value="Team Member">Team Member</option>
-          <option value="Subteam Leader">Subteam Leader</option>
-          <option value="Technical Leader">Technical Leader</option>
-          <option value="Managerial Leader">Managerial Leader</option>
-          <option value="Vice Team Leader">Vice Team Leader</option>
-        `;
-        subteamSelect.innerHTML = `
-          <option value="Body & Chassis">Body & Chassis</option>
-          <option value="Vehicle Dynamics">Vehicle Dynamics</option>
-          <option value="Powertrain">Powertrain</option>
-          <option value="Electrical">Electrical</option>
-          <option value="Human Resources (HR)">Human Resources (HR)</option>
-          <option value="Media & PR">Media & PR</option>
-          <option value="Business (Team Director)">Business (Team Director)</option>
-        `;
-      } else if (p.roleType === 'subteam_lead') {
-        roleSelect.innerHTML = `<option value="Team Member">Team Member (Subteam Specialist)</option>`;
-        subteamSelect.innerHTML = p.departments.map(d => `<option value="${d}">${d}</option>`).join('');
-      } else {
-        roleSelect.innerHTML = `<option value="Team Member">Team Member Candidate</option>`;
-        subteamSelect.innerHTML = p.departments.map(d => `<option value="${d}">${d}</option>`).join('');
+      if (!isTeamLeader(p)) {
+        roleSelect.innerHTML = `<option value="Team Member">Restricted to Team Leaders</option>`;
+        return;
       }
+
+      roleSelect.innerHTML = `
+        <option value="Team Member">Team Member</option>
+        <option value="Subteam Leader">Subteam Leader</option>
+        <option value="Technical Leader">Technical Leader</option>
+        <option value="Managerial Leader">Managerial Leader</option>
+        <option value="Vice Team Leader">Vice Team Leader</option>
+      `;
+      subteamSelect.innerHTML = `
+        <option value="Body & Chassis">Body & Chassis</option>
+        <option value="Vehicle Dynamics">Vehicle Dynamics</option>
+        <option value="Powertrain">Powertrain</option>
+        <option value="Electrical">Electrical</option>
+        <option value="Human Resources (HR)">Human Resources (HR)</option>
+        <option value="Media & PR">Media & PR</option>
+        <option value="Business (Team Director)">Business (Team Director)</option>
+      `;
     }
 
-    // Generate Pass Action
-    document.addEventListener('DOMContentLoaded', () => {
-      const invForm = document.getElementById('invitationForm');
-      if (invForm) {
-        invForm.addEventListener('submit', (e) => {
-          e.preventDefault();
-          const p = getActivePersona();
-          const guestName = document.getElementById('invGuestName').value.trim();
-          const role = document.getElementById('invRoleSelect').value;
-          const dept = document.getElementById('invSubteamSelect').value;
-          const note = document.getElementById('invNote').value.trim();
+    function renderInvitationsTable() {
+      const db = getPortalDb();
+      const p = getActivePersona();
+      const tbody = document.getElementById('invitationsTableBody');
+      const countBadge = document.getElementById('invitationsCountBadge');
+      if (!tbody) return;
 
-          const serial = 'FS-ZNU-' + Math.floor(100000 + Math.random() * 900000);
-          const branch = (dept.includes('HR') || dept.includes('Media') || dept.includes('Business')) ? 'Managerial' : 'Technical';
+      const list = db.invitations || [];
+      if (countBadge) countBadge.textContent = `${list.length} Issued Pass${list.length === 1 ? '' : 'es'}`;
 
-          const passHtml = `
-            <div class="invitation-pass-preview" id="activePassCard">
-              <div class="pass-header">
-                <div class="pass-crest">
-                  <img src="VeloxLogoWeb.png" alt="Velox" onerror="this.src='VeloxForWeb_dark.png'" />
-                  <div>
-                    <strong style="color: #FFF; font-size: 0.95rem; display: block;">VELOX FORMULA RACING</strong>
-                    <span style="font-size: 0.72rem; color: var(--text-dim);">Zagazig National University &bull; Silverstone 2026</span>
-                  </div>
-                </div>
-                <div class="pass-security-seal">${serial}</div>
-              </div>
-
-              <div class="pass-body">
-                <span style="font-size: 0.78rem; text-transform: uppercase; color: var(--red); font-weight: 800; letter-spacing: 0.08em;">
-                  OFFICIAL TEAM CREDENTIAL INVITATION
-                </span>
-                <div class="pass-guest-name">${guestName}</div>
-                <p style="font-size: 0.86rem; color: var(--text-muted); margin: 6px 0 16px 0; font-style: italic;">
-                  &ldquo;${note}&rdquo;
-                </p>
-
-                <div class="pass-assignment-box">
-                  <div class="pass-meta-field">
-                    <span>Designated Role</span>
-                    <strong>${role}</strong>
-                  </div>
-                  <div class="pass-meta-field">
-                    <span>Branch & Department</span>
-                    <strong>${branch} &bull; ${dept}</strong>
-                  </div>
-                  <div class="pass-meta-field">
-                    <span>Authorized By</span>
-                    <strong>${p.name} (${p.role})</strong>
-                  </div>
-                  <div class="pass-meta-field">
-                    <span>Enlistment Status</span>
-                    <strong style="color: #22C55E;">Ready for Acceptance</strong>
-                  </div>
-                </div>
-
-                <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 20px;">
-                  <button type="button" class="btn btn-primary" onclick="acceptInvitationDirect('${guestName.replace(/'/g, "\\'")}', '${role}', '${branch}', '${dept}')">
-                    ✓ Accept Invitation & Enlist Into Team
-                  </button>
-                  <button type="button" class="btn btn-outline" onclick="copyInvitationLink('${serial}')">
-                    Copy Invitation Link
-                  </button>
-                </div>
-              </div>
-
-              <div class="pass-footer">
-                <span>Formula Student UK Candidate</span>
-                <span>Issued: ${new Date().toISOString().split('T')[0]}</span>
-              </div>
-            </div>
-          `;
-
-          const passContainer = document.getElementById('invitationPassContainer');
-          if (passContainer) {
-            passContainer.innerHTML = passHtml;
-            passContainer.scrollIntoView({ behavior: 'smooth' });
-          }
-
-          // If invited by Subteam Leader, notify Executive Leaders automatically!
-          if (p.roleType === 'subteam_lead') {
-            const db = getPortalDb();
-            db.notifications.unshift(`Executive Alert: Subteam Leader ${p.name} invited ${guestName} to ${dept}.`);
-            savePortalDb(db);
-            renderDashboard();
-          }
-        });
+      if (list.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; color: var(--text-dim); padding: 32px 16px;">
+          <div style="font-size: 1.5rem; margin-bottom: 6px;">✉️</div>
+          <strong>No Official Invitations Issued Yet</strong>
+          <div style="font-size: 0.8rem; margin-top: 4px;">Use the generator above to create an official credential invitation link for candidate recruits.</div>
+        </td></tr>`;
+        return;
       }
-    });
 
-    function acceptInvitationDirect(name, role, branch, dept) {
-      document.getElementById('enlistHiddenName').value = name;
-      document.getElementById('enlistHiddenRole').value = role;
-      document.getElementById('enlistHiddenBranch').value = branch;
-      document.getElementById('enlistHiddenDept').value = dept;
+      tbody.innerHTML = list.map(inv => {
+        const isPending = inv.status === 'Pending';
+        const statusHtml = isPending
+          ? `<span class="access-status-badge status-pending" style="background: rgba(251,191,36,0.12); color: #FBBF24; border: 1px solid rgba(251,191,36,0.3);">Pending Acceptance</span>`
+          : `<span class="access-status-badge status-unlocked" style="background: rgba(34,197,94,0.12); color: #22C55E; border: 1px solid rgba(34,197,94,0.3);">Accepted & Active</span>`;
 
-      document.getElementById('enlistNameDisplay').textContent = name;
-      document.getElementById('enlistRoleDeptDisplay').textContent = `${role} • ${branch} (${dept})`;
+        const standAloneUrl = `invite.html?code=${inv.code}`;
 
-      const suggestedUsername = name.toLowerCase().replace(/[^a-z0-9]/g, '') || 'velox_member';
-      document.getElementById('enlistUsername').value = suggestedUsername;
-      document.getElementById('enlistPassword').value = 'velox2026';
-      document.getElementById('enlistConfirmPassword').value = 'velox2026';
+        return `
+          <tr>
+            <td><code style="color: #EAB308; background: rgba(234,179,8,0.1); padding: 3px 8px; border-radius: 4px; font-weight: 700;">${inv.code}</code></td>
+            <td><strong style="color: #FFF;">${inv.inviteeName}</strong></td>
+            <td>
+              <span class="file-badge" style="color: ${inv.branch === 'Technical' ? '#38BDF8' : '#FBBF24'};">
+                ${inv.role} &bull; ${inv.department}
+              </span>
+            </td>
+            <td style="color: var(--text-muted); font-size: 0.82rem;">${inv.authorizer || 'Fatima Salman (Team Leader)'}</td>
+            <td style="color: var(--text-dim); font-size: 0.82rem;">${inv.issued || '2026-10-09'}</td>
+            <td>${statusHtml}</td>
+            <td>
+              <a href="${standAloneUrl}" target="_blank" rel="noopener" style="color: #38BDF8; text-decoration: underline; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 4px;">
+                Open Page ↗
+              </a>
+            </td>
+            <td>
+              <button type="button" class="btn btn-outline" style="padding: 4px 10px; font-size: 0.76rem; color: #EF4444; border-color: rgba(239,68,68,0.4);" onclick="deleteInvitation('${inv.code}')" title="Revoke and delete this invitation pass">
+                🗑️ Delete
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
 
-      openPortalModal('enlistModal');
+    function deleteInvitation(code) {
+      const db = getPortalDb();
+      const p = getActivePersona();
+
+      if (!isTeamLeader(p)) {
+        alert('Access Denied: Only Team Leaders (Fatima & Karim) can revoke or delete invitations.');
+        return;
+      }
+
+      const inv = (db.invitations || []).find(i => i.code === code);
+      const name = inv ? inv.inviteeName : code;
+
+      if (!confirm(`Are you sure you want to delete invitation pass ${code} for ${name}?`)) return;
+
+      db.invitations = (db.invitations || []).filter(i => i.code !== code);
+      logAuditEvent(`INVITATION: Invitation ${code} for ${name} deleted by ${p.name}.`);
+
+      addNotification({
+        title: 'Invitation Deleted',
+        message: `Invitation pass ${code} for ${name} was deleted by ${p.name}.`,
+        author: p.name,
+        type: 'governance',
+        target: ['fatima', 'karim']
+      });
+
+      savePortalDb(db);
+      renderInvitationsTable();
+      const passContainer = document.getElementById('invitationPassContainer');
+      if (passContainer) passContainer.innerHTML = '';
+      alert(`Invitation pass ${code} successfully deleted.`);
     }
 
     function copyInvitationLink(serial) {
-      const link = `${window.location.origin}/portal.html?invite=${serial}`;
-      navigator.clipboard.writeText(link).then(() => {
-        alert(`Invitation link copied to clipboard:\n${link}`);
-      }).catch(() => {
+      const link = `${window.location.origin}/invite.html?code=${serial}`;
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(link).then(() => {
+          alert(`Invitation link copied to clipboard:\n${link}`);
+        }).catch(() => {
+          prompt('Copy your invitation link:', link);
+        });
+      } else {
         prompt('Copy your invitation link:', link);
-      });
+      }
     }
 
     // ==================== EXECUTIVE ADMIN DASHBOARD MODULES ====================
     function renderAdminDashboard() {
       const db = getPortalDb();
       const p = getActivePersona();
-      const isLeader = (p.roleType === 'executive' || p.roleType === 'technical_lead' || p.roleType === 'managerial_lead' || p.roleType === 'subteam_lead');
 
-      // Update Admin KPI Cards
       const pendingReqs = db.accessRequests.filter(r => r.status === 'Pending');
       const completedTasks = db.tasks.filter(t => t.status === 'Completed');
 
@@ -2694,29 +3079,42 @@
         tabBadge.style.display = pendingReqs.length > 0 ? 'inline-block' : 'none';
       }
 
+      // Hide or show "+ New Member Account" strictly for Fatima/Karim
+      const newMemBtn = document.getElementById('addNewMemberModalBtn');
+      if (newMemBtn) {
+        newMemBtn.style.display = isTeamLeader(p) ? 'inline-block' : 'none';
+      }
+
       // 1. Render Access Authorization Queue
       const queueContainer = document.getElementById('adminAccessQueueContainer');
       if (queueContainer) {
         if (pendingReqs.length === 0) {
           queueContainer.innerHTML = `<div style="color: var(--text-dim); font-size: 0.85rem; padding: 12px 0;">All access requests resolved. No pending authorizations in the queue.</div>`;
         } else {
-          queueContainer.innerHTML = pendingReqs.map(req => `
-            <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 8px; padding: 14px 18px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
-              <div>
-                <div style="font-weight: 700; color: #FFF; font-size: 0.95rem;">${req.userName} <span style="font-size: 0.78rem; color: #38BDF8; font-weight: 400;">(${req.userDept})</span></div>
-                <div style="color: #E2E8F0; font-size: 0.85rem; margin: 3px 0;">Requested File: <strong style="color: #FBBF24;">${req.fileTitle}</strong></div>
-                <div style="font-size: 0.78rem; color: var(--text-dim);">Reason: &ldquo;${req.reason}&rdquo; &bull; ${req.timestamp}</div>
+          queueContainer.innerHTML = pendingReqs.map(req => {
+            const canApprove = canApproveAccessRequest(p, req);
+            return `
+              <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 8px; padding: 14px 18px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+                <div>
+                  <div style="font-weight: 700; color: #FFF; font-size: 0.95rem;">${req.userName} <span style="font-size: 0.78rem; color: #38BDF8; font-weight: 400;">(${req.userDept})</span></div>
+                  <div style="color: #E2E8F0; font-size: 0.85rem; margin: 3px 0;">Requested File: <strong style="color: #FBBF24;">${req.fileTitle}</strong></div>
+                  <div style="font-size: 0.78rem; color: var(--text-dim);">Reason: &ldquo;${req.reason}&rdquo; &bull; ${req.timestamp}</div>
+                </div>
+                <div style="display: flex; gap: 8px;">
+                  ${canApprove ? `
+                    <button type="button" class="btn btn-primary" style="padding: 6px 14px; font-size: 0.82rem;" onclick="approveAccessRequest('${req.id}')">
+                      ✓ Approve Access
+                    </button>
+                    <button type="button" class="btn btn-outline" style="padding: 6px 14px; font-size: 0.82rem; color: var(--status-rejected); border-color: rgba(197,34,31,0.4);" onclick="denyAccessRequest('${req.id}')">
+                      ✕ Deny
+                    </button>
+                  ` : `
+                    <span style="font-size: 0.78rem; color: var(--text-dim);">Requires Division Leader Authorization</span>
+                  `}
+                </div>
               </div>
-              <div style="display: flex; gap: 8px;">
-                <button type="button" class="btn btn-primary" style="padding: 6px 14px; font-size: 0.82rem;" onclick="approveAccessRequest('${req.id}')">
-                  ✓ Approve Access
-                </button>
-                <button type="button" class="btn btn-outline" style="padding: 6px 14px; font-size: 0.82rem; color: var(--status-rejected); border-color: rgba(197,34,31,0.4);" onclick="denyAccessRequest('${req.id}')">
-                  ✕ Deny
-                </button>
-              </div>
-            </div>
-          `).join('');
+            `;
+          }).join('');
         }
       }
 
@@ -2730,9 +3128,10 @@
       renderAuditLog();
     }
 
-    // Team Accounts & Credentials Table
+    // Team Accounts & Credentials Table with Strict Permission Controls
     function renderStructure() {
       const db = getPortalDb();
+      const p = getActivePersona();
       const tbody = document.getElementById('structureTableBody');
       if (!tbody) return;
 
@@ -2762,63 +3161,87 @@
         const statusClass = isSuspended ? 'status-locked' : 'status-unlocked';
         const statusText = isSuspended ? 'Suspended' : 'Active';
 
+        const canEdit = canManageMember(p, m);
+
         return `
-        <tr>
-          <td>
-            <strong style="color: #FFF;">${m.name}</strong>
-          </td>
-          <td>
-            <span class="portal-role-pill ${m.branch === 'Executive' ? 'role-executive' : (m.branch === 'Technical' ? 'role-tech' : 'role-ops')}">
-              ${m.role}
-            </span>
-          </td>
-          <td>${m.branch}</td>
-          <td>${m.dept}</td>
-          <td>
-            <code style="color: #38BDF8; background: rgba(56, 189, 248, 0.1); padding: 3px 8px; border-radius: 4px; font-size: 0.78rem;">@${uName}</code>
-          </td>
-          <td style="color: #EAB308; font-weight: 700;">${m.points} pts</td>
-          <td><span class="access-status-badge ${statusClass}">${statusText}</span></td>
-          <td>
-            <div style="display: flex; gap: 4px; flex-wrap: wrap;">
-              <button type="button" class="btn btn-outline" style="padding: 3px 8px; font-size: 0.74rem;" onclick="openEditMemberModal('${m.id}')" title="Edit member role & branch">
-                Edit
-              </button>
-              <button type="button" class="btn btn-outline" style="padding: 3px 8px; font-size: 0.74rem; color: #EAB308; border-color: rgba(234, 179, 8, 0.4);" onclick="openResetPasswordModal('${m.id}', '${uName}')" title="Reset Member Password">
-                Pass
-              </button>
-              <button type="button" class="btn btn-outline" style="padding: 3px 8px; font-size: 0.74rem; color: ${isSuspended ? '#22C55E' : '#FB7185'}; border-color: ${isSuspended ? 'rgba(34,197,94,0.4)' : 'rgba(251,113,133,0.4)'};" onclick="toggleAccountStatus('${m.id}')" title="Toggle active/suspended status">
-                ${isSuspended ? 'Activate' : 'Suspend'}
-              </button>
-              <button type="button" class="btn btn-outline" style="padding: 3px 8px; font-size: 0.74rem; color: var(--status-rejected);" onclick="deleteMember('${m.id}')" title="Remove member from roster">
-                Remove
-              </button>
-            </div>
-          </td>
-        </tr>
-      `;
+          <tr>
+            <td>
+              <strong style="color: #FFF;">${m.name}</strong>
+            </td>
+            <td>
+              <span class="portal-role-pill ${m.branch === 'Executive' ? 'role-executive' : (m.branch === 'Technical' ? 'role-tech' : 'role-ops')}">
+                ${m.role}
+              </span>
+            </td>
+            <td>${m.branch}</td>
+            <td>${m.dept}</td>
+            <td>
+              <code style="color: #38BDF8; background: rgba(56, 189, 248, 0.1); padding: 3px 8px; border-radius: 4px; font-size: 0.78rem;">@${uName}</code>
+            </td>
+            <td style="color: #EAB308; font-weight: 700;">${m.points} pts</td>
+            <td><span class="access-status-badge ${statusClass}">${statusText}</span></td>
+            <td>
+              ${canEdit ? `
+                <div style="display: flex; gap: 4px; flex-wrap: wrap;">
+                  <button type="button" class="btn btn-outline" style="padding: 3px 8px; font-size: 0.74rem;" onclick="openEditMemberModal('${m.id}')" title="Edit member role & branch">
+                    Edit
+                  </button>
+                  <button type="button" class="btn btn-outline" style="padding: 3px 8px; font-size: 0.74rem; color: #EAB308; border-color: rgba(234, 179, 8, 0.4);" onclick="openResetPasswordModal('${m.id}', '${uName}')" title="Reset Member Password">
+                    Pass
+                  </button>
+                  <button type="button" class="btn btn-outline" style="padding: 3px 8px; font-size: 0.74rem; color: ${isSuspended ? '#22C55E' : '#FB7185'}; border-color: ${isSuspended ? 'rgba(34,197,94,0.4)' : 'rgba(251,113,133,0.4)'};" onclick="toggleAccountStatus('${m.id}')" title="Toggle active/suspended status">
+                    ${isSuspended ? 'Activate' : 'Suspend'}
+                  </button>
+                  <button type="button" class="btn btn-outline" style="padding: 3px 8px; font-size: 0.74rem; color: var(--status-rejected);" onclick="deleteMember('${m.id}')" title="Remove member from roster">
+                    Remove
+                  </button>
+                </div>
+              ` : `
+                <span style="font-size: 0.74rem; color: var(--text-dim); display: inline-flex; align-items: center; gap: 4px;">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                  ${m.id === p.id ? 'Protected (Self)' : 'Restricted (Outside Jurisdiction)'}
+                </span>
+              `}
+            </td>
+          </tr>
+        `;
       }).join('');
     }
 
-    // Toggle Account Suspension
     function toggleAccountStatus(memberId) {
       const db = getPortalDb();
+      const p = getActivePersona();
       const m = db.membersRoster.find(x => x.id === memberId);
       if (!m) return;
+
+      if (!canManageMember(p, m)) {
+        alert('Access Denied: You do not have authority to suspend or activate this account.');
+        return;
+      }
+
       const acct = db.accounts.find(a => a.personaKey === memberId || a.username === m.username || a.name === m.name);
-      
       const newStatus = (m.status === 'Suspended') ? 'Active' : 'Suspended';
       m.status = newStatus;
       if (acct) acct.status = newStatus;
 
-      logAuditEvent(`GOVERNANCE: Member ${m.name} (@${m.username || 'user'}) status changed to ${newStatus}.`);
+      logAuditEvent(`GOVERNANCE: Member ${m.name} status changed to ${newStatus} by ${p.name}.`);
+
+      if (!isTeamLeader(p)) {
+        addNotification({
+          title: 'Account Status Changed',
+          message: `${p.name} (${p.role}) changed account status of ${m.name} to "${newStatus}".`,
+          author: p.name,
+          type: 'governance',
+          target: ['fatima', 'karim']
+        });
+      }
+
       savePortalDb(db);
       renderStructure();
       renderAdminDashboard();
       alert(`Account status for ${m.name} is now: ${newStatus}`);
     }
 
-    // Sprint Deliverables Verification Queue
     function renderDeliverablesReview() {
       const db = getPortalDb();
       const container = document.getElementById('adminDeliverablesContainer');
@@ -2861,13 +3284,20 @@
 
     function awardBonusPoints(taskId, extra) {
       const db = getPortalDb();
+      const p = getActivePersona();
       const task = db.tasks.find(t => t.id === taskId);
       if (!task) return;
       const member = db.membersRoster.find(m => m.id === task.assignedToId);
       if (member) {
         member.points += extra;
-        db.notifications.unshift(`Executive Award: +${extra} additional bonus points awarded to ${member.name} for "${task.title}".`);
-        logAuditEvent(`POINTS: +${extra} bonus points awarded to ${member.name}.`);
+        addNotification({
+          title: 'Speed Points Awarded',
+          message: `+${extra} bonus points awarded to ${member.name} for "${task.title}" by ${p.name}.`,
+          author: p.name,
+          type: 'points',
+          target: 'all'
+        });
+        logAuditEvent(`POINTS: +${extra} bonus points awarded to ${member.name} by ${p.name}.`);
         savePortalDb(db);
         renderAdminDashboard();
         renderCompetition();
@@ -2878,12 +3308,21 @@
 
     function requestTaskRevision(taskId) {
       const db = getPortalDb();
+      const p = getActivePersona();
       const task = db.tasks.find(t => t.id === taskId);
       if (!task) return;
       task.status = 'In Progress';
       task.completedAt = null;
-      db.notifications.unshift(`Revision Requested: Executive Leader requested revisions on "${task.title}" from ${task.assignedToName}.`);
-      logAuditEvent(`TASK: Revisions requested for task "${task.title}".`);
+
+      addNotification({
+        title: 'Task Revision Requested',
+        message: `Leader ${p.name} requested revisions on "${task.title}" from ${task.assignedToName}.`,
+        author: p.name,
+        type: 'task',
+        target: !isTeamLeader(p) ? ['fatima', 'karim'] : 'all'
+      });
+
+      logAuditEvent(`TASK: Revisions requested for task "${task.title}" by ${p.name}.`);
       savePortalDb(db);
       renderAdminDashboard();
       renderTasks();
@@ -2893,20 +3332,78 @@
 
     function openEditMemberModal(memberId) {
       const db = getPortalDb();
+      const p = getActivePersona();
       const m = db.membersRoster.find(x => x.id === memberId);
       if (!m) return;
+
+      if (!canManageMember(p, m)) {
+        alert('Access Denied: You do not have authority to edit this member.');
+        return;
+      }
+
       document.getElementById('editMemberId').value = m.id;
       document.getElementById('editMemberName').value = m.name;
-      document.getElementById('editMemberRole').value = m.role;
-      document.getElementById('editMemberBranch').value = m.branch;
-      document.getElementById('editMemberSubteam').value = m.dept;
+
+      const roleSelect = document.getElementById('editMemberRole');
+      const branchSelect = document.getElementById('editMemberBranch');
+      const subteamInput = document.getElementById('editMemberSubteam');
+
+      // Adjust options based on jurisdiction
+      if (isTeamLeader(p)) {
+        roleSelect.innerHTML = `
+          <option value="Team Leader">Team Leader</option>
+          <option value="Vice Team Leader">Vice Team Leader</option>
+          <option value="Technical Leader">Technical Leader</option>
+          <option value="Managerial Leader">Managerial Leader</option>
+          <option value="Subteam Leader">Subteam Leader</option>
+          <option value="Team Member">Team Member</option>
+        `;
+        branchSelect.innerHTML = `
+          <option value="Executive">Executive</option>
+          <option value="Technical">Technical Engineering</option>
+          <option value="Managerial">Managerial & Operations</option>
+          <option value="Shared">Shared Multi-Group</option>
+        `;
+      } else if (p.id === 'mohamed-romy') {
+        roleSelect.innerHTML = `
+          <option value="Subteam Leader">Subteam Leader</option>
+          <option value="Team Member">Team Member</option>
+        `;
+        branchSelect.innerHTML = `
+          <option value="Technical">Technical Engineering</option>
+        `;
+      } else if (p.id === 'moaaz-elghamry') {
+        roleSelect.innerHTML = `
+          <option value="Subteam Leader">Subteam Leader</option>
+          <option value="Team Member">Team Member</option>
+        `;
+        branchSelect.innerHTML = `
+          <option value="Managerial">Managerial & Operations</option>
+          <option value="Technical">Technical (Powertrain)</option>
+        `;
+      } else {
+        roleSelect.innerHTML = `<option value="Team Member">Team Member</option>`;
+        branchSelect.innerHTML = `<option value="${p.branch}">${p.branch}</option>`;
+      }
+
+      roleSelect.value = m.role;
+      branchSelect.value = m.branch;
+      subteamInput.value = m.dept;
+
       openPortalModal('editMemberModal');
     }
 
     function openResetPasswordModal(memberId, username) {
       const db = getPortalDb();
+      const p = getActivePersona();
       const m = db.membersRoster.find(x => x.id === memberId);
       if (!m) return;
+
+      if (!canManageMember(p, m)) {
+        alert('Access Denied: You do not have authority to reset credentials for this member.');
+        return;
+      }
+
       document.getElementById('resetMemberId').value = m.id;
       document.getElementById('resetMemberDisplayName').textContent = m.name;
       document.getElementById('resetMemberDisplayUsername').textContent = '@' + (username || m.username || 'member');
@@ -2915,26 +3412,46 @@
     }
 
     function deleteMember(memberId) {
-      if (!confirm('Are you sure you want to remove this member from the active roster?')) return;
       const db = getPortalDb();
+      const p = getActivePersona();
       const target = db.membersRoster.find(m => m.id === memberId);
-      const name = target ? target.name : memberId;
+      if (!target) return;
+
+      if (!canManageMember(p, target)) {
+        alert('Access Denied: You do not have authority to remove this member from the roster.');
+        return;
+      }
+
+      if (!confirm(`Are you sure you want to remove ${target.name} from the active roster?`)) return;
+
+      const name = target.name;
       db.membersRoster = db.membersRoster.filter(m => m.id !== memberId);
-      logAuditEvent(`GOVERNANCE: Member ${name} removed from active roster.`);
-      db.notifications.unshift(`Team Structure Update: ${name} removed from roster.`);
+      logAuditEvent(`GOVERNANCE: Member ${name} removed from active roster by ${p.name}.`);
+
+      if (!isTeamLeader(p)) {
+        addNotification({
+          title: 'Member Removed',
+          message: `${p.name} (${p.role}) removed ${name} from the ${target.dept} roster.`,
+          author: p.name,
+          type: 'governance',
+          target: ['fatima', 'karim']
+        });
+      }
+
       savePortalDb(db);
       renderStructure();
       renderAdminDashboard();
       renderCompetition();
+      alert(`Member ${name} successfully removed from the active roster.`);
     }
 
     // ==================== FORM SUBMISSIONS & EVENT LISTENERS ====================
     document.addEventListener('DOMContentLoaded', () => {
-      // Check for incoming invite in URL
       const urlParams = new URLSearchParams(window.location.search);
       const inviteCode = urlParams.get('invite');
       if (inviteCode) {
-        switchPortalTab('invitations');
+        window.location.href = 'invite.html?code=' + inviteCode;
+        return;
       }
 
       // 1. Portal Login Form
@@ -3006,129 +3523,71 @@
             return;
           }
 
-          // Update password
           acct.password = newPass;
           logAuditEvent(`SECURITY: Member @${acct.username} changed account password.`);
-          db.notifications.unshift(`Security update: Password changed successfully for @${acct.username}.`);
+          addNotification({
+            title: 'Security Notice',
+            message: `Password changed successfully for @${acct.username}.`,
+            author: 'Security System',
+            type: 'system',
+            target: [acct.username]
+          });
+
           savePortalDb(db);
           closePortalModal('changePasswordModal');
-          alert(`Success: Your password for @${acct.username} has been updated! Use your new password on subsequent logins.`);
+          alert(`Success: Your password for @${acct.username} has been updated!`);
         });
       }
 
-      // 3. Enlist Invitation & Register Account Form Submit
-      const enlistForm = document.getElementById('enlistForm');
-      if (enlistForm) {
-        enlistForm.addEventListener('submit', (e) => {
-          e.preventDefault();
-          const db = getPortalDb();
-          const name = document.getElementById('enlistHiddenName').value;
-          const role = document.getElementById('enlistHiddenRole').value;
-          const branch = document.getElementById('enlistHiddenBranch').value;
-          const dept = document.getElementById('enlistHiddenDept').value;
-          const username = document.getElementById('enlistUsername').value.trim().toLowerCase();
-          const pass = document.getElementById('enlistPassword').value;
-          const passConfirm = document.getElementById('enlistConfirmPassword').value;
-
-          if (pass !== passConfirm) {
-            alert('Passwords do not match. Please verify your password entry.');
-            return;
-          }
-
-          if (db.accounts.find(a => a.username.toLowerCase() === username)) {
-            alert(`The username "@${username}" is already taken. Please choose another username.`);
-            return;
-          }
-
-          const newId = username.replace(/[^a-z0-9\-]/g, '-');
-          const personaKey = 'user_' + newId;
-
-          // Add Account
-          db.accounts.push({
-            username: username,
-            password: pass,
-            personaKey: personaKey,
-            name: name,
-            status: 'Active'
-          });
-
-          // Determine Role Type
-          let roleType = 'member';
-          if (role === 'Technical Leader') roleType = 'technical_lead';
-          else if (role === 'Managerial Leader') roleType = 'managerial_lead';
-          else if (role.includes('Vice Team Leader') || role.includes('Team Leader')) roleType = 'executive';
-          else if (role.includes('Leader')) roleType = 'subteam_lead';
-
-          // Add Persona
-          db.personas[personaKey] = {
-            id: newId,
-            name: name,
-            role: role,
-            roleType: roleType,
-            branch: branch,
-            departments: [dept],
-            avatar: '',
-            deptDesc: `${branch} • ${dept} (Enlisted Member)`
-          };
-
-          // Add Roster Entry
-          db.membersRoster.push({
-            id: newId,
-            name: name,
-            role: role,
-            branch: branch,
-            dept: dept,
-            username: username,
-            points: 500,
-            status: 'Active'
-          });
-
-          db.notifications.unshift(`New Enlistment: ${name} (@${username}) enrolled into ${dept} as ${role}!`);
-          logAuditEvent(`ENLISTMENT: ${name} registered account @${username} (${dept}).`);
-          savePortalDb(db);
-
-          closePortalModal('enlistModal');
-          currentAuthUser = username;
-          currentPersonaKey = personaKey;
-          localStorage.setItem('velox_auth_user', currentAuthUser);
-          localStorage.setItem('velox_active_persona', currentPersonaKey);
-
-          alert(`Welcome to VELOX Racing, ${name}!\nYour account @${username} has been verified with 500 starting Velocity Points.\nEntering inside portal.`);
-          checkAuth();
-          switchPortalTab('dashboard');
-        });
-      }
-
-      // 4. Reset Password Form Submit (Executive Reset)
+      // 3. Reset Password Form Submit (Leader Reset)
       const resetForm = document.getElementById('resetPasswordForm');
       if (resetForm) {
         resetForm.addEventListener('submit', (e) => {
           e.preventDefault();
           const db = getPortalDb();
+          const p = getActivePersona();
           const memberId = document.getElementById('resetMemberId').value;
           const newPass = document.getElementById('resetNewPassword').value.trim();
 
           const m = db.membersRoster.find(x => x.id === memberId);
-          if (!m) return;
+          if (!m || !canManageMember(p, m)) {
+            alert('Access Denied: You do not have authority to reset this member password.');
+            return;
+          }
 
           const acct = db.accounts.find(a => a.personaKey === memberId || a.username === m.username || a.name === m.name);
           if (acct) {
             acct.password = newPass;
-            db.notifications.unshift(`Security: Password reset by Executive Leader for member ${m.name} (@${acct.username}).`);
-            logAuditEvent(`SECURITY: Admin reset password for ${m.name} (@${acct.username}).`);
+            logAuditEvent(`SECURITY: Admin ${p.name} reset password for ${m.name} (@${acct.username}).`);
+
+            if (!isTeamLeader(p)) {
+              addNotification({
+                title: 'Password Reset',
+                message: `${p.name} (${p.role}) reset password for ${m.name} (@${acct.username}).`,
+                author: p.name,
+                type: 'governance',
+                target: ['fatima', 'karim']
+              });
+            }
+
             savePortalDb(db);
             closePortalModal('resetPasswordModal');
             alert(`Password successfully updated for ${m.name} (@${acct.username})!`);
-          } else {
-            alert('Could not locate linked account for this member.');
           }
         });
       }
 
-      // 5. Add Member Manually Trigger & Submit
+      // 4. Add Member Manually Trigger & Submit (Fatima/Karim only)
       const addMemBtn = document.getElementById('addNewMemberModalBtn');
       if (addMemBtn) {
-        addMemBtn.addEventListener('click', () => openPortalModal('addMemberModal'));
+        addMemBtn.addEventListener('click', () => {
+          const p = getActivePersona();
+          if (!isTeamLeader(p)) {
+            alert('Access Denied: Adding new member accounts directly is restricted to Team Leaders (Fatima & Karim).');
+            return;
+          }
+          openPortalModal('addMemberModal');
+        });
       }
 
       const addMemForm = document.getElementById('addMemberForm');
@@ -3136,6 +3595,13 @@
         addMemForm.addEventListener('submit', (e) => {
           e.preventDefault();
           const db = getPortalDb();
+          const p = getActivePersona();
+
+          if (!isTeamLeader(p)) {
+            alert('Access Denied: Restricted to Team Leaders.');
+            return;
+          }
+
           const name = document.getElementById('newMemName').value.trim();
           const role = document.getElementById('newMemRole').value;
           const branch = document.getElementById('newMemBranch').value;
@@ -3183,12 +3649,19 @@
             branch: branch,
             dept: dept,
             username: user,
-            points: 500,
+            points: 0,
             status: 'Active'
           });
 
-          db.notifications.unshift(`Executive Action: Added new member ${name} (@${user}) to ${dept}.`);
-          logAuditEvent(`GOVERNANCE: Executive registered member ${name} (@${user}) in ${dept}.`);
+          logAuditEvent(`GOVERNANCE: Executive ${p.name} registered member ${name} (@${user}) in ${dept}.`);
+          addNotification({
+            title: 'New Member Registered',
+            message: `${p.name} provisioned credentials for ${name} (@${user}) in ${dept}.`,
+            author: p.name,
+            type: 'governance',
+            target: 'all'
+          });
+
           savePortalDb(db);
           closePortalModal('addMemberModal');
           addMemForm.reset();
@@ -3198,27 +3671,12 @@
         });
       }
 
-      // Persona selector change
-      document.getElementById('personaSelect').addEventListener('change', (e) => {
-        currentPersonaKey = e.target.value;
-        const db = getPortalDb();
-        const acct = db.accounts.find(a => a.personaKey === currentPersonaKey);
-        if (acct) {
-          currentAuthUser = acct.username;
-          localStorage.setItem('velox_auth_user', currentAuthUser);
-          const authBadge = document.getElementById('activeAuthUsername');
-          if (authBadge) authBadge.textContent = '@' + acct.username;
-        }
-        localStorage.setItem('velox_active_persona', currentPersonaKey);
-        renderUserBar();
-      });
-
-      // Tabs click
+      // 5. Navigation Tab buttons
       document.querySelectorAll('.portal-tab-btn').forEach(btn => {
         btn.addEventListener('click', () => switchPortalTab(btn.dataset.tab));
       });
 
-      // Vault filter buttons
+      // 6. Vault filter buttons
       document.querySelectorAll('.vault-filter-btn').forEach(btn => {
         btn.addEventListener('click', () => {
           document.querySelectorAll('.vault-filter-btn').forEach(b => b.classList.remove('active'));
@@ -3228,11 +3686,11 @@
         });
       });
 
-      // Upload Modal triggers
+      // 7. Upload Modal triggers & Submit
       document.getElementById('openUploadBtn').addEventListener('click', () => openPortalModal('uploadModal'));
-      document.getElementById('openUploadBtn2').addEventListener('click', () => openPortalModal('uploadModal'));
+      const openUp2 = document.getElementById('openUploadBtn2');
+      if (openUp2) openUp2.addEventListener('click', () => openPortalModal('uploadModal'));
 
-      // Real File Upload Form Submit
       document.getElementById('uploadForm').addEventListener('submit', (e) => {
         e.preventDefault();
         const p = getActivePersona();
@@ -3263,8 +3721,15 @@
           };
 
           db.files.unshift(newFile);
-          db.notifications.unshift(`New Deliverable Uploaded: "${title}" by ${p.name} in ${dept}.`);
           logAuditEvent(`VAULT: ${p.name} uploaded deliverable "${title}" (${branch}/${dept}).`);
+          addNotification({
+            title: 'New Deliverable Uploaded',
+            message: `"${title}" uploaded by ${p.name} in ${dept}.`,
+            author: p.name,
+            type: 'vault',
+            target: 'all'
+          });
+
           savePortalDb(db);
           closePortalModal('uploadModal');
           document.getElementById('uploadForm').reset();
@@ -3287,14 +3752,28 @@
         }
       });
 
-      // Assign Task Modal trigger
+      // 8. Assign Task Modal trigger (Filtered by jurisdiction)
       const openAssignBtn = document.getElementById('openAssignTaskBtn');
       if (openAssignBtn) {
         openAssignBtn.addEventListener('click', () => {
           const db = getPortalDb();
           const p = getActivePersona();
           const select = document.getElementById('taskAssignee');
-          select.innerHTML = db.membersRoster.map(m => `<option value="${m.id}|${m.name}|${m.dept}|${m.branch}">${m.name} (${m.dept})</option>`).join('');
+          const candidates = db.membersRoster.filter(m => canAssignToMember(p, m));
+
+          if (candidates.length === 0) {
+            select.innerHTML = '<option value="">No members found under your jurisdiction</option>';
+          } else {
+            select.innerHTML = candidates.map(m => `<option value="${m.id}|${m.name}|${m.dept}|${m.branch}">${m.name} (${m.role} • ${m.dept})</option>`).join('');
+          }
+
+          // Set default deadline to 7 days from now
+          const dlInput = document.getElementById('taskDeadline');
+          if (dlInput) {
+            const nextWeek = new Date(Date.now() + 7 * 86400000);
+            dlInput.value = nextWeek.toISOString().substring(0, 16);
+          }
+
           openPortalModal('assignTaskModal');
         });
       }
@@ -3306,6 +3785,11 @@
         const p = getActivePersona();
         const title = document.getElementById('taskTitle').value.trim();
         const assigneeVal = document.getElementById('taskAssignee').value.split('|');
+        if (!assigneeVal || assigneeVal.length < 4) {
+          alert('Please select a valid member assignee.');
+          return;
+        }
+
         const priority = document.getElementById('taskPriority').value;
         const deadline = document.getElementById('taskDeadline').value;
         const points = parseInt(document.getElementById('taskPoints').value, 10) || 100;
@@ -3324,12 +3808,21 @@
           speedBonus: Math.round(points * 0.5),
           desc: desc,
           status: 'In Progress',
+          createdAt: new Date().toISOString(),
           completedAt: null
         };
 
         db.tasks.unshift(newTask);
-        db.notifications.unshift(`Sprint Task Assigned: "${title}" assigned to ${assigneeVal[1]} by ${p.name}.`);
         logAuditEvent(`TASK: ${p.name} assigned "${title}" to ${assigneeVal[1]}.`);
+
+        addNotification({
+          title: 'Sprint Task Assigned',
+          message: `Task "${title}" assigned to ${assigneeVal[1]} by ${p.name}.`,
+          author: p.name,
+          type: 'task',
+          target: !isTeamLeader(p) ? ['fatima', 'karim', assigneeVal[0]] : 'all'
+        });
+
         savePortalDb(db);
         closePortalModal('assignTaskModal');
         document.getElementById('assignTaskForm').reset();
@@ -3338,7 +3831,7 @@
         alert(`Task successfully assigned to ${assigneeVal[1]}!`);
       });
 
-      // Submit Task Completion Form
+      // 9. Submit Task Completion Form
       document.getElementById('submitTaskForm').addEventListener('submit', (e) => {
         e.preventDefault();
         const db = getPortalDb();
@@ -3353,17 +3846,21 @@
         task.deliverableUrl = deliverableUrl;
         task.completionNotes = notes;
 
-        // Calculate Speed Bonus Points
         const earned = task.basePoints + task.speedBonus;
-
-        // Credit points to the member
         const member = db.membersRoster.find(m => m.id === task.assignedToId);
         if (member) {
           member.points += earned;
         }
 
-        db.notifications.unshift(`Task Completed: ${task.assignedToName} finished "${task.title}" and earned +${earned} Velocity Points!`);
         logAuditEvent(`TASK: ${task.assignedToName} submitted completed task "${task.title}" (+${earned} pts).`);
+        addNotification({
+          title: 'Deliverables Submitted',
+          message: `${task.assignedToName} completed sprint task "${task.title}" and earned +${earned} Velocity Points!`,
+          author: task.assignedToName,
+          type: 'task',
+          target: 'all'
+        });
+
         savePortalDb(db);
         closePortalModal('submitTaskModal');
         document.getElementById('submitTaskForm').reset();
@@ -3374,7 +3871,7 @@
         alert(`Congratulations! Deliverables submitted. You have earned +${earned} Velocity Points on the Silverstone Leaderboard!`);
       });
 
-      // Request Access Form Submit
+      // 10. Request Access Form Submit
       document.getElementById('requestAccessForm').addEventListener('submit', (e) => {
         e.preventDefault();
         const db = getPortalDb();
@@ -3396,36 +3893,188 @@
         };
 
         db.accessRequests.unshift(newReq);
-        db.notifications.unshift(`New Access Request: ${p.name} requested download authorization for "${fileTitle}".`);
         logAuditEvent(`ACCESS_REQ: ${p.name} requested download clearance for "${fileTitle}".`);
+        addNotification({
+          title: 'Download Clearance Requested',
+          message: `${p.name} requested download authorization for "${fileTitle}".`,
+          author: p.name,
+          type: 'access',
+          target: ['fatima', 'karim']
+        });
+
         savePortalDb(db);
         closePortalModal('requestAccessModal');
         renderVault();
         renderDashboard();
         renderAdminDashboard();
-        alert('Access request submitted. A Team Leader will review your request.');
+        alert('Access request submitted. An authorized leader will review your request.');
       });
 
-      // Edit Member Form Submit
+      // 11. Edit Member Form Submit (Strict Jurisdiction Enforcement)
       document.getElementById('editMemberForm').addEventListener('submit', (e) => {
         e.preventDefault();
         const db = getPortalDb();
+        const p = getActivePersona();
         const id = document.getElementById('editMemberId').value;
         const member = db.membersRoster.find(m => m.id === id);
-        if (member) {
-          member.name = document.getElementById('editMemberName').value.trim();
-          member.role = document.getElementById('editMemberRole').value;
-          member.branch = document.getElementById('editMemberBranch').value;
-          member.dept = document.getElementById('editMemberSubteam').value.trim();
+        if (!member) return;
+
+        if (!canManageMember(p, member)) {
+          alert('Access Denied: You do not have authority to edit this member.');
+          return;
         }
-        db.notifications.unshift(`Member Updated: ${member.name} role changed to ${member.role}.`);
-        logAuditEvent(`GOVERNANCE: Member ${member.name} details updated.`);
+
+        const oldRole = member.role;
+        member.name = document.getElementById('editMemberName').value.trim();
+        member.role = document.getElementById('editMemberRole').value;
+        member.branch = document.getElementById('editMemberBranch').value;
+        member.dept = document.getElementById('editMemberSubteam').value.trim();
+
+        // Also update linked account and persona
+        const acct = db.accounts.find(a => a.personaKey === id || a.name === member.name);
+        if (acct) acct.name = member.name;
+
+        if (db.personas[id]) {
+          db.personas[id].name = member.name;
+          db.personas[id].role = member.role;
+          db.personas[id].branch = member.branch;
+          db.personas[id].departments = [member.dept];
+        }
+
+        logAuditEvent(`GOVERNANCE: Member ${member.name} details updated by ${p.name}.`);
+
+        // If updated by a sub-leader (Romy, Moaaz, Ali, Hassan), automatically notify Fatima & Karim!
+        if (!isTeamLeader(p)) {
+          addNotification({
+            title: 'Subteam Roster Update',
+            message: `${p.name} (${p.role}) changed ${member.name}'s role from "${oldRole}" to "${member.role}" in ${member.dept}.`,
+            author: p.name,
+            type: 'governance',
+            target: ['fatima', 'karim']
+          });
+        }
+
         savePortalDb(db);
         closePortalModal('editMemberModal');
         renderStructure();
         renderAdminDashboard();
         renderCompetition();
+        alert(`Member ${member.name} successfully updated!`);
       });
+
+      // 12. Invitation Generator Form Submit (Fatima & Karim only)
+      const invForm = document.getElementById('invitationForm');
+      if (invForm) {
+        invForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const p = getActivePersona();
+          if (!isTeamLeader(p)) {
+            alert('Access Denied: Generating invitations is restricted to Team Leaders (Fatima Salman & Karim Shaprawy).');
+            return;
+          }
+
+          const db = getPortalDb();
+          const guestName = document.getElementById('invGuestName').value.trim();
+          const role = document.getElementById('invRoleSelect').value;
+          const dept = document.getElementById('invSubteamSelect').value;
+          const note = document.getElementById('invNote').value.trim();
+
+          const serial = 'FS-ZNU-' + Math.floor(100000 + Math.random() * 900000);
+          const branch = (dept.includes('HR') || dept.includes('Media') || dept.includes('Business')) ? 'Managerial' : 'Technical';
+
+          const newInvite = {
+            code: serial,
+            inviteeName: guestName,
+            role: role,
+            branch: branch,
+            department: dept,
+            note: note,
+            authorizer: `${p.name} (${p.role})`,
+            status: 'Pending',
+            issued: new Date().toISOString().substring(0, 10),
+            link: `invite.html?code=${serial}`
+          };
+
+          if (!db.invitations) db.invitations = [];
+          db.invitations.unshift(newInvite);
+          savePortalDb(db);
+
+          const passHtml = `
+            <div class="invitation-pass-preview" id="activePassCard">
+              <div class="pass-header">
+                <div class="pass-crest">
+                  <img src="VeloxLogoWeb.png" alt="Velox" onerror="this.src='VeloxForWeb_dark.png'" />
+                  <div>
+                    <strong style="color: #FFF; font-size: 0.95rem; display: block;">VELOX FORMULA RACING</strong>
+                    <span style="font-size: 0.72rem; color: var(--text-dim);">Zagazig National University &bull; Silverstone 2026</span>
+                  </div>
+                </div>
+                <div class="pass-security-seal">${serial}</div>
+              </div>
+
+              <div class="pass-body">
+                <span style="font-size: 0.78rem; text-transform: uppercase; color: var(--red); font-weight: 800; letter-spacing: 0.08em;">
+                  OFFICIAL TEAM CREDENTIAL INVITATION
+                </span>
+                <div class="pass-guest-name">${guestName}</div>
+                <p style="font-size: 0.86rem; color: var(--text-muted); margin: 6px 0 16px 0; font-style: italic;">
+                  &ldquo;${note}&rdquo;
+                </p>
+
+                <div class="pass-assignment-box">
+                  <div class="pass-meta-field">
+                    <span>Designated Role</span>
+                    <strong>${role}</strong>
+                  </div>
+                  <div class="pass-meta-field">
+                    <span>Branch & Department</span>
+                    <strong>${branch} &bull; ${dept}</strong>
+                  </div>
+                  <div class="pass-meta-field">
+                    <span>Authorized By</span>
+                    <strong>${p.name} (${p.role})</strong>
+                  </div>
+                  <div class="pass-meta-field">
+                    <span>Enlistment Status</span>
+                    <strong style="color: #FBBF24;">Pending Acceptance</strong>
+                  </div>
+                </div>
+
+                <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 20px;">
+                  <a href="invite.html?code=${serial}" target="_blank" rel="noopener" class="btn btn-primary" style="text-decoration: none;">
+                    ✓ Open Standalone Invitation Page ↗
+                  </a>
+                  <button type="button" class="btn btn-outline" onclick="copyInvitationLink('${serial}')">
+                    Copy Invitation Link
+                  </button>
+                </div>
+              </div>
+
+              <div class="pass-footer">
+                <span>Formula Student UK Candidate</span>
+                <span>Issued: ${new Date().toISOString().split('T')[0]}</span>
+              </div>
+            </div>
+          `;
+
+          const passContainer = document.getElementById('invitationPassContainer');
+          if (passContainer) {
+            passContainer.innerHTML = passHtml;
+            passContainer.scrollIntoView({ behavior: 'smooth' });
+          }
+
+          logAuditEvent(`INVITATION: ${p.name} issued invitation ${serial} for ${guestName} (${dept}).`);
+          addNotification({
+            title: 'Official Invitation Issued',
+            message: `Team Leader ${p.name} generated invitation pass for ${guestName} in ${dept}.`,
+            author: p.name,
+            type: 'governance',
+            target: ['fatima', 'karim']
+          });
+
+          renderInvitationsTable();
+        });
+      }
 
       // Initialize Authentication Gate & User Session
       checkAuth();
