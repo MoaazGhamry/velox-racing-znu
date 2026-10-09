@@ -15,12 +15,17 @@
   <meta name="apple-mobile-web-app-title" content="Velox Racing" />
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
 
-  <!-- Shared Style with Cache Buster -->
-  <link rel="stylesheet" href="style.css?v=3.4" />
+  <!-- Preconnect to Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" />
 
-  <!-- Localization Engine & Team Data -->
-  <script src="i18n.js?v=3.4"></script>
-  <script src="team.js?v=3.4"></script>
+  <!-- Shared Style with Cache Buster -->
+  <link rel="stylesheet" href="style.css?v=3.5" />
+
+  <!-- Localization Engine & Team Data (Deferred for non-blocking render) -->
+  <script src="i18n.js?v=3.5" defer></script>
+  <script src="team.js?v=3.5" defer></script>
 </head>
 <body>
 
@@ -29,7 +34,7 @@
     <nav class="navbar" id="navbar">
       <div class="nav-container">
         <a href="/" class="nav-brand" aria-label="Velox Racing Home">
-          <img src="VeloxLogoWeb.png" alt="Velox Racing Crest" class="nav-logo" onerror="this.src='VeloxForWeb_dark.png'" />
+          <img src="VeloxLogoWeb.png" alt="Velox Racing Crest" class="nav-logo" width="150" height="42" onerror="this.src='VeloxForWeb_dark.png'" />
           <span class="nav-title">
             <span data-i18n="nav.brand">VELOX RACING</span>
             <span class="nav-title-badge">ZNU</span>
@@ -70,7 +75,7 @@
   <main>
     <!-- Full-Screen Hero -->
     <section class="hero" id="home">
-      <video class="hero-video-bg" autoplay muted loop playsinline poster="velox_car_render.jpg">
+      <video class="hero-video-bg" autoplay muted loop playsinline preload="metadata" poster="velox_car_render.jpg">
         <source src="lff.mp4" type="video/mp4" />
       </video>
       <div class="hero-overlay"></div>
@@ -108,18 +113,18 @@
               <a href="/team" class="btn btn-outline" data-i18n="about.btnExplore">Explore Team Structure &rarr;</a>
               <div class="team-avatars-preview">
                 <div class="avatar-stack">
-                  <img src="photos/Fatima Salman.jpeg" alt="Fatima Salman - Team Leader" class="stack-avatar clickable-member" data-member-id="fatima-salman" role="button" tabindex="0" title="Fatima Salman — Team Leader" />
-                  <img src="photos/Karim Shaprawy.jpeg" alt="Karim Shaprawy - Vice Team Leader" class="stack-avatar clickable-member" data-member-id="karim-shaprawy" role="button" tabindex="0" title="Karim Shaprawy — Vice Team Leader" />
-                  <img src="photos/Mohamed Romy.jpeg" alt="Mohamed Romy - Technical Leader" class="stack-avatar clickable-member" data-member-id="mohamed-romy" role="button" tabindex="0" title="Mohamed Romy — Technical Leader" />
-                  <img src="photos/Moaaz Elghamry.jpeg" alt="Moaaz Elghamry - Managerial Leader & Powertrain Leader" class="stack-avatar clickable-member" data-member-id="moaaz-elghamry" role="button" tabindex="0" title="Moaaz Elghamry — Managerial Leader & Powertrain Lead" />
-                  <img src="photos/Mohamed Hassan.jpeg" alt="Mohamed Hassan - Media & PR Lead" class="stack-avatar clickable-member" data-member-id="mohamed-hassan" role="button" tabindex="0" title="Mohamed Hassan — Media & PR Lead" />
+                  <img src="photos/Fatima Salman.jpeg" alt="Fatima Salman - Team Leader" class="stack-avatar clickable-member" data-member-id="fatima-salman" role="button" tabindex="0" title="Fatima Salman — Team Leader" width="44" height="44" loading="lazy" />
+                  <img src="photos/Karim Shaprawy.jpeg" alt="Karim Shaprawy - Vice Team Leader" class="stack-avatar clickable-member" data-member-id="karim-shaprawy" role="button" tabindex="0" title="Karim Shaprawy — Vice Team Leader" width="44" height="44" loading="lazy" />
+                  <img src="photos/Mohamed Romy.jpeg" alt="Mohamed Romy - Technical Leader" class="stack-avatar clickable-member" data-member-id="mohamed-romy" role="button" tabindex="0" title="Mohamed Romy — Technical Leader" width="44" height="44" loading="lazy" />
+                  <img src="photos/Moaaz Elghamry.jpeg" alt="Moaaz Elghamry - Managerial Leader & Powertrain Leader" class="stack-avatar clickable-member" data-member-id="moaaz-elghamry" role="button" tabindex="0" title="Moaaz Elghamry — Managerial Leader & Powertrain Lead" width="44" height="44" loading="lazy" />
+                  <img src="photos/Mohamed Hassan.jpeg" alt="Mohamed Hassan - Media & PR Lead" class="stack-avatar clickable-member" data-member-id="mohamed-hassan" role="button" tabindex="0" title="Mohamed Hassan — Media & PR Lead" width="44" height="44" loading="lazy" />
                 </div>
                 <span class="avatar-stack-text" data-i18n="about.crewBadge">50+ Engineers &amp; Specialists &bull; ZNU</span>
               </div>
             </div>
           </div>
           <div class="about-visual">
-            <img src="velox_car_render.jpg" alt="Velox Racing formula student car design" loading="lazy" />
+            <img src="velox_car_render.jpg" alt="Velox Racing formula student car design" loading="lazy" width="1280" height="719" />
           </div>
         </div>
       </div>
@@ -181,7 +186,7 @@
               class="cinema-video"
               src="ad.mp4"
               playsinline
-              preload="auto"
+              preload="none"
               poster="velox_car_render.jpg"
               loop>
             </video>
@@ -301,7 +306,7 @@
       <div class="footer-grid">
         <div class="footer-brand">
           <a href="/" class="nav-brand">
-            <img src="VeloxLogoWeb.png" alt="Velox Racing" class="nav-logo" onerror="this.src='VeloxForWeb_dark.png'" />
+            <img src="VeloxLogoWeb.png" alt="Velox Racing" class="nav-logo" width="150" height="42" onerror="this.src='VeloxForWeb_dark.png'" />
             <span class="nav-title" data-i18n="nav.brand">VELOX RACING</span>
           </a>
           <p data-i18n="footer.desc">
@@ -728,39 +733,6 @@
 
         const reelSection = document.getElementById('cinematic');
         if (reelSection) autoScrollObserver.observe(reelSection);
-      }
-
-      // Pre-cache video in background to save cellular data on re-visits and enable instant seek
-      if ('caches' in window) {
-        caches.open('velox-video-cache-v1').then(cache => {
-          cache.match('ad.mp4').then(match => {
-            if (match) {
-              match.blob().then(blob => {
-                const blobUrl = URL.createObjectURL(blob);
-                const cur = adVideo.currentTime;
-                const wasPaused = adVideo.paused;
-                adVideo.src = blobUrl;
-                try { adVideo.currentTime = cur; } catch (e) {}
-                if (!wasPaused) adVideo.play().catch(() => {});
-              });
-            } else {
-              fetch('ad.mp4').then(res => {
-                if (res.ok) {
-                  const clone = res.clone();
-                  cache.put('ad.mp4', clone);
-                  res.blob().then(blob => {
-                    const blobUrl = URL.createObjectURL(blob);
-                    const cur = adVideo.currentTime;
-                    const wasPaused = adVideo.paused;
-                    adVideo.src = blobUrl;
-                    try { adVideo.currentTime = cur; } catch (e) {}
-                    if (!wasPaused) adVideo.play().catch(() => {});
-                  });
-                }
-              }).catch(() => {});
-            }
-          });
-        }).catch(() => {});
       }
     }
 

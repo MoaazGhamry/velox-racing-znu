@@ -15,12 +15,17 @@
   <meta name="apple-mobile-web-app-title" content="Velox Racing" />
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
 
+  <!-- Preconnect to Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" />
+
   <!-- Shared Style with Cache Buster -->
-  <link rel="stylesheet" href="style.css?v=3.8" />
-  <!-- Localization Engine -->
-  <script src="i18n.js?v=3.8"></script>
-  <!-- Supabase JS Client (CDN) -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link rel="stylesheet" href="style.css?v=3.5" />
+  <!-- Localization Engine (Deferred) -->
+  <script src="i18n.js?v=3.5" defer></script>
+  <!-- Supabase JS Client (Deferred) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
 </head>
 <body>
 
@@ -29,7 +34,7 @@
     <nav class="navbar" id="navbar">
       <div class="nav-container">
         <a href="/" class="nav-brand" aria-label="Velox Racing Home">
-          <img src="VeloxLogoWeb.png" alt="Velox Racing Crest" class="nav-logo" onerror="this.src='VeloxForWeb_dark.png'" />
+          <img src="VeloxLogoWeb.png" alt="Velox Racing Crest" class="nav-logo" width="150" height="42" onerror="this.src='VeloxForWeb_dark.png'" />
           <span class="nav-title">
             VELOX RACING
             <span class="nav-title-badge">ZNU</span>
@@ -249,7 +254,7 @@
       <div class="footer-grid">
         <div class="footer-brand">
           <a href="/" class="nav-brand">
-            <img src="VeloxLogoWeb.png" alt="Velox Racing" class="nav-logo" onerror="this.src='VeloxForWeb_dark.png'" />
+            <img src="VeloxLogoWeb.png" alt="Velox Racing" class="nav-logo" width="150" height="42" onerror="this.src='VeloxForWeb_dark.png'" />
             <span class="nav-title">VELOX RACING</span>
           </a>
           <p data-i18n="footer.desc">

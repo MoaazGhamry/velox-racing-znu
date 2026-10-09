@@ -3,9 +3,7 @@
    Zagazig National University | Formula Student
    Clean, modern, accessible, mobile-first design.
    ========================================================================== */
-
-@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap');
-
+/* Fonts are loaded non-blocking in HTML <head> with preconnect for maximum performance */
 :root {
   /* Colors - Dark Theme (Default) */
   --bg: #0A0A0A;
@@ -1300,7 +1298,7 @@ p {
   background: rgba(255, 255, 255, 0.3);
   border-radius: 9999px;
   pointer-events: none;
-  transition: width 0.2s ease-out;
+  will-change: width;
 }
 
 .cinema-progress-bar {
@@ -1311,7 +1309,7 @@ p {
   box-shadow: 0 0 10px var(--red);
   position: relative;
   pointer-events: none; /* Critical: clicks must register on wrap, not bar */
-  transition: width 0.05s linear;
+  will-change: width;
   z-index: 2;
 }
 
