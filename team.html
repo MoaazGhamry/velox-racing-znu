@@ -181,7 +181,7 @@
 
       const currentLang = localStorage.getItem('velox_lang') || 'en';
       const dict = (typeof VELOX_I18N !== 'undefined' && VELOX_I18N[currentLang]) ? VELOX_I18N[currentLang] : {};
-      const data = window.VELOX_TEAM;
+      const data = (typeof window.getDynamicTeamData === 'function') ? window.getDynamicTeamData() : window.VELOX_TEAM;
 
       // Translation helpers
       const tRole = (r) => dict['role.' + r] || r;
@@ -279,10 +279,28 @@
                     </div>
                   ` : ''}
                   <p class="dept-desc">${tDesc(dept.id, dept.description)}</p>
-                  <div class="dept-subteams-list" style="display: flex;">
-                    ${dept.subteams.map(sub => `
-                      <div class="subteam-pill">&bull; ${tSub(sub)}</div>
-                    `).join('')}
+                  <div class="dept-subteams-list" style="display: flex; flex-direction: column; gap: 8px;">
+                    ${dept.subteams.map(sub => {
+                      const crew = (dept.subteamCrew && dept.subteamCrew[sub]) || [];
+                      return `
+                        <div class="subteam-block">
+                          <div class="subteam-pill">&bull; ${tSub(sub)}</div>
+                          ${crew.length > 0 ? `
+                            <div class="subteam-crew-list">
+                              ${crew.map(m => `
+                                <div class="subteam-crew-chip clickable-member ${m.isLead ? 'is-leader' : ''}" data-member-id="${m.id}" role="button" tabindex="0" title="${dict['modal.viewProfile'] || 'Click to view overview'}">
+                                  <div class="subteam-chip-avatar">
+                                    ${m.photo ? `<img src="${m.photo}" alt="${m.name}" />` : getInitials(m.name)}
+                                  </div>
+                                  <span class="subteam-chip-role">${m.isLead ? (dict['role.Subteam Leader'] || 'Lead') : (dict['role.Team Member'] || 'Member')}:</span>
+                                  <span class="subteam-chip-name">${m.name}</span>
+                                </div>
+                              `).join('')}
+                            </div>
+                          ` : ''}
+                        </div>
+                      `;
+                    }).join('')}
                   </div>
                 </div>
               `).join('')}
@@ -334,10 +352,28 @@
                     </div>
                   ` : ''}
                   <p class="dept-desc">${tDesc(dept.id, dept.description)}</p>
-                  <div class="dept-subteams-list" style="display: flex;">
-                    ${dept.subteams.map(sub => `
-                      <div class="subteam-pill">&bull; ${tSub(sub)}</div>
-                    `).join('')}
+                  <div class="dept-subteams-list" style="display: flex; flex-direction: column; gap: 8px;">
+                    ${dept.subteams.map(sub => {
+                      const crew = (dept.subteamCrew && dept.subteamCrew[sub]) || [];
+                      return `
+                        <div class="subteam-block">
+                          <div class="subteam-pill">&bull; ${tSub(sub)}</div>
+                          ${crew.length > 0 ? `
+                            <div class="subteam-crew-list">
+                              ${crew.map(m => `
+                                <div class="subteam-crew-chip clickable-member ${m.isLead ? 'is-leader' : ''}" data-member-id="${m.id}" role="button" tabindex="0" title="${dict['modal.viewProfile'] || 'Click to view overview'}">
+                                  <div class="subteam-chip-avatar">
+                                    ${m.photo ? `<img src="${m.photo}" alt="${m.name}" />` : getInitials(m.name)}
+                                  </div>
+                                  <span class="subteam-chip-role">${m.isLead ? (dict['role.Subteam Leader'] || 'Lead') : (dict['role.Team Member'] || 'Member')}:</span>
+                                  <span class="subteam-chip-name">${m.name}</span>
+                                </div>
+                              `).join('')}
+                            </div>
+                          ` : ''}
+                        </div>
+                      `;
+                    }).join('')}
                   </div>
                 </div>
               `).join('')}

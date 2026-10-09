@@ -357,6 +357,8 @@
     const queryRole = params.get('role');
     const queryBranch = params.get('branch');
     const queryDept = params.get('dept');
+    const querySubteam = params.get('subteam');
+    const queryRoleType = params.get('roleType');
     const queryBy = params.get('by');
     const queryIssued = params.get('issued');
     const queryNote = params.get('note');
@@ -374,8 +376,10 @@
         code: code,
         inviteeName: queryName || 'Team Candidate',
         role: queryRole || 'Team Member',
+        roleType: queryRoleType || '',
         branch: queryBranch || 'Technical',
         department: queryDept || 'Body & Chassis',
+        subteam: querySubteam || '',
         authorizer: queryBy || 'Fatima Salman (Team Leader)',
         status: 'Pending',
         issued: queryIssued || new Date().toISOString().substring(0, 10),
@@ -385,8 +389,10 @@
       // If query parameters are present in the URL, merge/override them so the standalone page is always up to date
       if (queryName) currentInvite.inviteeName = queryName;
       if (queryRole) currentInvite.role = queryRole;
+      if (queryRoleType) currentInvite.roleType = queryRoleType;
       if (queryBranch) currentInvite.branch = queryBranch;
       if (queryDept) currentInvite.department = queryDept;
+      if (querySubteam) currentInvite.subteam = querySubteam;
       if (queryBy) currentInvite.authorizer = queryBy;
       if (queryIssued) currentInvite.issued = queryIssued;
       if (queryNote) currentInvite.note = queryNote;
@@ -397,7 +403,12 @@
     document.getElementById('inviteSerial').textContent = currentInvite.code;
     document.getElementById('inviteeName').textContent = currentInvite.inviteeName;
     document.getElementById('inviteRole').textContent = currentInvite.role;
-    document.getElementById('inviteDept').textContent = currentInvite.department ? `${currentInvite.branch} • ${currentInvite.department}` : currentInvite.branch;
+
+    const deptFormatted = (currentInvite.subteam && currentInvite.subteam !== '__DEPT_LEAD__' && currentInvite.subteam !== 'All Subteams')
+      ? `${currentInvite.branch} • ${currentInvite.department} — ${currentInvite.subteam}`
+      : (currentInvite.department ? `${currentInvite.branch} • ${currentInvite.department}` : currentInvite.branch);
+    document.getElementById('inviteDept').textContent = deptFormatted;
+
     document.getElementById('inviteAuthorizer').textContent = currentInvite.authorizer || 'Fatima Salman (Team Leader)';
     document.getElementById('inviteIssuedDate').textContent = 'Issued: ' + (currentInvite.issued || new Date().toISOString().substring(0, 10));
 
@@ -495,17 +506,27 @@
         activeDb.invitations.unshift(currentInvite);
       }
 
+      // Determine accurate roleType
+      let roleType = currentInvite.roleType;
+      if (!roleType) {
+        const lowerRole = (currentInvite.role || '').toLowerCase();
+        if (lowerRole.includes('department leader')) roleType = 'dept_lead';
+        else if (lowerRole.includes('leader')) roleType = 'subteam_lead';
+        else roleType = 'member';
+      }
+
       // 2. Add persona
       const personaKey = 'user_' + username;
       activeDb.personas[personaKey] = {
         id: 'mem-' + username,
         name: currentInvite.inviteeName,
         role: currentInvite.role,
-        roleType: 'member',
+        roleType: roleType,
         branch: currentInvite.branch,
         departments: [currentInvite.department],
+        subteam: currentInvite.subteam || '',
         avatar: '',
-        deptDesc: `${currentInvite.branch} Division • ${currentInvite.department}`
+        deptDesc: `${currentInvite.branch} Division • ${currentInvite.department}${currentInvite.subteam && currentInvite.subteam !== '__DEPT_LEAD__' ? ' — ' + currentInvite.subteam : ''}`
       };
 
       // 3. Add account
@@ -522,11 +543,14 @@
         id: 'mem-' + username,
         name: currentInvite.inviteeName,
         role: currentInvite.role,
+        roleType: roleType,
         branch: currentInvite.branch,
         dept: currentInvite.department,
+        subteam: currentInvite.subteam || '',
         username: username,
         points: 0,
-        status: 'Active'
+        status: 'Active',
+        avatar: ''
       });
 
       // 5. Notify Team Leaders

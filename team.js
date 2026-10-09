@@ -214,23 +214,211 @@ const VELOX_TEAM = {
 };
 
 /**
- * Helper to look up a member by id across all team tiers
+ * Merges static VELOX_TEAM with dynamic portal database (velox_portal_db_v8).
+ * Automatically updates the Team Structure when invitations are accepted or photos are edited.
+ */
+function getDynamicTeamData() {
+  const data = JSON.parse(JSON.stringify(VELOX_TEAM));
+  if (typeof localStorage === 'undefined') return data;
+
+  let portalDb = null;
+  const dbKey = localStorage.getItem('velox_portal_db_v8') ? 'velox_portal_db_v8' : 'velox_portal_db_v7';
+  const raw = localStorage.getItem(dbKey) || localStorage.getItem('velox_portal_db_v8');
+  if (raw) {
+    try { portalDb = JSON.parse(raw); } catch (e) {}
+  }
+
+  if (!portalDb) return data;
+
+  // 1. Sync persona avatar updates to static leaders
+  if (portalDb.personas) {
+    if (portalDb.personas.fatima && portalDb.personas.fatima.avatar) {
+      if (data.executives[0]) data.executives[0].photo = portalDb.personas.fatima.avatar;
+    }
+    if (portalDb.personas.karim && portalDb.personas.karim.avatar) {
+      if (data.executives[1]) data.executives[1].photo = portalDb.personas.karim.avatar;
+    }
+    if (portalDb.personas.romy && portalDb.personas.romy.avatar) {
+      if (data.technicalLeader) data.technicalLeader.photo = portalDb.personas.romy.avatar;
+    }
+    if (portalDb.personas.moaaz && portalDb.personas.moaaz.avatar) {
+      if (data.managerialLeader) data.managerialLeader.photo = portalDb.personas.moaaz.avatar;
+      const ptDept = data.technicalDepartments.find(d => d.id === 'powertrain');
+      if (ptDept && ptDept.leader) ptDept.leader.photo = portalDb.personas.moaaz.avatar;
+    }
+    if (portalDb.personas.hassan && portalDb.personas.hassan.avatar) {
+      const mediaDept = data.nonTechnical.find(d => d.id === 'media');
+      if (mediaDept && mediaDept.leader) mediaDept.leader.photo = portalDb.personas.hassan.avatar;
+    }
+  }
+
+  // 2. Collect accepted members from roster and invitations
+  const activeMembers = [];
+  const seenIds = new Set();
+
+  if (Array.isArray(portalDb.membersRoster)) {
+    portalDb.membersRoster.forEach(m => {
+      if (!m || !m.name) return;
+      if (['admin-director', 'fatima-salman', 'karim-shaprawy', 'mohamed-romy', 'moaaz-elghamry', 'mohamed-hassan'].includes(m.id)) {
+        return;
+      }
+      let avatar = m.avatar || '';
+      if (!avatar && portalDb.personas) {
+        for (const k in portalDb.personas) {
+          if (portalDb.personas[k].name === m.name || portalDb.personas[k].id === m.id) {
+            if (portalDb.personas[k].avatar) avatar = portalDb.personas[k].avatar;
+            break;
+          }
+        }
+      }
+      const item = {
+        id: m.id || ('mem-' + m.name.toLowerCase().replace(/[^a-z0-9]/g, '-')),
+        name: m.name,
+        role: m.role || 'Team Member',
+        roleType: m.roleType || '',
+        branch: m.branch || 'Technical',
+        department: m.dept || m.department || '',
+        subteam: m.subteam || '',
+        avatar: avatar
+      };
+      if (!seenIds.has(item.id)) {
+        seenIds.add(item.id);
+        activeMembers.push(item);
+      }
+    });
+  }
+
+  if (Array.isArray(portalDb.invitations)) {
+    portalDb.invitations.filter(inv => inv.status === 'Accepted').forEach(inv => {
+      const id = 'mem-' + (inv.inviteeName || 'user').toLowerCase().replace(/[^a-z0-9]/g, '-');
+      if (!seenIds.has(id)) {
+        seenIds.add(id);
+        let avatar = '';
+        if (portalDb.personas) {
+          for (const k in portalDb.personas) {
+            if (portalDb.personas[k].name === inv.inviteeName) {
+              avatar = portalDb.personas[k].avatar || '';
+              break;
+            }
+          }
+        }
+        activeMembers.push({
+          id: id,
+          name: inv.inviteeName,
+          role: inv.role || 'Team Member',
+          roleType: inv.roleType || '',
+          branch: inv.branch || 'Technical',
+          department: inv.department || '',
+          subteam: inv.subteam || '',
+          avatar: avatar
+        });
+      }
+    });
+  }
+
+  // 3. Map members to departments and subteams
+  const allDepts = [...data.technicalDepartments, ...data.nonTechnical];
+
+  activeMembers.forEach(member => {
+    const targetDept = allDepts.find(d => {
+      const dName = d.name.toLowerCase();
+      const mDept = (member.department || '').toLowerCase();
+      return dName === mDept || mDept.includes(dName) || dName.includes(mDept);
+    });
+
+    if (!targetDept) return;
+
+    const isDeptLeader = member.roleType === 'dept_lead' ||
+      member.role.toLowerCase().includes('department leader') ||
+      (member.role.toLowerCase().includes('leader') && (!member.subteam || member.subteam === '__DEPT_LEAD__' || member.subteam === 'All Subteams'));
+
+    if (isDeptLeader && !targetDept.leader) {
+      targetDept.leader = {
+        id: member.id,
+        name: member.name,
+        role: member.role,
+        photo: member.avatar || '',
+        department: targetDept.name,
+        department_ar: targetDept.name,
+        bio: `Appointed Department Leader of ${targetDept.name} Division at Velox Racing Formula Student Team.`,
+        responsibilities: [
+          `Executive engineering coordination and delivery milestones for ${targetDept.name}`,
+          `Direct technical supervision over ${targetDept.subteams.join(', ')} subteams`,
+          `Rules compliance and technical inspection preparation for Formula Student UK`
+        ],
+        quote: "Engineering precision, relentless testing, and disciplined teamwork drive our car to the podium."
+      };
+      return;
+    }
+
+    let matchedSub = null;
+    if (member.subteam && member.subteam !== '__DEPT_LEAD__') {
+      matchedSub = targetDept.subteams.find(s => s.toLowerCase() === member.subteam.toLowerCase() || member.subteam.toLowerCase().includes(s.toLowerCase()));
+    }
+    if (!matchedSub) {
+      matchedSub = targetDept.subteams.find(s => (member.role && member.role.toLowerCase().includes(s.toLowerCase())) || (member.department && member.department.toLowerCase().includes(s.toLowerCase())));
+    }
+    if (!matchedSub && targetDept.subteams.length > 0) {
+      matchedSub = targetDept.subteams[0];
+    }
+
+    if (matchedSub) {
+      if (!targetDept.subteamCrew) targetDept.subteamCrew = {};
+      if (!targetDept.subteamCrew[matchedSub]) targetDept.subteamCrew[matchedSub] = [];
+      const isLead = member.role.toLowerCase().includes('leader') || member.roleType === 'subteam_lead';
+      targetDept.subteamCrew[matchedSub].push({
+        id: member.id,
+        name: member.name,
+        role: member.role,
+        isLead: isLead,
+        photo: member.avatar || '',
+        subteam: matchedSub,
+        department: targetDept.name,
+        bio: `Formula Student engineering crew member in ${targetDept.name} — ${matchedSub} at Velox Racing.`,
+        responsibilities: [
+          `Subsystem CAD modeling, simulation, and manufacturing for ${matchedSub}`,
+          `Formula Student engineering documentation and validation compliance`,
+          `Collaboration with department leaders and trackside race engineers`
+        ],
+        quote: "Every detail matters. We engineer for speed, reliability, and precision."
+      });
+    }
+  });
+
+  return data;
+}
+
+/**
+ * Helper to look up a member by id across all team tiers and dynamic appointees
  */
 function getMemberById(id) {
   if (!id) return null;
-  if (VELOX_TEAM.technicalLeader && (VELOX_TEAM.technicalLeader.id === id || VELOX_TEAM.technicalLeader.name === id)) {
-    return VELOX_TEAM.technicalLeader;
+  const data = (typeof getDynamicTeamData === 'function') ? getDynamicTeamData() : VELOX_TEAM;
+  if (data.technicalLeader && (data.technicalLeader.id === id || data.technicalLeader.name === id)) {
+    return data.technicalLeader;
   }
-  if (VELOX_TEAM.managerialLeader && (VELOX_TEAM.managerialLeader.id === id || VELOX_TEAM.managerialLeader.name === id)) {
-    return VELOX_TEAM.managerialLeader;
+  if (data.managerialLeader && (data.managerialLeader.id === id || data.managerialLeader.name === id)) {
+    return data.managerialLeader;
   }
-  const exec = VELOX_TEAM.executives.find(m => m.id === id || m.name === id);
+  const exec = data.executives.find(m => m.id === id || m.name === id);
   if (exec) return exec;
-  for (const dept of VELOX_TEAM.technicalDepartments) {
+  for (const dept of data.technicalDepartments) {
     if (dept.leader && (dept.leader.id === id || dept.leader.name === id)) return dept.leader;
+    if (dept.subteamCrew) {
+      for (const sub in dept.subteamCrew) {
+        const found = dept.subteamCrew[sub].find(m => m.id === id || m.name === id);
+        if (found) return found;
+      }
+    }
   }
-  for (const dept of VELOX_TEAM.nonTechnical) {
+  for (const dept of data.nonTechnical) {
     if (dept.leader && (dept.leader.id === id || dept.leader.name === id)) return dept.leader;
+    if (dept.subteamCrew) {
+      for (const sub in dept.subteamCrew) {
+        const found = dept.subteamCrew[sub].find(m => m.id === id || m.name === id);
+        if (found) return found;
+      }
+    }
   }
   return null;
 }
@@ -255,10 +443,11 @@ function getSubteamsList() {
 
 if (typeof window !== "undefined") {
   window.VELOX_TEAM = VELOX_TEAM;
+  window.getDynamicTeamData = getDynamicTeamData;
   window.getSubteamsList = getSubteamsList;
   window.getMemberById = getMemberById;
 }
 
 if (typeof module !== "undefined" && module.exports) {
-  module.exports = { VELOX_TEAM, getSubteamsList, getMemberById };
+  module.exports = { VELOX_TEAM, getDynamicTeamData, getSubteamsList, getMemberById };
 }

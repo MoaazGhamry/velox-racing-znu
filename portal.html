@@ -817,7 +817,12 @@
         <!-- ACTIVE USER CONTEXT & NOTIFICATION CENTER -->
         <div class="portal-user-bar">
           <div class="portal-user-profile">
-            <div class="portal-user-avatar" id="activeAvatar"><img src="photos/Fatima Salman.jpeg" alt="Fatima Salman" onerror="this.style.display='none'; this.parentElement.textContent='FS';" /></div>
+            <div class="portal-user-avatar" id="activeAvatar" onclick="openEditPhotoModal()" title="Click to edit profile photo">
+              <img src="photos/Fatima Salman.jpeg" alt="Fatima Salman" onerror="this.style.display='none'; this.parentElement.textContent='FS';" />
+              <div class="avatar-edit-badge" title="Change Photo">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#FFF" stroke-width="2.5"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+              </div>
+            </div>
             <div class="portal-user-meta">
               <h3 id="activeUserName">
                 Fatima Salman
@@ -853,6 +858,11 @@
 
             <button type="button" class="btn btn-outline" id="openUploadBtn" style="padding: 6px 14px; font-size: 0.82rem;">
               + Upload Data
+            </button>
+
+            <button type="button" class="btn btn-outline" id="openEditPhotoBtn" onclick="openEditPhotoModal()" style="padding: 6px 14px; font-size: 0.82rem; color: #A78BFA; border-color: rgba(167, 139, 250, 0.4);" title="Change profile photo">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 4px;"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+              Edit Photo
             </button>
 
             <button type="button" class="btn btn-outline" id="openChangePassBtn" onclick="openChangePasswordModal()" style="padding: 6px 14px; font-size: 0.82rem; color: #38BDF8; border-color: rgba(56, 189, 248, 0.4);" title="Change my account password">
@@ -1099,27 +1109,59 @@
           </p>
         </div>
 
+        <!-- Specific Invitation Rules & Hierarchy Callout -->
+        <div style="background: rgba(197, 34, 31, 0.08); border: 1px solid rgba(197, 34, 31, 0.35); border-radius: var(--radius-md); padding: 18px 20px; max-width: 650px; margin: 0 auto 20px auto;">
+          <div style="display: flex; align-items: flex-start; gap: 12px;">
+            <div style="font-size: 1.4rem; line-height: 1;">🏎️</div>
+            <div>
+              <strong style="color: #FFF; font-size: 0.95rem; display: block; margin-bottom: 6px;">Executive Invitation Rules &amp; Dynamic Team Structure Protocol</strong>
+              <ul style="margin: 0; padding-left: 18px; font-size: 0.82rem; color: var(--text-muted); line-height: 1.6;">
+                <li><strong style="color: #FFF;">Issuing Authority:</strong> Exclusively authorized by Team Leaders (<strong>Fatima Salman</strong> &amp; <strong>Karim Shaprawy</strong>) or Executive Administrator.</li>
+                <li><strong style="color: #FFF;">Department &amp; Subteams:</strong> Select the Department and assign the candidate to a specific subteam or department-wide leadership.</li>
+                <li><strong style="color: #FFF;">Role Hierarchy:</strong> Appoint candidate as <em>Department Leader</em>, <em>Subteam Leader</em> (e.g. Suspension Leader), or <em>Team Member</em>.</li>
+                <li><strong style="color: #FFF;">Automatic Org Chart Sync:</strong> When the candidate accepts their credential pass on <a href="invite.html" target="_blank" style="color: #38BDF8; text-decoration: underline;">invite.html</a>, the <a href="team.html" target="_blank" style="color: #38BDF8; text-decoration: underline;">Team Structure Org Chart</a> updates automatically with their role, subteam, and profile!</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
         <!-- Invitation Creation Form -->
         <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px; max-width: 650px; margin: 0 auto 32px auto;">
           <form id="invitationForm">
-            <div class="form-group">
-              <label for="invGuestName">Invitee Full Name<span class="req">*</span></label>
-              <input type="text" id="invGuestName" class="form-control" placeholder="e.g. Ziad Mahmoud" required />
+            <div class="form-row">
+              <div class="form-group" style="flex: 1.3;">
+                <label for="invGuestName">Invitee Full Name<span class="req">*</span></label>
+                <input type="text" id="invGuestName" class="form-control" placeholder="e.g. Ziad Mahmoud" required />
+              </div>
+              <div class="form-group" style="flex: 1;">
+                <label for="invAuthorizerSelect">Authorized By<span class="req">*</span></label>
+                <select id="invAuthorizerSelect" class="form-control" required>
+                  <option value="Fatima Salman (Team Leader)">Fatima Salman (Team Leader)</option>
+                  <option value="Karim Shaprawy (Vice Team Leader)">Karim Shaprawy (Vice Team Leader)</option>
+                </select>
+              </div>
             </div>
 
             <div class="form-row">
               <div class="form-group">
-                <label for="invRoleSelect">Assigned Role<span class="req">*</span></label>
-                <select id="invRoleSelect" class="form-control" required>
-                  <!-- Populated dynamically according to user's authority -->
+                <label for="invDeptSelect">Assigned Department<span class="req">*</span></label>
+                <select id="invDeptSelect" class="form-control" required>
+                  <!-- Populated dynamically via renderInvitationsRoleOptions() -->
                 </select>
               </div>
               <div class="form-group">
-                <label for="invSubteamSelect">Assigned Subteam / Department<span class="req">*</span></label>
+                <label for="invSubteamSelect">Assigned Subteam / Tier<span class="req">*</span></label>
                 <select id="invSubteamSelect" class="form-control" required>
-                  <!-- Populated dynamically -->
+                  <!-- Populated dynamically when department changes -->
                 </select>
               </div>
+            </div>
+
+            <div class="form-group">
+              <label for="invRoleSelect">Designated Role &amp; Leadership Level<span class="req">*</span></label>
+              <select id="invRoleSelect" class="form-control" required>
+                <!-- Populated dynamically when subteam changes -->
+              </select>
             </div>
 
             <div class="form-group">
@@ -1798,6 +1840,59 @@
       <div id="appDetailsContent" style="max-height: 70vh; overflow-y: auto;">
         <!-- Populated via viewApplicantDetails(id) -->
       </div>
+    </div>
+  </div>
+
+  <!-- 12. Edit Profile Photo Modal -->
+  <div class="portal-modal-backdrop" id="editPhotoModal">
+    <div class="portal-modal-box" style="max-width: 490px;">
+      <div class="portal-modal-header">
+        <h3 style="margin: 0; font-size: 1.2rem; display: flex; align-items: center; gap: 8px;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+          Update Profile Photo
+        </h3>
+        <button type="button" class="portal-modal-close" onclick="closePortalModal('editPhotoModal')">&times;</button>
+      </div>
+
+      <div style="text-align: center; margin-bottom: 20px;">
+        <div id="photoPreviewCircle" style="width: 104px; height: 104px; border-radius: 50%; margin: 0 auto 12px auto; background: rgba(197, 34, 31, 0.15); border: 3px solid var(--red); display: flex; align-items: center; justify-content: center; overflow: hidden; font-size: 2.2rem; font-weight: 800; color: #FFF; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5); position: relative;">
+          <!-- Populated from JS -->
+        </div>
+        <p style="font-size: 0.82rem; color: var(--text-muted); margin: 0;">
+          Upload a personal picture or provide an image link. Your photo automatically updates in your portal session and on the <a href="team.html" target="_blank" style="color: #38BDF8; text-decoration: underline;">Team Structure Org Chart</a>!
+        </p>
+      </div>
+
+      <form id="editPhotoForm">
+        <div class="form-group" style="margin-bottom: 16px;">
+          <label for="editPhotoFileInput" style="font-size: 0.84rem; font-weight: 600; display: block; margin-bottom: 6px;">
+            📁 Upload From Device (PNG, JPG, WEBP)
+          </label>
+          <input type="file" id="editPhotoFileInput" accept="image/png, image/jpeg, image/webp" class="form-control" style="padding: 8px 12px; font-size: 0.85rem;" />
+        </div>
+
+        <div style="display: flex; align-items: center; margin: 16px 0; gap: 10px;">
+          <div style="flex: 1; height: 1px; background: rgba(255, 255, 255, 0.1);"></div>
+          <span style="font-size: 0.72rem; color: var(--text-dim); text-transform: uppercase;">or paste url</span>
+          <div style="flex: 1; height: 1px; background: rgba(255, 255, 255, 0.1);"></div>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 20px;">
+          <label for="editPhotoUrlInput" style="font-size: 0.84rem; font-weight: 600; display: block; margin-bottom: 6px;">
+            🔗 Image URL or Local Path
+          </label>
+          <input type="text" id="editPhotoUrlInput" class="form-control" placeholder="e.g. photos/Fatima Salman.jpeg or https://..." style="padding: 10px 14px; font-size: 0.88rem;" />
+        </div>
+
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+          <button type="submit" class="btn btn-primary" style="flex: 1; padding: 10px 16px; font-weight: 700;">
+            ✓ Save Profile Photo
+          </button>
+          <button type="button" class="btn btn-outline" onclick="removeProfilePhoto()" style="padding: 10px 14px; font-size: 0.85rem; color: #FF4D4D; border-color: rgba(255, 77, 77, 0.4);" title="Remove photo and use initials">
+            Reset to Initials
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 
@@ -3029,32 +3124,105 @@
     }
 
     // ==================== INVITATIONS (FATIMA & KARIM ONLY) ====================
+    const VELOX_DEPARTMENTS_CONFIG = {
+      'Vehicle Dynamics': {
+        branch: 'Technical',
+        subteams: ['Suspension', 'Steering', 'Brakes']
+      },
+      'Body & Chassis': {
+        branch: 'Technical',
+        subteams: ['Body', 'Chassis']
+      },
+      'Powertrain': {
+        branch: 'Technical',
+        subteams: ['Motor', 'Transmission']
+      },
+      'Electrical': {
+        branch: 'Technical',
+        subteams: ['Wiring & Harness', 'Control & Embedded System']
+      },
+      'Media & PR': {
+        branch: 'Managerial',
+        subteams: ['Photography & Video', 'Social Media & Public Relations']
+      },
+      'Business (Team Director)': {
+        branch: 'Managerial',
+        subteams: [
+          'Pitch Presenters & Market Analysis',
+          'Financial Modeling & Cost Analysis',
+          'Cost & Manufacturing Specialist',
+          'Corporate Relations & Sponsorship',
+          'Media & Brand Specialist'
+        ]
+      }
+    };
+
     function renderInvitationsRoleOptions() {
       const p = getActivePersona();
       const roleSelect = document.getElementById('invRoleSelect');
+      const deptSelect = document.getElementById('invDeptSelect');
       const subteamSelect = document.getElementById('invSubteamSelect');
-      if (!roleSelect || !subteamSelect) return;
+      const authSelect = document.getElementById('invAuthorizerSelect');
+      if (!roleSelect || !deptSelect || !subteamSelect) return;
 
       if (!isTeamLeader(p)) {
         roleSelect.innerHTML = `<option value="Team Member">Restricted to Team Leaders</option>`;
         return;
       }
 
-      roleSelect.innerHTML = `
-        <option value="Team Member">Team Member</option>
-        <option value="Subteam Leader">Subteam Leader</option>
-        <option value="Technical Leader">Technical Leader</option>
-        <option value="Managerial Leader">Managerial Leader</option>
-        <option value="Vice Team Leader">Vice Team Leader</option>
-      `;
-      subteamSelect.innerHTML = `
-        <option value="Body & Chassis">Body & Chassis</option>
-        <option value="Vehicle Dynamics">Vehicle Dynamics</option>
-        <option value="Powertrain">Powertrain</option>
-        <option value="Electrical">Electrical</option>
-        <option value="Media & PR">Media & PR</option>
-        <option value="Business (Team Director)">Business (Team Director)</option>
-      `;
+      // Pre-select active team leader in authorizer dropdown
+      if (authSelect) {
+        if (p.id === 'karim-shaprawy') {
+          authSelect.value = 'Karim Shaprawy (Vice Team Leader)';
+        } else {
+          authSelect.value = 'Fatima Salman (Team Leader)';
+        }
+      }
+
+      // Populate Department Select if not populated
+      if (deptSelect.options.length === 0) {
+        deptSelect.innerHTML = Object.keys(VELOX_DEPARTMENTS_CONFIG).map(deptKey => {
+          const b = VELOX_DEPARTMENTS_CONFIG[deptKey].branch;
+          return `<option value="${deptKey}">${deptKey} (${b})</option>`;
+        }).join('');
+      }
+
+      function updateSubteamsAndRoles() {
+        const selectedDept = deptSelect.value;
+        const conf = VELOX_DEPARTMENTS_CONFIG[selectedDept] || { branch: 'Technical', subteams: [] };
+
+        subteamSelect.innerHTML = `
+          <option value="__DEPT_LEAD__">All Subteams (Department Leadership)</option>
+          ${conf.subteams.map(s => `<option value="${s}">${s}</option>`).join('')}
+        `;
+
+        updateRolesForSubteam();
+      }
+
+      function updateRolesForSubteam() {
+        const selectedDept = deptSelect.value;
+        const conf = VELOX_DEPARTMENTS_CONFIG[selectedDept] || { branch: 'Technical', subteams: [] };
+        const selectedSub = subteamSelect.value;
+
+        if (selectedSub === '__DEPT_LEAD__') {
+          roleSelect.innerHTML = `
+            <option value="${selectedDept} Leader" data-type="dept_lead">Department Leader (${selectedDept} Leader)</option>
+            ${conf.branch === 'Technical' ? '<option value="Technical Leader" data-type="tech_lead">Technical Leader</option>' : '<option value="Managerial Leader" data-type="ops_lead">Managerial Leader</option>'}
+            <option value="Vice Team Leader" data-type="executive">Vice Team Leader</option>
+          `;
+        } else {
+          roleSelect.innerHTML = `
+            <option value="${selectedSub} Leader" data-type="subteam_lead">Subteam Leader (${selectedSub} Leader)</option>
+            <option value="${selectedSub} Member" data-type="member">Team Member (${selectedSub} Member)</option>
+            <option value="Team Member" data-type="member">General Team Member</option>
+          `;
+        }
+      }
+
+      deptSelect.onchange = updateSubteamsAndRoles;
+      subteamSelect.onchange = updateRolesForSubteam;
+
+      updateSubteamsAndRoles();
     }
 
     function renderInvitationsTable() {
@@ -3086,13 +3254,19 @@
           code: inv.code,
           name: inv.inviteeName || 'Team Candidate',
           role: inv.role || 'Team Member',
+          roleType: inv.roleType || '',
           branch: inv.branch || 'Technical',
           dept: inv.department || '',
+          subteam: inv.subteam || '',
           by: inv.authorizer || 'Fatima Salman (Team Leader)',
           issued: inv.issued || '2026-10-09'
         });
         if (inv.note) inviteParams.set('note', inv.note);
         const standAloneUrl = `invite.html?${inviteParams.toString()}`;
+
+        const deptSubString = (inv.subteam && inv.subteam !== '__DEPT_LEAD__' && inv.subteam !== 'All Subteams')
+          ? `${inv.department} — ${inv.subteam}`
+          : inv.department;
 
         return `
           <tr>
@@ -3100,7 +3274,7 @@
             <td><strong style="color: #FFF;">${inv.inviteeName}</strong></td>
             <td>
               <span class="file-badge" style="color: ${inv.branch === 'Technical' ? '#38BDF8' : '#FBBF24'};">
-                ${inv.role} &bull; ${inv.department}
+                ${inv.role} &bull; ${deptSubString}
               </span>
             </td>
             <td style="color: var(--text-muted); font-size: 0.82rem;">${inv.authorizer || 'Fatima Salman (Team Leader)'}</td>
@@ -4637,21 +4811,28 @@
 
           const db = getPortalDb();
           const guestName = document.getElementById('invGuestName').value.trim();
-          const role = document.getElementById('invRoleSelect').value;
-          const dept = document.getElementById('invSubteamSelect').value;
+          const authorizerStr = document.getElementById('invAuthorizerSelect').value;
+          const dept = document.getElementById('invDeptSelect').value;
+          const subteamVal = document.getElementById('invSubteamSelect').value;
+          const roleSelect = document.getElementById('invRoleSelect');
+          const role = roleSelect.value;
+          const selectedOption = roleSelect.options[roleSelect.selectedIndex];
+          const roleType = selectedOption ? (selectedOption.dataset.type || '') : '';
           const note = document.getElementById('invNote').value.trim();
 
           const serial = 'FS-ZNU-' + Math.floor(100000 + Math.random() * 900000);
           const branch = (dept.includes('Media') || dept.includes('Business')) ? 'Managerial' : 'Technical';
-          const authorizerStr = `${p.name} (${p.role})`;
           const issuedDateStr = new Date().toISOString().substring(0, 10);
+          const subteam = (subteamVal === '__DEPT_LEAD__' || subteamVal === 'All Subteams') ? '' : subteamVal;
 
           const inviteParams = new URLSearchParams({
             code: serial,
             name: guestName,
             role: role,
+            roleType: roleType,
             branch: branch,
             dept: dept,
+            subteam: subteam,
             by: authorizerStr,
             issued: issuedDateStr
           });
@@ -4662,8 +4843,10 @@
             code: serial,
             inviteeName: guestName,
             role: role,
+            roleType: roleType,
             branch: branch,
             department: dept,
+            subteam: subteam,
             note: note,
             authorizer: authorizerStr,
             status: 'Pending',
@@ -4674,6 +4857,8 @@
           if (!db.invitations) db.invitations = [];
           db.invitations.unshift(newInvite);
           savePortalDb(db);
+
+          const deptSubString = subteam ? `${dept} — ${subteam}` : dept;
 
           const passHtml = `
             <div class="invitation-pass-preview" id="activePassCard">
@@ -4704,7 +4889,7 @@
                   </div>
                   <div class="pass-meta-field">
                     <span>Branch & Department</span>
-                    <strong>${branch} &bull; ${dept}</strong>
+                    <strong>${branch} &bull; ${deptSubString}</strong>
                   </div>
                   <div class="pass-meta-field">
                     <span>Authorized By</span>
@@ -4739,16 +4924,136 @@
             passContainer.scrollIntoView({ behavior: 'smooth' });
           }
 
-          logAuditEvent(`INVITATION: ${p.name} issued invitation ${serial} for ${guestName} (${dept}).`);
+          logAuditEvent(`INVITATION: ${p.name} issued invitation ${serial} for ${guestName} (${deptSubString}) authorized by ${authorizerStr}.`);
           addNotification({
             title: 'Official Invitation Issued',
-            message: `Team Leader ${p.name} generated invitation pass for ${guestName} in ${dept}.`,
+            message: `Official team credential pass generated for ${guestName} in ${deptSubString}.`,
             author: p.name,
             type: 'governance',
             target: ['fatima', 'karim']
           });
 
           renderInvitationsTable();
+        });
+      }
+
+      // 13. Edit Profile Photo Feature & Dynamic Storage
+      let stagedPhotoData = '';
+
+      window.openEditPhotoModal = function() {
+        const p = getActivePersona();
+        const preview = document.getElementById('photoPreviewCircle');
+        const urlInput = document.getElementById('editPhotoUrlInput');
+        const fileInput = document.getElementById('editPhotoFileInput');
+        if (!preview) return;
+
+        stagedPhotoData = p.avatar || '';
+        if (urlInput) urlInput.value = p.avatar || '';
+        if (fileInput) fileInput.value = '';
+
+        window.updatePhotoPreviewCircle(stagedPhotoData, p.name);
+        openPortalModal('editPhotoModal');
+      };
+
+      window.updatePhotoPreviewCircle = function(src, name) {
+        const preview = document.getElementById('photoPreviewCircle');
+        if (!preview) return;
+        if (src) {
+          preview.innerHTML = `<img src="${src}" alt="Preview" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.textContent='${getInitials(name)}';" />`;
+        } else {
+          preview.textContent = getInitials(name);
+        }
+      };
+
+      window.removeProfilePhoto = function() {
+        const p = getActivePersona();
+        stagedPhotoData = '';
+        const urlInput = document.getElementById('editPhotoUrlInput');
+        const fileInput = document.getElementById('editPhotoFileInput');
+        if (urlInput) urlInput.value = '';
+        if (fileInput) fileInput.value = '';
+        window.updatePhotoPreviewCircle('', p.name);
+      };
+
+      const photoFileInput = document.getElementById('editPhotoFileInput');
+      if (photoFileInput) {
+        photoFileInput.addEventListener('change', function(e) {
+          const file = e.target.files && e.target.files[0];
+          if (!file) return;
+
+          const reader = new FileReader();
+          reader.onload = function(evt) {
+            const img = new Image();
+            img.onload = function() {
+              const maxDim = 320;
+              let width = img.width;
+              let height = img.height;
+              if (width > height) {
+                if (width > maxDim) {
+                  height = Math.round((height * maxDim) / width);
+                  width = maxDim;
+                }
+              } else {
+                if (height > maxDim) {
+                  width = Math.round((width * maxDim) / height);
+                  height = maxDim;
+                }
+              }
+
+              const canvas = document.createElement('canvas');
+              canvas.width = width;
+              canvas.height = height;
+              const ctx = canvas.getContext('2d');
+              ctx.drawImage(img, 0, 0, width, height);
+              stagedPhotoData = canvas.toDataURL('image/jpeg', 0.85);
+
+              const p = getActivePersona();
+              window.updatePhotoPreviewCircle(stagedPhotoData, p.name);
+              const urlInput = document.getElementById('editPhotoUrlInput');
+              if (urlInput) urlInput.value = '';
+            };
+            img.src = evt.target.result;
+          };
+          reader.readAsDataURL(file);
+        });
+      }
+
+      const photoUrlInput = document.getElementById('editPhotoUrlInput');
+      if (photoUrlInput) {
+        photoUrlInput.addEventListener('input', function(e) {
+          const val = e.target.value.trim();
+          stagedPhotoData = val;
+          const p = getActivePersona();
+          window.updatePhotoPreviewCircle(val, p.name);
+        });
+      }
+
+      const photoForm = document.getElementById('editPhotoForm');
+      if (photoForm) {
+        photoForm.addEventListener('submit', function(e) {
+          e.preventDefault();
+          const p = getActivePersona();
+          const db = getPortalDb();
+
+          p.avatar = stagedPhotoData;
+          if (db.personas[currentPersonaKey]) {
+            db.personas[currentPersonaKey].avatar = stagedPhotoData;
+          }
+
+          // Also update roster entry and accounts
+          const authUser = localStorage.getItem('velox_auth_user') || '';
+          const member = (db.membersRoster || []).find(m => m.username === authUser || m.id === p.id || m.name === p.name);
+          if (member) {
+            member.avatar = stagedPhotoData;
+          }
+
+          savePortalDb(db);
+          renderUserBar();
+          renderStructure();
+          renderCompetition();
+          closePortalModal('editPhotoModal');
+          logAuditEvent(`PROFILE: ${p.name} updated their profile photo.`);
+          alert('Profile photo successfully updated! Your photo is now updated across the Portal and the Team Structure Org Chart.');
         });
       }
 
