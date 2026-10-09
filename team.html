@@ -281,7 +281,14 @@
                   <p class="dept-desc">${tDesc(dept.id, dept.description)}</p>
                   <div class="dept-subteams-list" style="display: flex; flex-direction: column; gap: 8px;">
                     ${dept.subteams.map(sub => {
-                      const crew = (dept.subteamCrew && dept.subteamCrew[sub]) || [];
+                      const rawCrew = (dept.subteamCrew && dept.subteamCrew[sub]) || [];
+                      const seenSubCrew = new Set();
+                      const crew = rawCrew.filter(m => {
+                        const k = (m.name || '').trim().toLowerCase();
+                        if (!k || seenSubCrew.has(k)) return false;
+                        seenSubCrew.add(k);
+                        return true;
+                      });
                       return `
                         <div class="subteam-block">
                           <div class="subteam-pill">&bull; ${tSub(sub)}</div>
@@ -354,7 +361,14 @@
                   <p class="dept-desc">${tDesc(dept.id, dept.description)}</p>
                   <div class="dept-subteams-list" style="display: flex; flex-direction: column; gap: 8px;">
                     ${dept.subteams.map(sub => {
-                      const crew = (dept.subteamCrew && dept.subteamCrew[sub]) || [];
+                      const rawCrew = (dept.subteamCrew && dept.subteamCrew[sub]) || [];
+                      const seenSubCrew = new Set();
+                      const crew = rawCrew.filter(m => {
+                        const k = (m.name || '').trim().toLowerCase();
+                        if (!k || seenSubCrew.has(k)) return false;
+                        seenSubCrew.add(k);
+                        return true;
+                      });
                       return `
                         <div class="subteam-block">
                           <div class="subteam-pill">&bull; ${tSub(sub)}</div>

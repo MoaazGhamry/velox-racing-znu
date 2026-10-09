@@ -252,28 +252,35 @@ function getDynamicTeamData() {
     }
   }
 
-  // 2. Collect accepted members from roster and invitations
+  // 2. Collect accepted members from roster and invitations with strict deduplication
   const activeMembers = [];
   const seenIds = new Set();
+  const seenNames = new Set();
 
   if (Array.isArray(portalDb.membersRoster)) {
     portalDb.membersRoster.forEach(m => {
       if (!m || !m.name) return;
+      const cleanName = m.name.trim();
+      const normName = cleanName.toLowerCase();
+      if (!normName) return;
+
       if (['admin-director', 'fatima-salman', 'karim-shaprawy', 'mohamed-romy', 'moaaz-elghamry', 'mohamed-hassan'].includes(m.id)) {
         return;
       }
+      if (seenNames.has(normName)) return;
+
       let avatar = m.avatar || '';
       if (!avatar && portalDb.personas) {
         for (const k in portalDb.personas) {
-          if (portalDb.personas[k].name === m.name || portalDb.personas[k].id === m.id) {
+          if ((portalDb.personas[k].name && portalDb.personas[k].name.trim().toLowerCase() === normName) || portalDb.personas[k].id === m.id) {
             if (portalDb.personas[k].avatar) avatar = portalDb.personas[k].avatar;
             break;
           }
         }
       }
       const item = {
-        id: m.id || ('mem-' + m.name.toLowerCase().replace(/[^a-z0-9]/g, '-')),
-        name: m.name,
+        id: m.id || ('mem-' + normName.replace(/[^a-z0-9]/g, '-')),
+        name: cleanName,
         role: m.role || 'Team Member',
         roleType: m.roleType || '',
         branch: m.branch || 'Technical',
@@ -283,6 +290,7 @@ function getDynamicTeamData() {
       };
       if (!seenIds.has(item.id)) {
         seenIds.add(item.id);
+        seenNames.add(normName);
         activeMembers.push(item);
       }
     });
@@ -290,29 +298,38 @@ function getDynamicTeamData() {
 
   if (Array.isArray(portalDb.invitations)) {
     portalDb.invitations.filter(inv => inv.status === 'Accepted').forEach(inv => {
-      const id = 'mem-' + (inv.inviteeName || 'user').toLowerCase().replace(/[^a-z0-9]/g, '-');
-      if (!seenIds.has(id)) {
-        seenIds.add(id);
-        let avatar = '';
-        if (portalDb.personas) {
-          for (const k in portalDb.personas) {
-            if (portalDb.personas[k].name === inv.inviteeName) {
-              avatar = portalDb.personas[k].avatar || '';
-              break;
-            }
+      if (!inv || !inv.inviteeName) return;
+      const cleanName = inv.inviteeName.trim();
+      const normName = cleanName.toLowerCase();
+      if (!normName) return;
+      // If already recorded from membersRoster or earlier invitation, skip
+      if (seenNames.has(normName)) return;
+
+      const id = 'mem-' + normName.replace(/[^a-z0-9]/g, '-');
+      if (seenIds.has(id)) return;
+
+      seenIds.add(id);
+      seenNames.add(normName);
+
+      let avatar = '';
+      if (portalDb.personas) {
+        for (const k in portalDb.personas) {
+          if (portalDb.personas[k].name && portalDb.personas[k].name.trim().toLowerCase() === normName) {
+            avatar = portalDb.personas[k].avatar || '';
+            break;
           }
         }
-        activeMembers.push({
-          id: id,
-          name: inv.inviteeName,
-          role: inv.role || 'Team Member',
-          roleType: inv.roleType || '',
-          branch: inv.branch || 'Technical',
-          department: inv.department || '',
-          subteam: inv.subteam || '',
-          avatar: avatar
-        });
       }
+      activeMembers.push({
+        id: id,
+        name: cleanName,
+        role: inv.role || 'Team Member',
+        roleType: inv.roleType || '',
+        branch: inv.branch || 'Technical',
+        department: inv.department || '',
+        subteam: inv.subteam || '',
+        avatar: avatar
+      });
     });
   }
 
@@ -365,6 +382,14 @@ function getDynamicTeamData() {
     if (matchedSub) {
       if (!targetDept.subteamCrew) targetDept.subteamCrew = {};
       if (!targetDept.subteamCrew[matchedSub]) targetDept.subteamCrew[matchedSub] = [];
+      
+      const mNorm = member.name.trim().toLowerCase();
+      const alreadyExists = targetDept.subteamCrew[matchedSub].some(existing => 
+        (existing.id && member.id && existing.id === member.id) ||
+        (existing.name && existing.name.trim().toLowerCase() === mNorm)
+      );
+      if (alreadyExists) return;
+
       const isLead = member.role.toLowerCase().includes('leader') || member.roleType === 'subteam_lead';
       targetDept.subteamCrew[matchedSub].push({
         id: member.id,

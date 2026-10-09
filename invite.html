@@ -529,29 +529,52 @@
         deptDesc: `${currentInvite.branch} Division • ${currentInvite.department}${currentInvite.subteam && currentInvite.subteam !== '__DEPT_LEAD__' ? ' — ' + currentInvite.subteam : ''}`
       };
 
-      // 3. Add account
-      activeDb.accounts.push({
-        username: username,
-        password: password,
-        personaKey: personaKey,
-        name: currentInvite.inviteeName,
-        status: 'Active'
-      });
+      // 3. Add or update account
+      const existingAccIdx = activeDb.accounts.findIndex(a => a.username && a.username.toLowerCase() === username.toLowerCase());
+      if (existingAccIdx !== -1) {
+        activeDb.accounts[existingAccIdx].password = password;
+        activeDb.accounts[existingAccIdx].personaKey = personaKey;
+        activeDb.accounts[existingAccIdx].name = currentInvite.inviteeName;
+        activeDb.accounts[existingAccIdx].status = 'Active';
+      } else {
+        activeDb.accounts.push({
+          username: username,
+          password: password,
+          personaKey: personaKey,
+          name: currentInvite.inviteeName,
+          status: 'Active'
+        });
+      }
 
-      // 4. Add roster entry with 0 points
-      activeDb.membersRoster.push({
-        id: 'mem-' + username,
-        name: currentInvite.inviteeName,
-        role: currentInvite.role,
-        roleType: roleType,
-        branch: currentInvite.branch,
-        dept: currentInvite.department,
-        subteam: currentInvite.subteam || '',
-        username: username,
-        points: 0,
-        status: 'Active',
-        avatar: ''
-      });
+      // 4. Add or update roster entry
+      const existingRosterIdx = activeDb.membersRoster.findIndex(m => 
+        (m.username && m.username.toLowerCase() === username.toLowerCase()) ||
+        (m.name && m.name.trim().toLowerCase() === currentInvite.inviteeName.trim().toLowerCase())
+      );
+      if (existingRosterIdx !== -1) {
+        activeDb.membersRoster[existingRosterIdx].name = currentInvite.inviteeName;
+        activeDb.membersRoster[existingRosterIdx].role = currentInvite.role;
+        activeDb.membersRoster[existingRosterIdx].roleType = roleType;
+        activeDb.membersRoster[existingRosterIdx].branch = currentInvite.branch;
+        activeDb.membersRoster[existingRosterIdx].dept = currentInvite.department;
+        activeDb.membersRoster[existingRosterIdx].subteam = currentInvite.subteam || '';
+        activeDb.membersRoster[existingRosterIdx].username = username;
+        activeDb.membersRoster[existingRosterIdx].status = 'Active';
+      } else {
+        activeDb.membersRoster.push({
+          id: 'mem-' + username,
+          name: currentInvite.inviteeName,
+          role: currentInvite.role,
+          roleType: roleType,
+          branch: currentInvite.branch,
+          dept: currentInvite.department,
+          subteam: currentInvite.subteam || '',
+          username: username,
+          points: 0,
+          status: 'Active',
+          avatar: ''
+        });
+      }
 
       // 5. Notify Team Leaders
       if (!activeDb.notifications) activeDb.notifications = [];
