@@ -846,18 +846,6 @@
                 <span class="demo-account-meta" style="color: #FBBF24;">Media & PR Lead</span>
                 <span class="demo-account-cred">@hassan</span>
               </div>
-              <!-- Ahmed -->
-              <div class="demo-account-chip" onclick="quickLogin('ahmed', 'velox2026')">
-                <span class="demo-account-name">Ahmed Youssef</span>
-                <span class="demo-account-meta" style="color: #22C55E;">Powertrain Member</span>
-                <span class="demo-account-cred">@ahmed</span>
-              </div>
-              <!-- Sarah -->
-              <div class="demo-account-chip" onclick="quickLogin('sarah', 'velox2026')">
-                <span class="demo-account-name">Sarah El-Sayed</span>
-                <span class="demo-account-meta" style="color: #A855F7;">Shared Member (Aero/Media)</span>
-                <span class="demo-account-cred">@sarah</span>
-              </div>
             </div>
           </details>
         </div>
@@ -869,7 +857,7 @@
         <!-- ACTIVE USER CONTEXT & FAST ROLE SWITCHER -->
         <div class="portal-user-bar">
           <div class="portal-user-profile">
-            <div class="portal-user-avatar" id="activeAvatar">FS</div>
+            <div class="portal-user-avatar" id="activeAvatar"><img src="photos/Fatima Salman.jpeg" alt="Fatima Salman" onerror="this.style.display='none'; this.parentElement.textContent='FS';" /></div>
             <div class="portal-user-meta">
               <h3 id="activeUserName">
                 Fatima Salman
@@ -893,8 +881,6 @@
               <option value="moaaz">Moaaz Elghamry (Managerial Leader)</option>
               <option value="ali">Ali Elgohary (Electrical Subteam Lead)</option>
               <option value="hassan">Mohamed Hassan (Media & PR Subteam Lead)</option>
-              <option value="member_tech">Ahmed Youssef (Member - Powertrain)</option>
-              <option value="member_shared">Sarah El-Sayed (Member - Shared in Aero & Media)</option>
             </select>
 
             <button type="button" class="btn btn-outline" id="openUploadBtn" style="padding: 6px 14px; font-size: 0.82rem;">
@@ -922,12 +908,12 @@
         <button type="button" class="portal-tab-btn" data-tab="vault">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
           Data Vault & Files
-          <span class="portal-tab-badge" id="tabVaultBadge">8</span>
+          <span class="portal-tab-badge" id="tabVaultBadge">0</span>
         </button>
         <button type="button" class="portal-tab-btn" data-tab="tasks">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
           Task Center & Tasks
-          <span class="portal-tab-badge" id="tabTasksBadge" style="background: #38BDF8;">4</span>
+          <span class="portal-tab-badge" id="tabTasksBadge" style="background: #38BDF8;">0</span>
         </button>
         <button type="button" class="portal-tab-btn" data-tab="competition">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
@@ -950,17 +936,17 @@
           <div class="portal-stat-box">
             <div class="portal-stat-lbl">
               <span>My Velocity Points</span>
-              <span style="color: #EAB308;">★ Rank #1</span>
+              <span style="color: #EAB308;">★ Active Season</span>
             </div>
-            <div class="portal-stat-val" id="kpiPoints">1,250</div>
-            <div class="portal-stat-sub">+180 pts earned this sprint</div>
+            <div class="portal-stat-val" id="kpiPoints">0</div>
+            <div class="portal-stat-sub">+0 pts earned this sprint</div>
           </div>
           <div class="portal-stat-box">
             <div class="portal-stat-lbl">
               <span>Accessible Files</span>
               <span style="color: #38BDF8;">Vault</span>
             </div>
-            <div class="portal-stat-val" id="kpiFiles">18</div>
+            <div class="portal-stat-val" id="kpiFiles">0</div>
             <div class="portal-stat-sub" id="kpiFilesSub">Filtered by clearance</div>
           </div>
           <div class="portal-stat-box">
@@ -968,15 +954,15 @@
               <span>Active Sprints</span>
               <span style="color: #22C55E;">In Progress</span>
             </div>
-            <div class="portal-stat-val" id="kpiTasks">5</div>
-            <div class="portal-stat-sub">3 high speed targets</div>
+            <div class="portal-stat-val" id="kpiTasks">0</div>
+            <div class="portal-stat-sub">Current active deliverables</div>
           </div>
           <div class="portal-stat-box">
             <div class="portal-stat-lbl">
               <span>Pending Requests</span>
               <span style="color: #FBBF24;">Approvals</span>
             </div>
-            <div class="portal-stat-val" id="kpiRequests">2</div>
+            <div class="portal-stat-val" id="kpiRequests">0</div>
             <div class="portal-stat-sub" id="kpiRequestsSub">Access requests awaiting review</div>
           </div>
         </div>
@@ -1202,12 +1188,12 @@
         <div class="portal-stats-grid" style="margin-bottom: 28px;">
           <div class="portal-stat-box">
             <div class="portal-stat-lbl">Active Roster Accounts</div>
-            <div class="portal-stat-val" id="adminKpiMembers" style="color: #FFF;">8</div>
+            <div class="portal-stat-val" id="adminKpiMembers" style="color: #FFF;">6</div>
             <div class="portal-stat-desc">Provisioned team accounts</div>
           </div>
           <div class="portal-stat-box">
             <div class="portal-stat-lbl">Data Vault Deliverables</div>
-            <div class="portal-stat-val" id="adminKpiFiles" style="color: #38BDF8;">7</div>
+            <div class="portal-stat-val" id="adminKpiFiles" style="color: #38BDF8;">0</div>
             <div class="portal-stat-desc">Engineering assets & CAD</div>
           </div>
           <div class="portal-stat-box">
@@ -1217,7 +1203,7 @@
           </div>
           <div class="portal-stat-box">
             <div class="portal-stat-lbl">Completed Sprints</div>
-            <div class="portal-stat-val" id="adminKpiTasks" style="color: #22C55E;">1</div>
+            <div class="portal-stat-val" id="adminKpiTasks" style="color: #22C55E;">0</div>
             <div class="portal-stat-desc">Verified deliverables</div>
           </div>
         </div>
@@ -1746,7 +1732,7 @@
 
   <!-- ==================== PORTAL JAVASCRIPT ENGINE ==================== -->
   <script>
-    // Initial Seed Data for Portal
+    // Initial Seed Data for Portal (Production State - Real Users Only, Empty Mockup Data)
     const PORTAL_SEED = {
       personas: {
         fatima: {
@@ -1808,191 +1794,17 @@
           departments: ['Media & PR'],
           avatar: 'photos/Mohamed Hassan.jpeg',
           deptDesc: 'Media & Public Relations Lead'
-        },
-        member_tech: {
-          id: 'ahmed-youssef',
-          name: 'Ahmed Youssef',
-          role: 'Team Member',
-          roleType: 'member',
-          branch: 'Technical',
-          departments: ['Powertrain'],
-          avatar: '',
-          deptDesc: 'Powertrain Subsystem Member (Standard Clearance)'
-        },
-        member_shared: {
-          id: 'sarah-el-sayed',
-          name: 'Sarah El-Sayed',
-          role: 'Team Member',
-          roleType: 'member',
-          branch: 'Shared',
-          departments: ['Body & Chassis', 'Media & PR'],
-          avatar: '',
-          deptDesc: 'Cross-Discipline Member: Aerodynamics & Visual Media'
         }
       },
 
-      files: [
-        {
-          id: 'F-101',
-          title: 'Chassis VX-01 Master CAD Assembly (Parasolid x_t)',
-          branch: 'Technical',
-          dept: 'Body & Chassis',
-          uploadedBy: 'Mohamed Romy',
-          date: '2026-10-06',
-          url: '#',
-          restricted: true,
-          approvedUsers: ['fatima-salman', 'karim-shaprawy', 'mohamed-romy']
-        },
-        {
-          id: 'F-102',
-          title: 'Suspension Kinematics & Ackermann Angle Telemetry',
-          branch: 'Technical',
-          dept: 'Vehicle Dynamics',
-          uploadedBy: 'Mohamed Romy',
-          date: '2026-10-07',
-          url: '#',
-          restricted: true,
-          approvedUsers: ['fatima-salman', 'karim-shaprawy', 'mohamed-romy']
-        },
-        {
-          id: 'F-103',
-          title: 'Powertrain Chain Reduction & Torque Differential Spec',
-          branch: 'Technical',
-          dept: 'Powertrain',
-          uploadedBy: 'Ahmed Youssef',
-          date: '2026-10-08',
-          url: '#',
-          restricted: true,
-          approvedUsers: ['fatima-salman', 'karim-shaprawy', 'mohamed-romy']
-        },
-        {
-          id: 'F-104',
-          title: 'Raychem Mil-Spec Wiring Loom Schematic & DAQ Map',
-          branch: 'Technical',
-          dept: 'Electrical',
-          uploadedBy: 'Ali Elgohary',
-          date: '2026-10-08',
-          url: '#',
-          restricted: true,
-          approvedUsers: ['fatima-salman', 'karim-shaprawy', 'mohamed-romy', 'ali-elgohary']
-        },
-        {
-          id: 'F-201',
-          title: 'Formula Student 2026 CBOM Cost & Materials Ledger',
-          branch: 'Managerial',
-          dept: 'Business (Team Director)',
-          uploadedBy: 'Moaaz Elghamry',
-          date: '2026-10-07',
-          url: '#',
-          restricted: true,
-          approvedUsers: ['fatima-salman', 'karim-shaprawy', 'moaaz-elghamry']
-        },
-        {
-          id: 'F-202',
-          title: 'Institutional Recruitment Evaluation Matrix (Round 1)',
-          branch: 'Managerial',
-          dept: 'Human Resources (HR)',
-          uploadedBy: 'Moaaz Elghamry',
-          date: '2026-10-08',
-          url: '#',
-          restricted: true,
-          approvedUsers: ['fatima-salman', 'karim-shaprawy', 'moaaz-elghamry']
-        },
-        {
-          id: 'F-203',
-          title: 'Silverstone 4K Documentary Teaser & Sponsor Deck',
-          branch: 'Managerial',
-          dept: 'Media & PR',
-          uploadedBy: 'Mohamed Hassan',
-          date: '2026-10-09',
-          url: '#',
-          restricted: false,
-          approvedUsers: ['fatima-salman', 'karim-shaprawy', 'moaaz-elghamry', 'mohamed-hassan', 'sarah-el-sayed']
-        }
-      ],
+      files: [],
 
-      tasks: [
-        {
-          id: 'T-301',
-          title: 'Execute Front Wing Endplate CFD Mesh Refinement',
-          dept: 'Body & Chassis',
-          branch: 'Technical',
-          assignedToId: 'sarah-el-sayed',
-          assignedToName: 'Sarah El-Sayed',
-          priority: 'Critical',
-          deadline: '2026-10-12T18:00',
-          basePoints: 120,
-          speedBonus: 60,
-          desc: 'Refine boundary layer inflation layers in Ansys Fluent to assess vortex generation at 80 km/h.',
-          status: 'In Progress',
-          completedAt: null
-        },
-        {
-          id: 'T-302',
-          title: 'Differential Mount Torsional Stiffness FEA',
-          dept: 'Powertrain',
-          branch: 'Technical',
-          assignedToId: 'ahmed-youssef',
-          assignedToName: 'Ahmed Youssef',
-          priority: 'High',
-          deadline: '2026-10-14T12:00',
-          basePoints: 100,
-          speedBonus: 50,
-          desc: 'Verify safety factor > 2.5 on 6061-T6 aluminum differential mounting brackets under maximum chain tension.',
-          status: 'In Progress',
-          completedAt: null
-        },
-        {
-          id: 'T-303',
-          title: 'Telemetry DAQ Wireless Communication Benchmark',
-          dept: 'Electrical',
-          branch: 'Technical',
-          assignedToId: 'ali-elgohary',
-          assignedToName: 'Ali Elgohary',
-          priority: 'High',
-          deadline: '2026-10-15T20:00',
-          basePoints: 100,
-          speedBonus: 40,
-          desc: 'Test 2.4GHz RF packet drop rate across 300 meters line-of-sight in campus engineering grounds.',
-          status: 'Completed',
-          completedAt: '2026-10-09T14:30'
-        },
-        {
-          id: 'T-304',
-          title: 'Sponsorship Pitch Video Cut for Corporate Partners',
-          dept: 'Media & PR',
-          branch: 'Managerial',
-          assignedToId: 'sarah-el-sayed',
-          assignedToName: 'Sarah El-Sayed',
-          priority: 'Normal',
-          deadline: '2026-10-16T18:00',
-          basePoints: 90,
-          speedBonus: 45,
-          desc: 'Export 90-second widescreen teaser highlighting mechanical workshop engineering moments.',
-          status: 'In Progress',
-          completedAt: null
-        }
-      ],
+      tasks: [],
 
-      accessRequests: [
-        {
-          id: 'REQ-1',
-          fileId: 'F-101',
-          fileTitle: 'Chassis VX-01 Master CAD Assembly (Parasolid x_t)',
-          userId: 'ahmed-youssef',
-          userName: 'Ahmed Youssef',
-          userDept: 'Powertrain',
-          reason: 'Need master clearance to verify motor sprocket alignment with the chassis stay tubes.',
-          timestamp: '2026-10-09 11:20',
-          status: 'Pending'
-        }
-      ],
+      accessRequests: [],
 
       notifications: [
-        'Fatima Salman verified Milestone #3: Structural CAD Frozen.',
-        'Moaaz Elghamry updated CBOM Costing entries for Silverstone Static Events.',
-        'Mohamed Romy approved Ali Elgohary DAQ Telemetry Schema.',
-        'Karim Shaprawy confirmed sponsorship presentation with manufacturing partner.'
+        'VELOX Formula Student Inside Portal initialized for active season operations.'
       ],
 
       accounts: [
@@ -2001,55 +1813,59 @@
         { username: 'romy', password: 'velox2026', personaKey: 'romy', name: 'Mohamed Romy', status: 'Active' },
         { username: 'moaaz', password: 'velox2026', personaKey: 'moaaz', name: 'Moaaz Elghamry', status: 'Active' },
         { username: 'ali', password: 'velox2026', personaKey: 'ali', name: 'Ali Elgohary', status: 'Active' },
-        { username: 'hassan', password: 'velox2026', personaKey: 'hassan', name: 'Mohamed Hassan', status: 'Active' },
-        { username: 'ahmed', password: 'velox2026', personaKey: 'member_tech', name: 'Ahmed Youssef', status: 'Active' },
-        { username: 'sarah', password: 'velox2026', personaKey: 'member_shared', name: 'Sarah El-Sayed', status: 'Active' }
+        { username: 'hassan', password: 'velox2026', personaKey: 'hassan', name: 'Mohamed Hassan', status: 'Active' }
       ],
 
       membersRoster: [
-        { id: 'fatima-salman', name: 'Fatima Salman', role: 'Team Leader', branch: 'Executive', dept: 'Executive Governance', username: 'fatima', points: 1540, status: 'Active' },
-        { id: 'karim-shaprawy', name: 'Karim Shaprawy', role: 'Vice Team Leader', branch: 'Executive', dept: 'Operations & Build', username: 'karim', points: 1480, status: 'Active' },
-        { id: 'mohamed-romy', name: 'Mohamed Romy', role: 'Technical Leader', branch: 'Technical', dept: 'Chief Engineering', username: 'romy', points: 1620, status: 'Active' },
-        { id: 'moaaz-elghamry', name: 'Moaaz Elghamry', role: 'Managerial Leader', branch: 'Managerial', dept: 'Operations Management', username: 'moaaz', points: 1590, status: 'Active' },
-        { id: 'ali-elgohary', name: 'Ali Elgohary', role: 'Subteam Leader', branch: 'Technical', dept: 'Electrical', username: 'ali', points: 1240, status: 'Active' },
-        { id: 'mohamed-hassan', name: 'Mohamed Hassan', role: 'Subteam Leader', branch: 'Managerial', dept: 'Media & PR', username: 'hassan', points: 1190, status: 'Active' },
-        { id: 'ahmed-youssef', name: 'Ahmed Youssef', role: 'Team Member', branch: 'Technical', dept: 'Powertrain', username: 'ahmed', points: 880, status: 'Active' },
-        { id: 'sarah-el-sayed', name: 'Sarah El-Sayed', role: 'Team Member', branch: 'Shared', dept: 'Body & Chassis, Media & PR', username: 'sarah', points: 940, status: 'Active' }
+        { id: 'fatima-salman', name: 'Fatima Salman', role: 'Team Leader', branch: 'Executive', dept: 'Executive Governance', username: 'fatima', points: 0, status: 'Active' },
+        { id: 'karim-shaprawy', name: 'Karim Shaprawy', role: 'Vice Team Leader', branch: 'Executive', dept: 'Operations & Build', username: 'karim', points: 0, status: 'Active' },
+        { id: 'mohamed-romy', name: 'Mohamed Romy', role: 'Technical Leader', branch: 'Technical', dept: 'Chief Engineering', username: 'romy', points: 0, status: 'Active' },
+        { id: 'moaaz-elghamry', name: 'Moaaz Elghamry', role: 'Managerial Leader', branch: 'Managerial', dept: 'Operations Management', username: 'moaaz', points: 0, status: 'Active' },
+        { id: 'ali-elgohary', name: 'Ali Elgohary', role: 'Subteam Leader', branch: 'Technical', dept: 'Electrical', username: 'ali', points: 0, status: 'Active' },
+        { id: 'mohamed-hassan', name: 'Mohamed Hassan', role: 'Subteam Leader', branch: 'Managerial', dept: 'Media & PR', username: 'hassan', points: 0, status: 'Active' }
       ],
 
       auditLog: [
-        `[2026-10-09 17:40:00] SYSTEM: 256-Bit TLS Tunnel Established. Portal Engine Active.`,
-        `[2026-10-09 17:35:12] AUTH: Fatima Salman authenticated to Executive Portal.`,
-        `[2026-10-09 17:20:45] ACCESS: Mohamed Romy uploaded VX-01 Master CAD Assembly.`
+        `[${new Date().toISOString().replace('T', ' ').substring(0, 19)}] SYSTEM: VELOX Inside Portal initialized. Production environment ready for live operations.`
       ]
     };
 
     // Load or Initialize Local Storage Database
     function getPortalDb() {
-      const stored = localStorage.getItem('velox_portal_db_v4');
+      // Clear legacy/cached mockup databases
+      ['velox_portal_db_v1', 'velox_portal_db_v2', 'velox_portal_db_v3', 'velox_portal_db_v4'].forEach(k => {
+        try { localStorage.removeItem(k); } catch (e) {}
+      });
+
+      const stored = localStorage.getItem('velox_portal_db_v5');
       if (stored) {
         try {
           const parsed = JSON.parse(stored);
           if (parsed && parsed.accounts && parsed.accounts.length) {
-            // Ensure schema integrity & backwards compatibility
+            // Always enforce latest portrait photos for leaders
+            if (parsed.personas) {
+              if (parsed.personas.fatima) parsed.personas.fatima.avatar = 'photos/Fatima Salman.jpeg';
+              if (parsed.personas.karim) parsed.personas.karim.avatar = 'photos/Karim Shaprawy.jpeg';
+              if (parsed.personas.romy) parsed.personas.romy.avatar = 'photos/Mohamed Romy.jpeg';
+              if (parsed.personas.moaaz) parsed.personas.moaaz.avatar = 'photos/Moaaz Elghamry.jpeg';
+              if (parsed.personas.hassan) parsed.personas.hassan.avatar = 'photos/Mohamed Hassan.jpeg';
+            }
             parsed.accounts.forEach(a => { if (!a.status) a.status = 'Active'; });
             if (!parsed.auditLog) {
               parsed.auditLog = [
-                `[2026-10-09 17:40:00] SYSTEM: 256-Bit TLS Tunnel Established. Portal Engine Active.`,
-                `[2026-10-09 17:35:12] AUTH: Fatima Salman authenticated to Executive Portal.`,
-                `[2026-10-09 17:20:45] ACCESS: Mohamed Romy uploaded VX-01 Master CAD Assembly.`
+                `[${new Date().toISOString().replace('T', ' ').substring(0, 19)}] SYSTEM: VELOX Inside Portal initialized.`
               ];
             }
             return parsed;
           }
         } catch (e) { console.warn(e); }
       }
-      localStorage.setItem('velox_portal_db_v4', JSON.stringify(PORTAL_SEED));
+      localStorage.setItem('velox_portal_db_v5', JSON.stringify(PORTAL_SEED));
       return PORTAL_SEED;
     }
 
     function savePortalDb(db) {
-      localStorage.setItem('velox_portal_db_v4', JSON.stringify(db));
+      localStorage.setItem('velox_portal_db_v5', JSON.stringify(db));
     }
 
     // Telemetry & Audit Logger
@@ -2201,7 +2017,7 @@
       personaSelect.value = currentPersonaKey;
 
       if (p.avatar) {
-        avatarEl.innerHTML = `<img src="${p.avatar}" alt="${p.name}" />`;
+        avatarEl.innerHTML = `<img src="${p.avatar}" alt="${p.name}" onerror="this.style.display='none'; this.parentElement.textContent='${getInitials(p.name)}';" />`;
       } else {
         avatarEl.textContent = getInitials(p.name);
       }
@@ -2236,7 +2052,7 @@
 
       // Update KPIs
       const memberEntry = db.membersRoster.find(m => m.id === p.id);
-      const points = memberEntry ? memberEntry.points : 800;
+      const points = memberEntry ? memberEntry.points : 0;
       document.getElementById('kpiPoints').textContent = points.toLocaleString();
 
       renderDashboard();
@@ -2466,7 +2282,11 @@
       document.getElementById('tabVaultBadge').textContent = files.length;
 
       if (files.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-dim); padding: 30px;">No files accessible under your current clearance or filter.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-dim); padding: 48px 20px;">
+          <div style="font-size: 1.8rem; margin-bottom: 8px;">📂</div>
+          <strong style="color: #FFF; display: block; margin-bottom: 4px; font-size: 0.95rem;">Vault Ready for Real Season Files</strong>
+          <span style="font-size: 0.84rem;">No files uploaded yet. Leaders and authorized crew can click "+ Upload New Deliverable" to store engineering CAD, telemetry data, or PR materials.</span>
+        </td></tr>`;
         return;
       }
 
@@ -2548,7 +2368,11 @@
       document.getElementById('kpiTasks').textContent = tasks.filter(t => t.status === 'In Progress').length;
 
       if (tasks.length === 0) {
-        container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--text-dim); padding: 40px; background: var(--bg-card); border-radius: 12px;">No active sprint tasks for this department.</div>`;
+        container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--text-dim); padding: 50px 20px; background: var(--bg-card); border: 1px dashed var(--border); border-radius: 12px;">
+          <div style="font-size: 1.8rem; margin-bottom: 8px;">⚡</div>
+          <strong style="color: #FFF; display: block; margin-bottom: 4px; font-size: 0.95rem;">Sprint Board Ready for Live Deliverables</strong>
+          <span style="font-size: 0.84rem;">No sprint tasks active. Department leaders can assign engineering and operations deliverables using "+ Assign New Task".</span>
+        </div>`;
         return;
       }
 
@@ -2608,10 +2432,21 @@
 
       // Sort roster by points descending
       const sorted = [...db.membersRoster].sort((a, b) => b.points - a.points);
+      const hasPoints = sorted.some(m => m.points > 0);
 
       // Top 3 for podium
       const top3 = sorted.slice(0, 3);
-      if (top3.length >= 3) {
+      if (!hasPoints) {
+        podiumEl.innerHTML = `
+          <div style="grid-column: 1 / -1; background: rgba(255,255,255,0.02); border: 1px dashed var(--border); border-radius: var(--radius-lg); padding: 36px 20px; text-align: center;">
+            <div style="font-size: 2.2rem; margin-bottom: 10px;">🏁</div>
+            <h4 style="font-size: 1.15rem; color: #FFF; margin: 0 0 6px 0;">VELOX Season 2026 Standings Open</h4>
+            <p style="font-size: 0.86rem; color: var(--text-dim); max-width: 540px; margin: 0 auto; line-height: 1.5;">
+              Podium positions and Velocity Points will be awarded dynamically as engineering and managerial deliverables are submitted, verified, and approved.
+            </p>
+          </div>
+        `;
+      } else if (top3.length >= 3) {
         podiumEl.innerHTML = `
           <!-- 2nd Place -->
           <div class="podium-card silver">
@@ -2644,14 +2479,19 @@
 
       // Standings Table
       tableBody.innerHTML = sorted.map((member, idx) => {
-        const badges = [
-          idx === 0 ? '🏆 P1 Champion' : (idx < 3 ? '⚡ Podium Sprint' : '🛠️ Fast Turnaround'),
-          member.points > 1200 ? '⭐ Gold Engineer' : '🏁 Track Certified'
-        ];
+        const badges = [];
+        if (member.points > 0) {
+          if (idx === 0) badges.push('🏆 P1 Champion');
+          else if (idx < 3) badges.push('⚡ Podium Sprint');
+          else badges.push('🛠️ Fast Turnaround');
+          if (member.points > 1200) badges.push('⭐ Gold Engineer');
+        } else {
+          badges.push('🏁 Active Roster');
+        }
 
         return `
           <tr>
-            <td style="font-weight: 800; color: ${idx === 0 ? '#EAB308' : (idx === 1 ? '#94A3B8' : (idx === 2 ? '#D97706' : 'var(--text-dim)'))};">
+            <td style="font-weight: 800; color: ${hasPoints && idx === 0 ? '#EAB308' : (hasPoints && idx === 1 ? '#94A3B8' : (hasPoints && idx === 2 ? '#D97706' : 'var(--text-dim)'))};">
               #${idx + 1}
             </td>
             <td>
