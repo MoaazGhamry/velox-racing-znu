@@ -1746,7 +1746,7 @@
 
   <!-- ==================== PORTAL JAVASCRIPT ENGINE ==================== -->
   <script>
-    const DB_KEY = 'velox_portal_db_v6';
+    const DB_KEY = 'velox_portal_db_v7';
 
     // Production Seed Data — Zero Points, Zero Mockup Files, Zero Mockup Tasks
     const PORTAL_SEED = {
@@ -1795,17 +1795,6 @@
           deptDesc: 'Managerial Leader & Powertrain Leader • Dual Operational & Powertrain Authority',
           scopeDesc: 'Dual leadership command: Managerial Branch (HR, Media & PR, Business) plus Powertrain Subteam Lead. Authorized to assign deliverables, oversee operational workflows, and manage members within jurisdiction. Governance actions automatically notify Team Leaders.'
         },
-        ali: {
-          id: 'ali-elgohary',
-          name: 'Ali Elgohary',
-          role: 'Electrical Subteam Lead',
-          roleType: 'subteam_lead',
-          branch: 'Technical',
-          departments: ['Electrical'],
-          avatar: '',
-          deptDesc: 'Electrical Infrastructure & Electronics Lead',
-          scopeDesc: 'Subteam command over Electrical, Raychem wiring harnesses, sensors, and live DAQ telemetry. Authorized to assign electrical sprint tasks and manage electrical crew. Actions automatically notify Technical Leader and Team Leaders.'
-        },
         hassan: {
           id: 'mohamed-hassan',
           name: 'Mohamed Hassan',
@@ -1843,7 +1832,6 @@
         { username: 'karim', password: 'velox2026', personaKey: 'karim', name: 'Karim Shaprawy', status: 'Active' },
         { username: 'romy', password: 'velox2026', personaKey: 'romy', name: 'Mohamed Romy', status: 'Active' },
         { username: 'moaaz', password: 'velox2026', personaKey: 'moaaz', name: 'Moaaz Elghamry', status: 'Active' },
-        { username: 'ali', password: 'velox2026', personaKey: 'ali', name: 'Ali Elgohary', status: 'Active' },
         { username: 'hassan', password: 'velox2026', personaKey: 'hassan', name: 'Mohamed Hassan', status: 'Active' }
       ],
 
@@ -1852,7 +1840,6 @@
         { id: 'karim-shaprawy', name: 'Karim Shaprawy', role: 'Vice Team Leader', branch: 'Executive', dept: 'Operations & Build', username: 'karim', points: 0, status: 'Active' },
         { id: 'mohamed-romy', name: 'Mohamed Romy', role: 'Technical Leader', branch: 'Technical', dept: 'Chief Engineering', username: 'romy', points: 0, status: 'Active' },
         { id: 'moaaz-elghamry', name: 'Moaaz Elghamry', role: 'Managerial Leader & Powertrain Lead', branch: 'Managerial & Technical', dept: 'Operations Management & Powertrain', username: 'moaaz', points: 0, status: 'Active' },
-        { id: 'ali-elgohary', name: 'Ali Elgohary', role: 'Electrical Subteam Lead', branch: 'Technical', dept: 'Electrical', username: 'ali', points: 0, status: 'Active' },
         { id: 'mohamed-hassan', name: 'Mohamed Hassan', role: 'Media & PR Lead', branch: 'Managerial', dept: 'Media & PR', username: 'hassan', points: 0, status: 'Active' }
       ],
 
@@ -1864,7 +1851,7 @@
     // Load or Initialize Local Storage Database
     function getPortalDb() {
       // Clear legacy/cached mockup databases
-      ['velox_portal_db_v1', 'velox_portal_db_v2', 'velox_portal_db_v3', 'velox_portal_db_v4', 'velox_portal_db_v5'].forEach(k => {
+      ['velox_portal_db_v1', 'velox_portal_db_v2', 'velox_portal_db_v3', 'velox_portal_db_v4', 'velox_portal_db_v5', 'velox_portal_db_v6'].forEach(k => {
         try { localStorage.removeItem(k); } catch (e) {}
       });
 
@@ -1873,6 +1860,10 @@
         try {
           const parsed = JSON.parse(stored);
           if (parsed && parsed.accounts && parsed.accounts.length) {
+            // Purge any stale Ali Elgohary references from cached sessions
+            if (parsed.personas && parsed.personas.ali) delete parsed.personas.ali;
+            if (parsed.accounts) parsed.accounts = parsed.accounts.filter(a => a.username !== 'ali' && a.personaKey !== 'ali');
+            if (parsed.membersRoster) parsed.membersRoster = parsed.membersRoster.filter(m => m.id !== 'ali-elgohary' && m.username !== 'ali');
             // Always enforce latest portrait photos for leaders
             if (parsed.personas) {
               if (parsed.personas.fatima) parsed.personas.fatima.avatar = 'photos/Fatima Salman.jpeg';
@@ -1939,9 +1930,8 @@
     // 1. Team Leader (Fatima) and Vice Leader (Karim) have omni-access.
     // 2. Technical Leader (Mohamed Romy) can change what is under him (Technical branch).
     // 3. Managerial Leader & Powertrain Lead (Moaaz Elghamry) can change Managerial + Powertrain.
-    // 4. Electrical Lead (Ali Elgohary) can change what is under him (Electrical).
-    // 5. Media Lead (Mohamed Hassan) can change what is under him (Media & PR).
-    // 6. Regular members CANNOT change any role or rule (including their own).
+    // 4. Media Lead (Mohamed Hassan) can change what is under him (Media & PR).
+    // 5. Regular members CANNOT change any role or rule (including their own).
     function isTeamLeader(persona) {
       if (!persona) return false;
       return persona.roleType === 'executive' || persona.id === 'fatima-salman' || persona.id === 'karim-shaprawy';
@@ -1968,11 +1958,6 @@
         return isManagerial || isPowertrain;
       }
 
-      // Ali Elgohary can change what is under him (Electrical)
-      if (persona.id === 'ali-elgohary') {
-        return targetMember.dept && targetMember.dept.includes('Electrical') && targetMember.id !== 'ali-elgohary';
-      }
-
       // Mohamed Hassan can change what is under him (Media & PR)
       if (persona.id === 'mohamed-hassan') {
         return targetMember.dept && targetMember.dept.includes('Media') && targetMember.id !== 'mohamed-hassan';
@@ -1987,7 +1972,6 @@
       if (isTeamLeader(persona)) return true;
       if (persona.id === 'mohamed-romy') return targetMember.branch === 'Technical';
       if (persona.id === 'moaaz-elghamry') return targetMember.branch === 'Managerial' || (targetMember.dept && targetMember.dept.includes('Powertrain'));
-      if (persona.id === 'ali-elgohary') return targetMember.dept && targetMember.dept.includes('Electrical');
       if (persona.id === 'mohamed-hassan') return targetMember.dept && targetMember.dept.includes('Media');
       return false;
     }
@@ -1999,7 +1983,6 @@
       if (isTeamLeader(persona)) return true;
       if (persona.id === 'mohamed-romy' && task.branch === 'Technical') return true;
       if (persona.id === 'moaaz-elghamry' && (task.branch === 'Managerial' || (task.dept && task.dept.includes('Powertrain')))) return true;
-      if (persona.id === 'ali-elgohary' && task.dept && task.dept.includes('Electrical')) return true;
       if (persona.id === 'mohamed-hassan' && task.dept && task.dept.includes('Media')) return true;
       return false;
     }
@@ -2012,7 +1995,6 @@
       if (!file) return false;
       if (persona.id === 'mohamed-romy' && file.branch === 'Technical') return true;
       if (persona.id === 'moaaz-elghamry' && (file.branch === 'Managerial' || (file.dept && file.dept.includes('Powertrain')))) return true;
-      if (persona.id === 'ali-elgohary' && file.dept && file.dept.includes('Electrical')) return true;
       if (persona.id === 'mohamed-hassan' && file.dept && file.dept.includes('Media')) return true;
       return false;
     }
@@ -2307,13 +2289,6 @@
           actionBadge.textContent = 'Dual Branch Command';
           actionBadge.className = 'portal-role-pill role-ops';
           banner.style.borderLeftColor = '#FBBF24';
-        } else if (p.id === 'ali-elgohary') {
-          iconEl.textContent = '🔌';
-          titleEl.textContent = 'Electrical Subteam Lead • Raychem Harness & Telemetry';
-          descEl.textContent = 'Subteam command over Electrical, wiring harnesses, sensor bus, and wireless DAQ. Authorized to manage electrical crew and assign electrical tasks. Changes automatically notify Technical Leader and Team Leaders.';
-          actionBadge.textContent = 'Electrical Lead';
-          actionBadge.className = 'portal-role-pill role-tech';
-          banner.style.borderLeftColor = '#38BDF8';
         } else if (p.id === 'mohamed-hassan') {
           iconEl.textContent = '📸';
           titleEl.textContent = 'Media & PR Lead • Visual Identity & Brand Architecture';

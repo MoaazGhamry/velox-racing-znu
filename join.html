@@ -173,6 +173,18 @@
               </div>
             </div>
 
+            <!-- Prior Formula Student Experience -->
+            <div class="form-group" style="background: rgba(255, 255, 255, 0.025); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 16px;">
+              <label style="display: flex; align-items: center; gap: 12px; cursor: pointer; margin: 0; font-size: 0.95rem; color: #FFF; font-weight: 600;">
+                <input type="checkbox" id="priorFsExperience" style="width: 18px; height: 18px; accent-color: var(--red); cursor: pointer; flex-shrink: 0;" />
+                <span data-i18n="join.priorFs">Have you ever joined a Formula Student team before?</span>
+              </label>
+              <div id="priorFsDetailsWrap" style="display: none; margin-top: 12px; padding-top: 10px; border-top: 1px solid rgba(255, 255, 255, 0.08);">
+                <label for="priorFsDetails" style="font-size: 0.8rem; color: var(--text-dim); margin-bottom: 6px; display: block;" data-i18n="join.priorFsDetails">Previous Team, Subteam &amp; Role (Optional)</label>
+                <input type="text" id="priorFsDetails" class="form-control" data-i18n-ph="join.priorFsDetailsPh" placeholder="e.g. Helwan Racing Team — Powertrain Member (2024)" />
+              </div>
+            </div>
+
             <!-- 7. Relevant Skills & Experience (Skills Kept in English) -->
             <div class="form-group">
               <label data-i18n="join.skills">Relevant Skills & Software Tools</label>
@@ -349,6 +361,15 @@
       });
     });
 
+    // Formula Student Prior Experience Toggle
+    const priorFsCheck = document.getElementById('priorFsExperience');
+    const priorFsWrap = document.getElementById('priorFsDetailsWrap');
+    if (priorFsCheck && priorFsWrap) {
+      priorFsCheck.addEventListener('change', () => {
+        priorFsWrap.style.display = priorFsCheck.checked ? 'block' : 'none';
+      });
+    }
+
     // Form Submission Handling with Supabase Client & Spam Protection
     const joinForm = document.getElementById('joinForm');
     const formAlert = document.getElementById('formAlert');
@@ -406,6 +427,9 @@
       const timeInput = document.querySelector('input[name="timeCommitment"]:checked');
       const timeCommitment = timeInput ? timeInput.value : '5 to 10 hours';
 
+      const priorFs = document.getElementById('priorFsExperience')?.checked ? 'Yes' : 'No';
+      const priorFsDetails = document.getElementById('priorFsDetails')?.value.trim() || '';
+
       const isAr = document.documentElement.getAttribute('lang') === 'ar';
 
       if (!fullName || !email || !phone || !faculty || !academicYear || !subteamFirst || !subteamSecond) {
@@ -436,6 +460,7 @@
         subteam_first: subteamFirst,
         subteam_second: subteamSecond,
         time_commitment: timeCommitment,
+        prior_fs_experience: priorFs === 'Yes' ? (priorFsDetails ? `Yes (${priorFsDetails})` : 'Yes') : 'No',
         skills: skillsStr,
         why_join: 'Applicant Profile (Direct Submission)',
         portfolio_url: portfolioUrl || null,

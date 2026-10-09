@@ -160,30 +160,7 @@ const VELOX_TEAM = {
     {
       id: "electrical",
       name: "Electrical",
-      leader: {
-        id: "ali-elgohary",
-        name: "Ali Elgohary",
-        role: "Electrical Leader",
-        photo: "",
-        department: "Electrical Infrastructure & Electronics Division",
-        department_ar: "قسم البنية التحتية الكهربائية والإلكترونيات",
-        bio: "Directs low-voltage motorsport wiring harnesses, power distribution, sensor calibration, and live trackside telemetry.",
-        bio_ar: "يشرف على الضفائر الكهربائية وتوزيع الطاقة ومعايرة الحساسات وأنظمة التيليمتري المباشرة.",
-        responsibilities: [
-          "Motorsport-grade Raychem wiring loom architecture and water-resistant packaging",
-          "Real-time wireless pit-wall telemetry system (DAQ) and sensor bus calibration",
-          "ECU integration, engine management tuning, and high-frequency data logging",
-          "FSAE rules-compliant master safety shutdown circuits, BSPD, and brake over-travel switches"
-        ],
-        responsibilities_ar: [
-          "تصميم وتصنيع ضفيرة أسلاك السباقات الاحترافية بمعايير Raychem المقاومة للظروف القاسية",
-          "نظام التيليمتري اللاسلكي المباشر ونقل البيانات الحية إلى منصة الصيانة والمهندسين",
-          "معايرة وبرمجة وحدة التحكم بالمحرك (ECU) وتسجيل بيانات الحساسات بدقة",
-          "دوائر أمان فصل التيار ولوائح السلامة الدولية لنظام الفرامل والطوارئ"
-        ],
-        quote: "The wiring harness is the central nervous system of Chassis VX-01. Flawless signal integrity and millisecond telemetry are our standard.",
-        quote_ar: "الضفيرة الكهربائية هي الجهاز العصبي المركزي لسيارتنا. نقاء الإشارة ودقة البيانات في أجزاء من الثانية هي معيارنا الثابت."
-      },
+      leader: null,
       subteams: ["Wiring Loom", "DAQ & Telemetry"],
       description: "Motorsport Raychem wiring harness, low-voltage power distribution, sensors calibration, and pit wall wireless DAQ.",
       description_ar: "ضفيرة أسلاك السباقات Raychem، وتوزيع الطاقة ذات الجهد المنخفض، ومعايرة الحساسات، والقياس اللاسلكي من منصة الصيانة."
