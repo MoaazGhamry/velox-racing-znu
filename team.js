@@ -449,6 +449,105 @@ function getMemberById(id) {
 }
 
 /**
+ * Utility to parse department, subteam, and branch from a choice string like:
+ * "Powertrain — Motor" or "Vehicle Dynamics — Suspension"
+ */
+function parseDeptAndSubteam(rawChoice) {
+  if (!rawChoice) return { dept: 'Body & Chassis', subteam: 'Body', branch: 'Technical' };
+  let dept = '';
+  let subteam = '';
+  if (rawChoice.includes('—')) {
+    const parts = rawChoice.split('—');
+    dept = parts[0].trim();
+    subteam = parts.slice(1).join('—').trim();
+  } else if (rawChoice.includes(' - ')) {
+    const parts = rawChoice.split(' - ');
+    dept = parts[0].trim();
+    subteam = parts.slice(1).join(' - ').trim();
+  } else {
+    dept = rawChoice.trim();
+    subteam = '';
+  }
+
+  const techDepts = ['body', 'chassis', 'vehicle', 'dynamics', 'suspension', 'steering', 'brakes', 'powertrain', 'motor', 'engine', 'transmission', 'electrical', 'wiring', 'embedded'];
+  const isTech = techDepts.some(t => dept.toLowerCase().includes(t) || subteam.toLowerCase().includes(t));
+  const branch = isTech ? 'Technical' : 'Non-Technical';
+  return { dept, subteam, branch };
+}
+
+/**
+ * Fetches accepted applicants directly from Supabase and merges them into
+ * the dynamic Team Structure database (velox_portal_db_v8).
+ */
+async function syncCloudAcceptedMembers() {
+  if (typeof window === 'undefined') return;
+  const cfg = window.VELOX_CONFIG || {};
+  if (!cfg.url || !cfg.anonKey || cfg.url.includes('your-project-id') || !window.supabase) return;
+
+  try {
+    const client = window.supabase.createClient(cfg.url, cfg.anonKey);
+    const { data, error } = await client
+      .from('applications')
+      .select('id, full_name, email, subteam_first, subteam_second, status')
+      .eq('status', 'Accepted');
+
+    if (error || !Array.isArray(data) || data.length === 0) return;
+
+    let db = {};
+    try {
+      db = JSON.parse(localStorage.getItem('velox_portal_db_v8') || '{}');
+    } catch (e) {}
+    if (!db.membersRoster) db.membersRoster = [];
+
+    let updated = false;
+    data.forEach(app => {
+      if (!app || !app.full_name) return;
+      const cleanName = app.full_name.trim();
+      const normName = cleanName.toLowerCase();
+      if (!normName) return;
+
+      const parsed = parseDeptAndSubteam(app.subteam_first);
+      const memberId = 'mem-' + normName.replace(/[^a-z0-9]/g, '-');
+
+      const existingIdx = db.membersRoster.findIndex(m => 
+        (m.name && m.name.trim().toLowerCase() === normName) || m.id === memberId
+      );
+
+      const entry = {
+        id: memberId,
+        name: cleanName,
+        role: 'Team Member',
+        roleType: 'member',
+        branch: parsed.branch,
+        dept: parsed.dept,
+        subteam: parsed.subteam,
+        username: (app.email ? app.email.split('@')[0] : normName).replace(/[^a-z0-9]/g, ''),
+        points: 0,
+        status: 'Active',
+        avatar: ''
+      };
+
+      if (existingIdx !== -1) {
+        if (db.membersRoster[existingIdx].avatar) entry.avatar = db.membersRoster[existingIdx].avatar;
+        db.membersRoster[existingIdx] = { ...db.membersRoster[existingIdx], ...entry };
+      } else {
+        db.membersRoster.push(entry);
+        updated = true;
+      }
+    });
+
+    if (updated || data.length > 0) {
+      localStorage.setItem('velox_portal_db_v8', JSON.stringify(db));
+      if (typeof window.renderOrgChart === 'function') {
+        window.renderOrgChart();
+      }
+    }
+  } catch (err) {
+    console.warn('Supabase accepted applications sync notice:', err);
+  }
+}
+
+/**
  * Returns a flat array of all sub-team names for the application dropdowns
  */
 function getSubteamsList() {
@@ -471,8 +570,10 @@ if (typeof window !== "undefined") {
   window.getDynamicTeamData = getDynamicTeamData;
   window.getSubteamsList = getSubteamsList;
   window.getMemberById = getMemberById;
+  window.parseDeptAndSubteam = parseDeptAndSubteam;
+  window.syncCloudAcceptedMembers = syncCloudAcceptedMembers;
 }
 
 if (typeof module !== "undefined" && module.exports) {
-  module.exports = { VELOX_TEAM, getDynamicTeamData, getSubteamsList, getMemberById };
+  module.exports = { VELOX_TEAM, getDynamicTeamData, getSubteamsList, getMemberById, parseDeptAndSubteam, syncCloudAcceptedMembers };
 }

@@ -264,16 +264,20 @@
               </div>
               <div style="margin-bottom: 14px;">
                 <label class="drawer-field-lbl">Candidate Pipeline Status:</label>
-                <div class="status-edit-row">
-                  <select id="drawerStatusSelect" class="form-control" style="font-weight: 700; flex: 1; min-width: 160px;">
+                <div class="status-edit-row" style="display: flex; gap: 8px; flex-wrap: wrap;">
+                  <select id="drawerStatusSelect" class="form-control" style="font-weight: 700; flex: 1.2; min-width: 140px;">
                     <option value="New">New</option>
                     <option value="Reviewed">Reviewed</option>
                     <option value="Interview">Interview</option>
                     <option value="Accepted">Accepted</option>
                     <option value="Rejected">Rejected</option>
                   </select>
-                  <button type="button" id="saveNotesBtn" class="btn btn-primary" style="padding: 10px 18px; font-size: 0.85rem; font-weight: 600;">
+                  <button type="button" id="saveNotesBtn" class="btn btn-primary" style="padding: 10px 16px; font-size: 0.85rem; font-weight: 600;">
                     Save Status &amp; Notes
+                  </button>
+                  <button type="button" id="quickAcceptBtn" class="btn btn-outline" style="background: rgba(22, 163, 74, 0.15); border-color: #16a34a; color: #4ade80; padding: 10px 16px; font-size: 0.85rem; font-weight: 700; display: flex; align-items: center; gap: 6px;" title="Approve candidate and immediately enroll into Team Structure org chart">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    Accept to Team Structure
                   </button>
                 </div>
               </div>
@@ -895,10 +899,79 @@
       });
     }
 
-    // Save Status & Notes to Supabase
-    document.getElementById('saveNotesBtn').addEventListener('click', async () => {
+    // Sync Applicant with Dynamic Team Structure (velox_portal_db_v8)
+    function syncApplicantToTeamStructure(applicant, status) {
+      if (!applicant || !applicant.full_name) return;
+      let db = {};
+      try {
+        db = JSON.parse(localStorage.getItem('velox_portal_db_v8') || '{}');
+      } catch (e) {}
+      if (!db.membersRoster) db.membersRoster = [];
+      if (!db.personas) db.personas = {};
+      if (!db.accounts) db.accounts = [];
+
+      const cleanName = applicant.full_name.trim();
+      const normName = cleanName.toLowerCase();
+      const memberId = 'mem-' + normName.replace(/[^a-z0-9]/g, '-');
+      const parsed = (typeof parseDeptAndSubteam === 'function') 
+        ? parseDeptAndSubteam(applicant.subteam_first)
+        : { dept: 'Body & Chassis', subteam: 'Body', branch: 'Technical' };
+
+      if (status === 'Accepted') {
+        const existingIdx = db.membersRoster.findIndex(m => 
+          (m.name && m.name.trim().toLowerCase() === normName) || m.id === memberId || (applicant.email && m.email === applicant.email)
+        );
+
+        const memberEntry = {
+          id: memberId,
+          name: cleanName,
+          role: 'Team Member',
+          roleType: 'member',
+          branch: parsed.branch,
+          dept: parsed.dept,
+          subteam: parsed.subteam,
+          username: (applicant.email ? applicant.email.split('@')[0] : normName).replace(/[^a-z0-9]/g, ''),
+          email: applicant.email || '',
+          points: 0,
+          status: 'Active',
+          avatar: ''
+        };
+
+        if (existingIdx !== -1) {
+          if (db.membersRoster[existingIdx].avatar) memberEntry.avatar = db.membersRoster[existingIdx].avatar;
+          db.membersRoster[existingIdx] = { ...db.membersRoster[existingIdx], ...memberEntry };
+        } else {
+          db.membersRoster.push(memberEntry);
+        }
+
+        const personaKey = 'user_' + memberEntry.username;
+        if (!db.personas[personaKey]) {
+          db.personas[personaKey] = {
+            id: memberId,
+            name: cleanName,
+            role: 'Team Member',
+            roleType: 'member',
+            branch: parsed.branch,
+            departments: [parsed.dept],
+            subteam: parsed.subteam,
+            avatar: '',
+            deptDesc: `${parsed.branch} Division • ${parsed.dept}`
+          };
+        }
+      } else {
+        // If changed from Accepted to another status, remove from active team structure
+        db.membersRoster = db.membersRoster.filter(m => 
+          (m.name && m.name.trim().toLowerCase() !== normName) && m.id !== memberId
+        );
+      }
+
+      localStorage.setItem('velox_portal_db_v8', JSON.stringify(db));
+    }
+
+    // Save Status & Notes to Supabase & Team Structure
+    async function saveApplicantStatus(overrideStatus = null) {
       if (!currentApplicant) return;
-      const newStatus = document.getElementById('drawerStatusSelect').value;
+      const newStatus = overrideStatus || document.getElementById('drawerStatusSelect').value;
       const notes = document.getElementById('drawerNotes').value.trim();
 
       const btn = document.getElementById('saveNotesBtn');
@@ -932,13 +1005,30 @@
         localStorage.setItem('velox_mock_applications', JSON.stringify(localApps));
       }
 
+      // Automatically sync with Team Structure Org Chart
+      syncApplicantToTeamStructure(currentApplicant, newStatus);
+
       btn.disabled = false;
-      btn.textContent = 'Saved!';
-      setTimeout(() => { btn.textContent = 'Save Status & Notes'; }, 1500);
+      if (newStatus === 'Accepted') {
+        btn.textContent = 'Enrolled in Team!';
+      } else {
+        btn.textContent = 'Saved!';
+      }
+      setTimeout(() => { btn.textContent = 'Save Status & Notes'; }, 2000);
 
       renderTable();
       updateMetrics();
-    });
+    }
+
+    document.getElementById('saveNotesBtn').addEventListener('click', () => saveApplicantStatus());
+
+    const quickAcceptBtn = document.getElementById('quickAcceptBtn');
+    if (quickAcceptBtn) {
+      quickAcceptBtn.addEventListener('click', () => {
+        document.getElementById('drawerStatusSelect').value = 'Accepted';
+        saveApplicantStatus('Accepted');
+      });
+    }
 
     // Search and Filter Events
     document.getElementById('searchInput').addEventListener('input', renderTable);

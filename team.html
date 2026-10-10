@@ -135,8 +135,11 @@
     </div>
   </footer>
 
+  <!-- Config and Live Cloud Sync Source -->
+  <script src="config.js?v=3.9"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <!-- Team Data Source -->
-  <script src="team.js?v=3.8"></script>
+  <script src="team.js?v=3.9"></script>
 
   <script>
     // Minimal mobile navigation toggle
@@ -588,6 +591,9 @@
     document.addEventListener('DOMContentLoaded', () => {
       renderOrgChart();
       initThemeAndLang();
+      if (typeof window.syncCloudAcceptedMembers === 'function') {
+        window.syncCloudAcceptedMembers();
+      }
     });
 
     // Theme & Language Global Support (Clean SVG Icons, Zero Emojis)

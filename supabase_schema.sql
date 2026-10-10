@@ -30,6 +30,7 @@ create table if not exists public.applications (
 -- Migration for existing databases:
 -- alter table public.applications alter column university_id drop not null;
 -- alter table public.applications alter column why_join drop not null;
+-- alter table public.applications add column if not exists prior_fs_experience text;
 
 -- 2. Create search & filtering performance indexes
 create index if not exists idx_applications_email on public.applications (email);

@@ -545,7 +545,13 @@
       if (customSkill) selectedSkills.push(customSkill);
       const skillsStr = selectedSkills.join(', ');
 
-      // Payload
+      // Format Formula Student prior experience info into why_join statement
+      const fsExpText = priorFs === 'Yes'
+        ? (priorFsDetails ? `Prior FS: Yes (${priorFsDetails})` : 'Prior FS: Yes')
+        : 'Prior FS: None';
+      const whyJoinText = `Direct Application | ${fsExpText}`;
+
+      // Payload strictly conforming to Supabase schema columns
       const applicationData = {
         full_name: fullName,
         email: email,
@@ -556,9 +562,8 @@
         subteam_first: subteamFirst,
         subteam_second: subteamSecond,
         time_commitment: timeCommitment,
-        prior_fs_experience: priorFs === 'Yes' ? (priorFsDetails ? `Yes (${priorFsDetails})` : 'Yes') : 'No',
         skills: skillsStr,
-        why_join: 'Applicant Profile (Direct Submission)',
+        why_join: whyJoinText,
         portfolio_url: portfolioUrl || null,
         status: 'New',
         hr_notes: ''
