@@ -11,63 +11,8 @@ RATE_LIMIT_WINDOW = 600
 RATE_LIMIT_MAX_REQUESTS = 10
 RATE_LIMIT_COOLDOWN = 15
 
-# Default seed applications so HR dashboard is immediately functional
-DEFAULT_SEED = [
-    {
-        "id": "VLX-APP-001",
-        "created_at": "2026-10-07T14:30:00Z",
-        "full_name": "Omar Mostafa",
-        "email": "omar.mostafa@eng.zu.edu.eg",
-        "phone": "01098765432",
-        "university_id": "202300411",
-        "faculty": "Engineering (Mechatronics)",
-        "academic_year": "Level 200",
-        "subteam_first": "Vehicle Dynamics — Suspension",
-        "subteam_second": "Body & Chassis — Chassis Structure",
-        "skills": "SolidWorks, MATLAB / Simulink, Vehicle Dynamics",
-        "statement": "Passionate about suspension kinematics and tire load modeling. I want to contribute to the double-wishbone geometry of Chassis VX-01 for Silverstone UK.",
-        "time_commitment": "5 to 10 hours",
-        "portfolio_url": "https://linkedin.com",
-        "status": "Interview",
-        "hr_notes": "Strong CAD knowledge. Scheduled for technical interview with Mohamed Romy."
-    },
-    {
-        "id": "VLX-APP-002",
-        "created_at": "2026-10-08T09:15:00Z",
-        "full_name": "Nouran Elsayed",
-        "email": "nouran.elsayed@cis.zu.edu.eg",
-        "phone": "01123456789",
-        "university_id": "202401890",
-        "faculty": "Computer Science (AI / Aviation)",
-        "academic_year": "Level 100",
-        "subteam_first": "Electrical & Electronics — DAQ, Sensors & Telemetry",
-        "subteam_second": "Electrical & Electronics — Electrical & Car Wiring",
-        "skills": "Programming / C++, Microcontrollers, PCB Design",
-        "statement": "Experienced in STM32 and CAN-bus telemetry. Want to develop real-time wireless telemetry streaming for the pit wall.",
-        "time_commitment": "10+ hours",
-        "portfolio_url": "https://github.com",
-        "status": "New",
-        "hr_notes": ""
-    },
-    {
-        "id": "VLX-APP-003",
-        "created_at": "2026-10-08T10:00:00Z",
-        "full_name": "Youssef Tarek",
-        "email": "youssef.tarek@biz.zu.edu.eg",
-        "phone": "01234567890",
-        "university_id": "202203155",
-        "faculty": "Business Administration",
-        "academic_year": "Level 300",
-        "subteam_first": "Business (Team Director) — Corporate Relations & Sponsorship",
-        "subteam_second": "Media & PR — Social Media & Public Relations",
-        "skills": "Business / Financial Modeling, Sponsorship & PR, Project Management",
-        "statement": "Keen to secure automotive sponsorships and manage the corporate partners pipeline for our UK campaign.",
-        "time_commitment": "5 to 10 hours",
-        "portfolio_url": "",
-        "status": "Reviewed",
-        "hr_notes": "Good communication skills. Assign to Business Director interview."
-    }
-]
+# Applications storage (No mock seeds: only genuine candidate applications)
+DEFAULT_SEED = []
 
 def check_rate_limit(client_ip):
     now = time.time()

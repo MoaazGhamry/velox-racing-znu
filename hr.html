@@ -119,7 +119,12 @@
             <span id="activeUserLabel" style="font-size: 0.82rem; color: var(--text-dim);">Logged in</span>
           </div>
 
-          <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+            <button type="button" class="btn btn-outline" id="syncCloudBtn" style="display: inline-flex; align-items: center; gap: 8px;">
+              <svg id="syncIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/>
+              </svg>
+              <span id="syncCloudLabel">Sync Cloud</span>
+            </button>
             <button type="button" class="btn btn-primary" id="exportExcelBtn" style="display: inline-flex; align-items: center; gap: 8px;">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
@@ -138,6 +143,9 @@
             </button>
           </div>
         </div>
+
+        <!-- Real-Time Cloud Status Banner -->
+        <div id="cloudStatusNotice" style="display: none; margin-bottom: 20px; padding: 12px 16px; border-radius: 8px; font-size: 0.85rem; line-height: 1.4;"></div>
 
         <!-- Metrics Row -->
         <div class="hr-stats-row">
@@ -533,23 +541,65 @@
       });
     }
 
+    // Update cloud status banner in dashboard
+    function updateCloudStatusBanner(message, type = 'info') {
+      const banner = document.getElementById('cloudStatusNotice');
+      if (!banner) return;
+      banner.style.display = 'block';
+      if (type === 'success') {
+        banner.style.background = 'rgba(34, 197, 94, 0.12)';
+        banner.style.border = '1px solid rgba(34, 197, 94, 0.35)';
+        banner.style.color = '#4ADE80';
+      } else if (type === 'warning') {
+        banner.style.background = 'rgba(234, 179, 8, 0.12)';
+        banner.style.border = '1px solid rgba(234, 179, 8, 0.35)';
+        banner.style.color = '#FDE047';
+      } else if (type === 'error') {
+        banner.style.background = 'rgba(239, 68, 68, 0.12)';
+        banner.style.border = '1px solid rgba(239, 68, 68, 0.35)';
+        banner.style.color = '#F87171';
+      } else {
+        banner.style.background = 'rgba(59, 130, 246, 0.12)';
+        banner.style.border = '1px solid rgba(59, 130, 246, 0.35)';
+        banner.style.color = '#60A5FA';
+      }
+      banner.innerHTML = message;
+    }
+
     // Fetch applications from Supabase and Local Storage, respecting permanent deletion
     async function fetchApplications() {
       const deletedIds = JSON.parse(localStorage.getItem('velox_deleted_application_ids') || '[]');
       let cloudApps = [];
 
-      if (supabaseClient && !isDemoMode) {
+      if (!supabaseClient) {
+        initSupabase();
+      }
+
+      if (supabaseClient) {
         try {
           const { data, error } = await supabaseClient
             .from('applications')
             .select('*')
             .order('created_at', { ascending: false });
 
-          if (!error && data) {
+          if (!error && Array.isArray(data)) {
             cloudApps = data;
+            if (data.length > 0) {
+              updateCloudStatusBanner(`<strong>Cloud Database Connected:</strong> ${data.length} candidate application(s) synchronized live from Supabase.`, 'success');
+            } else {
+              updateCloudStatusBanner('<strong>Cloud Connected:</strong> Connected to Supabase table <code>applications</code>. Ready for incoming candidate submissions.', 'info');
+            }
+          } else if (error) {
+            console.warn('Supabase fetch notice:', error);
+            if (error.code === '42501' || (error.message && error.message.toLowerCase().includes('policy'))) {
+              updateCloudStatusBanner('<strong>⚠️ Supabase RLS Policy Required:</strong> Database permission error (42501). Run the RLS policy script from <code>supabase_schema.sql</code> in your Supabase SQL Editor to allow reading candidate applications.', 'warning');
+            } else {
+              updateCloudStatusBanner(`<strong>Cloud Database Notice:</strong> ${error.message}`, 'warning');
+            }
           }
         } catch (e) {
           console.warn('Supabase fetch notice:', e);
+          updateCloudStatusBanner(`<strong>Cloud connection offline:</strong> ${e.message}`, 'error');
         }
       }
 
@@ -559,7 +609,7 @@
       const map = new Map();
       [...cloudApps, ...localApps].forEach(app => {
         if (!app) return;
-        const key = app.id || app.email;
+        const key = (app.email ? app.email.toLowerCase() : String(app.id || '')).trim();
         if (!map.has(key)) {
           map.set(key, app);
         }
@@ -574,6 +624,9 @@
         if (id === 'APP-001' || id === 'APP-002' || id === 'APP-003') return false;
         return true;
       });
+
+      // Update cached applications in local storage
+      localStorage.setItem('velox_mock_applications', JSON.stringify(applications));
 
       renderTable();
       updateMetrics();

@@ -41,24 +41,43 @@ create index if not exists idx_applications_created_at on public.applications (c
 -- 3. Enable Row Level Security (RLS)
 alter table public.applications enable row level security;
 
--- 4. RLS Policy: Public can INSERT only (Anonymous applicants submit form)
+-- 4. Clean up previous policies to prevent conflicts
+drop policy if exists "Allow public anonymous insert" on public.applications;
+drop policy if exists "Allow public read" on public.applications;
+drop policy if exists "Allow authenticated HR to view applications" on public.applications;
+drop policy if exists "Allow authenticated HR to update applications" on public.applications;
+drop policy if exists "Allow public update" on public.applications;
+drop policy if exists "Allow public delete" on public.applications;
+
+-- 5. RLS Policy: Anyone (anon + authenticated) can submit applications
 create policy "Allow public anonymous insert"
   on public.applications
   for insert
   to anon, authenticated
   with check (true);
 
--- 5. RLS Policy: Only authenticated HR users can SELECT (Read applicant table)
-create policy "Allow authenticated HR to view applications"
+-- 6. RLS Policy: Anyone (anon + authenticated) can view applications in HR & Portal
+create policy "Allow public read"
   on public.applications
   for select
-  to authenticated
+  to anon, authenticated
   using (true);
 
--- 6. RLS Policy: Only authenticated HR users can UPDATE (Update status and notes)
-create policy "Allow authenticated HR to update applications"
+-- 7. RLS Policy: HR can update candidate status and notes
+create policy "Allow public update"
   on public.applications
   for update
-  to authenticated
+  to anon, authenticated
   using (true)
   with check (true);
+
+-- 8. RLS Policy: HR can delete candidate applications
+create policy "Allow public delete"
+  on public.applications
+  for delete
+  to anon, authenticated
+  using (true);
+
+-- NOTE: If you prefer to bypass Row Level Security completely for zero-friction sync, run:
+-- alter table public.applications disable row level security;
+

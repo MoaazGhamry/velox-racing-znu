@@ -238,6 +238,7 @@ const VELOX_I18N = {
 
     // Fatima Salman Deck
     'deck.title': 'Supreme Leadership Command',
+    'deck.headline': 'Executive Sovereign Command Console',
     'deck.jurisdiction': 'Universal executive jurisdiction over all technical engineering and operations divisions.',
     'deck.btnDirective': 'Issue Directive',
     'deck.btnClearAll': 'Authorize All',
@@ -714,7 +715,8 @@ const VELOX_I18N = {
     'tab.admin': 'لوحة الإدارة',
 
     // Fatima Salman Deck
-    'deck.title': 'القيادة التنفيذية العليا',
+    'deck.title': 'القيادة الرئاسية العليا',
+    'deck.headline': 'المقر الرئاسي للقيادة والسيادة التنفيذية',
     'deck.jurisdiction': 'صلاحيات قيادية شاملة على كافة الأقسام الهندسية والعملياتية والإدارية.',
     'deck.btnDirective': 'إصدار توجيه',
     'deck.btnClearAll': 'اعتماد الكل',

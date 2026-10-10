@@ -22,14 +22,14 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" />
 
   <!-- Shared Style with Cache Buster -->
-  <link rel="stylesheet" href="style.css?v=3.5" />
+  <link rel="stylesheet" href="style.css?v=4.0" />
   <!-- App Configuration & Supabase Cloud Sync -->
-  <script src="config.js?v=3.9"></script>
+  <script src="config.js?v=4.0"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <!-- Localization Engine (Deferred) -->
-  <script src="i18n.js?v=3.5" defer></script>
+  <script src="i18n.js?v=4.0" defer></script>
   <!-- Team Data (Deferred) -->
-  <script src="team.js?v=3.5" defer></script>
+  <script src="team.js?v=4.0" defer></script>
 
   <style>
     /* ==========================================================================
@@ -922,10 +922,377 @@
       .portal-user-profile {
         gap: 10px !important;
       }
-      .portal-user-avatar {
-        width: 44px !important;
-        height: 44px !important;
-      }
+    /* ==========================================================================
+       COMPREHENSIVE LIGHT / WHITE THEME STYLES FOR VELOX PORTAL
+       ========================================================================== */
+    [data-theme="light"] body {
+      background: #F8F9FA !important;
+      color: #0F172A !important;
+    }
+
+    [data-theme="light"] .portal-wrapper {
+      background: #F8F9FA !important;
+    }
+
+    /* 1. User Profile & Status Bar */
+    [data-theme="light"] .portal-user-bar {
+      background: #FFFFFF !important;
+      border: 1px solid rgba(0, 0, 0, 0.09) !important;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04) !important;
+    }
+    [data-theme="light"] .portal-user-meta h3 {
+      color: #0F172A !important;
+    }
+    [data-theme="light"] .portal-user-dept {
+      color: #64748B !important;
+    }
+    [data-theme="light"] .portal-user-bar div[style*="background: rgba(255,255,255,0.04)"] {
+      background: #F1F5F9 !important;
+      border-color: rgba(0, 0, 0, 0.08) !important;
+      color: #475569 !important;
+    }
+    [data-theme="light"] .portal-user-bar div[style*="background: rgba(255,255,255,0.04)"] span {
+      color: #64748B !important;
+    }
+
+    /* 2. Clearance & Jurisdiction Scope Banner */
+    [data-theme="light"] #userScopeBanner {
+      background: #FFFFFF !important;
+      border: 1px solid rgba(0, 0, 0, 0.09) !important;
+      border-left: 4px solid var(--red) !important;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04) !important;
+    }
+    [data-theme="light"] #scopeTitle {
+      color: #0F172A !important;
+    }
+    [data-theme="light"] #scopeDesc {
+      color: #64748B !important;
+    }
+
+    /* 3. Supreme Presidential Command Deck */
+    [data-theme="light"] .presidential-supreme-deck {
+      background: linear-gradient(135deg, #FFFDF5 0%, #FEF3C7 100%) !important;
+      border: 1px solid rgba(217, 119, 6, 0.35) !important;
+      box-shadow: 0 8px 30px rgba(217, 119, 6, 0.08), inset 0 1px 0 #FFFFFF !important;
+    }
+    [data-theme="light"] .presidential-supreme-deck h2,
+    [data-theme="light"] .deck-title-text {
+      color: #1E293B !important;
+    }
+    [data-theme="light"] .presidential-supreme-deck p {
+      color: #64748B !important;
+    }
+    [data-theme="light"] .presidential-supreme-deck .telemetry-chip,
+    [data-theme="light"] .presidential-supreme-deck div[style*="background: rgba(255, 255, 255, 0.02)"] {
+      background: #FFFFFF !important;
+      border: 1px solid rgba(217, 119, 6, 0.2) !important;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03) !important;
+    }
+    [data-theme="light"] .presidential-supreme-deck strong[id="deckRosterCount"],
+    [data-theme="light"] .presidential-supreme-deck strong[id="deckApplicantCount"] {
+      color: #0F172A !important;
+    }
+
+    /* 4. Tab Navigation Bar */
+    [data-theme="light"] .portal-tabs-nav {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+    }
+    [data-theme="light"] .portal-tab-btn {
+      background: #FFFFFF !important;
+      border: 1px solid rgba(0, 0, 0, 0.09) !important;
+      color: #475569 !important;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03) !important;
+    }
+    [data-theme="light"] .portal-tab-btn:hover {
+      background: #F8FAFC !important;
+      color: #0F172A !important;
+      border-color: rgba(0, 0, 0, 0.16) !important;
+    }
+    [data-theme="light"] .portal-tab-btn.active {
+      background: linear-gradient(135deg, rgba(197, 34, 31, 0.1) 0%, #FFFFFF 100%) !important;
+      border-color: #C5221F !important;
+      color: #C5221F !important;
+      box-shadow: 0 4px 16px rgba(197, 34, 31, 0.15) !important;
+    }
+    [data-theme="light"] .portal-tab-btn#tabPresidentialBtn {
+      background: #FFFDF5 !important;
+      border-color: rgba(217, 119, 6, 0.35) !important;
+      color: #B45309 !important;
+    }
+    [data-theme="light"] .portal-tab-btn#tabPresidentialBtn.active {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.18) 0%, #FFFFFF 100%) !important;
+      border-color: #D97706 !important;
+      color: #92400E !important;
+    }
+    [data-theme="light"] .portal-tab-btn#tabAdminBtn {
+      background: #FFF5F7 !important;
+      border-color: rgba(225, 29, 72, 0.35) !important;
+      color: #BE123C !important;
+    }
+    [data-theme="light"] .portal-tab-btn#tabAdminBtn.active {
+      background: linear-gradient(135deg, rgba(225, 29, 72, 0.15) 0%, #FFFFFF 100%) !important;
+      border-color: #E11D48 !important;
+      color: #9F1239 !important;
+    }
+
+    /* 5. KPI Stat Boxes */
+    [data-theme="light"] .portal-stat-box {
+      background: #FFFFFF !important;
+      border: 1px solid rgba(0, 0, 0, 0.08) !important;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04) !important;
+    }
+    [data-theme="light"] .portal-stat-box:hover {
+      border-color: rgba(0, 0, 0, 0.15) !important;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06) !important;
+    }
+    [data-theme="light"] .portal-stat-lbl {
+      color: #64748B !important;
+    }
+    [data-theme="light"] .portal-stat-val {
+      color: #0F172A !important;
+    }
+    [data-theme="light"] .portal-stat-sub,
+    [data-theme="light"] .portal-stat-desc {
+      color: #94A3B8 !important;
+    }
+
+    /* 6. Cards & Panels */
+    [data-theme="light"] .portal-panel-card,
+    [data-theme="light"] .liquid-glass-card {
+      background: #FFFFFF !important;
+      border: 1px solid rgba(0, 0, 0, 0.09) !important;
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.04) !important;
+    }
+    [data-theme="light"] .portal-panel-card h3,
+    [data-theme="light"] .portal-panel-card h2,
+    [data-theme="light"] .liquid-glass-card h3,
+    [data-theme="light"] .liquid-glass-card h2 {
+      color: #0F172A !important;
+    }
+    [data-theme="light"] .portal-panel-card p,
+    [data-theme="light"] .liquid-glass-card p {
+      color: #64748B !important;
+    }
+
+    /* 7. Executive Admin Header */
+    [data-theme="light"] .admin-dashboard-header {
+      background: linear-gradient(135deg, rgba(197, 34, 31, 0.08) 0%, #FFFFFF 100%) !important;
+      border: 1px solid rgba(197, 34, 31, 0.25) !important;
+      box-shadow: 0 6px 20px rgba(197, 34, 31, 0.05) !important;
+    }
+    [data-theme="light"] .admin-dashboard-header h2 {
+      color: #0F172A !important;
+    }
+
+    /* 8. TABLE CONTAINERS & TABLES (THE BOTTOM PART) */
+    [data-theme="light"] .vault-table-wrap {
+      background: #FFFFFF !important;
+      border: 1px solid rgba(0, 0, 0, 0.09) !important;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03) !important;
+    }
+    [data-theme="light"] .vault-table {
+      color: #1E293B !important;
+    }
+    [data-theme="light"] .vault-table th {
+      background: #F8FAFC !important;
+      color: #475569 !important;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+      font-weight: 700 !important;
+    }
+    [data-theme="light"] .vault-table td {
+      background: transparent !important;
+      color: #1E293B !important;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
+    }
+    [data-theme="light"] .vault-table tr:hover td {
+      background: #F1F5F9 !important;
+    }
+    /* Cell content in tables for Light Mode */
+    [data-theme="light"] .vault-table td div[style*="color: #FFF"],
+    [data-theme="light"] .vault-table td div[style*="color: #fff"],
+    [data-theme="light"] .vault-table td div[style*="color: #FFFFFF"],
+    [data-theme="light"] .vault-table td div[style*="color: #ffffff"],
+    [data-theme="light"] .vault-table td div[style*="color: #E2E8F0"],
+    [data-theme="light"] .vault-table td strong[style*="color: #FFF"],
+    [data-theme="light"] .vault-table td strong[style*="color: #fff"] {
+      color: #0F172A !important;
+    }
+
+    /* 9. Vault Filter Buttons */
+    [data-theme="light"] .vault-filter-btn {
+      background: #FFFFFF !important;
+      border: 1px solid rgba(0, 0, 0, 0.1) !important;
+      color: #64748B !important;
+    }
+    [data-theme="light"] .vault-filter-btn:hover {
+      color: #0F172A !important;
+      border-color: rgba(0, 0, 0, 0.2) !important;
+    }
+    [data-theme="light"] .vault-filter-btn.active {
+      background: linear-gradient(135deg, rgba(197, 34, 31, 0.12) 0%, #FFFFFF 100%) !important;
+      border-color: var(--red) !important;
+      color: var(--red) !important;
+    }
+
+    /* 10. Form Controls, Inputs, and Selects */
+    [data-theme="light"] .form-control,
+    [data-theme="light"] .form-select,
+    [data-theme="light"] .portal-switcher-select {
+      background: #F8FAFC !important;
+      border: 1px solid rgba(0, 0, 0, 0.14) !important;
+      color: #0F172A !important;
+    }
+    [data-theme="light"] .form-control:focus,
+    [data-theme="light"] .form-select:focus,
+    [data-theme="light"] .portal-switcher-select:focus {
+      background: #FFFFFF !important;
+      border-color: var(--red) !important;
+      box-shadow: 0 0 0 3px rgba(197, 34, 31, 0.12) !important;
+    }
+    [data-theme="light"] .form-control::placeholder {
+      color: #94A3B8 !important;
+    }
+
+    /* 11. Modals & Popups */
+    [data-theme="light"] .portal-modal-box {
+      background: #FFFFFF !important;
+      border: 1px solid rgba(0, 0, 0, 0.12) !important;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15) !important;
+      color: #0F172A !important;
+    }
+    [data-theme="light"] .portal-modal-header h3 {
+      color: #0F172A !important;
+    }
+    [data-theme="light"] .portal-modal-close {
+      color: #64748B !important;
+    }
+    [data-theme="light"] .portal-modal-close:hover {
+      color: #0F172A !important;
+    }
+
+    /* 12. Notification Dropdown */
+    [data-theme="light"] #notifDropdown {
+      background: #FFFFFF !important;
+      border: 1px solid rgba(0, 0, 0, 0.1) !important;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12) !important;
+    }
+    [data-theme="light"] #notifDropdown strong {
+      color: #0F172A !important;
+    }
+    [data-theme="light"] #notifDropdownList > div {
+      border-bottom-color: rgba(0, 0, 0, 0.06) !important;
+    }
+
+    /* 13. System Audit Telemetry Card */
+    [data-theme="light"] #adminAuditLogCard {
+      background: #FFFFFF !important;
+      border-color: rgba(56, 189, 248, 0.3) !important;
+    }
+    [data-theme="light"] #telemetryLogBody {
+      background: #F8FAFC !important;
+      border-color: rgba(0, 0, 0, 0.08) !important;
+      color: #334155 !important;
+    }
+    [data-theme="light"] .telemetry-log-row:hover {
+      background: rgba(0, 0, 0, 0.04) !important;
+    }
+
+    /* 14. Podiums & Competition Cards in Tab 4 */
+    [data-theme="light"] .podium-card {
+      background: #FFFFFF !important;
+      border-color: rgba(0, 0, 0, 0.08) !important;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04) !important;
+    }
+    [data-theme="light"] .podium-card.gold {
+      background: linear-gradient(180deg, rgba(234, 179, 8, 0.1) 0%, #FFFFFF 100%) !important;
+      border-color: rgba(234, 179, 8, 0.4) !important;
+    }
+    [data-theme="light"] .podium-card.silver {
+      background: linear-gradient(180deg, rgba(148, 163, 184, 0.1) 0%, #FFFFFF 100%) !important;
+      border-color: rgba(148, 163, 184, 0.35) !important;
+    }
+    [data-theme="light"] .podium-card.bronze {
+      background: linear-gradient(180deg, rgba(217, 119, 6, 0.1) 0%, #FFFFFF 100%) !important;
+      border-color: rgba(217, 119, 6, 0.35) !important;
+    }
+
+    /* 15. Invitation Pass Preview in Tab 5.5 */
+    [data-theme="light"] .invitation-pass-preview {
+      background: #FFFFFF !important;
+      border: 2px solid rgba(197, 34, 31, 0.3) !important;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08) !important;
+    }
+    [data-theme="light"] .pass-header {
+      border-bottom: 1px dashed rgba(0, 0, 0, 0.12) !important;
+    }
+    [data-theme="light"] .pass-footer {
+      border-top: 1px dashed rgba(0, 0, 0, 0.12) !important;
+      color: #64748B !important;
+    }
+    [data-theme="light"] .pass-guest-name {
+      color: #0F172A !important;
+    }
+    [data-theme="light"] .pass-assignment-box {
+      background: #F8FAFC !important;
+      border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    }
+    [data-theme="light"] .pass-meta-field strong {
+      color: #0F172A !important;
+    }
+
+    /* 16. Button Outline, File Badges & Links */
+    [data-theme="light"] .btn-outline {
+      background: #FFFFFF;
+      border-color: rgba(0, 0, 0, 0.16);
+      color: #1E293B;
+    }
+    [data-theme="light"] .btn-outline:hover {
+      background: #F1F5F9;
+      border-color: rgba(0, 0, 0, 0.28);
+      color: #0F172A;
+    }
+    [data-theme="light"] .file-badge {
+      background: #F1F5F9 !important;
+      border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    }
+    [data-theme="light"] .vault-table td a[style*="color: #38BDF8"] {
+      color: #0284C7 !important;
+    }
+    .presidential-header-card {
+      background: linear-gradient(135deg, rgba(24, 21, 14, 0.7) 0%, rgba(13, 15, 22, 0.9) 100%);
+    }
+    [data-theme="light"] .presidential-header-card {
+      background: linear-gradient(135deg, #FFFDF5 0%, #FEF3C7 100%) !important;
+      border-color: rgba(245, 158, 11, 0.35) !important;
+    }
+
+    /* 17. Universal Typography & Containers in Light Mode */
+    [data-theme="light"] h1,
+    [data-theme="light"] h2,
+    [data-theme="light"] h3,
+    [data-theme="light"] h4,
+    [data-theme="light"] h5,
+    [data-theme="light"] h6 {
+      color: #0F172A !important;
+    }
+    [data-theme="light"] label {
+      color: #1E293B !important;
+    }
+    [data-theme="light"] div[style*="background: rgba(255,255,255,0.03)"],
+    [data-theme="light"] div[style*="background: rgba(255,255,255,0.02)"] {
+      background: #F8FAFC !important;
+      border-color: rgba(0, 0, 0, 0.08) !important;
+      color: #1E293B !important;
+    }
+    [data-theme="light"] div[style*="background: rgba(255,255,255,0.03)"] div[style*="color: #FFF"],
+    [data-theme="light"] div[style*="background: rgba(255,255,255,0.03)"] span[style*="color: #FFF"],
+    [data-theme="light"] div[style*="background: rgba(255,255,255,0.02)"] div[style*="color: #FFF"],
+    [data-theme="light"] div[style*="background: rgba(255,255,255,0.02)"] span[style*="color: #FFF"] {
+      color: #0F172A !important;
+    }
+    [data-theme="light"] div[style*="background: rgba(255,255,255,0.06)"],
+    [data-theme="light"] div[style*="background: rgba(255,255,255,0.08)"] {
+      background: rgba(0, 0, 0, 0.08) !important;
     }
   </style>
 </head>
@@ -999,7 +1366,7 @@
 
           <form id="portalLoginForm" autocomplete="on">
             <div class="form-group" style="margin-bottom: 16px;">
-              <label for="loginUsername" style="display: flex; justify-content: space-between; font-size: 0.82rem; font-weight: 600; color: #FFF; margin-bottom: 6px;">
+              <label for="loginUsername" style="display: flex; justify-content: space-between; font-size: 0.82rem; font-weight: 600; color: var(--text); margin-bottom: 6px;">
                 <span>Username or Email</span>
                 <span style="color: var(--text-dim); font-weight: 400; font-size: 0.74rem;">e.g. fatima / romy / moaaz</span>
               </label>
@@ -1013,7 +1380,7 @@
             </div>
 
             <div class="form-group" style="margin-bottom: 20px;">
-              <label for="loginPassword" style="display: flex; justify-content: space-between; font-size: 0.82rem; font-weight: 600; color: #FFF; margin-bottom: 6px;">
+              <label for="loginPassword" style="display: flex; justify-content: space-between; font-size: 0.82rem; font-weight: 600; color: var(--text); margin-bottom: 6px;">
                 <span>Password</span>
                 <span style="color: var(--text-dim); font-weight: 400; font-size: 0.74rem;">Encrypted</span>
               </label>
@@ -1087,7 +1454,7 @@
               <!-- Notification Dropdown Menu -->
               <div id="notifDropdown" style="display: none; position: absolute; right: 0; top: 38px; width: 340px; background: #0E1118; border: 1px solid var(--border); border-radius: 12px; box-shadow: 0 15px 35px rgba(0,0,0,0.7); z-index: 1000; padding: 14px; max-height: 420px; overflow-y: auto;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 8px;">
-                  <strong style="font-size: 0.88rem; color: #FFF;">Notifications</strong>
+                  <strong style="font-size: 0.88rem; color: var(--text);">Notifications</strong>
                   <button type="button" onclick="clearAllNotifications()" style="background: none; border: none; color: #38BDF8; font-size: 0.74rem; cursor: pointer;">Clear All</button>
                 </div>
                 <div id="notifDropdownList" style="display: flex; flex-direction: column; gap: 8px; font-size: 0.8rem;">
@@ -1122,7 +1489,7 @@
           <div style="display: flex; align-items: center; gap: 12px;">
             <span id="scopeBadgeIcon" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px;"></span>
             <div>
-              <strong id="scopeTitle" style="color: #FFF; font-size: 0.92rem; display: block; margin-bottom: 2px;">Executive Omni-Clearance</strong>
+              <strong id="scopeTitle" style="color: var(--text); font-size: 0.92rem; display: block; margin-bottom: 2px;">Executive Omni-Clearance</strong>
               <span id="scopeDesc" style="color: var(--text-dim); font-size: 0.8rem; line-height: 1.4;">Full omni-directional command over all engineering and operational divisions.</span>
             </div>
           </div>
@@ -1132,12 +1499,12 @@
         <!-- Global Presidential Sovereign Decree Banner (Appears across portal when active) -->
         <div id="leaderDecreeBanner" style="margin-bottom: 20px;"></div>
 
-        <!-- FATIMA SALMAN SUPREME PRESIDENTIAL COMMAND DECK -->
+        <!-- SUPREME PRESIDENTIAL COMMAND DECK -->
         <div id="fatimaPresidentialCommandDeck" class="presidential-supreme-deck" style="display: none; margin-bottom: 26px;">
           <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 18px; border-bottom: 1px solid rgba(245, 158, 11, 0.2); padding-bottom: 16px; margin-bottom: 16px;">
             <div style="display: flex; align-items: center; gap: 16px;">
-              <div style="width: 58px; height: 58px; border-radius: 50%; border: 2px solid #F59E0B; box-shadow: 0 0 16px rgba(245, 158, 11, 0.3); overflow: hidden; position: relative; flex-shrink: 0; background: #12131A;">
-                <img id="fatimaDeckAvatar" src="photos/Fatima Salman.jpeg" alt="Fatima Salman" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='fatima.jpg'; this.onerror=function(){this.src='photos/Fatima Salman.jpeg';};">
+              <div style="width: 52px; height: 52px; border-radius: 12px; background: rgba(245, 158, 11, 0.15); border: 1.5px solid #F59E0B; display: flex; align-items: center; justify-content: center; color: #F59E0B; flex-shrink: 0; box-shadow: 0 0 16px rgba(245, 158, 11, 0.25);">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
               </div>
               <div>
                 <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 4px;">
@@ -1150,8 +1517,8 @@
                     LIVE GOVERNANCE
                   </span>
                 </div>
-                <h2 style="font-size: 1.35rem; color: #FFFFFF; font-weight: 800; margin: 0 0 3px 0; letter-spacing: -0.01em;">
-                  Fatima Salman <span style="font-size: 0.85rem; color: #F59E0B; font-weight: 600;">(Team Leader)</span>
+                <h2 style="font-size: 1.28rem; font-weight: 800; margin: 0 0 3px 0; letter-spacing: -0.01em;" class="deck-title-text" data-i18n="deck.headline">
+                  Executive Sovereign Command Console
                 </h2>
                 <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0; line-height: 1.45; max-width: 800px;" data-i18n="deck.jurisdiction">
                   Universal executive jurisdiction over all technical engineering and operations divisions.
@@ -1214,13 +1581,13 @@
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px;">
             <div style="background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 8px; padding: 10px 14px;">
               <span style="font-size: 0.7rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 2px;" data-i18n="deck.roster">Active Crew</span>
-              <strong id="deckRosterCount" style="font-size: 1.2rem; color: #FFF; font-weight: 800;">15</strong>
+              <strong id="deckRosterCount" style="font-size: 1.2rem; color: var(--text); font-weight: 800;">15</strong>
               <span style="font-size: 0.7rem; color: #38BDF8; display: block; margin-top: 1px;">Core Crew &amp; Leads</span>
             </div>
 
             <div style="background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 8px; padding: 10px 14px;">
               <span style="font-size: 0.7rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 2px;" data-i18n="deck.pipeline">Recruitment Pipeline</span>
-              <strong id="deckApplicantCount" style="font-size: 1.2rem; color: #FFF; font-weight: 800;">0</strong>
+              <strong id="deckApplicantCount" style="font-size: 1.2rem; color: var(--text); font-weight: 800;">0</strong>
               <span style="font-size: 0.7rem; color: #A78BFA; display: block; margin-top: 1px;">Candidates In Review</span>
             </div>
 
@@ -1315,7 +1682,7 @@
           <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 12px;">
             <div style="display: flex; align-items: center; gap: 10px;">
               <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: var(--red); box-shadow: 0 0 10px var(--red);"></span>
-              <h3 style="margin: 0; font-size: 1.15rem; color: #FFF; font-weight: 800;" data-i18n="dash.milestoneTitle">VELOX Silverstone 2026 Milestone Tracker</h3>
+              <h3 style="margin: 0; font-size: 1.15rem; color: var(--text); font-weight: 800;" data-i18n="dash.milestoneTitle">VELOX Silverstone 2026 Milestone Tracker</h3>
             </div>
             <span style="font-size: 0.78rem; color: #F59E0B; font-weight: 700; background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.35); padding: 3px 10px; border-radius: 9999px;">
               Chassis VX-01 &bull; Active Sprint #4
@@ -1344,7 +1711,7 @@
         <!-- Access Requests Queue (For Leaders) -->
         <div id="accessRequestsQueueCard" class="liquid-glass-card" style="padding: 24px; margin-bottom: 28px;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-            <h4 style="margin: 0; font-size: 1.05rem; display: flex; align-items: center; gap: 10px; color: #FFF;">
+            <h4 style="margin: 0; font-size: 1.05rem; display: flex; align-items: center; gap: 10px; color: var(--text);">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
               <span data-i18n="dash.approvalsTitle">Data Download Access Approvals</span>
             </h4>
@@ -1357,7 +1724,7 @@
 
         <!-- Executive Notifications Feed -->
         <div class="liquid-glass-card" style="padding: 24px;">
-          <h4 style="margin: 0 0 16px 0; font-size: 1.05rem; display: flex; align-items: center; gap: 10px; color: #FFF;">
+          <h4 style="margin: 0 0 16px 0; font-size: 1.05rem; display: flex; align-items: center; gap: 10px; color: var(--text);">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
             <span data-i18n="dash.notifTitle">System &amp; Executive Notification Log</span>
           </h4>
@@ -1535,7 +1902,7 @@
         <div style="margin-top: 36px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid var(--border); padding-bottom: 12px; flex-wrap: wrap; gap: 10px;">
             <div>
-              <h3 style="margin: 0 0 4px 0; font-size: 1.15rem; color: #FFF; display: flex; align-items: center; gap: 8px;">
+              <h3 style="margin: 0 0 4px 0; font-size: 1.15rem; color: var(--text); display: flex; align-items: center; gap: 8px;">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#EAB308" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
                 Issued Team Credentials &amp; Invitations Registry
               </h3>
@@ -1571,7 +1938,7 @@
       <!-- 7. TAB 5.5: PRESIDENTIAL COMMAND HUB (EXCLUSIVE FOR TEAM LEADER FATIMA & VICE LEADER KARIM) -->
       <section class="portal-panel" id="panel-presidential">
         <!-- Presidential Header -->
-        <div class="liquid-glass-card" style="padding: 24px; margin-bottom: 24px; border-color: rgba(245, 158, 11, 0.35); background: linear-gradient(135deg, rgba(24, 21, 14, 0.7) 0%, rgba(13, 15, 22, 0.9) 100%) !important;">
+        <div class="presidential-header-card liquid-glass-card" style="padding: 24px; margin-bottom: 24px; border-color: rgba(245, 158, 11, 0.35);">
           <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
             <div style="display: flex; align-items: center; gap: 14px;">
               <div style="width: 48px; height: 48px; border-radius: 50%; background: rgba(245, 158, 11, 0.15); border: 2px solid #F59E0B; display: flex; align-items: center; justify-content: center; color: #F59E0B;">
@@ -1581,7 +1948,7 @@
                 <span style="font-size: 0.74rem; color: #F59E0B; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;">
                   Supreme Executive Jurisdiction &bull; Silverstone 2026
                 </span>
-                <h2 style="font-size: 1.45rem; margin: 2px 0 4px 0; color: #FFF;" data-i18n="pres.title">Presidential Command Hub &amp; Executive Directives</h2>
+                <h2 style="font-size: 1.45rem; margin: 2px 0 4px 0; color: var(--text);" data-i18n="pres.title">Presidential Command Hub &amp; Executive Directives</h2>
                 <p style="font-size: 0.84rem; color: var(--text-muted); margin: 0;" data-i18n="pres.desc">
                   Official sovereign command platform for Team Leader Fatima Salman and Vice Team Leader Karim Shaprawy.
                 </p>
@@ -1601,7 +1968,7 @@
           
           <!-- Dispatch Executive Directive Card -->
           <div class="portal-panel-card liquid-glass-card" style="padding: 22px;">
-            <h3 style="margin: 0 0 10px 0; font-size: 1.15rem; color: #FFF; display: flex; align-items: center; gap: 8px;">
+            <h3 style="margin: 0 0 10px 0; font-size: 1.15rem; color: var(--text); display: flex; align-items: center; gap: 8px;">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
               <span data-i18n="pres.formTitle">Issue Sovereign Directive</span>
             </h3>
@@ -1646,7 +2013,7 @@
           <!-- Active Directives & Acknowledgment Log -->
           <div class="portal-panel-card liquid-glass-card" style="padding: 22px;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid var(--border); padding-bottom: 10px;">
-              <h3 style="margin: 0; font-size: 1.15rem; color: #FFF; display: flex; align-items: center; gap: 8px;">
+              <h3 style="margin: 0; font-size: 1.15rem; color: var(--text); display: flex; align-items: center; gap: 8px;">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><circle cx="12" cy="12" r="2"></circle><path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"></path></svg>
                 <span data-i18n="pres.activeTitle">Active Directives & Signatures</span>
               </h3>
@@ -1661,7 +2028,7 @@
 
       <!-- 8. TAB 6: EXECUTIVE ADMIN DASHBOARD (LEADERSHIP COMMAND CENTER) -->
       <section class="portal-panel" id="panel-admin">
-        <div class="admin-dashboard-header" style="background: linear-gradient(135deg, rgba(197,34,31,0.12) 0%, rgba(10,10,12,0.85) 100%); border: 1px solid rgba(197,34,31,0.35); border-radius: 14px; padding: 24px; margin-bottom: 26px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+        <div class="admin-dashboard-header" style="border: 1px solid rgba(197,34,31,0.35); border-radius: 14px; padding: 24px; margin-bottom: 26px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
           <div>
             <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px;">
               <span class="portal-role-pill role-executive">Admin Command Center</span>
@@ -1669,7 +2036,7 @@
                 <span style="width: 8px; height: 8px; border-radius: 50%; background: #10B981; display: inline-block;"></span> 256-Bit TLS Secured &bull; Live Operations
               </span>
             </div>
-            <h2 style="font-size: 1.5rem; margin: 0 0 6px 0; color: #FFF;" data-i18n="admin.title">Executive Admin Dashboard</h2>
+            <h2 style="font-size: 1.5rem; margin: 0 0 6px 0; color: var(--text);" data-i18n="admin.title">Executive Admin Dashboard</h2>
             <p style="font-size: 0.85rem; color: var(--text-muted); margin: 0;" data-i18n="admin.desc">
               Centralized governance for team accounts, candidate recruitment, and system audit.
             </p>
@@ -1688,7 +2055,7 @@
         <div class="portal-stats-grid" style="margin-bottom: 28px;">
           <div class="portal-stat-box">
             <div class="portal-stat-lbl" data-i18n="admin.kpiAccounts">Active Accounts</div>
-            <div class="portal-stat-val" id="adminKpiMembers" style="color: #FFF;">6</div>
+            <div class="portal-stat-val" id="adminKpiMembers" style="color: var(--text);">6</div>
             <div class="portal-stat-desc">Provisioned team accounts</div>
           </div>
           <div class="portal-stat-box">
@@ -1713,7 +2080,7 @@
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid var(--border); padding-bottom: 14px; flex-wrap: wrap; gap: 12px;">
             <div>
               <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 4px;">
-                <h3 style="margin: 0; font-size: 1.25rem; color: #FFF; display: flex; align-items: center; gap: 8px;">
+                <h3 style="margin: 0; font-size: 1.25rem; color: var(--text); display: flex; align-items: center; gap: 8px;">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2.5"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><polyline points="17 11 19 13 23 9"></polyline></svg>
                   <span data-i18n="admin.recruitmentTitle">Recruitment &amp; Candidate Pipeline</span>
                 </h3>
@@ -1724,6 +2091,10 @@
               </p>
             </div>
             <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+              <button type="button" class="btn btn-primary" onclick="syncApplicationsFromCloud(true)" style="font-size: 0.82rem; padding: 6px 14px; display: inline-flex; align-items: center; gap: 6px;" title="Synchronize applications from Supabase Cloud">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg>
+                <span>Sync Cloud</span>
+              </button>
               <button type="button" class="btn btn-outline" id="toggleRecruitmentBtn" onclick="toggleRecruitmentStatus()" style="font-size: 0.82rem; padding: 6px 14px; display: inline-flex; align-items: center; gap: 6px;">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
                 <span data-i18n="admin.toggleIntakeBtn">Toggle Public Intake</span>
@@ -1743,7 +2114,7 @@
           <div class="portal-stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); margin-bottom: 18px;">
             <div class="portal-stat-box" style="padding: 12px 14px;">
               <div class="portal-stat-lbl">Total Applicants</div>
-              <div class="portal-stat-val" id="recruitmentTotalKpi" style="font-size: 1.4rem; color: #FFF;">0</div>
+              <div class="portal-stat-val" id="recruitmentTotalKpi" style="font-size: 1.4rem; color: var(--text);">0</div>
             </div>
             <div class="portal-stat-box" style="padding: 12px 14px;">
               <div class="portal-stat-lbl">New Submissions</div>
@@ -1800,7 +2171,7 @@
         <div class="portal-panel-card" style="margin-bottom: 28px;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid var(--border); padding-bottom: 12px; flex-wrap: wrap; gap: 10px;">
             <div>
-              <h3 style="margin: 0 0 4px 0; font-size: 1.15rem; color: #FFF; display: flex; align-items: center; gap: 8px;">
+              <h3 style="margin: 0 0 4px 0; font-size: 1.15rem; color: var(--text); display: flex; align-items: center; gap: 8px;">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E11D48" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
                 Download Access Authorization Queue
               </h3>
@@ -1819,7 +2190,7 @@
         <div class="portal-panel-card" style="margin-bottom: 28px;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid var(--border); padding-bottom: 12px; flex-wrap: wrap; gap: 12px;">
             <div>
-              <h3 style="margin: 0 0 4px 0; font-size: 1.15rem; color: #FFF; display: flex; align-items: center; gap: 8px;">
+              <h3 style="margin: 0 0 4px 0; font-size: 1.15rem; color: var(--text); display: flex; align-items: center; gap: 8px;">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
                 Team Accounts & Credential Governance
               </h3>
@@ -1856,7 +2227,7 @@
         <div class="portal-panel-card" style="margin-bottom: 28px;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid var(--border); padding-bottom: 12px;">
             <div>
-              <h3 style="margin: 0 0 4px 0; font-size: 1.15rem; color: #FFF; display: flex; align-items: center; gap: 8px;">
+              <h3 style="margin: 0 0 4px 0; font-size: 1.15rem; color: var(--text); display: flex; align-items: center; gap: 8px;">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
                 Sprint Deliverable Verification Queue
               </h3>
@@ -1876,7 +2247,7 @@
             <div>
               <div style="display: flex; align-items: center; gap: 8px;">
                 <span style="width: 8px; height: 8px; border-radius: 50%; background: #22C55E; display: inline-block; box-shadow: 0 0 8px #22C55E;"></span>
-                <h3 style="margin: 0; font-size: 1.15rem; color: #FFF; display: flex; align-items: center; gap: 6px;">
+                <h3 style="margin: 0; font-size: 1.15rem; color: var(--text); display: flex; align-items: center; gap: 6px;">
                   Security &amp; Audit Mission Telemetry Terminal
                 </h3>
                 <span class="portal-role-pill" style="font-size: 0.68rem; background: rgba(56,189,248,0.12); color: #38BDF8; border: 1px solid rgba(56,189,248,0.3); font-family: monospace;">256-BIT TLS &bull; QUANTUM SECURED</span>
@@ -2119,7 +2490,7 @@
       </div>
       <form id="enlistForm">
         <div style="background: rgba(197, 34, 31, 0.1); border: 1px solid rgba(197, 34, 31, 0.35); border-radius: 8px; padding: 12px 16px; margin-bottom: 16px;">
-          <h4 id="enlistNameDisplay" style="margin: 0 0 4px 0; color: #FFF;">Candidate Name</h4>
+          <h4 id="enlistNameDisplay" style="margin: 0 0 4px 0; color: var(--text);">Candidate Name</h4>
           <span id="enlistRoleDeptDisplay" style="font-size: 0.82rem; color: #EAB308;">Role &bull; Department</span>
         </div>
         <input type="hidden" id="enlistHiddenName" />
@@ -2162,7 +2533,7 @@
       <form id="resetPasswordForm">
         <input type="hidden" id="resetMemberId" />
         <div style="background: rgba(255, 255, 255, 0.04); border-radius: 8px; padding: 12px 16px; margin-bottom: 16px;">
-          <h4 id="resetMemberDisplayName" style="margin: 0 0 4px 0; color: #FFF;">Member Name</h4>
+          <h4 id="resetMemberDisplayName" style="margin: 0 0 4px 0; color: var(--text);">Member Name</h4>
           <span style="font-size: 0.82rem; color: var(--text-dim);">Portal Username: <strong id="resetMemberDisplayUsername" style="color: #38BDF8;">user</strong></span>
         </div>
 
@@ -2281,14 +2652,14 @@
           <div style="width: 52px; height: 52px; border-radius: 50%; background: rgba(197,34,31,0.15); border: 2px solid var(--red); display: inline-flex; align-items: center; justify-content: center; color: var(--red); margin-bottom: 12px;">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
           </div>
-          <h4 style="margin: 0 0 6px 0; color: #FFF;">Protected Team Infrastructure</h4>
+          <h4 style="margin: 0 0 6px 0; color: var(--text);">Protected Team Infrastructure</h4>
           <p style="font-size: 0.85rem; color: var(--text-muted); margin: 0;">
             Velox Inside Portal access is restricted to official student engineers and executive leaders.
           </p>
         </div>
 
         <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 8px; padding: 16px; margin-bottom: 16px; font-size: 0.84rem; line-height: 1.6;">
-          <p style="margin: 0 0 10px 0; color: #FFF; font-weight: 600;">How to get your credentials or reset your password:</p>
+          <p style="margin: 0 0 10px 0; color: var(--text); font-weight: 600;">How to get your credentials or reset your password:</p>
           <ul style="margin: 0; padding-left: 20px; color: var(--text-muted);">
             <li><strong>Official Invitation:</strong> If you are newly recruited, request an official invitation link from <strong>Fatima Salman</strong> (Team Leader) or <strong>Karim Shaprawy</strong> (Vice Leader).</li>
             <li><strong>Password Reset:</strong> Contact your Subteam Leader or Team Executive to issue a password reset token from the Admin Dashboard.</li>
@@ -3548,10 +3919,7 @@
       const rosterCountEl = document.getElementById('deckRosterCount');
       if (rosterCountEl) rosterCountEl.textContent = (db.membersRoster || []).length;
 
-      let allApps = [];
-      try {
-        allApps = JSON.parse(localStorage.getItem('velox_all_applications') || '[]');
-      } catch (e) { allApps = []; }
+      const allApps = getApplicationsList();
       const applicantCountEl = document.getElementById('deckApplicantCount');
       if (applicantCountEl) applicantCountEl.textContent = allApps.length;
 
@@ -3924,7 +4292,7 @@
         return `
           <tr>
             <td>
-              <div style="font-weight: 600; color: #FFF;">${file.title}</div>
+              <div style="font-weight: 600; color: var(--text);">${file.title}</div>
             </td>
             <td>
               <span class="file-badge" style="color: ${file.branch === 'Technical' ? '#38BDF8' : '#FBBF24'};">
@@ -4027,7 +4395,7 @@
                   +${task.basePoints} pts (+${task.speedBonus} bonus)
                 </span>
               </div>
-              <h4 style="margin: 0 0 8px 0; font-size: 1.05rem; color: #FFF;">${task.title}</h4>
+              <h4 style="margin: 0 0 8px 0; font-size: 1.05rem; color: var(--text);">${task.title}</h4>
               <p style="font-size: 0.82rem; color: var(--text-muted); margin: 0 0 14px 0; line-height: 1.5;">${task.desc}</p>
               
               <div style="font-size: 0.78rem; color: var(--text-dim); margin-bottom: 14px;">
@@ -4126,7 +4494,7 @@
         podiumEl.innerHTML = `
           <div style="grid-column: 1 / -1; background: rgba(255,255,255,0.02); border: 1px dashed var(--border); border-radius: var(--radius-lg); padding: 36px 20px; text-align: center;">
             <div style="margin-bottom: 12px; display: inline-flex; justify-content: center;">${getPortalIcon('trophy', 36, '', 'var(--red)')}</div>
-            <h4 style="font-size: 1.15rem; color: #FFF; margin: 0 0 6px 0;">${t('comp.empty_title', 'VELOX Season 2026 Standings Open')}</h4>
+            <h4 style="font-size: 1.15rem; color: var(--text); margin: 0 0 6px 0;">${t('comp.empty_title', 'VELOX Season 2026 Standings Open')}</h4>
             <p style="font-size: 0.86rem; color: var(--text-dim); max-width: 540px; margin: 0 auto; line-height: 1.5;">
               ${t('comp.empty_desc', 'Points currently zeroed for authentic season start. Podium positions and Velocity Points will be awarded dynamically as engineering and managerial sprint deliverables are submitted, verified, and approved!')}
             </p>
@@ -4136,21 +4504,21 @@
         podiumEl.innerHTML = `
           <div class="podium-card silver">
             <div class="podium-medal">2</div>
-            <h3 style="font-size: 1.15rem; margin: 0 0 4px 0; color: #FFF;">${top3[1].name}</h3>
+            <h3 style="font-size: 1.15rem; margin: 0 0 4px 0; color: var(--text);">${top3[1].name}</h3>
             <span style="font-size: 0.78rem; color: var(--text-muted);">${top3[1].role} &bull; ${top3[1].dept}</span>
             <div class="podium-points">${top3[1].points} pts</div>
             <div style="font-size: 0.74rem; color: #38BDF8; font-weight: 700;">Silverstone Apex Contributor</div>
           </div>
           <div class="podium-card gold">
             <div class="podium-medal">1</div>
-            <h3 style="font-size: 1.3rem; margin: 0 0 4px 0; color: #FFF;">${top3[0].name}</h3>
+            <h3 style="font-size: 1.3rem; margin: 0 0 4px 0; color: var(--text);">${top3[0].name}</h3>
             <span style="font-size: 0.82rem; color: var(--text-muted);">${top3[0].role} &bull; ${top3[0].dept}</span>
             <div class="podium-points">${top3[0].points} pts</div>
             <div style="font-size: 0.78rem; color: #EAB308; font-weight: 800; display: inline-flex; align-items: center; gap: 4px;">${getPortalIcon('zap', 14, '', '#EAB308')} ${t('badge.p1', 'P1 Velocity Champion')}</div>
           </div>
           <div class="podium-card bronze">
             <div class="podium-medal">3</div>
-            <h3 style="font-size: 1.15rem; margin: 0 0 4px 0; color: #FFF;">${top3[2].name}</h3>
+            <h3 style="font-size: 1.15rem; margin: 0 0 4px 0; color: var(--text);">${top3[2].name}</h3>
             <span style="font-size: 0.78rem; color: var(--text-muted);">${top3[2].role} &bull; ${top3[2].dept}</span>
             <div class="podium-points">${top3[2].points} pts</div>
             <div style="font-size: 0.74rem; color: #D97706; font-weight: 700;">High Precision Finisher</div>
@@ -4175,7 +4543,7 @@
               #${idx + 1}
             </td>
             <td>
-              <div style="font-weight: 700; color: #FFF;">${member.name}</div>
+              <div style="font-weight: 700; color: var(--text);">${member.name}</div>
               <div style="font-size: 0.75rem; color: var(--text-dim);">${member.role}</div>
             </td>
             <td>
@@ -4185,7 +4553,7 @@
             </td>
             <td>${Math.floor(member.points / 120)} Tasks</td>
             <td style="color: #22C55E; font-weight: 700;">+${Math.floor(member.points * 0.35)} pts</td>
-            <td style="font-size: 1rem; font-weight: 800; color: #FFF;">${member.points.toLocaleString()}</td>
+            <td style="font-size: 1rem; font-weight: 800; color: var(--text);">${member.points.toLocaleString()}</td>
             <td>
               ${badges.map(b => `<span style="display: inline-block; font-size: 0.72rem; padding: 2px 7px; border-radius: 4px; background: rgba(255,255,255,0.06); margin-right: 4px; font-weight: 600;">${b}</span>`).join('')}
             </td>
@@ -4474,13 +4842,24 @@
 
     function getApplicationsList() {
       const deletedIds = JSON.parse(localStorage.getItem('velox_deleted_application_ids') || '[]');
-      let rawList = [];
-      try {
-        const stored = localStorage.getItem('velox_mock_applications');
-        rawList = stored ? JSON.parse(stored) : [];
-      } catch (e) {
-        rawList = [];
-      }
+      
+      const safeParse = (k) => {
+        try {
+          const val = localStorage.getItem(k);
+          if (val) {
+            const parsed = JSON.parse(val);
+            if (Array.isArray(parsed)) return parsed;
+          }
+        } catch (e) {}
+        return [];
+      };
+
+      // Unify from all possible sources without duplicating
+      const rawList = [
+        ...safeParse('velox_mock_applications'),
+        ...safeParse('velox_applications'),
+        ...safeParse('velox_all_applications')
+      ];
 
       const cleanList = [];
       const seenKeys = new Set();
@@ -4497,6 +4876,12 @@
 
         // Respect permanent deletion blacklist
         if (deletedIds.includes(idStr) || deletedIds.includes(emailStr)) return;
+
+        // Skip dummy mock seeds
+        const isDummy = (app.id === 'APP-001' || app.id === 'APP-002' || app.id === 'APP-003' || app.id === 'VLX-APP-001' || app.id === 'VLX-APP-002' || app.id === 'VLX-APP-003') &&
+                        (emailStr.includes('example.com') || emailStr.includes('test'));
+        if (isDummy) return;
+
         cleanList.push(app);
       });
 
@@ -4505,7 +4890,10 @@
 
     function saveApplicationsList(list) {
       try {
-        localStorage.setItem('velox_mock_applications', JSON.stringify(list));
+        const json = JSON.stringify(list);
+        localStorage.setItem('velox_mock_applications', json);
+        localStorage.setItem('velox_applications', json);
+        localStorage.setItem('velox_all_applications', json);
       } catch (e) {}
     }
 
@@ -4532,13 +4920,25 @@
       const deletedIds = JSON.parse(localStorage.getItem('velox_deleted_application_ids') || '[]');
 
       const map = new Map();
-      [...cloudApps, ...localApps].forEach(item => {
+
+      // Cloud applications from database are sovereign real records: always keep them
+      cloudApps.forEach(item => {
+        const app = normalizeApplication(item);
+        if (!app) return;
+        const key = (app.email || String(app.id || '')).toLowerCase().trim();
+        if (!map.has(key)) {
+          map.set(key, app);
+        }
+      });
+
+      // Merge local applications if not already present or blacklisted
+      localApps.forEach(item => {
         const app = normalizeApplication(item);
         if (!app) return;
         const idStr = String(app.id || '');
         const emailStr = (app.email || '').toLowerCase();
         if (deletedIds.includes(idStr) || deletedIds.includes(emailStr)) return;
-        const key = (app.id || app.email).toLowerCase();
+        const key = (app.email || idStr).toLowerCase().trim();
         if (!map.has(key)) {
           map.set(key, app);
         }
@@ -4547,6 +4947,9 @@
       const merged = Array.from(map.values());
       saveApplicationsList(merged);
       renderApplicationsControlCenter();
+      if (showToast) {
+        alert(`Cloud Sync Complete: ${merged.length} application(s) available.`);
+      }
     }
 
     function purgeTestApplicants() {
@@ -4722,7 +5125,7 @@
         return `
           <tr>
             <td>
-              <div style="font-weight: 700; color: #FFF; font-size: 0.92rem;">${app.name}</div>
+              <div style="font-weight: 700; color: var(--text); font-size: 0.92rem;">${app.name}</div>
               <div style="font-size: 0.75rem; color: var(--text-dim); margin-top: 2px;">
                 ${app.submittedAt ? new Date(app.submittedAt).toLocaleDateString() : 'Recent'} &bull; ${app.commitment || 'Flexible'}
               </div>
@@ -4734,7 +5137,7 @@
               </div>
             </td>
             <td>
-              <div style="font-size: 0.82rem; color: #E2E8F0;">${app.faculty || 'Unspecified'}</div>
+              <div style="font-size: 0.82rem; color: var(--text);">${app.faculty || 'Unspecified'}</div>
               <div style="font-size: 0.76rem; color: var(--text-dim);">${app.year || 'N/A'}</div>
             </td>
             <td>
@@ -5208,7 +5611,7 @@
         return `
           <tr>
             <td>
-              <strong style="color: #FFF;">${m.name}</strong>
+              <strong style="color: var(--text);">${m.name}</strong>
             </td>
             <td>
               <span class="portal-role-pill ${m.branch === 'Executive' ? 'role-executive' : (m.branch === 'Technical' ? 'role-tech' : 'role-ops')}">

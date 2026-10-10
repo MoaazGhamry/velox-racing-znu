@@ -21,11 +21,11 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" />
 
   <!-- Shared Style with Cache Buster -->
-  <link rel="stylesheet" href="style.css?v=3.6" />
+  <link rel="stylesheet" href="style.css?v=4.0" />
 
   <!-- Localization Engine & Team Data (Deferred for non-blocking render) -->
-  <script src="i18n.js?v=3.6" defer></script>
-  <script src="team.js?v=3.6" defer></script>
+  <script src="i18n.js?v=4.0" defer></script>
+  <script src="team.js?v=4.0" defer></script>
 </head>
 <body>
 
@@ -285,231 +285,7 @@
       </div>
     </section>
 
-    <!-- Formula Student Competition Arena & Target Ranking Matrix -->
-    <section class="section" id="competition" style="background: radial-gradient(circle at 50% 15%, rgba(225, 6, 0, 0.08) 0%, transparent 65%);">
-      <div class="container">
-        <div class="section-header center">
-          <span class="section-kicker" data-i18n="comp.kicker" style="color: #EAB308;">★ FORMULA STUDENT UK 2026 &bull; SILVERSTONE CIRCUIT ★</span>
-          <h2 class="section-title" data-i18n="comp.title">Championship Standings &amp; Class 1 Target Matrix</h2>
-          <p class="section-desc" data-i18n="comp.desc">
-            Zagazig National University’s official Formula Student challenger targeting Class 1 benchmarks across the rigorous 1,000-point Formula Student UK engineering evaluation.
-          </p>
-        </div>
 
-        <!-- Silverstone Live Countdown Timer Card -->
-        <div class="liquid-glass-card" style="padding: 24px 30px; margin-bottom: 32px; text-align: center; border-color: rgba(234, 179, 8, 0.35); box-shadow: 0 15px 40px rgba(0,0,0,0.6), 0 0 30px rgba(234, 179, 8, 0.1);">
-          <div style="font-size: 0.76rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.12em; color: #EAB308; margin-bottom: 8px;">
-            🏁 OFFICIAL FORMULA STUDENT UK 2026 COUNTDOWN &bull; SILVERSTONE PADDOCK GATES
-          </div>
-          <div id="fsSilverstoneCountdown" style="display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin: 14px 0;">
-            <div style="background: rgba(0,0,0,0.45); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px 18px; min-width: 80px;">
-              <span id="fsDays" style="font-size: 2rem; font-weight: 900; color: #FFF; display: block; font-family: monospace;">--</span>
-              <span style="font-size: 0.72rem; color: var(--text-dim); text-transform: uppercase;">Days</span>
-            </div>
-            <div style="background: rgba(0,0,0,0.45); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px 18px; min-width: 80px;">
-              <span id="fsHours" style="font-size: 2rem; font-weight: 900; color: #38BDF8; display: block; font-family: monospace;">--</span>
-              <span style="font-size: 0.72rem; color: var(--text-dim); text-transform: uppercase;">Hours</span>
-            </div>
-            <div style="background: rgba(0,0,0,0.45); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px 18px; min-width: 80px;">
-              <span id="fsMins" style="font-size: 2rem; font-weight: 900; color: #EAB308; display: block; font-family: monospace;">--</span>
-              <span style="font-size: 0.72rem; color: var(--text-dim); text-transform: uppercase;">Minutes</span>
-            </div>
-            <div style="background: rgba(0,0,0,0.45); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px 18px; min-width: 80px;">
-              <span id="fsSecs" style="font-size: 2rem; font-weight: 900; color: #E11D48; display: block; font-family: monospace;">--</span>
-              <span style="font-size: 0.72rem; color: var(--text-dim); text-transform: uppercase;">Seconds</span>
-            </div>
-          </div>
-          <div style="font-size: 0.82rem; color: var(--text-muted);">
-            Scrutineering Inspection &bull; Tilt Table &bull; Brake Test &bull; Noise Scrutiny &bull; Silverstone Circuit, Towcester, UK
-          </div>
-        </div>
-
-        <!-- 2-Column Grid: 1,000 Pts Target Breakdown + International Leaderboard & Readiness -->
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); gap: 24px; margin-bottom: 24px;">
-          
-          <!-- Column 1: Class 1 1,000 Points Target Matrix -->
-          <div class="liquid-glass-card" style="padding: 26px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; border-bottom: 1px solid var(--border); padding-bottom: 12px;">
-              <div>
-                <h3 style="margin: 0; font-size: 1.2rem; color: #FFF; display: flex; align-items: center; gap: 8px;">
-                  🎯 1,000 Pts Target Matrix
-                </h3>
-                <span style="font-size: 0.78rem; color: var(--text-dim);">Formula Student Class 1 Scoring System</span>
-              </div>
-              <span class="portal-role-pill" style="background: rgba(34, 197, 94, 0.15); color: #4ADE80; border: 1px solid rgba(34,197,94,0.3); font-weight: 700;">Target: 810+ Pts</span>
-            </div>
-
-            <!-- Dynamic Events (675 Pts) -->
-            <div style="margin-bottom: 20px;">
-              <div style="display: flex; justify-content: space-between; font-size: 0.84rem; font-weight: 700; color: #38BDF8; margin-bottom: 6px;">
-                <span>⚡ Dynamic Events</span>
-                <span>675 Points Max</span>
-              </div>
-              <div style="display: flex; flex-direction: column; gap: 8px; font-size: 0.8rem;">
-                <div>
-                  <div style="display: flex; justify-content: space-between; color: var(--text-muted); margin-bottom: 2px;">
-                    <span>Endurance (22 km)</span>
-                    <strong style="color: #FFF;">275 / 325 pts (85%)</strong>
-                  </div>
-                  <div style="height: 6px; background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden;">
-                    <div style="width: 85%; height: 100%; background: linear-gradient(90deg, #E10600, #F43F5E); border-radius: 3px;"></div>
-                  </div>
-                </div>
-                <div>
-                  <div style="display: flex; justify-content: space-between; color: var(--text-muted); margin-bottom: 2px;">
-                    <span>Autocross (Sprint Lap)</span>
-                    <strong style="color: #FFF;">105 / 125 pts (84%)</strong>
-                  </div>
-                  <div style="height: 6px; background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden;">
-                    <div style="width: 84%; height: 100%; background: linear-gradient(90deg, #E10600, #F43F5E); border-radius: 3px;"></div>
-                  </div>
-                </div>
-                <div>
-                  <div style="display: flex; justify-content: space-between; color: var(--text-muted); margin-bottom: 2px;">
-                    <span>Acceleration (75m Sprint)</span>
-                    <strong style="color: #FFF;">65 / 75 pts (87%)</strong>
-                  </div>
-                  <div style="height: 6px; background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden;">
-                    <div style="width: 87%; height: 100%; background: linear-gradient(90deg, #E10600, #F43F5E); border-radius: 3px;"></div>
-                  </div>
-                </div>
-                <div>
-                  <div style="display: flex; justify-content: space-between; color: var(--text-muted); margin-bottom: 2px;">
-                    <span>Skidpad (Figure-8 Lateral G)</span>
-                    <strong style="color: #FFF;">62 / 75 pts (83%)</strong>
-                  </div>
-                  <div style="height: 6px; background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden;">
-                    <div style="width: 83%; height: 100%; background: linear-gradient(90deg, #E10600, #F43F5E); border-radius: 3px;"></div>
-                  </div>
-                </div>
-                <div>
-                  <div style="display: flex; justify-content: space-between; color: var(--text-muted); margin-bottom: 2px;">
-                    <span>Efficiency Metric</span>
-                    <strong style="color: #FFF;">65 / 75 pts (87%)</strong>
-                  </div>
-                  <div style="height: 6px; background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden;">
-                    <div style="width: 87%; height: 100%; background: linear-gradient(90deg, #E10600, #F43F5E); border-radius: 3px;"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Static Events (325 Pts) -->
-            <div>
-              <div style="display: flex; justify-content: space-between; font-size: 0.84rem; font-weight: 700; color: #EAB308; margin-bottom: 6px;">
-                <span>📐 Static Events</span>
-                <span>325 Points Max</span>
-              </div>
-              <div style="display: flex; flex-direction: column; gap: 8px; font-size: 0.8rem;">
-                <div>
-                  <div style="display: flex; justify-content: space-between; color: var(--text-muted); margin-bottom: 2px;">
-                    <span>Engineering Design Evaluation</span>
-                    <strong style="color: #FFF;">132 / 150 pts (88%)</strong>
-                  </div>
-                  <div style="height: 6px; background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden;">
-                    <div style="width: 88%; height: 100%; background: linear-gradient(90deg, #EAB308, #FBBF24); border-radius: 3px;"></div>
-                  </div>
-                </div>
-                <div>
-                  <div style="display: flex; justify-content: space-between; color: var(--text-muted); margin-bottom: 2px;">
-                    <span>Cost &amp; Manufacturing Analysis</span>
-                    <strong style="color: #FFF;">86 / 100 pts (86%)</strong>
-                  </div>
-                  <div style="height: 6px; background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden;">
-                    <div style="width: 86%; height: 100%; background: linear-gradient(90deg, #EAB308, #FBBF24); border-radius: 3px;"></div>
-                  </div>
-                </div>
-                <div>
-                  <div style="display: flex; justify-content: space-between; color: var(--text-muted); margin-bottom: 2px;">
-                    <span>Business Presentation Plan</span>
-                    <strong style="color: #FFF;">65 / 75 pts (87%)</strong>
-                  </div>
-                  <div style="height: 6px; background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden;">
-                    <div style="width: 87%; height: 100%; background: linear-gradient(90deg, #EAB308, #FBBF24); border-radius: 3px;"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Column 2: International Silverstone Challenger Grid & Simulation -->
-          <div class="liquid-glass-card" style="padding: 26px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; border-bottom: 1px solid var(--border); padding-bottom: 12px;">
-              <div>
-                <h3 style="margin: 0; font-size: 1.2rem; color: #FFF; display: flex; align-items: center; gap: 8px;">
-                  🏆 Silverstone Challenger Grid
-                </h3>
-                <span style="font-size: 0.78rem; color: var(--text-dim);">Formula Student Benchmark Standings</span>
-              </div>
-              <span class="telemetry-chip" style="font-size: 0.72rem;">Live Benchmark</span>
-            </div>
-
-            <!-- Standings Table -->
-            <div style="overflow-x: auto;">
-              <table style="width: 100%; border-collapse: collapse; font-size: 0.82rem; text-align: left;">
-                <thead>
-                  <tr style="border-bottom: 1px solid var(--border); color: var(--text-dim);">
-                    <th style="padding: 6px 8px;">Pos</th>
-                    <th style="padding: 6px 8px;">Team / University</th>
-                    <th style="padding: 6px 8px;">Nation</th>
-                    <th style="padding: 6px 8px; text-align: right;">Target Pts</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
-                    <td style="padding: 10px 8px; font-weight: 800; color: #EAB308;">#1</td>
-                    <td style="padding: 10px 8px;"><strong style="color: #FFF;">TUM Motorsport</strong><br><span style="font-size: 0.72rem; color: var(--text-dim);">TU Munich</span></td>
-                    <td style="padding: 10px 8px;">🇩🇪 GER</td>
-                    <td style="padding: 10px 8px; text-align: right; font-weight: 700; color: #38BDF8;">892</td>
-                  </tr>
-                  <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
-                    <td style="padding: 10px 8px; font-weight: 800; color: #E2E8F0;">#2</td>
-                    <td style="padding: 10px 8px;"><strong style="color: #FFF;">Oxford Brookes Racing</strong><br><span style="font-size: 0.72rem; color: var(--text-dim);">Oxford Brookes Univ</span></td>
-                    <td style="padding: 10px 8px;">🇬🇧 GBR</td>
-                    <td style="padding: 10px 8px; text-align: right; font-weight: 700; color: #38BDF8;">864</td>
-                  </tr>
-                  <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
-                    <td style="padding: 10px 8px; font-weight: 800; color: #CD7F32;">#3</td>
-                    <td style="padding: 10px 8px;"><strong style="color: #FFF;">Monash Motorsport</strong><br><span style="font-size: 0.72rem; color: var(--text-dim);">Monash University</span></td>
-                    <td style="padding: 10px 8px;">🇦🇺 AUS</td>
-                    <td style="padding: 10px 8px; text-align: right; font-weight: 700; color: #38BDF8;">845</td>
-                  </tr>
-                  <!-- Velox Racing Highlight Row -->
-                  <tr style="background: rgba(197, 34, 31, 0.14); border: 1px solid rgba(197, 34, 31, 0.4); border-radius: 6px;">
-                    <td style="padding: 10px 8px; font-weight: 900; color: #E10600;">★ #4</td>
-                    <td style="padding: 10px 8px;">
-                      <strong style="color: #FFF;">VELOX RACING</strong>
-                      <span class="portal-role-pill" style="font-size: 0.65rem; background: var(--red); color: #FFF; padding: 1px 6px; margin-left: 4px;">CHALLENGER</span>
-                      <br><span style="font-size: 0.72rem; color: #E2E8F0;">Zagazig National Univ (ZNU)</span>
-                    </td>
-                    <td style="padding: 10px 8px; font-weight: 700; color: #FFF;">🇪🇬 EGY</td>
-                    <td style="padding: 10px 8px; text-align: right; font-weight: 900; color: #22C55E;">810</td>
-                  </tr>
-                  <tr>
-                    <td style="padding: 10px 8px; font-weight: 700; color: var(--text-dim);">#5</td>
-                    <td style="padding: 10px 8px;"><strong style="color: #FFF;">Squadra Corse PoliTO</strong><br><span style="font-size: 0.72rem; color: var(--text-dim);">Politecnico di Torino</span></td>
-                    <td style="padding: 10px 8px;">🇮🇹 ITA</td>
-                    <td style="padding: 10px 8px; text-align: right; font-weight: 700; color: #38BDF8;">795</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            <!-- Engineering Readiness KPIs -->
-            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 16px; border-top: 1px solid var(--border); padding-top: 14px;">
-              <div style="background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 8px; padding: 10px;">
-                <div style="font-size: 0.7rem; color: var(--text-dim); text-transform: uppercase;">0-100 km/h Target</div>
-                <div style="font-size: 1.15rem; font-weight: 800; color: #22C55E; margin-top: 2px;">&lt; 3.80 s</div>
-              </div>
-              <div style="background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 8px; padding: 10px;">
-                <div style="font-size: 0.7rem; color: var(--text-dim); text-transform: uppercase;">Aero Downforce</div>
-                <div style="font-size: 1.15rem; font-weight: 800; color: #38BDF8; margin-top: 2px;">320 N @ 60 km/h</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
 
     <!-- Final Call to Action -->
     <section class="section" style="border-bottom: none;">
@@ -573,30 +349,7 @@
   </footer>
 
   <script>
-    // Live Silverstone 2026 Countdown
-    (function initSilverstoneCountdown() {
-      // Formula Student UK 2026 Silverstone Paddock Date: July 15, 2026 09:00:00 UTC
-      const targetDate = new Date('2026-07-15T09:00:00Z').getTime();
-      function updateClock() {
-        const now = Date.now();
-        const diff = Math.max(0, targetDate - now);
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        const secs = Math.floor((diff % (1000 * 60)) / 1000);
 
-        const dEl = document.getElementById('fsDays');
-        const hEl = document.getElementById('fsHours');
-        const mEl = document.getElementById('fsMins');
-        const sEl = document.getElementById('fsSecs');
-        if (dEl) dEl.textContent = String(days).padStart(2, '0');
-        if (hEl) hEl.textContent = String(hours).padStart(2, '0');
-        if (mEl) mEl.textContent = String(mins).padStart(2, '0');
-        if (sEl) sEl.textContent = String(secs).padStart(2, '0');
-      }
-      updateClock();
-      setInterval(updateClock, 1000);
-    })();
     // Minimal mobile navigation toggle
     const hamburgerBtn = document.getElementById('hamburgerBtn');
     const navMenu = document.getElementById('navMenu');

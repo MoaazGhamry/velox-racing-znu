@@ -574,49 +574,84 @@
       submitBtn.textContent = isAr ? 'جاري إرسال الطلب...' : 'Submitting Application...';
 
       try {
-        // Initialize Supabase client
         const cfg = window.VELOX_CONFIG || {};
-        // Generate local tracking ID and timestamp
-        applicationData.id = 'APP-' + Math.random().toString(36).substring(2, 9).toUpperCase();
-        applicationData.created_at = new Date().toISOString();
-
-        // Always save to local applications storage for instant visibility in Portal & HR
-        const existingApps = JSON.parse(localStorage.getItem('velox_mock_applications') || '[]');
-        if (existingApps.some(app => (app.email || '').toLowerCase() === email.toLowerCase())) {
-          showError(isAr ? 'تم تسجيل طلب انضمام بهذا البريد الإلكتروني مسبقاً.' : 'An application with this email address has already been submitted. If you need to make changes, please contact HR at velox.racing.znu@gmail.com.');
-          submitBtn.disabled = false;
-          submitBtn.textContent = isAr ? 'إرسال طلب الانضمام' : 'Submit Application';
-          return;
-        }
-
-        existingApps.unshift(applicationData);
-        localStorage.setItem('velox_mock_applications', JSON.stringify(existingApps));
-
-        // Try syncing to live Supabase cloud database
         const isSupabaseConfigured = cfg.url && cfg.anonKey && !cfg.url.includes('your-project-id');
+
+        // Cloud payload - strictly clean without client 'APP-' id so Postgres generates UUID and timestamp
+        const cloudPayload = { ...applicationData };
+
+        let cloudSubmitted = false;
+        let generatedId = null;
+        let generatedCreatedAt = new Date().toISOString();
 
         if (isSupabaseConfigured && window.supabase) {
           try {
             const client = window.supabase.createClient(cfg.url, cfg.anonKey);
-            const { data, error } = await client.from('applications').insert([applicationData]);
+            const { data, error } = await client.from('applications').insert([cloudPayload]).select();
+
             if (error) {
-              console.warn('Supabase remote sync notice:', error.message);
-              // If error is unique constraint, notify user
+              console.warn('Supabase remote sync response:', error);
+              // Handle PostgreSQL unique constraint (23505)
               if (error.code === '23505' || (error.message && error.message.toLowerCase().includes('unique'))) {
-                showError(isAr ? 'تم تسجيل طلب انضمام بهذا البريد الإلكتروني مسبقاً.' : 'An application with this email address has already been submitted.');
+                showError(isAr 
+                  ? 'تم استلام طلب انضمام بهذا البريد الإلكتروني مسبقاً في قاعدة بيانات الفريق. إذا كنت بحاجة إلى أي تعديل، يرجى التواصل مع مسؤول الموارد البشرية على velox.racing.znu@gmail.com.' 
+                  : 'An application with this email address has already been submitted to our database. If you need to make changes, please contact HR at velox.racing.znu@gmail.com.');
                 submitBtn.disabled = false;
                 submitBtn.textContent = isAr ? 'إرسال طلب الانضمام' : 'Submit Application';
                 return;
               }
-            } else if (data && data[0] && data[0].id) {
-              // Update local id to Supabase UUID
-              applicationData.id = data[0].id;
-              localStorage.setItem('velox_mock_applications', JSON.stringify(existingApps));
+
+              // Handle RLS policy or permission restriction (42501)
+              if (error.code === '42501' || (error.message && error.message.toLowerCase().includes('policy'))) {
+                console.error('Supabase RLS Policy restriction detected on public.applications.');
+                showError(isAr
+                  ? 'تنبيه: تعذر إرسال الطلب إلى السحابة بسبب قيود صلاحيات قاعدة البيانات (RLS). يرجى إبلاغ مسؤول الموارد البشرية لتحديث إعدادات الصلاحيات في Supabase.'
+                  : 'Notice: Could not sync application to cloud database due to database permissions (RLS policy). Please notify HR to enable public insert in Supabase.');
+                submitBtn.disabled = false;
+                submitBtn.textContent = isAr ? 'إرسال طلب الانضمام' : 'Submit Application';
+                return;
+              }
+
+              // Any other database error:
+              showError(isAr
+                ? `خطأ أثناء إرسال الطلب: ${error.message || 'تعذر الاتصال بقاعدة البيانات'}`
+                : `Error submitting application: ${error.message || 'Unable to connect to database'}`);
+              submitBtn.disabled = false;
+              submitBtn.textContent = isAr ? 'إرسال طلب الانضمام' : 'Submit Application';
+              return;
+
+            } else {
+              cloudSubmitted = true;
+              if (data && data[0] && data[0].id) {
+                generatedId = data[0].id;
+                if (data[0].created_at) generatedCreatedAt = data[0].created_at;
+              }
             }
           } catch (cloudErr) {
-            console.warn('Cloud connection offline; saved securely in local pipeline.', cloudErr);
+            console.error('Cloud connection exception:', cloudErr);
+            showError(isAr 
+              ? 'تعذر الاتصال بخادم التوظيف. يرجى التحقق من اتصال الإنترنت والمحاولة مرة أخرى.' 
+              : 'Could not connect to the recruitment server. Please check your internet connection and try again.');
+            submitBtn.disabled = false;
+            submitBtn.textContent = isAr ? 'إرسال طلب الانضمام' : 'Submit Application';
+            return;
           }
         }
+
+        // Assign ID (from Supabase UUID or browser UUID)
+        applicationData.id = generatedId || (typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : ('APP-' + Math.random().toString(36).substring(2, 9).toUpperCase()));
+        applicationData.created_at = generatedCreatedAt;
+        applicationData.synced = cloudSubmitted;
+
+        // Save or update in local applications storage
+        const existingApps = JSON.parse(localStorage.getItem('velox_mock_applications') || '[]');
+        const existingIdx = existingApps.findIndex(app => (app.email || '').toLowerCase() === email.toLowerCase());
+        if (existingIdx !== -1) {
+          existingApps[existingIdx] = applicationData;
+        } else {
+          existingApps.unshift(applicationData);
+        }
+        localStorage.setItem('velox_mock_applications', JSON.stringify(existingApps));
 
         // Set cooldown timestamp
         localStorage.setItem('velox_last_submit_ts', Date.now().toString());
@@ -635,6 +670,59 @@
       }
     });
 
+    // Automatic Background Sync for any previously unsynced local applications
+    async function autoSyncUnsyncedApplications() {
+      const cfg = window.VELOX_CONFIG || {};
+      const isSupabaseConfigured = cfg.url && cfg.anonKey && !cfg.url.includes('your-project-id');
+      if (!isSupabaseConfigured || !window.supabase) return;
+
+      const existingApps = JSON.parse(localStorage.getItem('velox_mock_applications') || '[]');
+      const unsynced = existingApps.filter(a => a && !a.synced && a.email && a.full_name);
+      if (unsynced.length === 0) return;
+
+      try {
+        const client = window.supabase.createClient(cfg.url, cfg.anonKey);
+        let updatedCount = 0;
+
+        for (const app of unsynced) {
+          const cloudPayload = {
+            full_name: app.full_name,
+            email: app.email,
+            phone: app.phone || 'N/A',
+            university_id: app.university_id || 'N/A',
+            faculty: app.faculty || 'Engineering',
+            academic_year: app.academic_year || 'Third Year',
+            subteam_first: app.subteam_first || 'Aerodynamics',
+            subteam_second: app.subteam_second || 'Chassis & Suspension',
+            time_commitment: app.time_commitment || '5 to 10 hours',
+            skills: app.skills || '',
+            why_join: app.why_join || 'Direct Application',
+            portfolio_url: app.portfolio_url || null,
+            status: app.status || 'New',
+            hr_notes: app.hr_notes || ''
+          };
+
+          const { data, error } = await client.from('applications').insert([cloudPayload]).select();
+          if (!error && data && data[0]) {
+            app.synced = true;
+            app.id = data[0].id;
+            if (data[0].created_at) app.created_at = data[0].created_at;
+            updatedCount++;
+          } else if (error && (error.code === '23505' || (error.message && error.message.toLowerCase().includes('unique')))) {
+            app.synced = true;
+            updatedCount++;
+          }
+        }
+
+        if (updatedCount > 0) {
+          localStorage.setItem('velox_mock_applications', JSON.stringify(existingApps));
+          console.info(`Auto-synced ${updatedCount} application(s) to Supabase cloud.`);
+        }
+      } catch (e) {
+        console.warn('Auto-sync background check:', e);
+      }
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
       initSubteamOptions();
       const select1 = document.getElementById('subteamFirst');
@@ -646,6 +734,7 @@
       updateAcademicYearOptions();
       checkRecruitmentStatus();
       initThemeAndLang();
+      autoSyncUnsyncedApplications();
     });
 
     function initThemeAndLang() {
