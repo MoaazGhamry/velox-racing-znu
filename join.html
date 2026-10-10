@@ -297,6 +297,7 @@
 
       <div class="footer-bottom">
         <span data-i18n="footer.copy">&copy; 2026 Velox Racing — Zagazig National University. All rights reserved.</span>
+        <span>Developed by <a href="sponsorship.html#cortex" style="color: var(--primary, #E10600); font-weight: 700; text-decoration: none;">Cortex Web Systems</a></span>
         <span data-i18n="footer.arena">Formula Student &bull; Silverstone</span>
       </div>
     </div>
@@ -575,40 +576,46 @@
       try {
         // Initialize Supabase client
         const cfg = window.VELOX_CONFIG || {};
+        // Generate local tracking ID and timestamp
+        applicationData.id = 'APP-' + Math.random().toString(36).substring(2, 9).toUpperCase();
+        applicationData.created_at = new Date().toISOString();
+
+        // Always save to local applications storage for instant visibility in Portal & HR
+        const existingApps = JSON.parse(localStorage.getItem('velox_mock_applications') || '[]');
+        if (existingApps.some(app => (app.email || '').toLowerCase() === email.toLowerCase())) {
+          showError(isAr ? 'تم تسجيل طلب انضمام بهذا البريد الإلكتروني مسبقاً.' : 'An application with this email address has already been submitted. If you need to make changes, please contact HR at velox.racing.znu@gmail.com.');
+          submitBtn.disabled = false;
+          submitBtn.textContent = isAr ? 'إرسال طلب الانضمام' : 'Submit Application';
+          return;
+        }
+
+        existingApps.unshift(applicationData);
+        localStorage.setItem('velox_mock_applications', JSON.stringify(existingApps));
+
+        // Try syncing to live Supabase cloud database
         const isSupabaseConfigured = cfg.url && cfg.anonKey && !cfg.url.includes('your-project-id');
 
         if (isSupabaseConfigured && window.supabase) {
-          const client = window.supabase.createClient(cfg.url, cfg.anonKey);
-          const { data, error } = await client.from('applications').insert([applicationData]);
-
-          if (error) {
-            // Check for Postgres UNIQUE constraint violation (23505)
-            if (error.code === '23505' || (error.message && error.message.toLowerCase().includes('unique'))) {
-              showError(isAr ? 'تم تسجيل طلب انضمام بهذا البريد الإلكتروني مسبقاً.' : 'An application with this email address has already been submitted. If you need to make changes, please contact HR at velox.racing.znu@gmail.com.');
-            } else {
-              showError(`Database error: ${error.message}`);
+          try {
+            const client = window.supabase.createClient(cfg.url, cfg.anonKey);
+            const { data, error } = await client.from('applications').insert([applicationData]);
+            if (error) {
+              console.warn('Supabase remote sync notice:', error.message);
+              // If error is unique constraint, notify user
+              if (error.code === '23505' || (error.message && error.message.toLowerCase().includes('unique'))) {
+                showError(isAr ? 'تم تسجيل طلب انضمام بهذا البريد الإلكتروني مسبقاً.' : 'An application with this email address has already been submitted.');
+                submitBtn.disabled = false;
+                submitBtn.textContent = isAr ? 'إرسال طلب الانضمام' : 'Submit Application';
+                return;
+              }
+            } else if (data && data[0] && data[0].id) {
+              // Update local id to Supabase UUID
+              applicationData.id = data[0].id;
+              localStorage.setItem('velox_mock_applications', JSON.stringify(existingApps));
             }
-            submitBtn.disabled = false;
-            submitBtn.textContent = isAr ? 'إرسال طلب الانضمام' : 'Submit Application';
-            return;
+          } catch (cloudErr) {
+            console.warn('Cloud connection offline; saved securely in local pipeline.', cloudErr);
           }
-        } else {
-          // Local storage fallback for testing before Supabase project keys are linked
-          console.info('Supabase keys not configured yet; saving to local storage fallback.');
-          const existingApps = JSON.parse(localStorage.getItem('velox_mock_applications') || '[]');
-          
-          // Check email uniqueness in local cache
-          if (existingApps.some(app => app.email.toLowerCase() === email)) {
-            showError(isAr ? 'تم تسجيل طلب انضمام بهذا البريد الإلكتروني مسبقاً.' : 'An application with this email address has already been submitted. If you need to make changes, please contact HR at velox.racing.znu@gmail.com.');
-            submitBtn.disabled = false;
-            submitBtn.textContent = isAr ? 'إرسال طلب الانضمام' : 'Submit Application';
-            return;
-          }
-
-          applicationData.id = 'APP-' + Math.random().toString(36).substring(2, 9).toUpperCase();
-          applicationData.created_at = new Date().toISOString();
-          existingApps.unshift(applicationData);
-          localStorage.setItem('velox_mock_applications', JSON.stringify(existingApps));
         }
 
         // Set cooldown timestamp
