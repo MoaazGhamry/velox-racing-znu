@@ -607,23 +607,32 @@
 
       // Merge cloud + local applications without duplicating
       const map = new Map();
-      [...cloudApps, ...localApps].forEach(app => {
+
+      // Cloud applications from Supabase are sovereign real records: ALWAYS preserve and display
+      cloudApps.forEach(app => {
         if (!app) return;
-        const key = (app.email ? app.email.toLowerCase() : String(app.id || '')).trim();
+        const id = String(app.id || '');
+        if (id === 'APP-001' || id === 'APP-002' || id === 'APP-003') return;
+        const key = (app.email ? app.email.toLowerCase() : id).trim();
         if (!map.has(key)) {
           map.set(key, app);
         }
       });
 
-      // Filter out permanently deleted applications and legacy test seeds
-      applications = Array.from(map.values()).filter(app => {
-        if (!app) return false;
+      // Local storage applications: merge if not already present or blacklisted
+      localApps.forEach(app => {
+        if (!app) return;
         const id = String(app.id || '');
         const email = String(app.email || '').toLowerCase();
-        if (deletedIds.includes(id) || deletedIds.includes(email)) return false;
-        if (id === 'APP-001' || id === 'APP-002' || id === 'APP-003') return false;
-        return true;
+        if (deletedIds.includes(id) || deletedIds.includes(email)) return;
+        if (id === 'APP-001' || id === 'APP-002' || id === 'APP-003') return;
+        const key = (app.email ? app.email.toLowerCase() : id).trim();
+        if (!map.has(key)) {
+          map.set(key, app);
+        }
       });
+
+      applications = Array.from(map.values());
 
       // Update cached applications in local storage
       localStorage.setItem('velox_mock_applications', JSON.stringify(applications));

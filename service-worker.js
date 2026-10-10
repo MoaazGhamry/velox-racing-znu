@@ -3,7 +3,7 @@
  * Network-First Strategy + Total Cache Buster
  */
 
-const CACHE_NAME = 'velox-clean-v3.9';
+const CACHE_NAME = 'velox-clean-v4.1';
 const PRECACHE_ASSETS = [
   '/',
   '/index.html',
