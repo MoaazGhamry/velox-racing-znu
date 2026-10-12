@@ -4734,7 +4734,7 @@
       }).join('');
     }
 
-    function deleteInvitation(code) {
+    async function deleteInvitation(code) {
       const db = getPortalDb();
       const p = getActivePersona();
 
@@ -4748,7 +4748,46 @@
 
       if (!confirm(`Are you sure you want to delete invitation pass ${code} for ${name}?`)) return;
 
+      const normName = inv && inv.inviteeName ? inv.inviteeName.trim().toLowerCase() : '';
+
+      // 1. Remove invitation
       db.invitations = (db.invitations || []).filter(i => i.code !== code);
+
+      // 2. If this invitation had an invitee who was on roster, remove them completely
+      if (normName) {
+        db.membersRoster = (db.membersRoster || []).filter(m => !m.name || m.name.trim().toLowerCase() !== normName);
+        if (db.accounts) {
+          db.accounts = db.accounts.filter(a => !a.name || a.name.trim().toLowerCase() !== normName);
+        }
+        if (db.personas) {
+          for (const k in db.personas) {
+            if (db.personas[k] && db.personas[k].name && db.personas[k].name.trim().toLowerCase() === normName) {
+              delete db.personas[k];
+            }
+          }
+        }
+        if (!Array.isArray(db.removedMembers)) db.removedMembers = [];
+        if (!db.removedMembers.some(r => (typeof r === 'string' ? r.toLowerCase() : (r.name || '').toLowerCase()) === normName)) {
+          db.removedMembers.push({
+            name: inv.inviteeName.trim(),
+            removedAt: new Date().toISOString(),
+            removedBy: p.name
+          });
+        }
+
+        // Supabase update
+        try {
+          const cfg = window.VELOX_CONFIG || {};
+          if (cfg.url && cfg.anonKey && !cfg.url.includes('your-project-id') && window.supabase) {
+            const client = window.supabase.createClient(cfg.url, cfg.anonKey);
+            await client
+              .from('applications')
+              .update({ status: 'Rejected', hr_notes: `Invitation pass deleted by ${p.name}` })
+              .ilike('full_name', inv.inviteeName.trim());
+          }
+        } catch (e) {}
+      }
+
       logAuditEvent(`INVITATION: Invitation ${code} for ${name} deleted by ${p.name}.`);
 
       addNotification({
@@ -4761,9 +4800,12 @@
 
       savePortalDb(db);
       renderInvitationsTable();
+      renderStructure();
+      renderAdminDashboard();
+      renderCompetition();
       const passContainer = document.getElementById('invitationPassContainer');
       if (passContainer) passContainer.innerHTML = '';
-      alert(`Invitation pass ${code} successfully deleted.`);
+      alert(`Invitation pass ${code} successfully deleted and revoked.`);
     }
 
     function copyInvitationLink(serial) {
@@ -5858,10 +5900,10 @@
       openPortalModal('resetPasswordModal');
     }
 
-    function deleteMember(memberId) {
+    async function deleteMember(memberId) {
       const db = getPortalDb();
       const p = getActivePersona();
-      const target = db.membersRoster.find(m => m.id === memberId);
+      const target = db.membersRoster.find(m => m.id === memberId || (m.name && m.name.toLowerCase() === memberId.toLowerCase()));
       if (!target) return;
 
       if (!canManageMember(p, target)) {
@@ -5869,11 +5911,87 @@
         return;
       }
 
-      if (!confirm(`Are you sure you want to remove ${target.name} from the active roster?`)) return;
+      if (!confirm(`Are you sure you want to remove ${target.name} from the active team structure and revoke their credentials?`)) return;
 
-      const name = target.name;
-      db.membersRoster = db.membersRoster.filter(m => m.id !== memberId);
-      logAuditEvent(`GOVERNANCE: Member ${name} removed from active roster by ${p.name}.`);
+      const name = target.name.trim();
+      const normName = name.toLowerCase();
+      const targetUsername = (target.username || '').toLowerCase();
+      const targetId = target.id;
+
+      // 1. Remove from membersRoster
+      db.membersRoster = (db.membersRoster || []).filter(m => 
+        m.id !== targetId && 
+        (!m.name || m.name.trim().toLowerCase() !== normName) &&
+        (!targetUsername || !m.username || m.username.toLowerCase() !== targetUsername)
+      );
+
+      // 2. Remove or Revoke matching invitations
+      if (Array.isArray(db.invitations)) {
+        db.invitations = db.invitations.filter(inv => {
+          const invName = (inv.inviteeName || '').trim().toLowerCase();
+          return invName !== normName;
+        });
+      }
+
+      // 3. Remove linked account
+      if (Array.isArray(db.accounts)) {
+        db.accounts = db.accounts.filter(a => 
+          a.personaKey !== targetId &&
+          (!targetUsername || !a.username || a.username.toLowerCase() !== targetUsername) &&
+          (!a.name || a.name.trim().toLowerCase() !== normName)
+        );
+      }
+
+      // 4. Remove linked persona
+      if (db.personas) {
+        for (const k in db.personas) {
+          const per = db.personas[k];
+          if (per && (per.id === targetId || (per.name && per.name.trim().toLowerCase() === normName))) {
+            delete db.personas[k];
+          }
+        }
+      }
+
+      // 5. Add to removedMembers registry in db
+      if (!Array.isArray(db.removedMembers)) db.removedMembers = [];
+      if (!db.removedMembers.some(r => (typeof r === 'string' ? r.toLowerCase() : (r.name || '').toLowerCase()) === normName)) {
+        db.removedMembers.push({
+          id: targetId,
+          name: name,
+          username: targetUsername,
+          removedAt: new Date().toISOString(),
+          removedBy: p.name
+        });
+      }
+
+      // 6. Update local mock applications
+      try {
+        const mockApps = JSON.parse(localStorage.getItem('velox_mock_applications') || '[]');
+        const updatedApps = mockApps.map(app => {
+          if ((app.full_name && app.full_name.trim().toLowerCase() === normName) ||
+              (targetUsername && app.email && app.email.toLowerCase().startsWith(targetUsername))) {
+            return { ...app, status: 'Rejected', hr_notes: `Removed from team structure by ${p.name}` };
+          }
+          return app;
+        });
+        localStorage.setItem('velox_mock_applications', JSON.stringify(updatedApps));
+      } catch (e) {}
+
+      // 7. Update Supabase Cloud Database: set status = 'Rejected' so it will never be returned as 'Accepted'
+      try {
+        const cfg = window.VELOX_CONFIG || {};
+        if (cfg.url && cfg.anonKey && !cfg.url.includes('your-project-id') && window.supabase) {
+          const client = window.supabase.createClient(cfg.url, cfg.anonKey);
+          await client
+            .from('applications')
+            .update({ status: 'Rejected', hr_notes: `Removed from team structure by ${p.name}` })
+            .ilike('full_name', name);
+        }
+      } catch (cloudErr) {
+        console.warn('Cloud sync update on member removal:', cloudErr);
+      }
+
+      logAuditEvent(`GOVERNANCE: Member ${name} removed from active team structure and roster by ${p.name}.`);
 
       if (!isTeamLeader(p)) {
         addNotification({
@@ -5889,7 +6007,8 @@
       renderStructure();
       renderAdminDashboard();
       renderCompetition();
-      alert(`Member ${name} successfully removed from the active roster.`);
+      renderInvitationsTable();
+      alert(`Member ${name} successfully removed from the team structure and active roster.`);
     }
 
     // ==================== FORM SUBMISSIONS & EVENT LISTENERS ====================

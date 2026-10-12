@@ -257,6 +257,15 @@ function getDynamicTeamData() {
   const seenIds = new Set();
   const seenNames = new Set();
 
+  // Collect set of removed member names/ids to ALWAYS filter out
+  const removedNames = new Set();
+  if (Array.isArray(portalDb.removedMembers)) {
+    portalDb.removedMembers.forEach(r => {
+      const n = (typeof r === 'string' ? r : (r.name || r.id || '')).trim().toLowerCase();
+      if (n) removedNames.add(n);
+    });
+  }
+
   if (Array.isArray(portalDb.membersRoster)) {
     portalDb.membersRoster.forEach(m => {
       if (!m || !m.name) return;
@@ -267,6 +276,9 @@ function getDynamicTeamData() {
       if (['admin-director', 'fatima-salman', 'karim-shaprawy', 'mohamed-romy', 'moaaz-elghamry', 'mohamed-hassan'].includes(m.id)) {
         return;
       }
+
+      // Check if member is marked removed or suspended
+      if (removedNames.has(normName) || m.status === 'Suspended' || m.status === 'Removed') return;
       if (seenNames.has(normName)) return;
 
       let avatar = m.avatar || '';
@@ -296,12 +308,23 @@ function getDynamicTeamData() {
     });
   }
 
+  // Only ingest accepted invitations if the member is still active in membersRoster!
+  // If membersRoster exists and is non-empty, someone NOT in membersRoster was removed by admin!
   if (Array.isArray(portalDb.invitations)) {
     portalDb.invitations.filter(inv => inv.status === 'Accepted').forEach(inv => {
       if (!inv || !inv.inviteeName) return;
       const cleanName = inv.inviteeName.trim();
       const normName = cleanName.toLowerCase();
       if (!normName) return;
+
+      if (removedNames.has(normName)) return;
+
+      // If membersRoster exists and has members, verify that this invited member is still present in membersRoster!
+      if (Array.isArray(portalDb.membersRoster) && portalDb.membersRoster.length > 0) {
+        const stillInRoster = portalDb.membersRoster.some(m => m && m.name && m.name.trim().toLowerCase() === normName && m.status !== 'Suspended' && m.status !== 'Removed');
+        if (!stillInRoster) return;
+      }
+
       // If already recorded from membersRoster or earlier invitation, skip
       if (seenNames.has(normName)) return;
 
@@ -499,12 +522,27 @@ async function syncCloudAcceptedMembers() {
     } catch (e) {}
     if (!db.membersRoster) db.membersRoster = [];
 
+    const removedNames = new Set();
+    if (Array.isArray(db.removedMembers)) {
+      db.removedMembers.forEach(r => {
+        const n = (typeof r === 'string' ? r : (r.name || r.id || '')).trim().toLowerCase();
+        if (n) removedNames.add(n);
+      });
+    }
+
+    // Clean out any removed members currently sitting in membersRoster
+    if (db.membersRoster) {
+      db.membersRoster = db.membersRoster.filter(m => !m || !m.name || !removedNames.has(m.name.trim().toLowerCase()));
+    }
+
     let updated = false;
     data.forEach(app => {
       if (!app || !app.full_name) return;
       const cleanName = app.full_name.trim();
       const normName = cleanName.toLowerCase();
       if (!normName) return;
+
+      if (removedNames.has(normName)) return;
 
       const parsed = parseDeptAndSubteam(app.subteam_first);
       const memberId = 'mem-' + normName.replace(/[^a-z0-9]/g, '-');
