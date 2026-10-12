@@ -488,7 +488,7 @@ async function syncCloudAcceptedMembers() {
     const client = window.supabase.createClient(cfg.url, cfg.anonKey);
     const { data, error } = await client
       .from('applications')
-      .select('id, full_name, email, subteam_first, subteam_second, status')
+      .select('id, full_name, email, subteam_first, subteam_second, status, hr_notes, why_join')
       .eq('status', 'Accepted');
 
     if (error || !Array.isArray(data) || data.length === 0) return;
@@ -513,23 +513,47 @@ async function syncCloudAcceptedMembers() {
         (m.name && m.name.trim().toLowerCase() === normName) || m.id === memberId
       );
 
+      const existingRosterItem = existingIdx !== -1 ? db.membersRoster[existingIdx] : null;
+      let assignedRole = (existingRosterItem && existingRosterItem.role && existingRosterItem.role !== 'Team Member') 
+        ? existingRosterItem.role 
+        : 'Team Member';
+      let assignedRoleType = (existingRosterItem && existingRosterItem.roleType) ? existingRosterItem.roleType : '';
+
+      // Check if app was a direct invitation with an appointed role in hr_notes / subteam_second / why_join
+      const noteBlob = `${app.hr_notes || ''} ${app.subteam_second || ''} ${app.why_join || ''}`;
+      const roleMatch = noteBlob.match(/Role:\s*([^\n|•,]+)/i);
+      if (roleMatch && roleMatch[1]) {
+        assignedRole = roleMatch[1].trim();
+      }
+
+      if (!assignedRoleType) {
+        const lowerR = assignedRole.toLowerCase();
+        if (lowerR.includes('department leader')) assignedRoleType = 'dept_lead';
+        else if (lowerR.includes('leader')) assignedRoleType = 'subteam_lead';
+        else assignedRoleType = 'member';
+      }
+
       const entry = {
         id: memberId,
         name: cleanName,
-        role: 'Team Member',
-        roleType: 'member',
+        role: assignedRole,
+        roleType: assignedRoleType,
         branch: parsed.branch,
         dept: parsed.dept,
         subteam: parsed.subteam,
         username: (app.email ? app.email.split('@')[0] : normName).replace(/[^a-z0-9]/g, ''),
-        points: 0,
+        points: (existingRosterItem && existingRosterItem.points) || 0,
         status: 'Active',
-        avatar: ''
+        avatar: (existingRosterItem && existingRosterItem.avatar) || ''
       };
 
       if (existingIdx !== -1) {
-        if (db.membersRoster[existingIdx].avatar) entry.avatar = db.membersRoster[existingIdx].avatar;
-        db.membersRoster[existingIdx] = { ...db.membersRoster[existingIdx], ...entry };
+        db.membersRoster[existingIdx] = { 
+          ...existingRosterItem, 
+          ...entry,
+          role: (existingRosterItem.role && existingRosterItem.role !== 'Team Member') ? existingRosterItem.role : entry.role,
+          roleType: existingRosterItem.roleType || entry.roleType
+        };
       } else {
         db.membersRoster.push(entry);
         updated = true;

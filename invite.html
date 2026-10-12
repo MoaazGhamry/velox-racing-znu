@@ -3,12 +3,22 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Official Team Invitation — Velox Racing | ZNU Formula Student</title>
-  <meta name="description" content="Official credentials invitation to join Velox Racing Formula Student Team at Zagazig National University." />
+  <title>Official Team Invitation &amp; Onboarding — Velox Racing | ZNU Formula Student</title>
+  <meta name="description" content="Official credentials invitation and team enlistment pass for Velox Racing Formula Student Team at Zagazig National University." />
   <link rel="icon" type="image/png" href="pwa-icon-192.png" />
 
-  <!-- Shared Design Tokens & Typography -->
+  <!-- Preconnect to Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700;800;900&display=swap" />
+
+  <!-- Shared Design Tokens & Styles -->
   <link rel="stylesheet" href="style.css?v=4.0" />
+
+  <!-- Supabase JS Client & Config -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="team.js?v=4.0"></script>
 
   <style>
     body {
@@ -19,22 +29,22 @@
       align-items: center;
       justify-content: center;
       padding: 30px 16px;
-      color: var(--text-main);
-      font-family: var(--font-main);
+      color: var(--text-main, #FFFFFF);
+      font-family: var(--font-main, 'Inter', -apple-system, sans-serif);
     }
 
     .invite-container {
       width: 100%;
-      max-width: 680px;
+      max-width: 720px;
       position: relative;
     }
 
     .invite-card {
-      background: rgba(13, 15, 20, 0.94);
+      background: rgba(13, 15, 20, 0.95);
       border: 1px solid rgba(197, 34, 31, 0.4);
       border-radius: 20px;
       padding: 36px 32px;
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.75), 0 0 35px rgba(197, 34, 31, 0.18);
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 35px rgba(197, 34, 31, 0.18);
       backdrop-filter: blur(16px);
       position: relative;
       overflow: hidden;
@@ -47,7 +57,7 @@
       left: 0;
       right: 0;
       height: 3px;
-      background: linear-gradient(90deg, transparent, var(--red), transparent);
+      background: linear-gradient(90deg, transparent, var(--red, #E10600), transparent);
     }
 
     .invite-header {
@@ -67,7 +77,7 @@
     }
 
     .invite-brand img {
-      width: 38px;
+      width: 40px;
       height: auto;
       filter: drop-shadow(0 0 8px rgba(197, 34, 31, 0.6));
     }
@@ -83,13 +93,13 @@
 
     .invite-brand-sub {
       font-size: 0.74rem;
-      color: var(--text-dim);
+      color: var(--text-dim, #94A3B8);
       margin: 0;
     }
 
     .invite-serial {
       font-family: monospace;
-      font-size: 0.8rem;
+      font-size: 0.82rem;
       font-weight: 700;
       color: #EAB308;
       background: rgba(234, 179, 8, 0.1);
@@ -101,20 +111,20 @@
 
     .invite-body {
       text-align: center;
-      padding: 32px 0 20px 0;
+      padding: 30px 0 10px 0;
     }
 
     .invite-kicker {
       font-size: 0.76rem;
       font-weight: 900;
       letter-spacing: 2px;
-      color: var(--red);
+      color: var(--red, #E10600);
       text-transform: uppercase;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
 
     .invite-name {
-      font-size: 2.4rem;
+      font-size: 2.3rem;
       font-weight: 900;
       color: #FFFFFF;
       letter-spacing: 0.5px;
@@ -126,9 +136,10 @@
     .invite-quote {
       font-style: italic;
       font-size: 0.92rem;
-      color: var(--text-muted);
-      margin: 0 auto 28px auto;
-      max-width: 520px;
+      color: var(--text-muted, #CBD5E1);
+      margin: 0 auto 26px auto;
+      max-width: 540px;
+      line-height: 1.5;
     }
 
     .invite-grid {
@@ -140,13 +151,14 @@
       grid-template-columns: repeat(2, 1fr);
       gap: 18px 24px;
       text-align: left;
-      margin-bottom: 28px;
+      margin-bottom: 26px;
     }
 
-    @media (max-width: 560px) {
+    @media (max-width: 580px) {
       .invite-grid {
         grid-template-columns: 1fr;
         padding: 18px 16px;
+        gap: 14px;
       }
       .invite-card {
         padding: 26px 18px;
@@ -160,7 +172,7 @@
       font-size: 0.72rem;
       font-weight: 700;
       letter-spacing: 1px;
-      color: var(--text-dim);
+      color: var(--text-dim, #94A3B8);
       text-transform: uppercase;
       margin-bottom: 4px;
     }
@@ -169,37 +181,6 @@
       font-size: 0.96rem;
       font-weight: 700;
       color: #FFFFFF;
-    }
-
-    .invite-status-ready {
-      color: #22C55E;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .invite-status-ready::before {
-      content: '';
-      display: inline-block;
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: #22C55E;
-      box-shadow: 0 0 10px #22C55E;
-    }
-
-    .invite-status-claimed {
-      color: #38BDF8;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .invite-status-claimed::before {
-      content: '';
-      display: inline-block;
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: #38BDF8;
     }
 
     .invite-actions {
@@ -213,32 +194,213 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding-top: 24px;
+      padding-top: 22px;
       margin-top: 24px;
       border-top: 1px solid rgba(255, 255, 255, 0.08);
       font-size: 0.76rem;
-      color: var(--text-dim);
+      color: var(--text-dim, #94A3B8);
       flex-wrap: wrap;
       gap: 8px;
     }
 
-    /* Modal / Onboarding Form */
+    /* ========================================================
+       Onboarding & Profile Registration Form (Full Specification)
+       ======================================================== */
     .onboarding-box {
-      margin-top: 20px;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 20px;
+      margin-top: 24px;
+      background: rgba(18, 22, 32, 0.95);
+      border: 1px solid rgba(197, 34, 31, 0.45);
+      border-radius: 16px;
+      padding: 28px 24px;
       display: none;
       text-align: left;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8), 0 0 25px rgba(197, 34, 31, 0.15);
     }
     .onboarding-box.active {
       display: block;
-      animation: fadeIn 0.3s ease;
+      animation: fadeIn 0.35s ease;
     }
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-8px); }
+      from { opacity: 0; transform: translateY(-10px); }
       to { opacity: 1; transform: translateY(0); }
+    }
+
+    .form-header-badge {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(197, 34, 31, 0.12);
+      border: 1px solid rgba(197, 34, 31, 0.35);
+      border-radius: 10px;
+      padding: 12px 16px;
+      margin-bottom: 22px;
+    }
+    .form-header-badge-icon {
+      font-size: 1.4rem;
+      color: var(--red, #E10600);
+      flex-shrink: 0;
+    }
+    .form-header-badge-content {
+      font-size: 0.85rem;
+      color: #FFFFFF;
+      line-height: 1.4;
+    }
+
+    .form-section-title {
+      font-size: 0.84rem;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--red, #E10600);
+      margin: 22px 0 12px 0;
+      padding-bottom: 6px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+    @media (max-width: 600px) {
+      .form-row {
+        flex-direction: column;
+        gap: 0;
+      }
+    }
+
+    .form-group {
+      flex: 1;
+      margin-bottom: 14px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-dim, #94A3B8);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .form-group .req {
+      color: var(--red, #E10600);
+      margin-left: 3px;
+    }
+
+    .form-control {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 10px 14px;
+      background: #0A0D14;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 8px;
+      color: #FFFFFF;
+      font-size: 0.9rem;
+      font-family: inherit;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .form-control:focus {
+      outline: none;
+      border-color: var(--red, #E10600);
+      box-shadow: 0 0 0 2px rgba(197, 34, 31, 0.3);
+    }
+    .form-control::placeholder {
+      color: rgba(255, 255, 255, 0.3);
+    }
+
+    /* Radio pills for time commitment */
+    .radio-group {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .radio-pill {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      background: #0A0D14;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 8px;
+      color: var(--text-muted, #CBD5E1);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .radio-pill input {
+      margin: 0;
+      accent-color: var(--red, #E10600);
+    }
+    .radio-pill.active {
+      border-color: var(--red, #E10600);
+      background: rgba(197, 34, 31, 0.14);
+      color: #FFFFFF;
+    }
+
+    /* Skill Chips */
+    .chips-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 6px;
+    }
+    .chip-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      background: #0A0D14;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 6px;
+      color: var(--text-muted, #CBD5E1);
+      font-size: 0.82rem;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.2s;
+    }
+    .chip-label input {
+      margin: 0;
+      accent-color: var(--red, #E10600);
+    }
+    .chip-label.active {
+      border-color: var(--red, #E10600);
+      background: rgba(197, 34, 31, 0.16);
+      color: #FFFFFF;
+      font-weight: 600;
+    }
+
+    /* Alert Box */
+    .form-alert {
+      display: none;
+      background: rgba(239, 68, 68, 0.12);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      color: #FCA5A5;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      margin-bottom: 16px;
+      line-height: 1.4;
+    }
+
+    /* Success Card */
+    .success-card {
+      display: none;
+      text-align: center;
+      padding: 24px 16px;
+      background: rgba(34, 197, 94, 0.08);
+      border: 1px solid rgba(34, 197, 94, 0.35);
+      border-radius: 14px;
+      margin-top: 20px;
+      animation: fadeIn 0.4s ease;
+    }
+    .success-card.active {
+      display: block;
     }
   </style>
 </head>
@@ -258,7 +420,7 @@
         <div class="invite-serial" id="inviteSerial">FS-ZNU-000000</div>
       </div>
 
-      <!-- Body -->
+      <!-- Body / Credential Pass -->
       <div class="invite-body">
         <div class="invite-kicker">OFFICIAL TEAM CREDENTIAL INVITATION</div>
         <h1 class="invite-name" id="inviteeName">Candidate</h1>
@@ -271,8 +433,8 @@
             <div class="invite-item-val" id="inviteRole">Team Member</div>
           </div>
           <div>
-            <div class="invite-item-lbl">Branch & Department</div>
-            <div class="invite-item-val" id="inviteDept">Technical &bull; Body & Chassis</div>
+            <div class="invite-item-lbl">Branch &amp; Department</div>
+            <div class="invite-item-val" id="inviteDept">Technical &bull; Body &amp; Chassis</div>
           </div>
           <div>
             <div class="invite-item-lbl">Authorized By</div>
@@ -281,38 +443,175 @@
           <div>
             <div class="invite-item-lbl">Enlistment Status</div>
             <div class="invite-item-val" id="inviteStatus">
-              <span class="invite-status-ready">Ready for Acceptance</span>
+              <span style="color: #FBBF24; background: rgba(251,191,36,0.12); padding: 4px 10px; border-radius: 6px; font-weight: 700; border: 1px solid rgba(251,191,36,0.3);">
+                Pending Acceptance
+              </span>
             </div>
           </div>
         </div>
 
-        <!-- Onboarding Acceptance Form -->
+        <!-- Onboarding & Candidate Registration Form -->
         <div class="onboarding-box" id="onboardingBox">
-          <h3 style="margin: 0 0 8px 0; font-size: 1.1rem; color: #FFF;">Complete Your Team Onboarding</h3>
-          <p style="font-size: 0.82rem; color: var(--text-muted); margin: 0 0 16px 0;">
-            Set up your official Velox Inside Portal login credentials to activate your membership.
-          </p>
-          <form id="enlistmentForm">
-            <div class="form-group" style="margin-bottom: 12px;">
-              <label for="regUsername" style="font-size: 0.8rem; color: var(--text-dim); display: block; margin-bottom: 4px;">Choose Username (Lowercase, e.g. ziad)</label>
-              <input type="text" id="regUsername" class="form-control" style="width: 100%; padding: 8px 12px; background: #0A0D14; border: 1px solid var(--border); border-radius: 6px; color: #FFF;" required />
+          <div class="form-header-badge">
+            <span class="form-header-badge-icon">🏎️</span>
+            <div class="form-header-badge-content">
+              <strong>Official Formula Student Leadership Appointment</strong><br />
+              <span id="appointmentBannerDesc">Complete your candidate profile to confirm your appointment and initialize your Inside Portal credentials.</span>
             </div>
-            <div class="form-group" style="margin-bottom: 16px;">
-              <label for="regPassword" style="font-size: 0.8rem; color: var(--text-dim); display: block; margin-bottom: 4px;">Set Password (Minimum 6 characters)</label>
-              <input type="password" id="regPassword" class="form-control" style="width: 100%; padding: 8px 12px; background: #0A0D14; border: 1px solid var(--border); border-radius: 6px; color: #FFF;" value="velox2026" required />
+          </div>
+
+          <div class="form-alert" id="formAlert"></div>
+
+          <form id="enlistmentForm" novalidate>
+            <!-- 1. Personal & Contact Information -->
+            <div class="form-section-title">1. Personal &amp; Contact Details</div>
+
+            <div class="form-group">
+              <label for="regFullName">Full Name (English)<span class="req">*</span></label>
+              <input type="text" id="regFullName" class="form-control" placeholder="e.g. Ziad Mahmoud" required />
             </div>
-            <button type="submit" class="btn btn-primary" style="width: 100%; padding: 10px; font-weight: 700;">
-              Confirm Enlistment & Launch Inside Portal &rarr;
-            </button>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="regEmail">Personal Email<span class="req">*</span></label>
+                <input type="email" id="regEmail" class="form-control" placeholder="name@domain.com" required />
+              </div>
+              <div class="form-group">
+                <label for="regPhone">Phone / WhatsApp Number<span class="req">*</span></label>
+                <input type="tel" id="regPhone" class="form-control" placeholder="010XXXXXXXX" required />
+              </div>
+            </div>
+
+            <!-- 2. Academic Information -->
+            <div class="form-section-title">2. Academic Background</div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="regFaculty">Faculty / Department<span class="req">*</span></label>
+                <select id="regFaculty" class="form-control" required>
+                  <option value="" disabled selected>Select your faculty</option>
+                  <option value="Engineering — Mechatronics">Engineering — Mechatronics</option>
+                  <option value="Computer & Information Sciences (AI / Aviation)">Computer &amp; Information Sciences (AI / Aviation)</option>
+                  <option value="Business / Commerce">Business / Commerce</option>
+                  <option value="Other Faculty">Other Faculty</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="regAcademicYear">Academic Level / Year<span class="req">*</span></label>
+                <select id="regAcademicYear" class="form-control" required>
+                  <option value="" disabled selected>Select your current year</option>
+                  <option value="Level 0 / Preparatory (Prep Year)">Level 0 / Preparatory (Prep Year)</option>
+                  <option value="Level 100 / Second Year">Level 100 / Second Year</option>
+                  <option value="Level 200 / Third Year">Level 200 / Third Year</option>
+                  <option value="Level 300 / Fourth Year">Level 300 / Fourth Year</option>
+                  <option value="Level 400 / Fifth Year (Senior)">Level 400 / Fifth Year (Senior)</option>
+                  <option value="Graduate / Alumni">Graduate / Alumni</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- 3. Time Dedication -->
+            <div class="form-group">
+              <label>Weekly Time Commitment<span class="req">*</span></label>
+              <div class="radio-group" id="timeCommitmentGroup">
+                <label class="radio-pill">
+                  <input type="radio" name="regTimeCommitment" value="< 3 hours" />
+                  <span>&lt; 3 hours</span>
+                </label>
+                <label class="radio-pill">
+                  <input type="radio" name="regTimeCommitment" value="3 to 5 hours" />
+                  <span>3 to 5 hrs</span>
+                </label>
+                <label class="radio-pill active">
+                  <input type="radio" name="regTimeCommitment" value="5 to 10 hours" checked />
+                  <span>5 to 10 hrs</span>
+                </label>
+                <label class="radio-pill">
+                  <input type="radio" name="regTimeCommitment" value="10+ hours" />
+                  <span>10+ hrs</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- 4. Prior Formula Student Experience -->
+            <div class="form-group" style="background: rgba(255, 255, 255, 0.025); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 14px 16px;">
+              <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; margin: 0; font-size: 0.9rem; color: #FFF; font-weight: 600;">
+                <input type="checkbox" id="regPriorFsExperience" style="width: 18px; height: 18px; accent-color: var(--red, #E10600); cursor: pointer;" />
+                <span>Have you ever joined a Formula Student team before?</span>
+              </label>
+              <div id="regPriorFsDetailsWrap" style="display: none; margin-top: 12px; padding-top: 10px; border-top: 1px solid rgba(255, 255, 255, 0.08);">
+                <label for="regPriorFsDetails" style="font-size: 0.78rem; color: var(--text-dim, #94A3B8); margin-bottom: 6px; display: block;">Previous Team, Subteam &amp; Role (Optional)</label>
+                <input type="text" id="regPriorFsDetails" class="form-control" placeholder="e.g. Helwan Racing Team — Powertrain Member (2024)" />
+              </div>
+            </div>
+
+            <!-- 5. Relevant Skills & Portfolio -->
+            <div class="form-section-title">3. Skills &amp; Portfolio</div>
+
+            <div class="form-group">
+              <label>Relevant Engineering &amp; Software Skills</label>
+              <div class="chips-wrap" id="regSkillsChips">
+                <label class="chip-label"><input type="checkbox" value="SolidWorks" /> SolidWorks / CAD</label>
+                <label class="chip-label"><input type="checkbox" value="Ansys / FEA" /> Ansys / FEA</label>
+                <label class="chip-label"><input type="checkbox" value="CFD Simulation" /> CFD Simulation</label>
+                <label class="chip-label"><input type="checkbox" value="MATLAB / Simulink" /> MATLAB / Simulink</label>
+                <label class="chip-label"><input type="checkbox" value="C++ / Embedded" /> C++ / Embedded</label>
+                <label class="chip-label"><input type="checkbox" value="PCB Design" /> PCB Design</label>
+                <label class="chip-label"><input type="checkbox" value="Welding & Machining" /> Welding &amp; Fabrication</label>
+                <label class="chip-label"><input type="checkbox" value="Graphic Design & Video" /> Design / Video</label>
+                <label class="chip-label"><input type="checkbox" value="Sponsorship & PR" /> Sponsorship &amp; PR</label>
+                <label class="chip-label"><input type="checkbox" value="Project Management" /> Project Management</label>
+              </div>
+              <input type="text" id="regSkillsCustom" class="form-control" style="margin-top: 10px;" placeholder="Other skills (e.g. Python, STM32, CBOM Costing, etc.)" />
+            </div>
+
+            <div class="form-group">
+              <label for="regPortfolio">CV, Portfolio, or LinkedIn Profile (Optional)</label>
+              <input type="url" id="regPortfolio" class="form-control" placeholder="https://drive.google.com/... or https://linkedin.com/in/..." />
+            </div>
+
+            <!-- 6. Inside Portal Credentials Setup -->
+            <div class="form-section-title">4. Inside Portal Account Setup</div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="regUsername">Choose Username<span class="req">*</span></label>
+                <input type="text" id="regUsername" class="form-control" placeholder="e.g. ziad" required />
+                <span style="font-size: 0.74rem; color: var(--text-dim, #94A3B8); margin-top: 4px; display: block;">Lowercase alphanumeric characters only</span>
+              </div>
+              <div class="form-group">
+                <label for="regPassword">Set Password<span class="req">*</span></label>
+                <input type="password" id="regPassword" class="form-control" value="velox2026" required minlength="4" />
+                <span style="font-size: 0.74rem; color: var(--text-dim, #94A3B8); margin-top: 4px; display: block;">Minimum 4 characters (defaults to velox2026)</span>
+              </div>
+            </div>
+
+            <div style="margin-top: 24px;">
+              <button type="submit" class="btn btn-primary" id="submitEnlistBtn" style="width: 100%; padding: 14px; font-weight: 800; font-size: 1rem; letter-spacing: 0.5px;">
+                ✓ Confirm Appointment &amp; Enlist Into Team &rarr;
+              </button>
+            </div>
           </form>
         </div>
 
-        <!-- Main Buttons -->
-        <div class="invite-actions" id="inviteActions">
-          <button type="button" class="btn btn-primary" id="acceptBtn" style="padding: 12px 24px; font-weight: 700; font-size: 0.94rem;">
-            ✓ Accept Invitation & Enlist Into Team
+        <!-- Success Screen -->
+        <div class="success-card" id="successCard">
+          <div style="font-size: 2.5rem; margin-bottom: 8px;">🏁</div>
+          <h2 style="font-size: 1.6rem; color: #22C55E; margin: 0 0 8px 0;">Official Enlistment Confirmed!</h2>
+          <p style="color: var(--text-muted, #CBD5E1); font-size: 0.92rem; margin: 0 0 18px 0; line-height: 1.5;" id="successMsg">
+            Congratulations! You are officially appointed and enrolled into the VELOX Racing Team Structure. Your Inside Portal account is active.
+          </p>
+          <a href="portal.html" class="btn btn-primary" style="padding: 12px 28px; font-weight: 700;">
+            Launch Inside Portal Now &rarr;
+          </a>
+        </div>
+
+        <!-- Main Trigger Action Buttons -->
+        <div class="invite-actions" id="inviteActions" style="margin-top: 18px;">
+          <button type="button" class="btn btn-primary" id="acceptBtn" style="padding: 14px 28px; font-weight: 800; font-size: 0.98rem;">
+            ✓ Accept Invitation &amp; Enlist Into Team
           </button>
-          <button type="button" class="btn btn-outline" id="copyLinkBtn" style="padding: 12px 20px; font-size: 0.94rem;">
+          <button type="button" class="btn btn-outline" id="copyLinkBtn" style="padding: 14px 22px; font-size: 0.94rem;">
             Copy Invitation Link
           </button>
         </div>
@@ -353,7 +652,7 @@
     // Read invite parameters from URL
     const params = new URLSearchParams(window.location.search);
     const code = params.get('code') || 'FS-ZNU-000000';
-    const queryName = params.get('name');
+    const queryName = params.get('name') || '';
     const queryRole = params.get('role');
     const queryBranch = params.get('branch');
     const queryDept = params.get('dept');
@@ -374,7 +673,7 @@
     if (!currentInvite) {
       currentInvite = {
         code: code,
-        inviteeName: queryName || 'Team Candidate',
+        inviteeName: queryName,
         role: queryRole || 'Team Member',
         roleType: queryRoleType || '',
         branch: queryBranch || 'Technical',
@@ -386,7 +685,7 @@
         note: queryNote || 'You are officially invited to engineer the future of Egyptian motorsport.'
       };
     } else {
-      // If query parameters are present in the URL, merge/override them so the standalone page is always up to date
+      // Merge latest URL parameters if passed
       if (queryName) currentInvite.inviteeName = queryName;
       if (queryRole) currentInvite.role = queryRole;
       if (queryRoleType) currentInvite.roleType = queryRoleType;
@@ -398,10 +697,14 @@
       if (queryNote) currentInvite.note = queryNote;
     }
 
-    // Update document title and UI with candidate details
-    document.title = `${currentInvite.inviteeName} — Official Team Invitation | Velox Racing`;
+    // Display formatted name: if no name yet, show open appointee label
+    const displayedName = (currentInvite.inviteeName && currentInvite.inviteeName.trim()) 
+      ? currentInvite.inviteeName.trim() 
+      : 'Official Team Appointee';
+
+    document.title = `${displayedName} — Official Team Invitation | Velox Racing`;
     document.getElementById('inviteSerial').textContent = currentInvite.code;
-    document.getElementById('inviteeName').textContent = currentInvite.inviteeName;
+    document.getElementById('inviteeName').textContent = displayedName;
     document.getElementById('inviteRole').textContent = currentInvite.role;
 
     const deptFormatted = (currentInvite.subteam && currentInvite.subteam !== '__DEPT_LEAD__' && currentInvite.subteam !== 'All Subteams')
@@ -417,22 +720,47 @@
       quoteEl.innerHTML = `&ldquo;${currentInvite.note}&rdquo;`;
     }
 
+    // Update appointment banner description
+    const bannerDesc = document.getElementById('appointmentBannerDesc');
+    if (bannerDesc) {
+      bannerDesc.innerHTML = `Designated Position: <strong style="color: #FFF;">${currentInvite.role}</strong> in <strong style="color: #38BDF8;">${deptFormatted}</strong>. Authorized by <strong style="color: #EAB308;">${currentInvite.authorizer}</strong>.`;
+    }
+
     const statusEl = document.getElementById('inviteStatus');
     const acceptBtn = document.getElementById('acceptBtn');
     const onboardingBox = document.getElementById('onboardingBox');
+    const formAlert = document.getElementById('formAlert');
 
+    function showError(msg) {
+      formAlert.textContent = msg;
+      formAlert.style.display = 'block';
+      formAlert.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function clearError() {
+      formAlert.style.display = 'none';
+      formAlert.textContent = '';
+    }
+
+    // Check if invitation is already accepted
     if (currentInvite.status === 'Accepted') {
-      statusEl.innerHTML = '<span class="invite-status-claimed" style="color: #22C55E; background: rgba(34,197,94,0.12); padding: 4px 10px; border-radius: 6px; font-weight: 700; border: 1px solid rgba(34,197,94,0.3);">✓ Enlisted & Active</span>';
+      statusEl.innerHTML = '<span style="color: #22C55E; background: rgba(34,197,94,0.14); padding: 4px 10px; border-radius: 6px; font-weight: 700; border: 1px solid rgba(34,197,94,0.35);">✓ Enlisted &amp; Active</span>';
       acceptBtn.textContent = 'Go to Inside Portal →';
       acceptBtn.onclick = () => { window.location.href = 'portal.html'; };
     } else {
-      statusEl.innerHTML = '<span class="invite-status-ready" style="color: #FBBF24; background: rgba(251,191,36,0.12); padding: 4px 10px; border-radius: 6px; font-weight: 700; border: 1px solid rgba(251,191,36,0.3);">Pending Acceptance</span>';
+      statusEl.innerHTML = '<span style="color: #FBBF24; background: rgba(251,191,36,0.12); padding: 4px 10px; border-radius: 6px; font-weight: 700; border: 1px solid rgba(251,191,36,0.3);">Pending Acceptance</span>';
+      
       acceptBtn.onclick = () => {
         onboardingBox.classList.add('active');
         acceptBtn.style.display = 'none';
-        // Suggest a username based on invitee name
-        const cleanUser = currentInvite.inviteeName.toLowerCase().replace(/[^a-z0-9]/g, '');
-        document.getElementById('regUsername').value = cleanUser || 'member';
+        onboardingBox.scrollIntoView({ behavior: 'smooth' });
+
+        // Pre-fill name if known
+        if (currentInvite.inviteeName && currentInvite.inviteeName.trim()) {
+          const nameInput = document.getElementById('regFullName');
+          nameInput.value = currentInvite.inviteeName.trim();
+          suggestUsername(currentInvite.inviteeName.trim());
+        }
       };
     }
 
@@ -444,20 +772,113 @@
           alert('Official invitation link copied to clipboard:\n' + fullUrl);
         });
       } else {
-        alert('Invitation link: ' + fullUrl);
+        prompt('Copy your invitation link:', fullUrl);
       }
     };
 
-    // Onboarding form submit
-    document.getElementById('enlistmentForm').addEventListener('submit', (e) => {
+    // Live update name on pass and auto-suggest username as user types their name
+    function suggestUsername(name) {
+      const uField = document.getElementById('regUsername');
+      if (!uField.value || uField.dataset.autosuggested === 'true' || uField.dataset.autosuggested === undefined) {
+        const parts = name.trim().toLowerCase().split(/\s+/);
+        let suggested = '';
+        if (parts.length >= 2) {
+          suggested = (parts[0] + '.' + parts[1]).replace(/[^a-z0-9.]/g, '');
+        } else if (parts.length === 1 && parts[0]) {
+          suggested = parts[0].replace(/[^a-z0-9]/g, '');
+        }
+        if (suggested) {
+          uField.value = suggested;
+          uField.dataset.autosuggested = 'true';
+        }
+      }
+    }
+
+    const regNameInput = document.getElementById('regFullName');
+    if (regNameInput) {
+      regNameInput.addEventListener('input', (e) => {
+        const val = e.target.value.trim();
+        document.getElementById('inviteeName').textContent = val || 'Candidate';
+        suggestUsername(val);
+      });
+    }
+
+    const regUserInput = document.getElementById('regUsername');
+    if (regUserInput) {
+      regUserInput.addEventListener('input', () => {
+        regUserInput.dataset.autosuggested = 'false';
+      });
+    }
+
+    // Toggle Prior FS experience input
+    const priorFsCheck = document.getElementById('regPriorFsExperience');
+    const priorFsWrap = document.getElementById('regPriorFsDetailsWrap');
+    if (priorFsCheck && priorFsWrap) {
+      priorFsCheck.addEventListener('change', () => {
+        priorFsWrap.style.display = priorFsCheck.checked ? 'block' : 'none';
+      });
+    }
+
+    // Radio Pills & Chips interactivity
+    document.querySelectorAll('#timeCommitmentGroup .radio-pill input').forEach(input => {
+      input.addEventListener('change', () => {
+        document.querySelectorAll('#timeCommitmentGroup .radio-pill').forEach(p => p.classList.remove('active'));
+        input.parentElement.classList.add('active');
+      });
+    });
+
+    document.querySelectorAll('#regSkillsChips .chip-label input').forEach(input => {
+      input.addEventListener('change', () => {
+        input.parentElement.classList.toggle('active', input.checked);
+      });
+    });
+
+    // Onboarding form submit handler
+    document.getElementById('enlistmentForm').addEventListener('submit', async (e) => {
       e.preventDefault();
-      const username = document.getElementById('regUsername').value.trim().toLowerCase();
+      clearError();
+
+      const fullName = document.getElementById('regFullName').value.trim();
+      const email = document.getElementById('regEmail').value.trim().toLowerCase();
+      const phone = document.getElementById('regPhone').value.trim();
+      const faculty = document.getElementById('regFaculty').value;
+      const academicYear = document.getElementById('regAcademicYear').value;
+      const portfolioUrl = document.getElementById('regPortfolio').value.trim();
+      const username = document.getElementById('regUsername').value.trim().toLowerCase().replace(/[^a-z0-9._-]/g, '');
       const password = document.getElementById('regPassword').value.trim();
 
-      if (!username || password.length < 4) {
-        alert('Please enter a valid username and password (at least 4 characters).');
+      const timeInput = document.querySelector('input[name="regTimeCommitment"]:checked');
+      const timeCommitment = timeInput ? timeInput.value : '5 to 10 hours';
+
+      const priorFs = priorFsCheck && priorFsCheck.checked ? 'Yes' : 'No';
+      const priorFsDetails = document.getElementById('regPriorFsDetails')?.value.trim() || '';
+
+      // Validate required fields
+      if (!fullName || !email || !phone || !faculty || !academicYear || !username || !password) {
+        showError('Please fill in all required fields marked with an asterisk (*).');
         return;
       }
+
+      if (username.length < 3) {
+        showError('Username must be at least 3 characters long.');
+        return;
+      }
+
+      if (password.length < 4) {
+        showError('Password must be at least 4 characters long.');
+        return;
+      }
+
+      // Collect skills
+      const selectedSkills = [];
+      document.querySelectorAll('#regSkillsChips .chip-label input:checked').forEach(cb => selectedSkills.push(cb.value));
+      const customSkill = document.getElementById('regSkillsCustom').value.trim();
+      if (customSkill) selectedSkills.push(customSkill);
+      const skillsStr = selectedSkills.join(', ');
+
+      const submitBtn = document.getElementById('submitEnlistBtn');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Enlisting & Provisioning Account...';
 
       let activeDb = getDb();
       if (!activeDb) {
@@ -489,21 +910,15 @@
       if (!activeDb.personas) activeDb.personas = {};
       if (!activeDb.membersRoster) activeDb.membersRoster = [];
 
-      if (activeDb.accounts.some(a => a.username.toLowerCase() === username)) {
-        alert(`The username @${username} is already taken. Please choose another username.`);
+      // Check if username taken by someone else
+      const conflictingAccount = activeDb.accounts.find(a => 
+        a.username && a.username.toLowerCase() === username.toLowerCase() && a.name.toLowerCase() !== fullName.toLowerCase()
+      );
+      if (conflictingAccount) {
+        showError(`The username @${username} is already taken. Please choose another username.`);
+        submitBtn.disabled = false;
+        submitBtn.textContent = '✓ Confirm Appointment & Enlist Into Team →';
         return;
-      }
-
-      // 1. Mark invitation accepted
-      const invIdx = (activeDb.invitations || []).findIndex(i => i.code === currentInvite.code);
-      if (invIdx >= 0) {
-        activeDb.invitations[invIdx].status = 'Accepted';
-        activeDb.invitations[invIdx].acceptedAt = new Date().toLocaleString();
-      } else {
-        currentInvite.status = 'Accepted';
-        currentInvite.acceptedAt = new Date().toLocaleString();
-        if (!activeDb.invitations) activeDb.invitations = [];
-        activeDb.invitations.unshift(currentInvite);
       }
 
       // Determine accurate roleType
@@ -515,44 +930,60 @@
         else roleType = 'member';
       }
 
-      // 2. Add persona
+      // Update current invite object
+      currentInvite.status = 'Accepted';
+      currentInvite.inviteeName = fullName;
+      currentInvite.email = email;
+      currentInvite.phone = phone;
+      currentInvite.acceptedAt = new Date().toLocaleString();
+
+      // 1. Mark invitation accepted in activeDb
+      const invIdx = (activeDb.invitations || []).findIndex(i => i.code === currentInvite.code);
+      if (invIdx >= 0) {
+        activeDb.invitations[invIdx] = { ...activeDb.invitations[invIdx], ...currentInvite };
+      } else {
+        if (!activeDb.invitations) activeDb.invitations = [];
+        activeDb.invitations.unshift(currentInvite);
+      }
+
+      // 2. Add or update persona
       const personaKey = 'user_' + username;
       activeDb.personas[personaKey] = {
         id: 'mem-' + username,
-        name: currentInvite.inviteeName,
+        name: fullName,
         role: currentInvite.role,
         roleType: roleType,
         branch: currentInvite.branch,
         departments: [currentInvite.department],
         subteam: currentInvite.subteam || '',
-        avatar: '',
+        avatar: (activeDb.personas[personaKey] && activeDb.personas[personaKey].avatar) || '',
         deptDesc: `${currentInvite.branch} Division • ${currentInvite.department}${currentInvite.subteam && currentInvite.subteam !== '__DEPT_LEAD__' ? ' — ' + currentInvite.subteam : ''}`
       };
 
       // 3. Add or update account
-      const existingAccIdx = activeDb.accounts.findIndex(a => a.username && a.username.toLowerCase() === username.toLowerCase());
+      const existingAccIdx = activeDb.accounts.findIndex(a => a.username && a.username.toLowerCase() === username);
       if (existingAccIdx !== -1) {
         activeDb.accounts[existingAccIdx].password = password;
         activeDb.accounts[existingAccIdx].personaKey = personaKey;
-        activeDb.accounts[existingAccIdx].name = currentInvite.inviteeName;
+        activeDb.accounts[existingAccIdx].name = fullName;
         activeDb.accounts[existingAccIdx].status = 'Active';
       } else {
         activeDb.accounts.push({
           username: username,
           password: password,
           personaKey: personaKey,
-          name: currentInvite.inviteeName,
+          name: fullName,
           status: 'Active'
         });
       }
 
       // 4. Add or update roster entry
       const existingRosterIdx = activeDb.membersRoster.findIndex(m => 
-        (m.username && m.username.toLowerCase() === username.toLowerCase()) ||
-        (m.name && m.name.trim().toLowerCase() === currentInvite.inviteeName.trim().toLowerCase())
+        (m.username && m.username.toLowerCase() === username) ||
+        (m.name && m.name.trim().toLowerCase() === fullName.toLowerCase())
       );
       if (existingRosterIdx !== -1) {
-        activeDb.membersRoster[existingRosterIdx].name = currentInvite.inviteeName;
+        activeDb.membersRoster[existingRosterIdx].name = fullName;
         activeDb.membersRoster[existingRosterIdx].role = currentInvite.role;
         activeDb.membersRoster[existingRosterIdx].roleType = roleType;
         activeDb.membersRoster[existingRosterIdx].branch = currentInvite.branch;
@@ -563,7 +994,7 @@
       } else {
         activeDb.membersRoster.push({
           id: 'mem-' + username,
-          name: currentInvite.inviteeName,
+          name: fullName,
           role: currentInvite.role,
           roleType: roleType,
           branch: currentInvite.branch,
@@ -580,9 +1011,9 @@
       if (!activeDb.notifications) activeDb.notifications = [];
       activeDb.notifications.unshift({
         id: 'NOTIF-' + Date.now(),
-        title: 'New Member Enlisted',
-        message: `${currentInvite.inviteeName} accepted invitation ${currentInvite.code} and enlisted into ${currentInvite.department} as ${currentInvite.role}!`,
-        author: currentInvite.inviteeName,
+        title: 'New Member Enlisted via Invitation',
+        message: `${fullName} accepted official appointment ${currentInvite.code} and enlisted into ${currentInvite.department} as ${currentInvite.role}! Account: @${username}.`,
+        author: fullName,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         date: new Date().toISOString().substring(0, 10),
         type: 'governance',
@@ -592,17 +1023,109 @@
 
       // 6. Log Audit Event
       if (!activeDb.auditLog) activeDb.auditLog = [];
-      activeDb.auditLog.unshift(`[${new Date().toISOString().replace('T', ' ').substring(0, 19)}] ENLISTMENT: ${currentInvite.inviteeName} accepted invitation ${currentInvite.code} and registered @${username}.`);
+      activeDb.auditLog.unshift(`[${new Date().toISOString().replace('T', ' ').substring(0, 19)}] ENLISTMENT: ${fullName} accepted invitation pass ${currentInvite.code} as ${currentInvite.role} (@${username}).`);
 
       saveDb(activeDb);
 
-      // 7. Set auto-login session
+      // 7. Update Supabase Cloud Database (status: 'Accepted')
+      const subteamChoice = (currentInvite.subteam && currentInvite.subteam !== '__DEPT_LEAD__' && currentInvite.subteam !== 'All Subteams')
+        ? `${currentInvite.department} — ${currentInvite.subteam}`
+        : currentInvite.department;
+
+      const fsExpText = priorFs === 'Yes'
+        ? (priorFsDetails ? `Prior FS: Yes (${priorFsDetails})` : 'Prior FS: Yes')
+        : 'Prior FS: None';
+      const whyJoinText = `Official Enlistment via Team Invitation (Pass: ${currentInvite.code} • Role: ${currentInvite.role}) | ${fsExpText}`;
+      const hrNotes = `Official Appointment: Role: ${currentInvite.role} (${currentInvite.department}). Authorized by ${currentInvite.authorizer}. Enlisted on ${new Date().toLocaleDateString()}.`;
+
+      const cloudData = {
+        full_name: fullName,
+        email: email,
+        phone: phone,
+        university_id: 'OFFICIAL-INVITATION',
+        faculty: faculty,
+        academic_year: academicYear,
+        subteam_first: subteamChoice,
+        subteam_second: `Direct Appointment: ${currentInvite.role}`,
+        time_commitment: timeCommitment,
+        skills: skillsStr,
+        why_join: whyJoinText,
+        portfolio_url: portfolioUrl || null,
+        status: 'Accepted', // Crucial: sets status directly to Accepted
+        hr_notes: hrNotes
+      };
+
+      try {
+        const cfg = window.VELOX_CONFIG || {};
+        if (cfg.url && cfg.anonKey && !cfg.url.includes('your-project-id') && window.supabase) {
+          const client = window.supabase.createClient(cfg.url, cfg.anonKey);
+          
+          // Check if an application already exists with this email
+          const { data: existingRecords } = await client
+            .from('applications')
+            .select('id')
+            .eq('email', email);
+
+          if (existingRecords && existingRecords.length > 0) {
+            await client
+              .from('applications')
+              .update(cloudData)
+              .eq('id', existingRecords[0].id);
+          } else {
+            await client
+              .from('applications')
+              .insert([cloudData]);
+          }
+        }
+      } catch (cloudErr) {
+        console.warn('Cloud sync for accepted invitation notice:', cloudErr);
+      }
+
+      // 8. Update Local Mock Applications store (for hr.html local views)
+      try {
+        const mockApps = JSON.parse(localStorage.getItem('velox_mock_applications') || '[]');
+        const mockIdx = mockApps.findIndex(a => (a.email || '').toLowerCase() === email);
+        const localMockApp = {
+          id: (mockIdx !== -1 && mockApps[mockIdx].id) ? mockApps[mockIdx].id : ('INV-' + Math.random().toString(36).substring(2, 9).toUpperCase()),
+          created_at: new Date().toISOString(),
+          synced: true,
+          ...cloudData
+        };
+        if (mockIdx !== -1) {
+          mockApps[mockIdx] = { ...mockApps[mockIdx], ...localMockApp };
+        } else {
+          mockApps.unshift(localMockApp);
+        }
+        localStorage.setItem('velox_mock_applications', JSON.stringify(mockApps));
+      } catch (mockErr) {}
+
+      // 9. Sync into Team Structure Org Chart
+      if (typeof window.syncCloudAcceptedMembers === 'function') {
+        window.syncCloudAcceptedMembers();
+      }
+
+      // 10. Set Auto-login session for Inside Portal
       localStorage.setItem('velox_auth_user', username);
       localStorage.setItem('velox_active_persona', personaKey);
       localStorage.setItem('velox_portal_session_user', username);
 
-      alert(`Congratulations ${currentInvite.inviteeName}! You are officially enlisted into Velox Racing. Redirecting to your Inside Portal...`);
-      window.location.href = 'portal.html';
+      // 11. Update Pass UI to Active and Show Success
+      document.getElementById('inviteeName').textContent = fullName;
+      statusEl.innerHTML = '<span style="color: #22C55E; background: rgba(34,197,94,0.14); padding: 4px 10px; border-radius: 6px; font-weight: 700; border: 1px solid rgba(34,197,94,0.35);">✓ Enlisted &amp; Active</span>';
+      
+      onboardingBox.style.display = 'none';
+      const successCard = document.getElementById('successCard');
+      const successMsg = document.getElementById('successMsg');
+      if (successMsg) {
+        successMsg.innerHTML = `Welcome to the team, <strong style="color: #FFF;">${fullName}</strong>! You are officially appointed as <strong style="color: #38BDF8;">${currentInvite.role}</strong> in <strong style="color: #EAB308;">${currentInvite.department}</strong>. Your account <code style="color: #38BDF8;">@${username}</code> is activated. Redirecting to your Inside Portal...`;
+      }
+      successCard.classList.add('active');
+      successCard.scrollIntoView({ behavior: 'smooth' });
+
+      // Auto redirect after 2.5 seconds
+      setTimeout(() => {
+        window.location.href = 'portal.html';
+      }, 2500);
     });
   </script>
 </body>

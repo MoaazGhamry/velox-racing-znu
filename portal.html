@@ -1848,8 +1848,8 @@
           <form id="invitationForm">
             <div class="form-row">
               <div class="form-group" style="flex: 1.3;">
-                <label for="invGuestName">Invitee Full Name<span class="req">*</span></label>
-                <input type="text" id="invGuestName" class="form-control" placeholder="e.g. Ziad Mahmoud" required />
+                <label for="invGuestName">Invitee Full Name <span style="font-weight: 400; color: var(--text-dim); font-size: 0.78rem;">(Optional &mdash; candidate can fill it)</span></label>
+                <input type="text" id="invGuestName" class="form-control" placeholder="e.g. Ziad Mahmoud (or leave blank for open pass)" />
               </div>
               <div class="form-group" style="flex: 1;">
                 <label for="invAuthorizerSelect">Authorized By<span class="req">*</span></label>
@@ -4710,7 +4710,7 @@
         return `
           <tr>
             <td><code style="color: #EAB308; background: rgba(234,179,8,0.1); padding: 3px 8px; border-radius: 4px; font-weight: 700;">${inv.code}</code></td>
-            <td><strong style="color: #FFF;">${inv.inviteeName}</strong></td>
+            <td><strong style="color: #FFF;">${inv.inviteeName || '<span style="color: var(--text-dim); font-style: italic;">Open Role Invitation</span>'}</strong></td>
             <td>
               <span class="file-badge" style="color: ${inv.branch === 'Technical' ? '#38BDF8' : '#FBBF24'};">
                 ${inv.role} &bull; ${deptSubString}
@@ -4744,7 +4744,7 @@
       }
 
       const inv = (db.invitations || []).find(i => i.code === code);
-      const name = inv ? inv.inviteeName : code;
+      const name = inv ? (inv.inviteeName || inv.role) : code;
 
       if (!confirm(`Are you sure you want to delete invitation pass ${code} for ${name}?`)) return;
 
@@ -4775,8 +4775,10 @@
       if (inv) {
         if (inv.inviteeName) inviteParams.set('name', inv.inviteeName);
         if (inv.role) inviteParams.set('role', inv.role);
+        if (inv.roleType) inviteParams.set('roleType', inv.roleType);
         if (inv.branch) inviteParams.set('branch', inv.branch);
         if (inv.department) inviteParams.set('dept', inv.department);
+        if (inv.subteam) inviteParams.set('subteam', inv.subteam);
         if (inv.authorizer) inviteParams.set('by', inv.authorizer);
         if (inv.issued) inviteParams.set('issued', inv.issued);
         if (inv.note) inviteParams.set('note', inv.note);
@@ -6419,7 +6421,7 @@
           }
 
           const db = getPortalDb();
-          const guestName = document.getElementById('invGuestName').value.trim();
+          const rawGuestName = document.getElementById('invGuestName').value.trim();
           const authorizerStr = document.getElementById('invAuthorizerSelect').value;
           const dept = document.getElementById('invDeptSelect').value;
           const subteamVal = document.getElementById('invSubteamSelect').value;
@@ -6436,7 +6438,6 @@
 
           const inviteParams = new URLSearchParams({
             code: serial,
-            name: guestName,
             role: role,
             roleType: roleType,
             branch: branch,
@@ -6445,12 +6446,13 @@
             by: authorizerStr,
             issued: issuedDateStr
           });
+          if (rawGuestName) inviteParams.set('name', rawGuestName);
           if (note) inviteParams.set('note', note);
           const fullInviteUrl = `invite.html?${inviteParams.toString()}`;
 
           const newInvite = {
             code: serial,
-            inviteeName: guestName,
+            inviteeName: rawGuestName || '',
             role: role,
             roleType: roleType,
             branch: branch,
@@ -6486,7 +6488,7 @@
                 <span style="font-size: 0.78rem; text-transform: uppercase; color: var(--red); font-weight: 800; letter-spacing: 0.08em;">
                   OFFICIAL TEAM CREDENTIAL INVITATION
                 </span>
-                <div class="pass-guest-name">${guestName}</div>
+                <div class="pass-guest-name">${rawGuestName || `<span style="opacity: 0.85; font-style: italic;">Official Appointee (${role})</span>`}</div>
                 <p style="font-size: 0.86rem; color: var(--text-muted); margin: 6px 0 16px 0; font-style: italic;">
                   &ldquo;${note}&rdquo;
                 </p>
