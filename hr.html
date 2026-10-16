@@ -1075,28 +1075,43 @@
       let subject = '';
       let body = '';
 
+      const socialSection = `====================================================
+CONNECT & FOLLOW VELOX RACING
+====================================================
+Stay connected with our car build, aero testing, and announcements:
+• Instagram: https://www.instagram.com/velox_racing_znu?srtk=MWl2azlianJlZ3J3bg==
+• Facebook:  https://www.facebook.com/share/19Xcwun8Di/?mibextid=wwXIfr
+• LinkedIn:  https://www.linkedin.com/company/velox-racing-team/
+• Website:   https://velox-racing.vercel.app`;
+
       const norm = (status || 'New').toLowerCase();
       if (norm.includes('accept')) {
         subject = '🏁 OFFICIAL INVITATION: Welcome to VELOX Racing — Formula Student ZNU';
         body = `Dear ${name},
 
-Congratulations! On behalf of Zagazig National University and the executive leadership of VELOX Racing, we are proud to inform you that your application to join our Formula Student championship engineering team has been OFFICIALLY ACCEPTED.
+Congratulations! On behalf of Zagazig National University and the executive leadership of VELOX Racing, we are proud to inform you that your application to join our Formula Student engineering challenger has been OFFICIALLY ACCEPTED.
 
-APPOINTMENT DOSSIER:
+====================================================
+APPOINTMENT DOSSIER
+====================================================
 • Designated Department / Subsystem: ${rawSub}
 • Appointed Position: ${role}
-• Championship Debut: Silverstone Circuit (UK) — Formula Student
+• Championship Campaign: Formula Student UK — Silverstone Circuit
 
-COMPLETE YOUR ONBOARDING & SET YOUR PASSWORD:
-Please click your secure onboarding link below to verify your profile and initialize your Inside Portal password:
+====================================================
+COMPLETE YOUR ONBOARDING & SET YOUR PASSWORD
+====================================================
+Please click your secure onboarding pass below to verify your details, set your Inside Portal password, and upload your profile photo:
 ${inviteUrl}
 
-Upon completing your registration:
-1. Your candidate credentials will be confirmed.
-2. Your Inside Portal account will be activated.
-3. You will immediately appear on our official Team Structure Org Chart.
+Once your activation is complete:
+1. Your candidate credentials will be verified.
+2. You will be granted full access to the Inside Portal (files, telemetry, task board).
+3. You will immediately be positioned on our official Team Structure org chart.
 
-We are thrilled to welcome you to the team. Let's engineer the future of Egyptian motorsport together!
+${socialSection}
+
+We look forward to building a winning racing machine with you. Welcome to the VELOX family!
 
 With motorsport respect,
 VELOX Racing Team Directorate
@@ -1114,6 +1129,8 @@ Due to competitive subteam capacity limits, your application has been placed on 
 
 Your application received strong technical scores, and we are retaining your profile in our candidate pool as sprint phases progress. Should additional capacity open up during upcoming build phases, our HR Directorate and Subteam Leads will reach out directly to offer you a spot on the team.
 
+${socialSection}
+
 Thank you again for your patience and passion for Formula Student.
 
 Best regards,
@@ -1130,6 +1147,8 @@ We received a very high volume of qualified applications this season. Following 
 
 We were genuinely impressed by your ambition and passion. We strongly encourage you to continue honing your skills, attend our public university workshops, and apply again in our upcoming recruitment cycles.
 
+${socialSection}
+
 We wish you the very best in your academic and professional endeavors.
 
 Sincerely,
@@ -1141,6 +1160,8 @@ Zagazig National University — Formula Student`;
         body = `Dear ${name},
 
 Thank you for your application to VELOX Racing (${rawSub}). Our Human Resources team is actively reviewing your candidacy.
+
+${socialSection}
 
 Best regards,
 VELOX Racing Team
