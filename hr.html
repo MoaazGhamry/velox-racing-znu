@@ -118,7 +118,11 @@
             <h1 style="font-size: 1.8rem;">Applicant Dashboard</h1>
             <span id="activeUserLabel" style="font-size: 0.82rem; color: var(--text-dim);">Logged in</span>
           </div>
-
+          <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
+            <button type="button" class="btn btn-outline" id="smtpSettingsBtn" style="display: inline-flex; align-items: center; gap: 8px; border-color: rgba(234, 67, 53, 0.4); color: #ff8a80;" title="Configure automated sending from velox.racing.znu@gmail.com with official Velox logo">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+              <span>Email SMTP Setup</span>
+            </button>
             <button type="button" class="btn btn-outline" id="syncCloudBtn" style="display: inline-flex; align-items: center; gap: 8px;">
               <svg id="syncIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/>
@@ -305,9 +309,13 @@
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
                     Copy Invite Link
                   </button>
+                  <button type="button" id="copyRichEmailBtn" class="btn btn-outline" style="background: rgba(225, 6, 0, 0.14); border-color: #E10600; color: #FF6B6B; padding: 10px 14px; font-size: 0.85rem; font-weight: 700; display: inline-flex; align-items: center; gap: 6px;" title="Copy complete rich HTML letter with official VELOX Logo, red headers, and social badges — paste directly into Gmail compose!">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                    <span>Copy Rich Email (With Logo)</span>
+                  </button>
                   <button type="button" id="copyDecisionLetterBtn" class="btn btn-outline" style="background: rgba(148, 163, 184, 0.12); border-color: #64748b; color: #cbd5e1; padding: 10px 14px; font-size: 0.85rem; font-weight: 700; display: inline-flex; align-items: center; gap: 6px;" title="Copy complete official decision message for WhatsApp, email, or LinkedIn">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-                    Copy Letter
+                    Copy Plain Text
                   </button>
                 </div>
                 <!-- Automated Email Feedback Notification -->
@@ -404,6 +412,36 @@
               </div>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+    <!-- 4. EMAIL SMTP AUTOMATED DISPATCH MODAL -->
+    <div class="drawer-backdrop" id="smtpConfigModal" style="display: none; align-items: center; justify-content: center; z-index: 10000; padding: 20px;">
+      <div style="background: #0E121A; border: 1px solid rgba(225, 6, 0, 0.45); border-radius: 14px; max-width: 520px; width: 100%; padding: 28px; box-shadow: 0 25px 60px rgba(0,0,0,0.9); position: relative;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+          <h3 style="margin: 0; font-size: 1.2rem; display: flex; align-items: center; gap: 8px;">
+            <span style="color: #E10600;">✉️</span> Gmail Automated Dispatch Setup
+          </h3>
+          <button type="button" id="closeSmtpModalBtn" style="background: none; border: none; color: #94A3B8; font-size: 1.5rem; cursor: pointer; line-height: 1;">&times;</button>
+        </div>
+        <p style="font-size: 0.84rem; color: #CBD5E1; line-height: 1.5; margin-bottom: 16px;">
+          Configure direct background sending from official team email <strong>velox.racing.znu@gmail.com</strong>. When configured, candidates receive the <strong>full rich HTML email with the official VELOX Logo</strong>, appointment card, and social channels with zero manual steps.
+        </p>
+        <div class="form-group" style="text-align: left; margin-bottom: 14px;">
+          <label style="display: block; font-size: 0.8rem; font-weight: 700; color: #94A3B8; margin-bottom: 6px;">Official Team Sender Address</label>
+          <input type="text" class="form-control" value="velox.racing.znu@gmail.com" readonly style="opacity: 0.85; font-family: monospace;" />
+        </div>
+        <div class="form-group" style="text-align: left; margin-bottom: 18px;">
+          <label for="smtpAppPasswordInput" style="display: block; font-size: 0.8rem; font-weight: 700; color: #94A3B8; margin-bottom: 6px;">Google 16-Character App Password</label>
+          <input type="password" id="smtpAppPasswordInput" class="form-control" placeholder="xxxx xxxx xxxx xxxx" autocomplete="off" style="font-family: monospace; letter-spacing: 2px;" />
+          <div style="font-size: 0.74rem; color: #94A3B8; margin-top: 8px; line-height: 1.45;">
+            💡 <strong>How to get this:</strong> Log into <strong>velox.racing.znu@gmail.com</strong> &rarr; Open <a href="https://myaccount.google.com/apppasswords" target="_blank" rel="noopener" style="color: #38BDF8; font-weight: 700;">Google Account &rarr; App Passwords</a> &rarr; Generate an App Password named <em>"Velox HR"</em> &rarr; Paste the 16 letters here. Saved securely in your browser session.
+          </div>
+        </div>
+        <div id="smtpStatusNotice" style="display: none; padding: 10px 14px; border-radius: 8px; font-size: 0.82rem; margin-bottom: 16px;"></div>
+        <div style="display: flex; gap: 10px; justify-content: flex-end;">
+          <button type="button" class="btn btn-outline" id="clearSmtpBtn" style="font-size: 0.84rem;">Clear Key</button>
+          <button type="button" class="btn btn-primary" id="saveSmtpBtn" style="font-size: 0.84rem;">Save &amp; Enable Dispatch</button>
         </div>
       </div>
     </div>
@@ -1168,10 +1206,107 @@ VELOX Racing Team
 velox.racing.znu@gmail.com`;
       }
 
+      const htmlBody = generateRichHtmlEmail(applicant, status, inviteUrl, role);
       const gmailComposeUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(email)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
       const mailtoUrl = `mailto:${encodeURIComponent(email)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 
-      return { subject, body, inviteUrl, code, gmailComposeUrl, mailtoUrl };
+      return { subject, body, htmlBody, inviteUrl, code, gmailComposeUrl, mailtoUrl };
+    }
+
+    // Helper to generate formatted HTML email with official VELOX Logo and Social Badges
+    function generateRichHtmlEmail(applicant, status, inviteUrl, role) {
+      const name = (applicant.full_name || 'Candidate').trim();
+      const rawSub = applicant.subteam_first || 'General Engineering';
+      const logoUrl = 'https://raw.githubusercontent.com/MoaazGhamry/velox-racing-znu/master/VeloxLogoWeb.png';
+      const ig = 'https://www.instagram.com/velox_racing_znu?srtk=MWl2azlianJlZ3J3bg==';
+      const fb = 'https://www.facebook.com/share/19Xcwun8Di/?mibextid=wwXIfr';
+      const li = 'https://www.linkedin.com/company/velox-racing-team/';
+      const web = 'https://velox-racing-znu.vercel.app';
+      const norm = (status || 'New').toLowerCase();
+
+      let statusBadge = '🏁 OFFICIAL APPLICATION STATUS: ACCEPTED';
+      let statusColor = '#4ADE80';
+      let statusBg = 'rgba(34, 197, 94, 0.12)';
+      let statusBorder = 'rgba(34, 197, 94, 0.35)';
+
+      if (norm.includes('wait')) {
+        statusBadge = '⏳ APPLICATION STATUS: ACTIVE RESERVE & WAITING LIST';
+        statusColor = '#FBBF24';
+        statusBg = 'rgba(245, 158, 11, 0.12)';
+        statusBorder = 'rgba(245, 158, 11, 0.35)';
+      } else if (norm.includes('reject')) {
+        statusBadge = '📋 APPLICATION STATUS: 2026 CAMPAIGN UPDATE';
+        statusColor = '#94A3B8';
+        statusBg = 'rgba(148, 163, 184, 0.12)';
+        statusBorder = 'rgba(148, 163, 184, 0.25)';
+      }
+
+      return `<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"></head>
+<body style="margin: 0; padding: 0; background-color: #07090E; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #FFFFFF;">
+  <div style="max-width: 620px; margin: 0 auto; background: #0E121A; border: 1px solid rgba(225, 6, 0, 0.45); border-radius: 14px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.8);">
+    <div style="height: 5px; background: linear-gradient(90deg, #E10600, #F59E0B, #E10600);"></div>
+    <div style="padding: 28px 24px 16px 24px; text-align: center; background: radial-gradient(circle at center top, rgba(225, 6, 0, 0.22), transparent 70%);">
+      <a href="${web}" target="_blank" style="text-decoration: none;">
+        <img src="${logoUrl}" alt="VELOX RACING" width="160" style="display: block; margin: 0 auto 12px auto; max-width: 160px; height: auto; border: 0;" />
+      </a>
+      <h1 style="margin: 0 0 4px 0; font-size: 22px; font-weight: 900; letter-spacing: 2px; color: #FFFFFF; text-transform: uppercase;">VELOX RACING</h1>
+      <p style="margin: 0; font-size: 11px; color: #E10600; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase;">ZAGAZIG NATIONAL UNIVERSITY • FORMULA STUDENT</p>
+    </div>
+    <div style="padding: 20px 28px 28px 28px;">
+      <div style="background: ${statusBg}; border: 1px solid ${statusBorder}; border-radius: 8px; padding: 10px 14px; margin-bottom: 20px; text-align: center;">
+        <span style="font-size: 12px; font-weight: 800; color: ${statusColor}; letter-spacing: 1px; text-transform: uppercase;">${statusBadge}</span>
+      </div>
+      <h2 style="font-size: 18px; font-weight: 700; margin: 0 0 14px 0; color: #FFFFFF;">Dear ${name},</h2>
+      <p style="font-size: 14px; line-height: 1.6; color: #CBD5E1; margin: 0 0 16px 0;">
+        ${norm.includes('accept')
+          ? `Congratulations! On behalf of Zagazig National University and the executive leadership of <strong>VELOX Racing</strong>, we are proud to inform you that your application to join our Formula Student engineering challenger has been <strong>OFFICIALLY ACCEPTED</strong>.`
+          : (norm.includes('wait')
+            ? `Thank you for applying to <strong>VELOX Racing</strong> for the <strong>${rawSub}</strong> subteam. Due to competitive subteam quotas, your application has been placed on our <strong>Active Reserve &amp; Waiting List</strong> for Silverstone 2026.`
+            : `Thank you for applying to <strong>VELOX Racing</strong> for the <strong>${rawSub}</strong> subteam. Following rigorous technical evaluations, we regret to inform you that we are unable to offer you a position on the active engineering crew at this time.`
+          )}
+      </p>
+      ${norm.includes('accept') ? `
+      <div style="background: #141924; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 10px; margin: 18px 0; padding: 16px;">
+        <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 13px;">
+          <span style="color: #94A3B8;">Designated Subsystem:</span>
+          <strong style="color: #38BDF8;">${rawSub}</strong>
+        </div>
+        <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 13px;">
+          <span style="color: #94A3B8;">Appointed Position:</span>
+          <strong style="color: #F59E0B;">${role}</strong>
+        </div>
+        <div style="display: flex; justify-content: space-between; padding: 6px 0; font-size: 13px;">
+          <span style="color: #94A3B8;">Championship Debut:</span>
+          <strong style="color: #FFFFFF;">Silverstone Circuit (UK)</strong>
+        </div>
+      </div>
+      <div style="text-align: center; margin: 26px 0;">
+        <a href="${inviteUrl}" target="_blank" style="display: inline-block; background: #E10600; color: #FFFFFF; font-size: 14px; font-weight: 800; text-decoration: none; padding: 13px 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(225, 6, 0, 0.45);">
+          🏁 Complete Onboarding &amp; Set Password &rarr;
+        </a>
+      </div>` : ''}
+      <div style="margin: 24px 0 16px 0; background: #131722; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 10px; padding: 16px; text-align: center;">
+        <p style="margin: 0 0 12px 0; font-size: 12px; font-weight: 800; color: #FFFFFF; text-transform: uppercase; letter-spacing: 1px;">Follow VELOX Racing Across Our Channels</p>
+        <div>
+          <a href="${ig}" target="_blank" style="display: inline-block; margin: 4px; background: linear-gradient(45deg, #F58529, #DD2A7B, #8134AF); color: #FFF; font-size: 11px; font-weight: 700; text-decoration: none; padding: 8px 14px; border-radius: 6px;">📸 Instagram</a>
+          <a href="${fb}" target="_blank" style="display: inline-block; margin: 4px; background: #1877F2; color: #FFF; font-size: 11px; font-weight: 700; text-decoration: none; padding: 8px 14px; border-radius: 6px;">📘 Facebook</a>
+          <a href="${li}" target="_blank" style="display: inline-block; margin: 4px; background: #0A66C2; color: #FFF; font-size: 11px; font-weight: 700; text-decoration: none; padding: 8px 14px; border-radius: 6px;">💼 LinkedIn</a>
+        </div>
+      </div>
+      <hr style="border: none; border-top: 1px solid rgba(255,255,255,0.08); margin: 20px 0;" />
+      <p style="font-size: 12px; line-height: 1.5; color: #94A3B8; margin: 0;">
+        With motorsport respect,<br/>
+        <strong style="color: #FFFFFF;">VELOX Racing Team Directorate</strong><br/>
+        Fatima Salman (Team Leader) • Karim Shaprawy (Vice Team Leader)<br/>
+        Mohamed Romy (Technical Leader) • Moaaz Elghamry (Managerial Leader &amp; Powertrain Lead)<br/>
+        <em>Zagazig National University &mdash; Formula Student</em>
+      </p>
+    </div>
+  </div>
+</body>
+</html>`;
     }
 
     // Function to open Gmail app/web with prefilled template
@@ -1184,6 +1319,41 @@ velox.racing.znu@gmail.com`;
       const payload = generateDecisionEmailPayload(app, app.status || 'Accepted');
       if (payload && payload.gmailComposeUrl) {
         window.open(payload.gmailComposeUrl, '_blank');
+      }
+    };
+
+    // Helper to copy rich HTML email directly to clipboard (for pasting in Gmail)
+    window.copyApplicantRichEmail = async function(app, status) {
+      if (!app) return;
+      const payload = generateDecisionEmailPayload(app, status || app.status || 'Accepted');
+      if (!payload) return;
+      const htmlContent = app._htmlBody || payload.htmlBody;
+      const plainContent = `Subject: ${payload.subject}\n\n${payload.body}`;
+
+      try {
+        if (navigator.clipboard && window.ClipboardItem) {
+          const htmlBlob = new Blob([htmlContent], { type: 'text/html' });
+          const textBlob = new Blob([plainContent], { type: 'text/plain' });
+          await navigator.clipboard.write([
+            new ClipboardItem({
+              'text/html': htmlBlob,
+              'text/plain': textBlob
+            })
+          ]);
+          alert(`✓ Rich Email with official VELOX Logo copied for ${app.full_name}!\n\nOpen Gmail and press Ctrl+V (Paste) — the logo, cards, and buttons will appear directly in your email!`);
+          return;
+        }
+      } catch (err) {
+        console.warn('ClipboardItem rich copy note:', err);
+      }
+
+      // Fallback
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(plainContent).then(() => {
+          alert(`✓ Decision letter copied for ${app.full_name}! (Paste into Gmail)`);
+        });
+      } else {
+        prompt('Copy decision letter:', plainContent);
       }
     };
 
@@ -1202,6 +1372,7 @@ velox.racing.znu@gmail.com`;
       }
 
       try {
+        const savedSmtpPass = (localStorage.getItem('velox_smtp_password') || '').trim();
         const emailResp = await fetch('/api/decision', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -1213,7 +1384,8 @@ velox.racing.znu@gmail.com`;
             subteam: applicant.subteam_first || 'General Engineering',
             role: 'Team Member',
             notes: notes,
-            base_url: window.location.origin
+            base_url: window.location.origin,
+            smtp_password: savedSmtpPass
           })
         });
 
@@ -1221,6 +1393,9 @@ velox.racing.znu@gmail.com`;
         const targetGmailUrl = (emailData && emailData.gmail_compose_url) ? emailData.gmail_compose_url : payload.gmailComposeUrl;
 
         if (emailData.status === 'success') {
+          if (emailData.html_body) {
+            applicant._htmlBody = emailData.html_body;
+          }
           if (emailNotice) {
             emailNotice.style.background = 'rgba(34, 197, 94, 0.14)';
             emailNotice.style.border = '1px solid rgba(34, 197, 94, 0.35)';
@@ -1228,15 +1403,18 @@ velox.racing.znu@gmail.com`;
             if (emailData.email_dispatched) {
               emailNotice.innerHTML = `
                 <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
-                  <div>✓ Automated <strong>${status}</strong> email dispatched from <strong>velox.racing.znu@gmail.com</strong> to <strong>${applicant.email}</strong>!</div>
-                  <a href="${targetGmailUrl}" target="_blank" class="btn btn-outline" style="font-size: 0.76rem; padding: 4px 10px; color: #FFF; border-color: rgba(255,255,255,0.3); text-decoration: none;">Open in Gmail App &rarr;</a>
+                  <div>✓ <strong>Official HTML email with VELOX Logo &amp; Invitation dispatched</strong> from <strong>velox.racing.znu@gmail.com</strong> directly to <strong>${applicant.email}</strong>!</div>
+                  <a href="${targetGmailUrl}" target="_blank" class="btn btn-outline" style="font-size: 0.76rem; padding: 4px 10px; color: #FFF; border-color: rgba(255,255,255,0.3); text-decoration: none;">View in Gmail &rarr;</a>
                 </div>
               `;
             } else {
               emailNotice.innerHTML = `
                 <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
-                  <div>✓ Status updated to <strong>${status}</strong>. Click below to send directly from <strong>velox.racing.znu@gmail.com</strong>:</div>
-                  <a href="${targetGmailUrl}" target="_blank" class="btn btn-primary" style="font-size: 0.8rem; padding: 6px 12px; background: #EA4335; border-color: #EA4335; text-decoration: none; font-weight: 700;">✉️ Open &amp; Send in Gmail App &rarr;</a>
+                  <div>✓ Decision saved for <strong>${applicant.full_name}</strong>. Choose dispatch method:</div>
+                  <div style="display: flex; gap: 6px; flex-wrap: wrap; align-items: center;">
+                    <a href="${targetGmailUrl}" target="_blank" class="btn btn-primary" style="font-size: 0.78rem; padding: 6px 12px; background: #EA4335; border-color: #EA4335; text-decoration: none; font-weight: 700;">✉️ Open in Gmail App</a>
+                    <button type="button" onclick="window.copyApplicantRichEmail(currentApplicant, '${status}')" class="btn btn-outline" style="font-size: 0.78rem; padding: 6px 12px; border-color: #E10600; color: #FF6B6B; font-weight: 700;">📋 Copy Rich Email (With Logo)</button>
+                  </div>
                 </div>
               `;
             }
@@ -1259,7 +1437,10 @@ velox.racing.znu@gmail.com`;
           emailNotice.innerHTML = `
             <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
               <div>ℹ️ Decision saved. Ready to dispatch via official Gmail account:</div>
-              <a href="${payload.gmailComposeUrl}" target="_blank" class="btn btn-primary" style="font-size: 0.8rem; padding: 6px 12px; background: #EA4335; border-color: #EA4335; text-decoration: none; font-weight: 700;">✉️ Open &amp; Send in Gmail App &rarr;</a>
+              <div style="display: flex; gap: 6px; flex-wrap: wrap; align-items: center;">
+                <a href="${payload.gmailComposeUrl}" target="_blank" class="btn btn-primary" style="font-size: 0.78rem; padding: 6px 12px; background: #EA4335; border-color: #EA4335; text-decoration: none; font-weight: 700;">✉️ Open in Gmail App</a>
+                <button type="button" onclick="window.copyApplicantRichEmail(currentApplicant, '${status}')" class="btn btn-outline" style="font-size: 0.78rem; padding: 6px 12px; border-color: #E10600; color: #FF6B6B; font-weight: 700;">📋 Copy Rich Email (With Logo)</button>
+              </div>
             </div>
           `;
         }
@@ -1394,6 +1575,96 @@ velox.racing.znu@gmail.com`;
           prompt('Copy Onboarding Invitation Link:', url);
         }
       });
+    }
+
+    const copyRichEmailBtn = document.getElementById('copyRichEmailBtn');
+    if (copyRichEmailBtn) {
+      copyRichEmailBtn.addEventListener('click', () => {
+        if (!currentApplicant) return;
+        const currentStatus = document.getElementById('drawerStatusSelect').value || currentApplicant.status || 'Accepted';
+        window.copyApplicantRichEmail(currentApplicant, currentStatus);
+      });
+    }
+
+    // SMTP Automated Email Configuration Modal Controls
+    const smtpSettingsBtn = document.getElementById('smtpSettingsBtn');
+    const smtpModal = document.getElementById('smtpConfigModal');
+    const closeSmtpModalBtn = document.getElementById('closeSmtpModalBtn');
+    const saveSmtpBtn = document.getElementById('saveSmtpBtn');
+    const clearSmtpBtn = document.getElementById('clearSmtpBtn');
+    const smtpInput = document.getElementById('smtpAppPasswordInput');
+    const smtpNotice = document.getElementById('smtpStatusNotice');
+
+    function updateSmtpButtonStatus() {
+      const saved = (localStorage.getItem('velox_smtp_password') || '').trim();
+      if (smtpSettingsBtn) {
+        if (saved) {
+          smtpSettingsBtn.innerHTML = `
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#4ADE80" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            <span style="color: #4ADE80; font-weight: 700;">SMTP Automated: Active</span>
+          `;
+          smtpSettingsBtn.style.borderColor = 'rgba(74, 222, 128, 0.45)';
+        } else {
+          smtpSettingsBtn.innerHTML = `
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+            <span>Email SMTP Setup</span>
+          `;
+          smtpSettingsBtn.style.borderColor = 'rgba(234, 67, 53, 0.4)';
+        }
+      }
+    }
+
+    if (smtpSettingsBtn && smtpModal) {
+      smtpSettingsBtn.addEventListener('click', () => {
+        const saved = (localStorage.getItem('velox_smtp_password') || '').trim();
+        if (smtpInput) smtpInput.value = saved;
+        if (smtpNotice) {
+          if (saved) {
+            smtpNotice.style.display = 'block';
+            smtpNotice.style.background = 'rgba(34, 197, 94, 0.14)';
+            smtpNotice.style.border = '1px solid rgba(34, 197, 94, 0.35)';
+            smtpNotice.style.color = '#4ADE80';
+            smtpNotice.innerHTML = '✓ Automated sending is <strong>ACTIVE</strong>. Acceptance emails with the VELOX Logo are sent directly in the background.';
+          } else {
+            smtpNotice.style.display = 'none';
+          }
+        }
+        smtpModal.style.display = 'flex';
+      });
+
+      if (closeSmtpModalBtn) {
+        closeSmtpModalBtn.addEventListener('click', () => { smtpModal.style.display = 'none'; });
+      }
+
+      smtpModal.addEventListener('click', (e) => {
+        if (e.target.id === 'smtpConfigModal') smtpModal.style.display = 'none';
+      });
+
+      if (saveSmtpBtn) {
+        saveSmtpBtn.addEventListener('click', () => {
+          const val = (smtpInput ? smtpInput.value : '').replace(/\s+/g, '');
+          if (!val) {
+            alert('Please enter your 16-character Google App Password or click Clear.');
+            return;
+          }
+          localStorage.setItem('velox_smtp_password', val);
+          updateSmtpButtonStatus();
+          alert('✓ Google App Password saved securely! Automated background email dispatch is now ENABLED for velox.racing.znu@gmail.com.');
+          smtpModal.style.display = 'none';
+        });
+      }
+
+      if (clearSmtpBtn) {
+        clearSmtpBtn.addEventListener('click', () => {
+          localStorage.removeItem('velox_smtp_password');
+          if (smtpInput) smtpInput.value = '';
+          updateSmtpButtonStatus();
+          alert('Google App Password removed. Decision emails will default to 1-click Gmail app compose.');
+          smtpModal.style.display = 'none';
+        });
+      }
+
+      updateSmtpButtonStatus();
     }
 
     // Search and Filter Events

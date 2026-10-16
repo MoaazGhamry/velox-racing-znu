@@ -34,11 +34,11 @@ def generate_invite_code():
     rand_hex = f"{random.randint(0x1000, 0xFFFF):X}"
     return f"VLX-INV-{timestamp_hex}{rand_hex}"
 
-VELOX_LOGO_URL = "https://velox-racing.vercel.app/VeloxLogoWeb.png"
+VELOX_LOGO_URL = "https://raw.githubusercontent.com/MoaazGhamry/velox-racing-znu/master/VeloxLogoWeb.png"
 VELOX_INSTAGRAM_URL = "https://www.instagram.com/velox_racing_znu?srtk=MWl2azlianJlZ3J3bg=="
 VELOX_FACEBOOK_URL = "https://www.facebook.com/share/19Xcwun8Di/?mibextid=wwXIfr"
 VELOX_LINKEDIN_URL = "https://www.linkedin.com/company/velox-racing-team/"
-VELOX_WEBSITE_URL = "https://velox-racing.vercel.app"
+VELOX_WEBSITE_URL = "https://velox-racing-znu.vercel.app"
 
 def build_plain_accepted(name, subteam, role, invite_url):
     return (
@@ -471,8 +471,8 @@ class handler(BaseHTTPRequestHandler):
         )
 
         # Attempt Email Dispatch via Gmail SMTP
-        sender_email = os.environ.get('SMTP_EMAIL', 'velox.racing.znu@gmail.com')
-        sender_password = os.environ.get('SMTP_PASSWORD')
+        sender_email = (data.get('smtp_email') or os.environ.get('SMTP_EMAIL') or 'velox.racing.znu@gmail.com').strip()
+        sender_password = (data.get('smtp_password') or os.environ.get('SMTP_PASSWORD') or '').strip()
 
         email_dispatched = False
         smtp_note = ""
@@ -493,11 +493,11 @@ class handler(BaseHTTPRequestHandler):
                 server.send_message(msg)
                 server.quit()
                 email_dispatched = True
-                smtp_note = "Email successfully sent via Gmail SMTP."
+                smtp_note = "Email successfully dispatched with official VELOX logo via Gmail SMTP."
             except Exception as smtp_err:
                 smtp_note = f"SMTP error: {str(smtp_err)}"
         else:
-            smtp_note = "SMTP_PASSWORD environment variable not set; automated email queued/simulated."
+            smtp_note = "SMTP_PASSWORD not configured; formatted decision letter ready for Gmail dispatch."
 
         self._send_json(200, {
             "status": "success",
@@ -508,6 +508,7 @@ class handler(BaseHTTPRequestHandler):
             "gmail_compose_url": gmail_compose_url,
             "subject": subject,
             "plain_body": plain_content,
+            "html_body": html_content,
             "candidate": {
                 "name": name,
                 "email": email,
