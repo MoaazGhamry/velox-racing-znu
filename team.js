@@ -160,7 +160,31 @@ const VELOX_TEAM = {
     {
       id: "electrical",
       name: "Electrical",
-      leader: null,
+      leader: {
+        id: "ali-elgohary",
+        name: "Ali Elgohary",
+        role: "Electrical Leader",
+        photo: "",
+        linkedin: "https://www.linkedin.com/in/alielgohary0",
+        department: "Electrical Division",
+        department_ar: "قسم الأنظمة الكهربائية والتحكم المدمج",
+        bio: "Commands the electrical division, high-reliability motorsport wiring harness, telemetry data logging, low-voltage power distribution, and embedded control modules.",
+        bio_ar: "يشرف على الأنظمة الكهربائية، ضفيرة الأسلاك المعتمدة للسباقات، أنظمة القياس والتحكم عن بعد، وتوزيع الطاقة والمتحكمات المدمجة.",
+        responsibilities: [
+          "Raychem motorsport wiring harness fabrication, strain relief, and IP67 weather sealing",
+          "Low-voltage power management, fuse box layout, and safety shutdown circuit integration",
+          "Embedded telemetry logging, sensor calibration, and pit wall live dashboard telemetry",
+          "ECU integration, CAN-bus architecture, and driver steering wheel display interface"
+        ],
+        responsibilities_ar: [
+          "تصنيع ضفائر أسلاك Raychem وعزلها وفق معايير مسابقات الفورميلا ستيودنت",
+          "إدارة الجهد المنخفض، وتصميم علبة الصمامات، ودوائر الأمان وفصل الطوارئ",
+          "أنظمة التليمتري ومعايرة الحساسات وبث البيانات الحية لمنصة الصيانة",
+          "برمجة وتوصيل وحدات التحكم ECU وشبكة الـ CAN-bus وشاشة المقود للسائق"
+        ],
+        quote: "Reliability in electrical systems is the heartbeat of motorsport. Zero gremlins, maximum performance.",
+        quote_ar: "الاعتمادية الكهربائية هي نبض سيارة السباق. لا مجال للأخطاء، فقط أداء فائق ومستمر."
+      },
       subteams: ["Wiring & Harness", "Control & Embedded System"],
       description: "Motorsport Raychem wiring harness, low-voltage power distribution, ECU / embedded controllers, and pit wall wireless telemetry.",
       description_ar: "ضفيرة أسلاك السباقات Raychem، وتوزيع الطاقة ذات الجهد المنخفض، وأنظمة التحكم والمتحكمات المدمجة، والقياس اللاسلكي من منصة الصيانة."
@@ -566,9 +590,13 @@ async function syncCloudAcceptedMembers() {
 
       if (!assignedRoleType) {
         const lowerR = assignedRole.toLowerCase();
-        if (lowerR.includes('department leader')) assignedRoleType = 'dept_lead';
-        else if (lowerR.includes('leader')) assignedRoleType = 'subteam_lead';
-        else assignedRoleType = 'member';
+        if (lowerR.includes('department leader') || lowerR.includes('electrical leader') || lowerR.includes('powertrain leader') || (lowerR.includes('leader') && !parsed.subteam)) {
+          assignedRoleType = 'dept_lead';
+        } else if (lowerR.includes('leader')) {
+          assignedRoleType = 'subteam_lead';
+        } else {
+          assignedRoleType = 'member';
+        }
       }
 
       const cloudAvatar = (app.portfolio_url && (app.portfolio_url.startsWith('data:image/') || app.portfolio_url.startsWith('http') || app.portfolio_url.startsWith('photos/'))) ? app.portfolio_url : '';
@@ -580,6 +608,7 @@ async function syncCloudAcceptedMembers() {
         role: assignedRole,
         roleType: assignedRoleType,
         branch: parsed.branch,
+        department: parsed.dept,
         dept: parsed.dept,
         subteam: parsed.subteam,
         username: (app.email ? app.email.split('@')[0] : normName).replace(/[^a-z0-9]/g, ''),
@@ -601,7 +630,7 @@ async function syncCloudAcceptedMembers() {
         updated = true;
       }
 
-      // Also ensure dynamic persona exists with avatar
+      // Ensure dynamic persona exists with avatar
       if (!db.personas) db.personas = {};
       const personaKey = 'user_' + entry.username;
       if (!db.personas[personaKey]) {
@@ -618,6 +647,44 @@ async function syncCloudAcceptedMembers() {
         };
       } else if (resolvedAvatar) {
         db.personas[personaKey].avatar = resolvedAvatar;
+      }
+
+      // Provision inside portal account credentials if missing
+      if (!db.accounts) db.accounts = [];
+      if (!db.accounts.some(a => a.username === entry.username)) {
+        db.accounts.push({
+          username: entry.username,
+          password: 'velox2026',
+          personaKey: personaKey,
+          name: cleanName,
+          status: 'Active'
+        });
+      }
+
+      // Special provision for Ali Elgohary
+      if (normName === 'ali elgohary') {
+        db.personas['ali'] = {
+          id: 'ali-elgohary',
+          name: 'Ali Elgohary',
+          role: 'Electrical Leader',
+          roleType: 'dept_lead',
+          branch: 'Technical',
+          departments: ['Electrical'],
+          subteam: '',
+          avatar: resolvedAvatar,
+          deptDesc: 'Technical Engineering Division • Electrical Leader'
+        };
+        ['alielgohary', 'ali'].forEach(uKey => {
+          if (!db.accounts.some(a => a.username === uKey)) {
+            db.accounts.push({
+              username: uKey,
+              password: 'velox2026',
+              personaKey: 'ali',
+              name: 'Ali Elgohary',
+              status: 'Active'
+            });
+          }
+        });
       }
     });
 

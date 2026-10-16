@@ -8,10 +8,80 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from http.server import BaseHTTPRequestHandler
 
+def load_env():
+    possible_paths = [
+        os.path.join(os.path.dirname(__file__), '..', '.env'),
+        os.path.join(os.getcwd(), '.env'),
+        os.path.join(os.path.dirname(__file__), '.env')
+    ]
+    for p in possible_paths:
+        if os.path.exists(p):
+            try:
+                with open(p, 'r', encoding='utf-8') as f:
+                    for line in f:
+                        line = line.strip()
+                        if line and not line.startswith('#') and '=' in line:
+                            k, v = line.split('=', 1)
+                            os.environ.setdefault(k.strip(), v.strip().strip('"').strip("'"))
+            except Exception:
+                pass
+            break
+
+load_env()
+
 def generate_invite_code():
     timestamp_hex = f"{int(time.time()):X}"[-4:]
     rand_hex = f"{random.randint(0x1000, 0xFFFF):X}"
     return f"VLX-INV-{timestamp_hex}{rand_hex}"
+
+def build_plain_accepted(name, subteam, role, invite_url):
+    return (
+        f"Dear {name},\n\n"
+        f"Congratulations! On behalf of Zagazig National University and the executive leadership of VELOX Racing, "
+        f"we are proud to inform you that your application to join our Formula Student engineering team has been OFFICIALLY ACCEPTED.\n\n"
+        f"APPOINTMENT DOSSIER:\n"
+        f"• Designated Department / Subsystem: {subteam}\n"
+        f"• Appointed Position: {role}\n"
+        f"• Championship Debut: Silverstone Circuit (UK) — Formula Student\n\n"
+        f"COMPLETE YOUR ONBOARDING & SET YOUR PASSWORD:\n"
+        f"Please click your secure onboarding link to verify your profile details and set your Inside Portal password:\n"
+        f"{invite_url}\n\n"
+        f"Upon completing this pass, your account will be activated and you will be placed immediately into our dynamic Team Structure and Member Portal.\n\n"
+        f"With motorsport respect,\n"
+        f"VELOX Racing Team Directorate\n"
+        f"Fatima Salman (Team Leader) • Karim Shaprawy (Vice Team Leader)\n"
+        f"Mohamed Romy (Technical Leader) • Moaaz Elghamry (Managerial Leader & Powertrain Lead)\n"
+        f"velox.racing.znu@gmail.com\n"
+        f"Zagazig National University — Formula Student"
+    )
+
+def build_plain_rejected(name, subteam):
+    return (
+        f"Dear {name},\n\n"
+        f"Thank you for applying to VELOX Racing and taking part in our recruitment process for {subteam}.\n\n"
+        f"We received an exceptional number of highly qualified applications for this competitive Formula Student season. "
+        f"Following rigorous technical evaluations and subteam capacity allocation, we regret to inform you that we are unable to offer you a position on the active engineering crew at this time.\n\n"
+        f"We were genuinely impressed by your initiative, passion, and commitment. We strongly encourage you to continue developing your engineering skills, attend our public university workshops, and reapply in our upcoming recruitment cycles.\n\n"
+        f"We wish you every success in your academic and professional endeavors.\n\n"
+        f"Sincerely,\n"
+        f"VELOX Racing Team Human Resources Directorate\n"
+        f"velox.racing.znu@gmail.com\n"
+        f"Zagazig National University — Formula Student"
+    )
+
+def build_plain_waitlist(name, subteam):
+    return (
+        f"Dear {name},\n\n"
+        f"Thank you for applying to VELOX Racing for the {subteam} subteam.\n\n"
+        f"Due to current subteam capacity quotas, your application has been placed on our Active Reserve & Waiting List for the Silverstone 2026 season.\n\n"
+        f"Your application received strong marks from our technical reviewers, and we want to keep your candidacy active as sprint deliverables progress. "
+        f"Should additional capacity become available following initial onboarding, our Human Resources Directorate and Subteam Leads will reach out directly to offer you a spot on the engineering team.\n\n"
+        f"Thank you again for your patience, dedication, and motorsport enthusiasm.\n\n"
+        f"Best regards,\n"
+        f"VELOX Racing Team Human Resources Directorate\n"
+        f"velox.racing.znu@gmail.com\n"
+        f"Zagazig National University — Formula Student"
+    )
 
 def build_accepted_email(name, subteam, role, invite_url):
     html = f"""
@@ -279,20 +349,29 @@ class handler(BaseHTTPRequestHandler):
             f"role={urllib.parse.quote(role)}"
         )
 
-        # Build Email Subject and HTML
+        # Build Email Subject, HTML, and Plain Text
         norm_status = status.lower()
         if "accept" in norm_status:
             subject = "🏁 OFFICIAL INVITATION: Welcome to VELOX Racing — Formula Student ZNU"
             html_content = build_accepted_email(name, subteam, role, invite_url)
+            plain_content = build_plain_accepted(name, subteam, role, invite_url)
         elif "reject" in norm_status:
-            subject = "VELOX Racing Team — Application Update (Silverstone 2026/2027)"
+            subject = "VELOX Racing Team — Application Update (Silverstone 2026)"
             html_content = build_rejected_email(name, subteam)
+            plain_content = build_plain_rejected(name, subteam)
         elif "wait" in norm_status:
             subject = "VELOX Racing Team — Application Status: Active Reserve List"
             html_content = build_waitlist_email(name, subteam)
+            plain_content = build_plain_waitlist(name, subteam)
         else:
             self._send_json(400, {"error": "unsupported_status", "message": f"Unsupported decision status: {status}"})
             return
+
+        gmail_compose_url = (
+            f"https://mail.google.com/mail/?view=cm&fs=1&to={urllib.parse.quote(email)}"
+            f"&su={urllib.parse.quote(subject)}"
+            f"&body={urllib.parse.quote(plain_content)}"
+        )
 
         # Attempt Email Dispatch via Gmail SMTP
         sender_email = os.environ.get('SMTP_EMAIL', 'velox.racing.znu@gmail.com')
@@ -306,7 +385,9 @@ class handler(BaseHTTPRequestHandler):
                 msg = MIMEMultipart('alternative')
                 msg['From'] = f"VELOX Racing Team <{sender_email}>"
                 msg['To'] = email
+                msg['Reply-To'] = sender_email
                 msg['Subject'] = subject
+                msg.attach(MIMEText(plain_content, 'plain'))
                 msg.attach(MIMEText(html_content, 'html'))
 
                 server = smtplib.SMTP('smtp.gmail.com', 587, timeout=12)
@@ -327,6 +408,9 @@ class handler(BaseHTTPRequestHandler):
             "smtp_note": smtp_note,
             "invite_code": invite_code,
             "invite_url": invite_url,
+            "gmail_compose_url": gmail_compose_url,
+            "subject": subject,
+            "plain_body": plain_content,
             "candidate": {
                 "name": name,
                 "email": email,

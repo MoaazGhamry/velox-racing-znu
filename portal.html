@@ -2943,13 +2943,41 @@
           avatar: 'photos/Mohamed Hassan.jpeg',
           deptDesc: 'Media & Public Relations Lead',
           scopeDesc: 'Subteam command over Media, photography, racecar documentary films, and public relations. Authorized to assign media deliverables and manage media crew. Actions automatically notify Managerial Leader and Team Leaders.'
+        },
+        ali: {
+          id: 'ali-elgohary',
+          name: 'Ali Elgohary',
+          role: 'Electrical Leader',
+          roleType: 'dept_lead',
+          branch: 'Technical',
+          departments: ['Electrical'],
+          avatar: '',
+          deptDesc: 'Electrical Engineering Division • Electrical Leader',
+          scopeDesc: 'Departmental command over Electrical Division: Motorsport Raychem wiring harness, low-voltage power distribution, embedded controllers, and live pit wall telemetry.'
         }
       },
 
       files: [],
       tasks: [],
       accessRequests: [],
-      invitations: [],
+      invitations: [
+        {
+          code: 'FS-ZNU-590452',
+          inviteeName: 'Ali Elgohary',
+          email: 'alielgohary142005@gmail.com',
+          phone: '01212462959',
+          role: 'Electrical Leader',
+          roleType: 'dept_lead',
+          branch: 'Technical',
+          department: 'Electrical',
+          subteam: '',
+          authorizer: 'Fatima Salman (Team Leader)',
+          status: 'Accepted',
+          issued: '2026-10-16',
+          acceptedAt: '2026-10-16 19:28:46',
+          note: 'Official Enlistment via Team Invitation (Pass: FS-ZNU-590452 • Role: Electrical Leader)'
+        }
+      ],
       directives: [],
 
       notifications: [
@@ -2972,7 +3000,10 @@
         { username: 'karim', password: 'velox2026', personaKey: 'karim', name: 'Karim Shaprawy', status: 'Active' },
         { username: 'romy', password: 'velox2026', personaKey: 'romy', name: 'Mohamed Romy', status: 'Active' },
         { username: 'moaaz', password: 'velox2026', personaKey: 'moaaz', name: 'Moaaz Elghamry', status: 'Active' },
-        { username: 'hassan', password: 'velox2026', personaKey: 'hassan', name: 'Mohamed Hassan', status: 'Active' }
+        { username: 'hassan', password: 'velox2026', personaKey: 'hassan', name: 'Mohamed Hassan', status: 'Active' },
+        { username: 'alielgohary', password: 'velox2026', personaKey: 'ali', name: 'Ali Elgohary', status: 'Active' },
+        { username: 'ali', password: 'velox2026', personaKey: 'ali', name: 'Ali Elgohary', status: 'Active' },
+        { username: 'alielgohary142005', password: 'velox2026', personaKey: 'ali', name: 'Ali Elgohary', status: 'Active' }
       ],
 
       membersRoster: [
@@ -2981,7 +3012,8 @@
         { id: 'karim-shaprawy', name: 'Karim Shaprawy', role: 'Vice Team Leader', branch: 'Executive', dept: 'Operations & Build', username: 'karim', points: 0, status: 'Active' },
         { id: 'mohamed-romy', name: 'Mohamed Romy', role: 'Technical Leader', branch: 'Technical', dept: 'Chief Engineering', username: 'romy', points: 0, status: 'Active' },
         { id: 'moaaz-elghamry', name: 'Moaaz Elghamry', role: 'Managerial Leader & Powertrain Lead', branch: 'Managerial & Technical', dept: 'Operations Management & Powertrain', username: 'moaaz', points: 0, status: 'Active' },
-        { id: 'mohamed-hassan', name: 'Mohamed Hassan', role: 'Media & PR Lead', branch: 'Managerial', dept: 'Media & PR', username: 'hassan', points: 0, status: 'Active' }
+        { id: 'mohamed-hassan', name: 'Mohamed Hassan', role: 'Media & PR Lead', branch: 'Managerial', dept: 'Media & PR', username: 'hassan', points: 0, status: 'Active' },
+        { id: 'ali-elgohary', name: 'Ali Elgohary', role: 'Electrical Leader', roleType: 'dept_lead', branch: 'Technical', dept: 'Electrical', subteam: '', username: 'alielgohary', points: 0, status: 'Active', avatar: '' }
       ],
 
       auditLog: [
@@ -3011,10 +3043,23 @@
             if (parsed.membersRoster && !parsed.membersRoster.some(m => m.id === 'admin-director')) {
               parsed.membersRoster.unshift(PORTAL_SEED.membersRoster[0]);
             }
-            // Purge any stale Ali Elgohary references from cached sessions
-            if (parsed.personas && parsed.personas.ali) delete parsed.personas.ali;
-            if (parsed.accounts) parsed.accounts = parsed.accounts.filter(a => a.username !== 'ali' && a.personaKey !== 'ali');
-            if (parsed.membersRoster) parsed.membersRoster = parsed.membersRoster.filter(m => m.id !== 'ali-elgohary' && m.username !== 'ali');
+            // Ensure Ali Elgohary accepted appointment is active in personas, accounts, and roster
+            if (parsed.personas && !parsed.personas.ali) {
+              parsed.personas.ali = PORTAL_SEED.personas.ali;
+            }
+            if (!parsed.accounts) parsed.accounts = [];
+            if (!parsed.accounts.some(a => a.username === 'alielgohary' || a.username === 'ali')) {
+              parsed.accounts.push({ username: 'alielgohary', password: 'velox2026', personaKey: 'ali', name: 'Ali Elgohary', status: 'Active' });
+              parsed.accounts.push({ username: 'ali', password: 'velox2026', personaKey: 'ali', name: 'Ali Elgohary', status: 'Active' });
+              parsed.accounts.push({ username: 'alielgohary142005', password: 'velox2026', personaKey: 'ali', name: 'Ali Elgohary', status: 'Active' });
+            }
+            if (parsed.membersRoster && !parsed.membersRoster.some(m => m.id === 'ali-elgohary' || (m.name && m.name.toLowerCase() === 'ali elgohary'))) {
+              parsed.membersRoster.push(PORTAL_SEED.membersRoster.find(m => m.id === 'ali-elgohary'));
+            }
+            if (!parsed.invitations) parsed.invitations = [];
+            if (!parsed.invitations.some(i => i.code === 'FS-ZNU-590452' || (i.inviteeName && i.inviteeName.toLowerCase() === 'ali elgohary'))) {
+              parsed.invitations.unshift(PORTAL_SEED.invitations[0]);
+            }
             // Initialize portrait photos for leaders if not yet customized
             if (parsed.personas) {
               if (parsed.personas.fatima && !parsed.personas.fatima.avatar) parsed.personas.fatima.avatar = 'photos/Fatima Salman.jpeg';
@@ -6986,6 +7031,135 @@
 
       // Initialize Authentication Gate & User Session
       checkAuth();
+
+      // Live synchronize accepted candidates from Supabase
+      async function syncPortalWithSupabaseAcceptedMembers() {
+        const cfg = window.VELOX_CONFIG || {};
+        if (!cfg.url || !cfg.anonKey || cfg.url.includes('your-project-id') || !window.supabase) return;
+        try {
+          const client = window.supabase.createClient(cfg.url, cfg.anonKey);
+          const { data, error } = await client
+            .from('applications')
+            .select('id, full_name, email, phone, subteam_first, subteam_second, status, hr_notes, why_join, portfolio_url')
+            .eq('status', 'Accepted');
+
+          if (error || !Array.isArray(data) || data.length === 0) return;
+
+          const db = getPortalDb();
+          let updated = false;
+
+          data.forEach(app => {
+            if (!app || !app.full_name) return;
+            const cleanName = app.full_name.trim();
+            const normName = cleanName.toLowerCase();
+            const username = (app.email ? app.email.split('@')[0] : normName).replace(/[^a-z0-9]/g, '');
+            const memberId = 'mem-' + normName.replace(/[^a-z0-9]/g, '-');
+
+            const noteBlob = `${app.hr_notes || ''} ${app.subteam_second || ''} ${app.why_join || ''}`;
+            const roleMatch = noteBlob.match(/Role:\s*([^\n|•,]+)/i);
+            const assignedRole = (roleMatch && roleMatch[1]) ? roleMatch[1].trim() : (normName === 'ali elgohary' ? 'Electrical Leader' : 'Team Member');
+
+            let roleType = 'member';
+            const lowerR = assignedRole.toLowerCase();
+            if (lowerR.includes('department leader') || lowerR.includes('electrical leader') || lowerR.includes('powertrain leader') || (lowerR.includes('leader') && !app.subteam_first.includes('—'))) {
+              roleType = 'dept_lead';
+            } else if (lowerR.includes('leader')) {
+              roleType = 'subteam_lead';
+            }
+
+            const rawDept = app.subteam_first || 'General';
+            const dept = rawDept.includes('—') ? rawDept.split('—')[0].trim() : rawDept.trim();
+            const subteam = rawDept.includes('—') ? rawDept.split('—')[1].trim() : '';
+
+            // Check if in roster
+            const rosterIdx = (db.membersRoster || []).findIndex(m => m.id === memberId || (m.name && m.name.toLowerCase() === normName));
+            const cloudAvatar = (app.portfolio_url && (app.portfolio_url.startsWith('data:image/') || app.portfolio_url.startsWith('http') || app.portfolio_url.startsWith('photos/'))) ? app.portfolio_url : '';
+            const existingAvatar = rosterIdx !== -1 ? (db.membersRoster[rosterIdx].avatar || '') : '';
+
+            const rosterEntry = {
+              id: memberId,
+              name: cleanName,
+              role: assignedRole,
+              roleType: roleType,
+              branch: 'Technical',
+              dept: dept,
+              subteam: subteam,
+              username: username,
+              points: (rosterIdx !== -1 && db.membersRoster[rosterIdx].points) || 0,
+              status: 'Active',
+              avatar: cloudAvatar || existingAvatar
+            };
+
+            if (rosterIdx !== -1) {
+              db.membersRoster[rosterIdx] = { ...db.membersRoster[rosterIdx], ...rosterEntry };
+            } else {
+              if (!db.membersRoster) db.membersRoster = [];
+              db.membersRoster.push(rosterEntry);
+              updated = true;
+            }
+
+            // Ensure persona
+            if (!db.personas) db.personas = {};
+            const personaKey = normName === 'ali elgohary' ? 'ali' : ('user_' + username);
+            if (!db.personas[personaKey]) {
+              db.personas[personaKey] = {
+                id: memberId,
+                name: cleanName,
+                role: assignedRole,
+                roleType: roleType,
+                branch: 'Technical',
+                departments: [dept],
+                subteam: subteam,
+                avatar: cloudAvatar || existingAvatar,
+                deptDesc: `${dept} Division • ${assignedRole}`
+              };
+              updated = true;
+            } else if (cloudAvatar && !db.personas[personaKey].avatar) {
+              db.personas[personaKey].avatar = cloudAvatar;
+            }
+
+            // Ensure account
+            if (!db.accounts) db.accounts = [];
+            if (!db.accounts.some(a => a.username === username)) {
+              db.accounts.push({
+                username: username,
+                password: 'velox2026',
+                personaKey: personaKey,
+                name: cleanName,
+                status: 'Active'
+              });
+              updated = true;
+            }
+
+            // Extra accounts for Ali Elgohary
+            if (normName === 'ali elgohary') {
+              ['alielgohary', 'ali'].forEach(uKey => {
+                if (!db.accounts.some(a => a.username === uKey)) {
+                  db.accounts.push({
+                    username: uKey,
+                    password: 'velox2026',
+                    personaKey: 'ali',
+                    name: 'Ali Elgohary',
+                    status: 'Active'
+                  });
+                  updated = true;
+                }
+              });
+            }
+          });
+
+          if (updated) {
+            savePortalDb(db);
+            const p = getActivePersona();
+            renderUserBar();
+            renderAdminDashboard();
+          }
+        } catch (syncErr) {
+          console.warn('Supabase accepted sync notice:', syncErr);
+        }
+      }
+
+      syncPortalWithSupabaseAcceptedMembers();
     });
   </script>
 </body>

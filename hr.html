@@ -297,9 +297,17 @@
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
                     Waitlist
                   </button>
+                  <button type="button" id="openGmailAppBtn" class="btn btn-outline" style="background: rgba(234, 67, 53, 0.15); border-color: #ea4335; color: #ff8a80; padding: 10px 14px; font-size: 0.85rem; font-weight: 700; display: inline-flex; align-items: center; gap: 6px;" title="Compose and send automated decision email from velox.racing.znu@gmail.com in Gmail app">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                    <span>Send via Gmail App</span>
+                  </button>
                   <button type="button" id="copyInviteLinkBtn" class="btn btn-outline" style="display: none; background: rgba(56, 189, 248, 0.12); border-color: #38bdf8; color: #38bdf8; padding: 10px 14px; font-size: 0.85rem; font-weight: 700; align-items: center; gap: 6px;" title="Copy secure onboarding invitation pass link">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
                     Copy Invite Link
+                  </button>
+                  <button type="button" id="copyDecisionLetterBtn" class="btn btn-outline" style="background: rgba(148, 163, 184, 0.12); border-color: #64748b; color: #cbd5e1; padding: 10px 14px; font-size: 0.85rem; font-weight: 700; display: inline-flex; align-items: center; gap: 6px;" title="Copy complete official decision message for WhatsApp, email, or LinkedIn">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                    Copy Letter
                   </button>
                 </div>
                 <!-- Automated Email Feedback Notification -->
@@ -705,6 +713,10 @@
               <button type="button" class="table-btn table-btn-review" onclick="event.stopPropagation(); openDrawer('${app.id}')">
                 Review
               </button>
+              <button type="button" class="table-btn" style="background: rgba(234, 67, 53, 0.15); border: 1px solid rgba(234, 67, 53, 0.35); color: #ff8a80; padding: 6px 10px; font-size: 0.78rem; font-weight: 700; display: inline-flex; align-items: center; gap: 4px;" title="Send decision email via Gmail App" onclick="event.stopPropagation(); openApplicantGmail('${app.id}')">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                <span>Gmail</span>
+              </button>
               <button type="button" class="table-btn table-btn-delete" title="Delete application response" onclick="event.stopPropagation(); promptDeleteApplicant('${app.id}')">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <polyline points="3 6 5 6 21 6"></polyline>
@@ -757,11 +769,14 @@
         appliedDateEl.textContent = dateStr;
       }
 
-      // Quick Contact Actions
+      // Quick Contact Actions & Direct Gmail App Link
       const emailLink = document.getElementById('drawerEmailLink');
       if (emailLink) {
         if (currentApplicant.email) {
-          emailLink.href = `mailto:${encodeURIComponent(currentApplicant.email)}`;
+          const initPayload = generateDecisionEmailPayload(currentApplicant, currentApplicant.status || 'Accepted');
+          emailLink.href = (initPayload && initPayload.gmailComposeUrl) ? initPayload.gmailComposeUrl : `mailto:${encodeURIComponent(currentApplicant.email)}`;
+          emailLink.target = '_blank';
+          emailLink.title = `Compose and send decision email to ${currentApplicant.email} via Gmail app`;
           emailLink.style.display = 'inline-flex';
         } else {
           emailLink.style.display = 'none';
@@ -1082,63 +1097,254 @@
       // Automatically sync with Team Structure Org Chart
       syncApplicantToTeamStructure(currentApplicant, newStatus);
 
-      // Automated Email Dispatch via /api/decision
-      if (['Accepted', 'Rejected', 'Waitlist'].includes(newStatus) && currentApplicant.email) {
-        const emailNotice = document.getElementById('emailDispatchNotice');
+    // Helper to generate official email subject and plain text body for candidate
+    function generateDecisionEmailPayload(applicant, status) {
+      if (!applicant) return null;
+      const name = (applicant.full_name || 'Candidate').trim();
+      const email = (applicant.email || '').trim();
+      const rawSub = applicant.subteam_first || 'General Engineering';
+      const role = 'Team Member';
+      const origin = window.location.origin;
+
+      let dept = rawSub;
+      let sub = '';
+      if (rawSub.includes('—')) {
+        const parts = rawSub.split('—');
+        dept = parts[0].trim();
+        sub = parts[1].trim();
+      } else if (rawSub.includes('-')) {
+        const parts = rawSub.split('-');
+        dept = parts[0].trim();
+        sub = parts[1].trim();
+      }
+
+      const code = applicant._inviteCode || ('VLX-INV-' + (applicant.id ? applicant.id.slice(0, 6).toUpperCase() : Math.random().toString(36).substring(2, 8).toUpperCase()));
+      const inviteUrl = applicant._inviteUrl || (
+        `${origin}/invite.html?code=${encodeURIComponent(code)}&name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&dept=${encodeURIComponent(dept)}&subteam=${encodeURIComponent(sub)}&role=${encodeURIComponent(role)}`
+      );
+
+      let subject = '';
+      let body = '';
+
+      const norm = (status || 'New').toLowerCase();
+      if (norm.includes('accept')) {
+        subject = '🏁 OFFICIAL INVITATION: Welcome to VELOX Racing — Formula Student ZNU';
+        body = `Dear ${name},
+
+Congratulations! On behalf of Zagazig National University and the executive leadership of VELOX Racing, we are proud to inform you that your application to join our Formula Student championship engineering team has been OFFICIALLY ACCEPTED.
+
+APPOINTMENT DOSSIER:
+• Designated Department / Subsystem: ${rawSub}
+• Appointed Position: ${role}
+• Championship Debut: Silverstone Circuit (UK) — Formula Student
+
+COMPLETE YOUR ONBOARDING & SET YOUR PASSWORD:
+Please click your secure onboarding link below to verify your profile and initialize your Inside Portal password:
+${inviteUrl}
+
+Upon completing your registration:
+1. Your candidate credentials will be confirmed.
+2. Your Inside Portal account will be activated.
+3. You will immediately appear on our official Team Structure Org Chart.
+
+We are thrilled to welcome you to the team. Let's engineer the future of Egyptian motorsport together!
+
+With motorsport respect,
+VELOX Racing Team Directorate
+Fatima Salman (Team Leader) • Karim Shaprawy (Vice Team Leader)
+Mohamed Romy (Technical Leader) • Moaaz Elghamry (Managerial Leader & Powertrain Lead)
+velox.racing.znu@gmail.com
+Zagazig National University — Formula Student`;
+      } else if (norm.includes('wait')) {
+        subject = 'VELOX Racing Team — Application Status: Active Reserve List';
+        body = `Dear ${name},
+
+Thank you for applying to VELOX Racing for the ${rawSub} position.
+
+Due to competitive subteam capacity limits, your application has been placed on our Active Reserve & Waiting List for the Silverstone 2026 season.
+
+Your application received strong technical scores, and we are retaining your profile in our candidate pool as sprint phases progress. Should additional capacity open up during upcoming build phases, our HR Directorate and Subteam Leads will reach out directly to offer you a spot on the team.
+
+Thank you again for your patience and passion for Formula Student.
+
+Best regards,
+VELOX Racing Team Human Resources Directorate
+velox.racing.znu@gmail.com
+Zagazig National University — Formula Student`;
+      } else if (norm.includes('reject')) {
+        subject = 'VELOX Racing Team — Application Update (Silverstone 2026)';
+        body = `Dear ${name},
+
+Thank you for applying to VELOX Racing and taking part in our recruitment process for ${rawSub}.
+
+We received a very high volume of qualified applications this season. Following rigorous evaluations and strict technical quotas, we regret to inform you that we are unable to offer you a position on the active engineering crew at this time.
+
+We were genuinely impressed by your ambition and passion. We strongly encourage you to continue honing your skills, attend our public university workshops, and apply again in our upcoming recruitment cycles.
+
+We wish you the very best in your academic and professional endeavors.
+
+Sincerely,
+VELOX Racing Team Human Resources Directorate
+velox.racing.znu@gmail.com
+Zagazig National University — Formula Student`;
+      } else {
+        subject = `VELOX Racing Team — Application Update`;
+        body = `Dear ${name},
+
+Thank you for your application to VELOX Racing (${rawSub}). Our Human Resources team is actively reviewing your candidacy.
+
+Best regards,
+VELOX Racing Team
+velox.racing.znu@gmail.com`;
+      }
+
+      const gmailComposeUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(email)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      const mailtoUrl = `mailto:${encodeURIComponent(email)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+      return { subject, body, inviteUrl, code, gmailComposeUrl, mailtoUrl };
+    }
+
+    // Function to open Gmail app/web with prefilled template
+    window.openApplicantGmail = function(id) {
+      const app = applications.find(a => a.id === id);
+      if (!app || !app.email) {
+        alert('Candidate does not have a valid email address on file.');
+        return;
+      }
+      const payload = generateDecisionEmailPayload(app, app.status || 'Accepted');
+      if (payload && payload.gmailComposeUrl) {
+        window.open(payload.gmailComposeUrl, '_blank');
+      }
+    };
+
+    // Automated Email Dispatch via /api/decision with fallback to Gmail App
+    async function dispatchDecisionEmail(applicant, status, notes) {
+      if (!applicant || !applicant.email) return;
+      const payload = generateDecisionEmailPayload(applicant, status);
+      const emailNotice = document.getElementById('emailDispatchNotice');
+
+      if (emailNotice) {
+        emailNotice.style.display = 'block';
+        emailNotice.style.background = 'rgba(56, 189, 248, 0.12)';
+        emailNotice.style.border = '1px solid rgba(56, 189, 248, 0.35)';
+        emailNotice.style.color = '#38BDF8';
+        emailNotice.innerHTML = `⏳ Sending automated <strong>${status}</strong> email to <strong>${applicant.email}</strong> from <code>velox.racing.znu@gmail.com</code>...`;
+      }
+
+      try {
+        const emailResp = await fetch('/api/decision', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            applicant_id: applicant.id,
+            full_name: applicant.full_name,
+            email: applicant.email,
+            status: status,
+            subteam: applicant.subteam_first || 'General Engineering',
+            role: 'Team Member',
+            notes: notes,
+            base_url: window.location.origin
+          })
+        });
+
+        const emailData = await emailResp.json();
+        const targetGmailUrl = (emailData && emailData.gmail_compose_url) ? emailData.gmail_compose_url : payload.gmailComposeUrl;
+
+        if (emailData.status === 'success') {
+          if (emailNotice) {
+            emailNotice.style.background = 'rgba(34, 197, 94, 0.14)';
+            emailNotice.style.border = '1px solid rgba(34, 197, 94, 0.35)';
+            emailNotice.style.color = '#4ADE80';
+            if (emailData.email_dispatched) {
+              emailNotice.innerHTML = `
+                <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+                  <div>✓ Automated <strong>${status}</strong> email dispatched from <strong>velox.racing.znu@gmail.com</strong> to <strong>${applicant.email}</strong>!</div>
+                  <a href="${targetGmailUrl}" target="_blank" class="btn btn-outline" style="font-size: 0.76rem; padding: 4px 10px; color: #FFF; border-color: rgba(255,255,255,0.3); text-decoration: none;">Open in Gmail App &rarr;</a>
+                </div>
+              `;
+            } else {
+              emailNotice.innerHTML = `
+                <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+                  <div>✓ Status updated to <strong>${status}</strong>. Click below to send directly from <strong>velox.racing.znu@gmail.com</strong>:</div>
+                  <a href="${targetGmailUrl}" target="_blank" class="btn btn-primary" style="font-size: 0.8rem; padding: 6px 12px; background: #EA4335; border-color: #EA4335; text-decoration: none; font-weight: 700;">✉️ Open &amp; Send in Gmail App &rarr;</a>
+                </div>
+              `;
+            }
+          }
+
+          if (status === 'Accepted' && (emailData.invite_url || payload.inviteUrl)) {
+            applicant._inviteUrl = emailData.invite_url || payload.inviteUrl;
+            applicant._inviteCode = emailData.invite_code || payload.code;
+            const copyBtn = document.getElementById('copyInviteLinkBtn');
+            if (copyBtn) copyBtn.style.display = 'inline-flex';
+          }
+        }
+      } catch (mailErr) {
+        console.warn('Notice: automated email dispatch endpoint response:', mailErr);
         if (emailNotice) {
           emailNotice.style.display = 'block';
-          emailNotice.style.background = 'rgba(56, 189, 248, 0.12)';
-          emailNotice.style.border = '1px solid rgba(56, 189, 248, 0.35)';
-          emailNotice.style.color = '#38BDF8';
-          emailNotice.innerHTML = `⏳ Sending automated <strong>${newStatus}</strong> email to <strong>${currentApplicant.email}</strong> from <code>velox.racing.znu@gmail.com</code>...`;
+          emailNotice.style.background = 'rgba(234, 179, 8, 0.12)';
+          emailNotice.style.border = '1px solid rgba(234, 179, 8, 0.35)';
+          emailNotice.style.color = '#FBBF24';
+          emailNotice.innerHTML = `
+            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+              <div>ℹ️ Decision saved. Ready to dispatch via official Gmail account:</div>
+              <a href="${payload.gmailComposeUrl}" target="_blank" class="btn btn-primary" style="font-size: 0.8rem; padding: 6px 12px; background: #EA4335; border-color: #EA4335; text-decoration: none; font-weight: 700;">✉️ Open &amp; Send in Gmail App &rarr;</a>
+            </div>
+          `;
+        }
+      }
+    }
+
+    // Save Status & Notes to Supabase & Team Structure
+    async function saveApplicantStatus(overrideStatus = null) {
+      if (!currentApplicant) return;
+      const newStatus = overrideStatus || document.getElementById('drawerStatusSelect').value;
+      const notes = document.getElementById('drawerNotes').value.trim();
+
+      const btn = document.getElementById('saveNotesBtn');
+      btn.disabled = true;
+      btn.textContent = 'Saving...';
+
+      if (supabaseClient && !isDemoMode) {
+        let updatePayload = { status: newStatus, hr_notes: notes };
+        let { error } = await supabaseClient
+          .from('applications')
+          .update(updatePayload)
+          .eq('id', currentApplicant.id);
+
+        if (error && newStatus === 'Waitlist') {
+          updatePayload = { status: 'Reviewed', hr_notes: `[WAITLIST] ${notes}` };
+          const res = await supabaseClient
+            .from('applications')
+            .update(updatePayload)
+            .eq('id', currentApplicant.id);
+          error = res.error;
         }
 
-        try {
-          const emailResp = await fetch('/api/decision', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              applicant_id: currentApplicant.id,
-              full_name: currentApplicant.full_name,
-              email: currentApplicant.email,
-              status: newStatus,
-              subteam: currentApplicant.subteam_first || 'General Engineering',
-              role: 'Team Member',
-              notes: notes,
-              base_url: window.location.origin
-            })
-          });
-
-          const emailData = await emailResp.json();
-          if (emailData.status === 'success') {
-            if (emailNotice) {
-              emailNotice.style.background = 'rgba(34, 197, 94, 0.14)';
-              emailNotice.style.border = '1px solid rgba(34, 197, 94, 0.35)';
-              emailNotice.style.color = '#4ADE80';
-              if (emailData.email_dispatched) {
-                emailNotice.innerHTML = `✓ Automated <strong>${newStatus}</strong> email dispatched from <strong>velox.racing.znu@gmail.com</strong> to <strong>${currentApplicant.email}</strong>!`;
-              } else {
-                emailNotice.innerHTML = `✓ Candidate status updated to <strong>${newStatus}</strong>. (Invite pass generated: <code>${emailData.invite_code || ''}</code>)`;
-              }
-            }
-
-            if (newStatus === 'Accepted' && emailData.invite_url) {
-              currentApplicant._inviteUrl = emailData.invite_url;
-              currentApplicant._inviteCode = emailData.invite_code;
-              const copyBtn = document.getElementById('copyInviteLinkBtn');
-              if (copyBtn) copyBtn.style.display = 'inline-flex';
-            }
-          }
-        } catch (mailErr) {
-          console.warn('Notice: automated email dispatch endpoint response:', mailErr);
-          if (emailNotice) {
-            emailNotice.style.display = 'block';
-            emailNotice.style.background = 'rgba(234, 179, 8, 0.12)';
-            emailNotice.style.border = '1px solid rgba(234, 179, 8, 0.35)';
-            emailNotice.style.color = '#FBBF24';
-            emailNotice.innerHTML = `⚠️ Decision saved. Email server notice: ${mailErr.message || 'Check connection'}`;
-          }
+        if (error) {
+          alert('Failed to update application: ' + error.message);
+          btn.disabled = false;
+          btn.textContent = 'Save Status & Notes';
+          return;
         }
+      }
+
+      currentApplicant.status = newStatus;
+      currentApplicant.hr_notes = notes;
+
+      const localApps = JSON.parse(localStorage.getItem('velox_mock_applications') || '[]');
+      const idx = localApps.findIndex(a => a.id === currentApplicant.id);
+      if (idx !== -1) {
+        localApps[idx].status = newStatus;
+        localApps[idx].hr_notes = notes;
+        localStorage.setItem('velox_mock_applications', JSON.stringify(localApps));
+      }
+
+      syncApplicantToTeamStructure(currentApplicant, newStatus);
+
+      if (['Accepted', 'Rejected', 'Waitlist'].includes(newStatus)) {
+        await dispatchDecisionEmail(currentApplicant, newStatus, notes);
       }
 
       btn.disabled = false;
@@ -1173,15 +1379,43 @@
       });
     }
 
+    const openGmailAppBtn = document.getElementById('openGmailAppBtn');
+    if (openGmailAppBtn) {
+      openGmailAppBtn.addEventListener('click', () => {
+        if (!currentApplicant) return;
+        const currentStatus = document.getElementById('drawerStatusSelect').value || currentApplicant.status || 'Accepted';
+        const p = generateDecisionEmailPayload(currentApplicant, currentStatus);
+        if (p && p.gmailComposeUrl) {
+          window.open(p.gmailComposeUrl, '_blank');
+        }
+      });
+    }
+
+    const copyDecisionLetterBtn = document.getElementById('copyDecisionLetterBtn');
+    if (copyDecisionLetterBtn) {
+      copyDecisionLetterBtn.addEventListener('click', () => {
+        if (!currentApplicant) return;
+        const currentStatus = document.getElementById('drawerStatusSelect').value || currentApplicant.status || 'Accepted';
+        const p = generateDecisionEmailPayload(currentApplicant, currentStatus);
+        if (p && p.body) {
+          const fullText = `Subject: ${p.subject}\n\n${p.body}`;
+          if (navigator.clipboard) {
+            navigator.clipboard.writeText(fullText).then(() => {
+              alert(`✓ Official decision letter copied to clipboard for ${currentApplicant.full_name}!`);
+            });
+          } else {
+            prompt('Copy decision letter:', fullText);
+          }
+        }
+      });
+    }
+
     const copyInviteLinkBtn = document.getElementById('copyInviteLinkBtn');
     if (copyInviteLinkBtn) {
       copyInviteLinkBtn.addEventListener('click', () => {
         if (!currentApplicant) return;
-        const code = currentApplicant._inviteCode || ('VLX-INV-' + (currentApplicant.id ? currentApplicant.id.slice(0, 6).toUpperCase() : 'PASS26'));
-        const dept = currentApplicant.subteam_first || 'Body & Chassis';
-        const url = currentApplicant._inviteUrl || (
-          `${window.location.origin}/invite.html?code=${encodeURIComponent(code)}&name=${encodeURIComponent(currentApplicant.full_name || '')}&email=${encodeURIComponent(currentApplicant.email || '')}&dept=${encodeURIComponent(dept)}&role=Team%20Member`
-        );
+        const p = generateDecisionEmailPayload(currentApplicant, 'Accepted');
+        const url = (p && p.inviteUrl) ? p.inviteUrl : window.location.origin + '/invite.html';
         if (navigator.clipboard) {
           navigator.clipboard.writeText(url).then(() => {
             alert(`✓ Onboarding Invitation Link Copied for ${currentApplicant.full_name}:\n\n${url}`);
