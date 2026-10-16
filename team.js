@@ -511,7 +511,7 @@ async function syncCloudAcceptedMembers() {
     const client = window.supabase.createClient(cfg.url, cfg.anonKey);
     const { data, error } = await client
       .from('applications')
-      .select('id, full_name, email, subteam_first, subteam_second, status, hr_notes, why_join')
+      .select('id, full_name, email, subteam_first, subteam_second, status, hr_notes, why_join, portfolio_url')
       .eq('status', 'Accepted');
 
     if (error || !Array.isArray(data) || data.length === 0) return;
@@ -571,6 +571,9 @@ async function syncCloudAcceptedMembers() {
         else assignedRoleType = 'member';
       }
 
+      const cloudAvatar = (app.portfolio_url && (app.portfolio_url.startsWith('data:image/') || app.portfolio_url.startsWith('http') || app.portfolio_url.startsWith('photos/'))) ? app.portfolio_url : '';
+      const resolvedAvatar = cloudAvatar || (existingRosterItem && existingRosterItem.avatar) || '';
+
       const entry = {
         id: memberId,
         name: cleanName,
@@ -582,7 +585,7 @@ async function syncCloudAcceptedMembers() {
         username: (app.email ? app.email.split('@')[0] : normName).replace(/[^a-z0-9]/g, ''),
         points: (existingRosterItem && existingRosterItem.points) || 0,
         status: 'Active',
-        avatar: (existingRosterItem && existingRosterItem.avatar) || ''
+        avatar: resolvedAvatar
       };
 
       if (existingIdx !== -1) {
@@ -590,11 +593,31 @@ async function syncCloudAcceptedMembers() {
           ...existingRosterItem, 
           ...entry,
           role: (existingRosterItem.role && existingRosterItem.role !== 'Team Member') ? existingRosterItem.role : entry.role,
-          roleType: existingRosterItem.roleType || entry.roleType
+          roleType: existingRosterItem.roleType || entry.roleType,
+          avatar: resolvedAvatar
         };
       } else {
         db.membersRoster.push(entry);
         updated = true;
+      }
+
+      // Also ensure dynamic persona exists with avatar
+      if (!db.personas) db.personas = {};
+      const personaKey = 'user_' + entry.username;
+      if (!db.personas[personaKey]) {
+        db.personas[personaKey] = {
+          id: memberId,
+          name: cleanName,
+          role: assignedRole,
+          roleType: assignedRoleType,
+          branch: parsed.branch,
+          departments: [parsed.dept],
+          subteam: parsed.subteam,
+          avatar: resolvedAvatar,
+          deptDesc: `${parsed.branch} Division • ${parsed.dept}`
+        };
+      } else if (resolvedAvatar) {
+        db.personas[personaKey].avatar = resolvedAvatar;
       }
     });
 

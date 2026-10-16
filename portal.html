@@ -1182,6 +1182,11 @@
     [data-theme="light"] #notifDropdownList > div {
       border-bottom-color: rgba(0, 0, 0, 0.06) !important;
     }
+    [dir="rtl"] #notifDropdown,
+    html[lang="ar"] #notifDropdown {
+      left: auto !important;
+      right: 0 !important;
+    }
 
     /* 13. System Audit Telemetry Card */
     [data-theme="light"] #adminAuditLogCard {
@@ -1446,13 +1451,13 @@
             </div>
 
             <!-- Live Notification Bell -->
-            <div style="position: relative;">
+            <div style="position: relative; display: inline-block;">
               <button type="button" class="btn btn-outline" id="notifBellBtn" onclick="toggleNotificationDropdown()" style="padding: 6px 12px; font-size: 0.82rem; position: relative;" title="View Notifications">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
                 <span id="notifBellBadge" style="display: none; position: absolute; top: -5px; right: -5px; background: var(--red); color: #FFF; font-size: 0.65rem; font-weight: 800; border-radius: 10px; padding: 1px 6px; border: 2px solid #060709;">0</span>
               </button>
               <!-- Notification Dropdown Menu -->
-              <div id="notifDropdown" style="display: none; position: absolute; right: 0; top: 38px; width: 340px; background: #0E1118; border: 1px solid var(--border); border-radius: 12px; box-shadow: 0 15px 35px rgba(0,0,0,0.7); z-index: 1000; padding: 14px; max-height: 420px; overflow-y: auto;">
+              <div id="notifDropdown" style="display: none; position: absolute; left: 0; right: auto; top: calc(100% + 8px); width: 340px; max-width: calc(100vw - 32px); background: #0E1118; border: 1px solid var(--border); border-radius: 12px; box-shadow: 0 15px 35px rgba(0,0,0,0.7); z-index: 1000; padding: 14px; max-height: 420px; overflow-y: auto;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 8px;">
                   <strong style="font-size: 0.88rem; color: var(--text);">Notifications</strong>
                   <button type="button" onclick="clearAllNotifications()" style="background: none; border: none; color: #38BDF8; font-size: 0.74rem; cursor: pointer;">Clear All</button>
@@ -1677,34 +1682,65 @@
           </div>
         </div>
 
-        <!-- Quick Info Banner & Silverstone Telemetry Tracker -->
-        <div class="liquid-glass-card" style="padding: 24px; margin-bottom: 28px;">
-          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 12px;">
+        <!-- Sprint Directives & Quick Command Hub -->
+        <div class="liquid-glass-card" style="padding: 24px; margin-bottom: 28px; position: relative; overflow: hidden;">
+          <div style="position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, #E10600, #38BDF8, #F59E0B);"></div>
+          
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 16px;">
             <div style="display: flex; align-items: center; gap: 10px;">
-              <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: var(--red); box-shadow: 0 0 10px var(--red);"></span>
-              <h3 style="margin: 0; font-size: 1.15rem; color: var(--text); font-weight: 800;" data-i18n="dash.milestoneTitle">VELOX Silverstone 2026 Milestone Tracker</h3>
+              <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #22C55E; box-shadow: 0 0 12px #22C55E;"></span>
+              <h3 style="margin: 0; font-size: 1.18rem; color: var(--text); font-weight: 800; display: flex; align-items: center; gap: 8px;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E10600" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                <span>Sprint Directives &amp; Quick Command Hub</span>
+              </h3>
             </div>
-            <span style="font-size: 0.78rem; color: #F59E0B; font-weight: 700; background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.35); padding: 3px 10px; border-radius: 9999px;">
-              Chassis VX-01 &bull; Active Sprint #4
-            </span>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 0.76rem; color: #38BDF8; font-weight: 700; background: rgba(56, 189, 248, 0.12); border: 1px solid rgba(56, 189, 248, 0.35); padding: 4px 12px; border-radius: 9999px;">
+                ⚡ Formula Student UK Pipeline Active
+              </span>
+            </div>
           </div>
 
-          <!-- Silverstone Telemetry Progress Bar -->
-          <div style="background: rgba(255,255,255,0.06); border-radius: 9999px; height: 8px; width: 100%; overflow: hidden; margin: 14px 0 6px 0;">
-            <div style="background: linear-gradient(90deg, #C5221F, #F59E0B); height: 100%; width: 78%; border-radius: 9999px; box-shadow: 0 0 14px rgba(245, 158, 11, 0.4);"></div>
-          </div>
-          <div style="display: flex; justify-content: space-between; font-size: 0.74rem; color: #94A3B8; margin-bottom: 14px;">
-            <span>Chassis &amp; Aerodynamics Packaging</span>
-            <strong style="color: #F59E0B;">78% Milestone Progress &bull; Silverstone FSUK</strong>
+          <!-- Directive Focus Box -->
+          <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 12px; padding: 16px; margin-bottom: 20px;">
+            <div style="display: flex; align-items: flex-start; gap: 12px;">
+              <div style="background: rgba(225,6,0,0.15); border: 1px solid rgba(225,6,0,0.3); border-radius: 8px; padding: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E10600" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+              </div>
+              <div style="flex: 1;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; flex-wrap: wrap; gap: 6px;">
+                  <strong style="font-size: 0.92rem; color: #FFFFFF;" id="directiveFocusTitle">Active Chassis &amp; Systems Packaging Sprint</strong>
+                  <span style="font-size: 0.72rem; color: #F59E0B; font-weight: 700; background: rgba(245, 158, 11, 0.12); padding: 2px 8px; border-radius: 4px;">Paddock Operations &bull; Live Roster Sync</span>
+                </div>
+                <p style="margin: 0; font-size: 0.85rem; color: var(--text-muted); line-height: 1.55;" id="directiveFocusDesc">
+                  Directives are allocated by branch and department. All engineering subteam members are empowered to submit verified CAD, aerodynamic CFD analyses, or managerial sponsor reports directly into the Data Vault. Completing deliverables earns Velocity Points on the team leaderboards.
+                </p>
+              </div>
+            </div>
           </div>
 
-          <p style="color: var(--text-muted); font-size: 0.88rem; margin: 0 0 18px 0; line-height: 1.6;" data-i18n="dash.milestoneDesc">
-            Welcome to the internal engineering and management portal. Deliverables are organized strictly by branch and subteam. Team Leader and Vice Team Leader have omni-directional oversight; Technical Leader commands all technical archives; Managerial Leader commands all operational records. Normal members access their assigned categories and can submit tasks to gain speed points on the leaderboards!
-          </p>
-          <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-            <button type="button" class="btn btn-primary" onclick="switchPortalTab('vault')" data-i18n="dash.btnBrowse">Browse Data Vault</button>
-            <button type="button" class="btn btn-outline" onclick="switchPortalTab('tasks')" data-i18n="dash.btnTasks">View Active Tasks</button>
-            <button type="button" class="btn btn-outline" onclick="switchPortalTab('competition')" data-i18n="dash.btnRankings">Check Leaderboard</button>
+          <!-- Direct Command Actions -->
+          <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
+            <button type="button" class="btn btn-primary" onclick="openPortalModal('uploadModal')" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; font-weight: 700;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              <span>+ Upload Deliverable</span>
+            </button>
+            <button type="button" class="btn btn-outline" onclick="switchPortalTab('vault')" style="display: inline-flex; align-items: center; gap: 7px; padding: 10px 16px;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+              <span>Browse Vault</span>
+            </button>
+            <button type="button" class="btn btn-outline" onclick="switchPortalTab('tasks')" style="display: inline-flex; align-items: center; gap: 7px; padding: 10px 16px;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+              <span>Task Center</span>
+            </button>
+            <button type="button" class="btn btn-outline" onclick="openEditPhotoModal()" style="display: inline-flex; align-items: center; gap: 7px; padding: 10px 16px; color: #A78BFA; border-color: rgba(167, 139, 250, 0.4);">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+              <span>Update My Photo</span>
+            </button>
+            <a href="team.html" target="_blank" class="btn btn-outline" style="display: inline-flex; align-items: center; gap: 7px; padding: 10px 16px; color: #38BDF8; border-color: rgba(56, 189, 248, 0.4); text-decoration: none;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+              <span>Team Org Chart &rarr;</span>
+            </a>
           </div>
         </div>
 
@@ -2979,20 +3015,20 @@
             if (parsed.personas && parsed.personas.ali) delete parsed.personas.ali;
             if (parsed.accounts) parsed.accounts = parsed.accounts.filter(a => a.username !== 'ali' && a.personaKey !== 'ali');
             if (parsed.membersRoster) parsed.membersRoster = parsed.membersRoster.filter(m => m.id !== 'ali-elgohary' && m.username !== 'ali');
-            // Always enforce latest portrait photos for leaders
+            // Initialize portrait photos for leaders if not yet customized
             if (parsed.personas) {
-              if (parsed.personas.fatima) parsed.personas.fatima.avatar = 'photos/Fatima Salman.jpeg';
-              if (parsed.personas.karim) parsed.personas.karim.avatar = 'photos/Karim Shaprawy.jpeg';
-              if (parsed.personas.romy) parsed.personas.romy.avatar = 'photos/Mohamed Romy.jpeg';
+              if (parsed.personas.fatima && !parsed.personas.fatima.avatar) parsed.personas.fatima.avatar = 'photos/Fatima Salman.jpeg';
+              if (parsed.personas.karim && !parsed.personas.karim.avatar) parsed.personas.karim.avatar = 'photos/Karim Shaprawy.jpeg';
+              if (parsed.personas.romy && !parsed.personas.romy.avatar) parsed.personas.romy.avatar = 'photos/Mohamed Romy.jpeg';
               if (parsed.personas.moaaz) {
-                parsed.personas.moaaz.avatar = 'photos/Moaaz Elghamry.jpeg';
+                if (!parsed.personas.moaaz.avatar) parsed.personas.moaaz.avatar = 'photos/Moaaz Elghamry.jpeg';
                 parsed.personas.moaaz.role = 'Managerial Leader & Powertrain Lead';
                 if (!parsed.personas.moaaz.departments.includes('Powertrain')) {
                   parsed.personas.moaaz.departments.push('Powertrain');
                 }
                 parsed.personas.moaaz.departments = parsed.personas.moaaz.departments.filter(d => !d.includes('HR') && !d.includes('Human Resources'));
               }
-              if (parsed.personas.hassan) parsed.personas.hassan.avatar = 'photos/Mohamed Hassan.jpeg';
+              if (parsed.personas.hassan && !parsed.personas.hassan.avatar) parsed.personas.hassan.avatar = 'photos/Mohamed Hassan.jpeg';
             }
             if (!parsed.invitations) parsed.invitations = [];
             if (!parsed.directives) parsed.directives = [];
@@ -3659,6 +3695,16 @@
       renderNotifications();
     }
 
+    document.addEventListener('click', function(e) {
+      const dd = document.getElementById('notifDropdown');
+      const btn = document.getElementById('notifBellBtn');
+      if (dd && dd.style.display === 'block') {
+        if (!dd.contains(e.target) && (!btn || !btn.contains(e.target))) {
+          dd.style.display = 'none';
+        }
+      }
+    });
+
     // ==================== AUTHENTICATED STATE & SESSION ====================
     let currentAuthUser = localStorage.getItem('velox_auth_user') || null;
     let currentPersonaKey = localStorage.getItem('velox_active_persona') || 'fatima';
@@ -3750,7 +3796,48 @@
 
     function getActivePersona() {
       const db = getPortalDb();
-      return db.personas[currentPersonaKey] || db.personas.fatima;
+      if (db.personas && db.personas[currentPersonaKey]) {
+        return db.personas[currentPersonaKey];
+      }
+
+      // Dynamic fallback for newly registered or logged in members
+      const authUser = (localStorage.getItem('velox_auth_user') || currentAuthUser || '').trim().toLowerCase();
+      if (authUser) {
+        const acct = (db.accounts || []).find(a => a.username && a.username.toLowerCase() === authUser);
+        const member = (db.membersRoster || []).find(m => 
+          (m.username && m.username.toLowerCase() === authUser) ||
+          (m.name && m.name.toLowerCase() === (acct && acct.name ? acct.name.toLowerCase() : '')) ||
+          m.id === currentPersonaKey ||
+          ('user_' + (m.username || '').toLowerCase()) === currentPersonaKey
+        );
+        if (acct || member) {
+          const pKey = (acct && acct.personaKey) || currentPersonaKey || ('user_' + authUser);
+          const pName = (acct && acct.name) || (member && member.name) || authUser;
+          const pRole = (member && member.role) || 'Team Member';
+          const pRoleType = (member && member.roleType) || 'member';
+          const pBranch = (member && member.branch) || 'Technical';
+          const pDept = (member && member.dept) || 'General Engineering';
+          const pSubteam = (member && member.subteam) || '';
+          const pAvatar = (member && member.avatar) || '';
+
+          if (!db.personas) db.personas = {};
+          db.personas[pKey] = {
+            id: member ? member.id : ('mem-' + authUser),
+            name: pName,
+            role: pRole,
+            roleType: pRoleType,
+            branch: pBranch,
+            departments: [pDept],
+            subteam: pSubteam,
+            avatar: pAvatar,
+            deptDesc: `${pBranch} Division • ${pDept}${pSubteam ? ' — ' + pSubteam : ''}`
+          };
+          savePortalDb(db);
+          return db.personas[pKey];
+        }
+      }
+
+      return (db.personas && db.personas.fatima) || PORTAL_SEED.personas.fatima;
     }
 
     function getInitials(name) {
@@ -3766,10 +3853,17 @@
       const nameEl = document.getElementById('activeUserName');
       const deptEl = document.getElementById('activeUserDept');
 
-      if (p.avatar) {
-        avatarEl.innerHTML = `<img src="${p.avatar}" alt="${p.name}" onerror="this.style.display='none'; this.parentElement.textContent='${getInitials(p.name)}';" />`;
-      } else {
-        avatarEl.textContent = getInitials(p.name);
+      const editBadgeHtml = `
+        <div class="avatar-edit-badge" title="Change Photo">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#FFF" stroke-width="2.5"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+        </div>`;
+
+      if (avatarEl) {
+        if (p.avatar) {
+          avatarEl.innerHTML = `<img src="${p.avatar}" alt="${p.name}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;" onerror="this.style.display='none'; this.nextElementSibling ? null : this.insertAdjacentHTML('afterend', '<span style=\\'font-weight: 800; font-size: 1.15rem; color: #FFF;\\'>${getInitials(p.name)}</span>');" />${editBadgeHtml}`;
+        } else {
+          avatarEl.innerHTML = `<span style="font-weight: 800; font-size: 1.15rem; color: #FFF;">${getInitials(p.name)}</span>${editBadgeHtml}`;
+        }
       }
 
       let badgeClass = 'role-member';
@@ -5347,6 +5441,23 @@
       app.status = newStatus;
       saveApplicationsList(apps);
 
+      // Automated decision email dispatch via /api/decision
+      if (app.email && ['Accepted', 'Rejected', 'Waitlist'].includes(newStatus)) {
+        fetch('/api/decision', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            applicant_id: app.id,
+            full_name: app.name,
+            email: app.email,
+            status: newStatus,
+            subteam: app.subteam1 || 'General Engineering',
+            role: 'Team Member',
+            base_url: window.location.origin
+          })
+        }).catch(e => console.warn('Automated decision email note:', e));
+      }
+
       logAuditEvent(`[RECRUITMENT] Candidate ${app.name} status updated to ${newStatus} by ${p.name}.`);
       addNotification({
         title: 'Applicant Status Updated',
@@ -5450,6 +5561,23 @@
         type: 'governance',
         target: 'all'
       });
+
+      // Automated welcome & onboarding invitation email dispatch
+      if (app.email) {
+        fetch('/api/decision', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            applicant_id: app.id,
+            full_name: app.name,
+            email: app.email,
+            status: 'Accepted',
+            subteam: chosenDept,
+            role: 'Team Member',
+            base_url: window.location.origin
+          })
+        }).catch(e => console.warn('Automated portal decision email note:', e));
+      }
 
       savePortalDb(db);
       renderApplicationsControlCenter();
@@ -6760,30 +6888,82 @@
 
       const photoForm = document.getElementById('editPhotoForm');
       if (photoForm) {
-        photoForm.addEventListener('submit', function(e) {
+        photoForm.addEventListener('submit', async function(e) {
           e.preventDefault();
+          const urlInput = document.getElementById('editPhotoUrlInput');
+          if (!stagedPhotoData && urlInput && urlInput.value.trim()) {
+            stagedPhotoData = urlInput.value.trim();
+          }
+
+          const submitBtn = photoForm.querySelector('button[type="submit"]');
+          const originalBtnHtml = submitBtn ? submitBtn.innerHTML : 'Save Profile Photo';
+          if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `<span>Saving & Syncing to Cloud Database...</span>`;
+          }
+
           const p = getActivePersona();
           const db = getPortalDb();
 
           p.avatar = stagedPhotoData;
-          if (db.personas[currentPersonaKey]) {
-            db.personas[currentPersonaKey].avatar = stagedPhotoData;
+          if (!db.personas) db.personas = {};
+          if (!db.personas[currentPersonaKey]) {
+            db.personas[currentPersonaKey] = { ...p };
           }
+          db.personas[currentPersonaKey].avatar = stagedPhotoData;
 
           // Also update roster entry and accounts
-          const authUser = localStorage.getItem('velox_auth_user') || '';
-          const member = (db.membersRoster || []).find(m => m.username === authUser || m.id === p.id || m.name === p.name);
+          const authUser = (localStorage.getItem('velox_auth_user') || currentAuthUser || '').trim().toLowerCase();
+          const member = (db.membersRoster || []).find(m => 
+            (m.username && m.username.toLowerCase() === authUser) || 
+            m.id === p.id || 
+            (m.name && m.name.trim().toLowerCase() === p.name.trim().toLowerCase())
+          );
           if (member) {
             member.avatar = stagedPhotoData;
           }
 
           savePortalDb(db);
           renderUserBar();
-          renderStructure();
-          renderCompetition();
+          if (typeof renderStructure === 'function') renderStructure();
+          if (typeof renderCompetition === 'function') renderCompetition();
+
+          // Save Profile Photo to Supabase Cloud Database (applications table portfolio_url)
+          try {
+            const cfg = window.VELOX_CONFIG || {};
+            if (cfg.url && cfg.anonKey && !cfg.url.includes('your-project-id') && window.supabase) {
+              const client = window.supabase.createClient(cfg.url, cfg.anonKey);
+              const targetEmail = p.email || (member && member.email) || '';
+              const targetName = p.name || '';
+
+              let query = client.from('applications').select('id, email, full_name');
+              if (targetEmail) {
+                query = query.eq('email', targetEmail);
+              } else if (targetName) {
+                query = query.eq('full_name', targetName);
+              }
+
+              const { data: matchedRows } = await query;
+              if (matchedRows && matchedRows.length > 0) {
+                await client
+                  .from('applications')
+                  .update({ portfolio_url: stagedPhotoData })
+                  .eq('id', matchedRows[0].id);
+                console.log('✓ Profile photo successfully synchronized to Supabase Cloud applications!');
+              }
+            }
+          } catch (supaErr) {
+            console.warn('Supabase photo upload notice:', supaErr);
+          }
+
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalBtnHtml;
+          }
+
           closePortalModal('editPhotoModal');
           logAuditEvent(`PROFILE: ${p.name} updated their profile photo.`);
-          alert('Profile photo successfully updated! Your photo is now updated across the Portal and the Team Structure Org Chart.');
+          alert('Profile photo successfully updated and saved to the database! Your photo is now live on your Portal and the Team Structure Org Chart.');
         });
       }
 

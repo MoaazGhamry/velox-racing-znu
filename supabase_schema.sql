@@ -20,7 +20,7 @@ create table if not exists public.applications (
   skills text,
   why_join text default '',
   portfolio_url text,
-  status text not null default 'New' check (status in ('New', 'Reviewed', 'Interview', 'Accepted', 'Rejected')),
+  status text not null default 'New' check (status in ('New', 'Reviewed', 'Interview', 'Accepted', 'Rejected', 'Waitlist')),
   hr_notes text default '',
   
   -- Prevent duplicate applications by enforcing unique email
@@ -31,6 +31,8 @@ create table if not exists public.applications (
 -- alter table public.applications alter column university_id drop not null;
 -- alter table public.applications alter column why_join drop not null;
 -- alter table public.applications add column if not exists prior_fs_experience text;
+-- alter table public.applications drop constraint if exists applications_status_check;
+-- alter table public.applications add constraint applications_status_check check (status in ('New', 'Reviewed', 'Interview', 'Accepted', 'Rejected', 'Waitlist'));
 
 -- 2. Create search & filtering performance indexes
 create index if not exists idx_applications_email on public.applications (email);

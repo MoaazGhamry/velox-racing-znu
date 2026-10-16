@@ -653,6 +653,7 @@
     const params = new URLSearchParams(window.location.search);
     const code = params.get('code') || 'FS-ZNU-000000';
     const queryName = params.get('name') || '';
+    const queryEmail = params.get('email') || '';
     const queryRole = params.get('role');
     const queryBranch = params.get('branch');
     const queryDept = params.get('dept');
@@ -755,11 +756,17 @@
         acceptBtn.style.display = 'none';
         onboardingBox.scrollIntoView({ behavior: 'smooth' });
 
-        // Pre-fill name if known
+        // Pre-fill name and email if known
         if (currentInvite.inviteeName && currentInvite.inviteeName.trim()) {
           const nameInput = document.getElementById('regFullName');
-          nameInput.value = currentInvite.inviteeName.trim();
-          suggestUsername(currentInvite.inviteeName.trim());
+          if (nameInput) {
+            nameInput.value = currentInvite.inviteeName.trim();
+            suggestUsername(currentInvite.inviteeName.trim());
+          }
+        }
+        if (queryEmail) {
+          const emailInput = document.getElementById('regEmail');
+          if (emailInput) emailInput.value = queryEmail.trim();
         }
       };
     }
