@@ -1113,88 +1113,67 @@
       let subject = '';
       let body = '';
 
-      const socialSection = `====================================================
-CONNECT & FOLLOW VELOX RACING
-====================================================
-Stay connected with our car build, aero testing, and announcements:
+      const socialSection = `Follow our journey & stay connected:
 • Instagram: https://www.instagram.com/velox_racing_znu?srtk=MWl2azlianJlZ3J3bg==
-• Facebook:  https://www.facebook.com/share/19Xcwun8Di/?mibextid=wwXIfr
 • LinkedIn:  https://www.linkedin.com/company/velox-racing-team/
-• Website:   https://velox-racing.vercel.app`;
+• Facebook:  https://www.facebook.com/share/19Xcwun8Di/?mibextid=wwXIfr`;
 
       const norm = (status || 'New').toLowerCase();
       if (norm.includes('accept')) {
-        subject = '🏁 OFFICIAL INVITATION: Welcome to VELOX Racing — Formula Student ZNU';
+        subject = 'Welcome to VELOX Racing! 🏁';
         body = `Dear ${name},
 
-Congratulations! On behalf of Zagazig National University and the executive leadership of VELOX Racing, we are proud to inform you that your application to join our Formula Student engineering challenger has been OFFICIALLY ACCEPTED.
+Congratulations! We are thrilled to welcome you to VELOX Racing as a ${role} on the ${rawSub} team for our Silverstone 2026 Formula Student campaign.
 
-====================================================
-APPOINTMENT DOSSIER
-====================================================
-• Designated Department / Subsystem: ${rawSub}
-• Appointed Position: ${role}
-• Championship Campaign: Formula Student UK — Silverstone Circuit
-
-====================================================
-COMPLETE YOUR ONBOARDING & SET YOUR PASSWORD
-====================================================
-Please click your secure onboarding pass below to verify your details, set your Inside Portal password, and upload your profile photo:
+Please click the link below to activate your account and set your portal password:
 ${inviteUrl}
 
-Once your activation is complete:
-1. Your candidate credentials will be verified.
-2. You will be granted full access to the Inside Portal (files, telemetry, task board).
-3. You will immediately be positioned on our official Team Structure org chart.
-
 ${socialSection}
 
-We look forward to building a winning racing machine with you. Welcome to the VELOX family!
-
-With motorsport respect,
-VELOX Racing Team Directorate
-Fatima Salman (Team Leader) • Karim Shaprawy (Vice Team Leader)
-Mohamed Romy (Technical Leader) • Moaaz Elghamry (Managerial Leader & Powertrain Lead)
-velox.racing.znu@gmail.com
-Zagazig National University — Formula Student`;
-      } else if (norm.includes('wait')) {
-        subject = 'VELOX Racing Team — Application Status: Active Reserve List';
-        body = `Dear ${name},
-
-Thank you for applying to VELOX Racing for the ${rawSub} position.
-
-Due to competitive subteam capacity limits, your application has been placed on our Active Reserve & Waiting List for the Silverstone 2026 season.
-
-Your application received strong technical scores, and we are retaining your profile in our candidate pool as sprint phases progress. Should additional capacity open up during upcoming build phases, our HR Directorate and Subteam Leads will reach out directly to offer you a spot on the team.
-
-${socialSection}
-
-Thank you again for your patience and passion for Formula Student.
+Welcome to the team!
 
 Best regards,
-VELOX Racing Team Human Resources Directorate
-velox.racing.znu@gmail.com
-Zagazig National University — Formula Student`;
-      } else if (norm.includes('reject')) {
-        subject = 'VELOX Racing Team — Application Update (Silverstone 2026)';
+VELOX Racing Team
+Zagazig National University — Formula Student
+velox.racing.znu@gmail.com`;
+      } else if (norm.includes('wait')) {
+        subject = 'VELOX Racing — Application Status Update';
         body = `Dear ${name},
 
-Thank you for applying to VELOX Racing and taking part in our recruitment process for ${rawSub}.
+Thank you for applying to VELOX Racing for the ${rawSub} team.
 
-We received a very high volume of qualified applications this season. Following rigorous evaluations and strict technical quotas, we regret to inform you that we are unable to offer you a position on the active engineering crew at this time.
+Due to limited team capacity, your application has been placed on our Active Reserve list for the 2026 season. We were very impressed by your qualifications and will reach out directly if additional spots open up.
 
-We were genuinely impressed by your ambition and passion. We strongly encourage you to continue honing your skills, attend our public university workshops, and apply again in our upcoming recruitment cycles.
-
+In the meantime, stay connected with our car build and upcoming workshops:
 ${socialSection}
 
-We wish you the very best in your academic and professional endeavors.
+Thank you for your enthusiasm and passion for motorsport.
 
-Sincerely,
-VELOX Racing Team Human Resources Directorate
-velox.racing.znu@gmail.com
-Zagazig National University — Formula Student`;
+Best regards,
+VELOX Racing Team
+Zagazig National University — Formula Student
+velox.racing.znu@gmail.com`;
+      } else if (norm.includes('reject')) {
+        subject = 'VELOX Racing — Application Update';
+        body = `Dear ${name},
+
+Thank you for your interest in VELOX Racing and for taking the time to apply for the ${rawSub} team.
+
+We received a very high volume of applications this season and, unfortunately, we are unable to offer you a position on the active engineering crew at this time due to strict team quotas.
+
+We truly appreciate your passion and encourage you to attend our public university workshops and reapply in future recruitment cycles.
+
+Follow our car build and future opportunities:
+${socialSection}
+
+We wish you all the best in your studies and future endeavors.
+
+Best regards,
+VELOX Racing Team
+Zagazig National University — Formula Student
+velox.racing.znu@gmail.com`;
       } else {
-        subject = `VELOX Racing Team — Application Update`;
+        subject = 'VELOX Racing — Application Update';
         body = `Dear ${name},
 
 Thank you for your application to VELOX Racing (${rawSub}). Our Human Resources team is actively reviewing your candidacy.
@@ -1203,6 +1182,7 @@ ${socialSection}
 
 Best regards,
 VELOX Racing Team
+Zagazig National University — Formula Student
 velox.racing.znu@gmail.com`;
       }
 
@@ -1224,87 +1204,150 @@ velox.racing.znu@gmail.com`;
       const web = 'https://velox-racing-znu.vercel.app';
       const norm = (status || 'New').toLowerCase();
 
-      let statusBadge = '🏁 OFFICIAL APPLICATION STATUS: ACCEPTED';
+      let statusBadge = '🏁 Status: Accepted';
       let statusColor = '#4ADE80';
       let statusBg = 'rgba(34, 197, 94, 0.12)';
       let statusBorder = 'rgba(34, 197, 94, 0.35)';
+      let topBarColor = '#E10600';
 
       if (norm.includes('wait')) {
-        statusBadge = '⏳ APPLICATION STATUS: ACTIVE RESERVE & WAITING LIST';
+        statusBadge = '⏳ Status: Active Reserve';
         statusColor = '#FBBF24';
         statusBg = 'rgba(245, 158, 11, 0.12)';
         statusBorder = 'rgba(245, 158, 11, 0.35)';
+        topBarColor = '#F59E0B';
       } else if (norm.includes('reject')) {
-        statusBadge = '📋 APPLICATION STATUS: 2026 CAMPAIGN UPDATE';
+        statusBadge = '📋 Status: Application Update';
         statusColor = '#94A3B8';
         statusBg = 'rgba(148, 163, 184, 0.12)';
         statusBorder = 'rgba(148, 163, 184, 0.25)';
+        topBarColor = '#94A3B8';
+      }
+
+      let contentHtml = '';
+      if (norm.includes('accept')) {
+        contentHtml = `
+              <p style="font-size: 14px; line-height: 1.6; color: #CBD5E1; margin: 0 0 16px 0;">
+                Congratulations! We are thrilled to welcome you to <strong>VELOX Racing</strong> as a <strong>${role}</strong> on the <strong>${rawSub}</strong> team for our Silverstone 2026 campaign.
+              </p>
+
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background: #151A25; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; margin: 16px 0; padding: 12px 16px;">
+                <tr>
+                  <td style="font-size: 13px; color: #94A3B8;">Role: <strong style="color: #FFFFFF;">${role}</strong></td>
+                  <td style="font-size: 13px; color: #94A3B8; text-align: right;">Subteam: <strong style="color: #38BDF8;">${rawSub}</strong></td>
+                </tr>
+              </table>
+
+              <p style="font-size: 14px; line-height: 1.6; color: #CBD5E1; margin: 0 0 20px 0;">
+                Please click the button below to activate your account and set your member portal password:
+              </p>
+
+              <div style="text-align: center; margin: 22px 0;">
+                <a href="${inviteUrl}" target="_blank" style="display: inline-block; background: #E10600; color: #FFFFFF; font-size: 14px; font-weight: 700; text-decoration: none; padding: 12px 28px; border-radius: 6px; box-shadow: 0 4px 14px rgba(225, 6, 0, 0.4);">
+                  Activate Account &amp; Set Password &rarr;
+                </a>
+              </div>
+
+              <p style="font-size: 11px; line-height: 1.4; color: #64748B; text-align: center; margin: 0 0 16px 0; word-break: break-all;">
+                Direct onboarding link:<br/>
+                <a href="${inviteUrl}" style="color: #38BDF8; text-decoration: underline;">${inviteUrl}</a>
+              </p>`;
+      } else if (norm.includes('wait')) {
+        contentHtml = `
+              <p style="font-size: 14px; line-height: 1.6; color: #CBD5E1; margin: 0 0 14px 0;">
+                Thank you for applying to <strong>VELOX Racing</strong> for the <strong>${rawSub}</strong> team.
+              </p>
+              <p style="font-size: 14px; line-height: 1.6; color: #CBD5E1; margin: 0 0 14px 0;">
+                Due to limited team capacity, your application has been placed on our <strong>Active Reserve</strong> list for the 2026 season. We were very impressed by your qualifications and our subteam leads will reach out directly if additional spots become available.
+              </p>`;
+      } else {
+        contentHtml = `
+              <p style="font-size: 14px; line-height: 1.6; color: #CBD5E1; margin: 0 0 14px 0;">
+                Thank you for your interest in <strong>VELOX Racing</strong> and for applying for the <strong>${rawSub}</strong> team.
+              </p>
+              <p style="font-size: 14px; line-height: 1.6; color: #CBD5E1; margin: 0 0 14px 0;">
+                We received a very high volume of applications this season and, unfortunately, we are unable to offer you a position on the active engineering crew at this time due to strict team quotas.
+              </p>
+              <p style="font-size: 14px; line-height: 1.6; color: #CBD5E1; margin: 0 0 14px 0;">
+                We truly appreciate your passion and encourage you to attend our public university workshops and reapply in future recruitment cycles.
+              </p>`;
       }
 
       return `<!DOCTYPE html>
 <html>
-<head><meta charset="utf-8"></head>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${statusBadge}</title>
+</head>
 <body style="margin: 0; padding: 0; background-color: #07090E; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #FFFFFF;">
-  <div style="max-width: 620px; margin: 0 auto; background: #0E121A; border: 1px solid rgba(225, 6, 0, 0.45); border-radius: 14px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.8);">
-    <div style="height: 5px; background: linear-gradient(90deg, #E10600, #F59E0B, #E10600);"></div>
-    <div style="padding: 28px 24px 16px 24px; text-align: center; background: radial-gradient(circle at center top, rgba(225, 6, 0, 0.22), transparent 70%);">
-      <a href="${web}" target="_blank" style="text-decoration: none;">
-        <img src="${logoUrl}" alt="VELOX RACING" width="160" style="display: block; margin: 0 auto 12px auto; max-width: 160px; height: auto; border: 0;" />
-      </a>
-      <h1 style="margin: 0 0 4px 0; font-size: 22px; font-weight: 900; letter-spacing: 2px; color: #FFFFFF; text-transform: uppercase;">VELOX RACING</h1>
-      <p style="margin: 0; font-size: 11px; color: #E10600; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase;">ZAGAZIG NATIONAL UNIVERSITY • FORMULA STUDENT</p>
-    </div>
-    <div style="padding: 20px 28px 28px 28px;">
-      <div style="background: ${statusBg}; border: 1px solid ${statusBorder}; border-radius: 8px; padding: 10px 14px; margin-bottom: 20px; text-align: center;">
-        <span style="font-size: 12px; font-weight: 800; color: ${statusColor}; letter-spacing: 1px; text-transform: uppercase;">${statusBadge}</span>
-      </div>
-      <h2 style="font-size: 18px; font-weight: 700; margin: 0 0 14px 0; color: #FFFFFF;">Dear ${name},</h2>
-      <p style="font-size: 14px; line-height: 1.6; color: #CBD5E1; margin: 0 0 16px 0;">
-        ${norm.includes('accept')
-          ? `Congratulations! On behalf of Zagazig National University and the executive leadership of <strong>VELOX Racing</strong>, we are proud to inform you that your application to join our Formula Student engineering challenger has been <strong>OFFICIALLY ACCEPTED</strong>.`
-          : (norm.includes('wait')
-            ? `Thank you for applying to <strong>VELOX Racing</strong> for the <strong>${rawSub}</strong> subteam. Due to competitive subteam quotas, your application has been placed on our <strong>Active Reserve &amp; Waiting List</strong> for Silverstone 2026.`
-            : `Thank you for applying to <strong>VELOX Racing</strong> for the <strong>${rawSub}</strong> subteam. Following rigorous technical evaluations, we regret to inform you that we are unable to offer you a position on the active engineering crew at this time.`
-          )}
-      </p>
-      ${norm.includes('accept') ? `
-      <div style="background: #141924; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 10px; margin: 18px 0; padding: 16px;">
-        <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 13px;">
-          <span style="color: #94A3B8;">Designated Subsystem:</span>
-          <strong style="color: #38BDF8;">${rawSub}</strong>
-        </div>
-        <div style="display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 13px;">
-          <span style="color: #94A3B8;">Appointed Position:</span>
-          <strong style="color: #F59E0B;">${role}</strong>
-        </div>
-        <div style="display: flex; justify-content: space-between; padding: 6px 0; font-size: 13px;">
-          <span style="color: #94A3B8;">Championship Debut:</span>
-          <strong style="color: #FFFFFF;">Silverstone Circuit (UK)</strong>
-        </div>
-      </div>
-      <div style="text-align: center; margin: 26px 0;">
-        <a href="${inviteUrl}" target="_blank" style="display: inline-block; background: #E10600; color: #FFFFFF; font-size: 14px; font-weight: 800; text-decoration: none; padding: 13px 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(225, 6, 0, 0.45);">
-          🏁 Complete Onboarding &amp; Set Password &rarr;
-        </a>
-      </div>` : ''}
-      <div style="margin: 24px 0 16px 0; background: #131722; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 10px; padding: 16px; text-align: center;">
-        <p style="margin: 0 0 12px 0; font-size: 12px; font-weight: 800; color: #FFFFFF; text-transform: uppercase; letter-spacing: 1px;">Follow VELOX Racing Across Our Channels</p>
-        <div>
-          <a href="${ig}" target="_blank" style="display: inline-block; margin: 4px; background: linear-gradient(45deg, #F58529, #DD2A7B, #8134AF); color: #FFF; font-size: 11px; font-weight: 700; text-decoration: none; padding: 8px 14px; border-radius: 6px;">📸 Instagram</a>
-          <a href="${fb}" target="_blank" style="display: inline-block; margin: 4px; background: #1877F2; color: #FFF; font-size: 11px; font-weight: 700; text-decoration: none; padding: 8px 14px; border-radius: 6px;">📘 Facebook</a>
-          <a href="${li}" target="_blank" style="display: inline-block; margin: 4px; background: #0A66C2; color: #FFF; font-size: 11px; font-weight: 700; text-decoration: none; padding: 8px 14px; border-radius: 6px;">💼 LinkedIn</a>
-        </div>
-      </div>
-      <hr style="border: none; border-top: 1px solid rgba(255,255,255,0.08); margin: 20px 0;" />
-      <p style="font-size: 12px; line-height: 1.5; color: #94A3B8; margin: 0;">
-        With motorsport respect,<br/>
-        <strong style="color: #FFFFFF;">VELOX Racing Team Directorate</strong><br/>
-        Fatima Salman (Team Leader) • Karim Shaprawy (Vice Team Leader)<br/>
-        Mohamed Romy (Technical Leader) • Moaaz Elghamry (Managerial Leader &amp; Powertrain Lead)<br/>
-        <em>Zagazig National University &mdash; Formula Student</em>
-      </p>
-    </div>
-  </div>
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #07090E; padding: 32px 12px;">
+    <tr>
+      <td align="center">
+        <table role="presentation" width="540" cellspacing="0" cellpadding="0" style="max-width: 540px; width: 100%; background: #0E121A; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 14px; overflow: hidden; box-shadow: 0 15px 40px rgba(0,0,0,0.85);">
+          <tr>
+            <td height="4" style="background: ${topBarColor};"></td>
+          </tr>
+          <tr>
+            <td style="padding: 28px 24px 16px 24px; text-align: center;">
+              <a href="${web}" target="_blank" style="text-decoration: none; display: inline-block;">
+                <img src="${logoUrl}" alt="VELOX RACING" width="140" style="display: block; margin: 0 auto 10px auto; max-width: 140px; height: auto; border: 0;" />
+              </a>
+              <div style="font-size: 20px; font-weight: 900; letter-spacing: 2px; color: #FFFFFF; text-transform: uppercase;">VELOX RACING</div>
+              <div style="font-size: 11px; font-weight: 700; color: ${topBarColor}; letter-spacing: 1.5px; text-transform: uppercase; margin-top: 3px;">Formula Student &bull; Zagazig National University</div>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding: 16px 28px 28px 28px;">
+              <div style="text-align: center; margin-bottom: 20px;">
+                <span style="display: inline-block; background: ${statusBg}; border: 1px solid ${statusBorder}; border-radius: 20px; padding: 5px 16px; font-size: 12px; font-weight: 700; color: ${statusColor}; letter-spacing: 0.8px; text-transform: uppercase;">
+                  ${statusBadge}
+                </span>
+              </div>
+
+              <h2 style="font-size: 17px; font-weight: 700; margin: 0 0 12px 0; color: #FFFFFF;">
+                Dear ${name},
+              </h2>
+
+              ${contentHtml}
+
+              <div style="margin: 22px 0 16px 0; padding-top: 18px; border-top: 1px solid rgba(255, 255, 255, 0.08); text-align: center;">
+                <p style="margin: 0 0 10px 0; font-size: 11px; font-weight: 700; color: #94A3B8; text-transform: uppercase; letter-spacing: 1px;">
+                  Follow VELOX Racing
+                </p>
+                <table role="presentation" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto;">
+                  <tr>
+                    <td style="padding: 0 5px;">
+                      <a href="${ig}" target="_blank" style="display: inline-block; background: #E1306C; color: #FFFFFF; font-size: 11px; font-weight: 700; text-decoration: none; padding: 7px 15px; border-radius: 5px;">
+                        Instagram
+                      </a>
+                    </td>
+                    <td style="padding: 0 5px;">
+                      <a href="${li}" target="_blank" style="display: inline-block; background: #0A66C2; color: #FFFFFF; font-size: 11px; font-weight: 700; text-decoration: none; padding: 7px 15px; border-radius: 5px;">
+                        LinkedIn
+                      </a>
+                    </td>
+                    <td style="padding: 0 5px;">
+                      <a href="${fb}" target="_blank" style="display: inline-block; background: #1877F2; color: #FFFFFF; font-size: 11px; font-weight: 700; text-decoration: none; padding: 7px 15px; border-radius: 5px;">
+                        Facebook
+                      </a>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+
+              <p style="font-size: 12px; line-height: 1.5; color: #94A3B8; margin: 18px 0 0 0; text-align: center;">
+                Best regards,<br/>
+                <strong style="color: #FFFFFF;">VELOX Racing Team</strong><br/>
+                <em>Zagazig National University &bull; Formula Student</em><br/>
+                <a href="mailto:velox.racing.znu@gmail.com" style="color: #64748B; text-decoration: none;">velox.racing.znu@gmail.com</a>
+              </p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
 </body>
 </html>`;
     }

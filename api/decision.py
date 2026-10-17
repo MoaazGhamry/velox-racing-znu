@@ -43,211 +43,157 @@ VELOX_WEBSITE_URL = "https://velox-racing-znu.vercel.app"
 def build_plain_accepted(name, subteam, role, invite_url):
     return (
         f"Dear {name},\n\n"
-        f"Congratulations! On behalf of Zagazig National University and the executive leadership of VELOX Racing, "
-        f"we are proud to inform you that your application to join our Formula Student engineering challenger has been OFFICIALLY ACCEPTED.\n\n"
-        f"====================================================\n"
-        f"APPOINTMENT DOSSIER\n"
-        f"====================================================\n"
-        f"• Designated Department / Subsystem: {subteam}\n"
-        f"• Appointed Position: {role}\n"
-        f"• Championship Campaign: Formula Student UK — Silverstone Circuit\n\n"
-        f"====================================================\n"
-        f"COMPLETE YOUR ONBOARDING & SET YOUR PASSWORD\n"
-        f"====================================================\n"
-        f"Please click your secure onboarding pass below to verify your details, set your Inside Portal password, and upload your profile photo:\n"
+        f"Congratulations! We are thrilled to welcome you to VELOX Racing as a {role} on the {subteam} team for our Silverstone 2026 Formula Student campaign.\n\n"
+        f"Please click the link below to activate your account and set your portal password:\n"
         f"{invite_url}\n\n"
-        f"Once your activation is complete:\n"
-        f"1. Your candidate credentials will be verified.\n"
-        f"2. You will be granted full access to the Inside Portal (files, telemetry, task board).\n"
-        f"3. You will immediately be positioned on our official Team Structure org chart.\n\n"
-        f"====================================================\n"
-        f"CONNECT & FOLLOW VELOX RACING\n"
-        f"====================================================\n"
-        f"Stay up to speed with our Silverstone racecar manufacturing, aero testing, and university workshops:\n"
+        f"Follow our journey & stay connected:\n"
         f"• Instagram: {VELOX_INSTAGRAM_URL}\n"
-        f"• Facebook:  {VELOX_FACEBOOK_URL}\n"
         f"• LinkedIn:  {VELOX_LINKEDIN_URL}\n"
-        f"• Website:   {VELOX_WEBSITE_URL}\n\n"
-        f"We look forward to building a winning racing machine with you. Welcome to the VELOX family!\n\n"
-        f"With motorsport respect,\n"
-        f"VELOX Racing Team Directorate\n"
-        f"Fatima Salman (Team Leader) • Karim Shaprawy (Vice Team Leader)\n"
-        f"Mohamed Romy (Technical Leader) • Moaaz Elghamry (Managerial Leader & Powertrain Lead)\n"
-        f"velox.racing.znu@gmail.com\n"
-        f"Zagazig National University — Formula Student"
+        f"• Facebook:  {VELOX_FACEBOOK_URL}\n\n"
+        f"Welcome to the team!\n\n"
+        f"Best regards,\n"
+        f"VELOX Racing Team\n"
+        f"Zagazig National University — Formula Student\n"
+        f"velox.racing.znu@gmail.com"
     )
 
 def build_plain_rejected(name, subteam):
     return (
         f"Dear {name},\n\n"
-        f"Thank you for applying to VELOX Racing and taking part in our recruitment process for {subteam}.\n\n"
-        f"We received an exceptional number of highly qualified applications for this competitive Formula Student season. "
-        f"Following rigorous technical evaluations and strict subteam capacity allocations, we regret to inform you that we are unable to offer you a position on the active engineering crew at this time.\n\n"
-        f"We were genuinely impressed by your initiative, ambition, and commitment. We strongly encourage you to continue developing your engineering and technical abilities, join our open university technical sessions, and reapply in our upcoming recruitment cycles.\n\n"
-        f"====================================================\n"
-        f"STAY CONNECTED WITH VELOX RACING\n"
-        f"====================================================\n"
-        f"Follow our car build, open university seminars, and future recruitments:\n"
+        f"Thank you for your interest in VELOX Racing and for taking the time to apply for the {subteam} team.\n\n"
+        f"We received a very high volume of applications this season and, unfortunately, we are unable to offer you a position on the active engineering crew at this time due to strict team quotas.\n\n"
+        f"We truly appreciate your passion and encourage you to attend our public university workshops and reapply in future recruitment cycles.\n\n"
+        f"Follow our car build and future opportunities:\n"
         f"• Instagram: {VELOX_INSTAGRAM_URL}\n"
-        f"• Facebook:  {VELOX_FACEBOOK_URL}\n"
         f"• LinkedIn:  {VELOX_LINKEDIN_URL}\n"
-        f"• Website:   {VELOX_WEBSITE_URL}\n\n"
-        f"We wish you every success in your academic and professional endeavors.\n\n"
-        f"Sincerely,\n"
-        f"VELOX Racing Team Human Resources Directorate\n"
-        f"velox.racing.znu@gmail.com\n"
-        f"Zagazig National University — Formula Student"
+        f"• Facebook:  {VELOX_FACEBOOK_URL}\n\n"
+        f"We wish you all the best in your studies and future endeavors.\n\n"
+        f"Best regards,\n"
+        f"VELOX Racing Team\n"
+        f"Zagazig National University — Formula Student\n"
+        f"velox.racing.znu@gmail.com"
     )
 
 def build_plain_waitlist(name, subteam):
     return (
         f"Dear {name},\n\n"
-        f"Thank you for applying to VELOX Racing for the {subteam} subteam.\n\n"
-        f"Due to current subteam capacity quotas, your application has been placed on our Active Reserve & Waiting List for the Silverstone 2026 season.\n\n"
-        f"Your application received strong marks from our technical reviewers, and we want to keep your candidacy active as sprint deliverables progress. "
-        f"Should additional capacity become available following initial onboarding, our Human Resources Directorate and Subteam Leads will reach out directly to offer you a spot on the engineering team.\n\n"
-        f"====================================================\n"
-        f"FOLLOW VELOX RACING\n"
-        f"====================================================\n"
-        f"Follow our journey and stay updated with live announcements:\n"
+        f"Thank you for applying to VELOX Racing for the {subteam} team.\n\n"
+        f"Due to limited team capacity, your application has been placed on our Active Reserve list for the 2026 season. We were very impressed by your qualifications and will reach out directly if additional spots open up.\n\n"
+        f"In the meantime, stay connected with our car build and upcoming workshops:\n"
         f"• Instagram: {VELOX_INSTAGRAM_URL}\n"
-        f"• Facebook:  {VELOX_FACEBOOK_URL}\n"
         f"• LinkedIn:  {VELOX_LINKEDIN_URL}\n"
-        f"• Website:   {VELOX_WEBSITE_URL}\n\n"
-        f"Thank you again for your patience, dedication, and motorsport enthusiasm.\n\n"
+        f"• Facebook:  {VELOX_FACEBOOK_URL}\n\n"
+        f"Thank you for your enthusiasm and passion for motorsport.\n\n"
         f"Best regards,\n"
-        f"VELOX Racing Team Human Resources Directorate\n"
-        f"velox.racing.znu@gmail.com\n"
-        f"Zagazig National University — Formula Student"
+        f"VELOX Racing Team\n"
+        f"Zagazig National University — Formula Student\n"
+        f"velox.racing.znu@gmail.com"
     )
 
 def build_social_section_html():
     return f"""
-    <!-- Social Media Community Box -->
-    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin: 28px 0 20px 0; background: #131722; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 22px; text-align: center;">
-      <tr>
-        <td>
-          <p style="margin: 0 0 6px 0; font-size: 13px; font-weight: 800; color: #FFFFFF; text-transform: uppercase; letter-spacing: 1.2px;">
-            🏁 Follow VELOX Racing Across Our Channels
-          </p>
-          <p style="margin: 0 0 18px 0; font-size: 12px; line-height: 1.5; color: #94A3B8;">
-            Stay in the loop with vehicle manufacturing, wind-tunnel &amp; track testing, team announcements, and behind-the-scenes stories:
-          </p>
-          <table role="presentation" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto;">
-            <tr>
-              <!-- Instagram -->
-              <td style="padding: 0 6px;">
-                <a href="{VELOX_INSTAGRAM_URL}" target="_blank" style="display: inline-block; background: linear-gradient(45deg, #F58529, #DD2A7B, #8134AF, #515BD4); color: #FFFFFF; font-size: 12px; font-weight: 800; text-decoration: none; padding: 10px 18px; border-radius: 8px; box-shadow: 0 4px 12px rgba(221, 42, 123, 0.35);">
-                  📸 Instagram
-                </a>
-              </td>
-              <!-- Facebook -->
-              <td style="padding: 0 6px;">
-                <a href="{VELOX_FACEBOOK_URL}" target="_blank" style="display: inline-block; background: #1877F2; color: #FFFFFF; font-size: 12px; font-weight: 800; text-decoration: none; padding: 10px 18px; border-radius: 8px; box-shadow: 0 4px 12px rgba(24, 119, 242, 0.35);">
-                  📘 Facebook
-                </a>
-              </td>
-              <!-- LinkedIn -->
-              <td style="padding: 0 6px;">
-                <a href="{VELOX_LINKEDIN_URL}" target="_blank" style="display: inline-block; background: #0A66C2; color: #FFFFFF; font-size: 12px; font-weight: 800; text-decoration: none; padding: 10px 18px; border-radius: 8px; box-shadow: 0 4px 12px rgba(10, 102, 194, 0.35);">
-                  💼 LinkedIn
-                </a>
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-    </table>
+    <div style="margin: 22px 0 16px 0; padding-top: 18px; border-top: 1px solid rgba(255, 255, 255, 0.08); text-align: center;">
+      <p style="margin: 0 0 10px 0; font-size: 11px; font-weight: 700; color: #94A3B8; text-transform: uppercase; letter-spacing: 1px;">
+        Follow VELOX Racing
+      </p>
+      <table role="presentation" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto;">
+        <tr>
+          <td style="padding: 0 5px;">
+            <a href="{VELOX_INSTAGRAM_URL}" target="_blank" style="display: inline-block; background: #E1306C; color: #FFFFFF; font-size: 11px; font-weight: 700; text-decoration: none; padding: 7px 15px; border-radius: 5px;">
+              Instagram
+            </a>
+          </td>
+          <td style="padding: 0 5px;">
+            <a href="{VELOX_LINKEDIN_URL}" target="_blank" style="display: inline-block; background: #0A66C2; color: #FFFFFF; font-size: 11px; font-weight: 700; text-decoration: none; padding: 7px 15px; border-radius: 5px;">
+              LinkedIn
+            </a>
+          </td>
+          <td style="padding: 0 5px;">
+            <a href="{VELOX_FACEBOOK_URL}" target="_blank" style="display: inline-block; background: #1877F2; color: #FFFFFF; font-size: 11px; font-weight: 700; text-decoration: none; padding: 7px 15px; border-radius: 5px;">
+              Facebook
+            </a>
+          </td>
+        </tr>
+      </table>
+    </div>
     """
 
 def build_accepted_email(name, subteam, role, invite_url):
     social_html = build_social_section_html()
-    html = f"""
-<!DOCTYPE html>
+    return f"""<!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Welcome to VELOX Racing — Formula Student ZNU</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome to VELOX Racing!</title>
 </head>
-<body style="margin: 0; padding: 0; background-color: #07090E; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #FFFFFF;">
-  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #07090E; padding: 40px 10px;">
+<body style="margin: 0; padding: 0; background-color: #07090E; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #FFFFFF;">
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #07090E; padding: 32px 12px;">
     <tr>
       <td align="center">
-        <table role="presentation" width="620" cellspacing="0" cellpadding="0" style="max-width: 620px; width: 100%; background: #0E121A; border: 1px solid rgba(225, 6, 0, 0.45); border-radius: 16px; overflow: hidden; box-shadow: 0 25px 60px rgba(0,0,0,0.9);">
-          <!-- Top Accent Banner -->
+        <table role="presentation" width="540" cellspacing="0" cellpadding="0" style="max-width: 540px; width: 100%; background: #0E121A; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 14px; overflow: hidden; box-shadow: 0 15px 40px rgba(0,0,0,0.85);">
+          <!-- Top Accent Bar -->
           <tr>
-            <td height="5" style="background: linear-gradient(90deg, #E10600, #F59E0B, #E10600);"></td>
+            <td height="4" style="background: #E10600;"></td>
           </tr>
           <!-- Header with Logo -->
           <tr>
-            <td style="padding: 34px 36px 20px 36px; text-align: center; background: radial-gradient(circle at center top, rgba(225, 6, 0, 0.22), transparent 70%);">
+            <td style="padding: 28px 24px 16px 24px; text-align: center;">
               <a href="{VELOX_WEBSITE_URL}" target="_blank" style="text-decoration: none; display: inline-block;">
-                <img src="{VELOX_LOGO_URL}" alt="VELOX RACING" width="170" style="display: block; margin: 0 auto 14px auto; max-width: 170px; height: auto; border: 0;" />
+                <img src="{VELOX_LOGO_URL}" alt="VELOX RACING" width="140" style="display: block; margin: 0 auto 10px auto; max-width: 140px; height: auto; border: 0;" />
               </a>
-              <h1 style="margin: 0 0 4px 0; font-size: 24px; font-weight: 900; letter-spacing: 2.5px; color: #FFFFFF; text-transform: uppercase;">VELOX RACING</h1>
-              <p style="margin: 0; font-size: 11px; color: #E10600; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;">ZAGAZIG NATIONAL UNIVERSITY &bull; FORMULA STUDENT</p>
+              <div style="font-size: 20px; font-weight: 900; letter-spacing: 2px; color: #FFFFFF; text-transform: uppercase;">VELOX RACING</div>
+              <div style="font-size: 11px; font-weight: 700; color: #E10600; letter-spacing: 1.5px; text-transform: uppercase; margin-top: 3px;">Formula Student &bull; Zagazig National University</div>
             </td>
           </tr>
-          <!-- Main Content -->
+          <!-- Content Body -->
           <tr>
-            <td style="padding: 24px 36px 36px 36px;">
-              <div style="background: rgba(34, 197, 94, 0.12); border: 1px solid rgba(34, 197, 94, 0.35); border-radius: 8px; padding: 12px 18px; margin-bottom: 24px; text-align: center;">
-                <span style="font-size: 13px; font-weight: 800; color: #4ADE80; letter-spacing: 1px; text-transform: uppercase;">
-                  🏁 OFFICIAL APPLICATION STATUS: ACCEPTED
+            <td style="padding: 16px 28px 28px 28px;">
+              <div style="text-align: center; margin-bottom: 20px;">
+                <span style="display: inline-block; background: rgba(34, 197, 94, 0.12); border: 1px solid rgba(34, 197, 94, 0.35); border-radius: 20px; padding: 5px 16px; font-size: 12px; font-weight: 700; color: #4ADE80; letter-spacing: 0.8px; text-transform: uppercase;">
+                  🏁 Status: Accepted
                 </span>
               </div>
 
-              <h2 style="font-size: 20px; font-weight: 700; margin: 0 0 16px 0; color: #FFFFFF;">
+              <h2 style="font-size: 17px; font-weight: 700; margin: 0 0 12px 0; color: #FFFFFF;">
                 Dear {name},
               </h2>
 
               <p style="font-size: 14px; line-height: 1.6; color: #CBD5E1; margin: 0 0 16px 0;">
-                Congratulations! On behalf of Zagazig National University and the executive leadership of <strong>VELOX Racing</strong>, we are proud to inform you that your application to join our Formula Student engineering challenger has been <strong>OFFICIALLY ACCEPTED</strong>.
+                Congratulations! We are thrilled to welcome you to <strong>VELOX Racing</strong> as a <strong>{role}</strong> on the <strong>{subteam}</strong> team for our Silverstone 2026 campaign.
               </p>
 
-              <!-- Appointment Dossier Box -->
-              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background: #141924; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 10px; margin: 20px 0; padding: 18px;">
+              <!-- Role Box -->
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background: #151A25; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; margin: 16px 0; padding: 12px 16px;">
                 <tr>
-                  <td style="padding: 8px 12px; font-size: 12px; color: #94A3B8; text-transform: uppercase; font-weight: 600;">Designated Department / Subsystem:</td>
-                  <td style="padding: 8px 12px; font-size: 14px; color: #38BDF8; font-weight: 700; text-align: right;">{subteam}</td>
-                </tr>
-                <tr>
-                  <td style="padding: 8px 12px; font-size: 12px; color: #94A3B8; text-transform: uppercase; font-weight: 600;">Appointed Position:</td>
-                  <td style="padding: 8px 12px; font-size: 14px; color: #F59E0B; font-weight: 700; text-align: right;">{role}</td>
-                </tr>
-                <tr>
-                  <td style="padding: 8px 12px; font-size: 12px; color: #94A3B8; text-transform: uppercase; font-weight: 600;">Championship Debut:</td>
-                  <td style="padding: 8px 12px; font-size: 14px; color: #FFFFFF; font-weight: 700; text-align: right;">Silverstone Circuit (UK)</td>
+                  <td style="font-size: 13px; color: #94A3B8;">Role: <strong style="color: #FFFFFF;">{role}</strong></td>
+                  <td style="font-size: 13px; color: #94A3B8; text-align: right;">Subteam: <strong style="color: #38BDF8;">{subteam}</strong></td>
                 </tr>
               </table>
 
-              <p style="font-size: 14px; line-height: 1.6; color: #CBD5E1; margin: 0 0 24px 0;">
-                To complete your enlistment into the team, please click the secure link below to access our onboarding portal. You will be able to <strong>set your account password</strong>, upload your profile portrait, and immediately take your official place on our <strong>Team Structure Org Chart</strong> and <strong>Inside Member Portal</strong>.
+              <p style="font-size: 14px; line-height: 1.6; color: #CBD5E1; margin: 0 0 20px 0;">
+                Please click the button below to activate your account and set your member portal password:
               </p>
 
-              <!-- Call to Action Button -->
-              <div style="text-align: center; margin: 30px 0;">
-                <a href="{invite_url}" target="_blank" style="display: inline-block; background: #E10600; color: #FFFFFF; font-size: 15px; font-weight: 800; text-decoration: none; padding: 14px 34px; border-radius: 8px; box-shadow: 0 6px 20px rgba(225, 6, 0, 0.45); letter-spacing: 0.5px;">
-                  🏁 Complete Onboarding &amp; Set Password &rarr;
+              <!-- CTA Button -->
+              <div style="text-align: center; margin: 22px 0;">
+                <a href="{invite_url}" target="_blank" style="display: inline-block; background: #E10600; color: #FFFFFF; font-size: 14px; font-weight: 700; text-decoration: none; padding: 12px 28px; border-radius: 6px; box-shadow: 0 4px 14px rgba(225, 6, 0, 0.4);">
+                  Activate Account &amp; Set Password &rarr;
                 </a>
               </div>
 
-              <p style="font-size: 12px; line-height: 1.5; color: #94A3B8; margin: 20px 0 0 0; text-align: center; word-break: break-all;">
-                Direct onboarding pass:<br/>
+              <p style="font-size: 11px; line-height: 1.4; color: #64748B; text-align: center; margin: 0 0 16px 0; word-break: break-all;">
+                Direct onboarding link:<br/>
                 <a href="{invite_url}" style="color: #38BDF8; text-decoration: underline;">{invite_url}</a>
               </p>
 
               {social_html}
 
-              <hr style="border: none; border-top: 1px solid rgba(255,255,255,0.08); margin: 28px 0;" />
-
-              <!-- Sign-off -->
-              <p style="font-size: 13px; line-height: 1.5; color: #94A3B8; margin: 0;">
-                With motorsport respect,<br/>
-                <strong style="color: #FFFFFF;">VELOX Racing Team Directorate</strong><br/>
-                Fatima Salman (Team Leader) &bull; Karim Shaprawy (Vice Team Leader)<br/>
-                Mohamed Romy (Technical Leader) &bull; Moaaz Elghamry (Managerial Leader &amp; Powertrain Lead)<br/>
-                <em>Zagazig National University &mdash; Formula Student</em>
+              <p style="font-size: 12px; line-height: 1.5; color: #94A3B8; margin: 18px 0 0 0; text-align: center;">
+                Best regards,<br/>
+                <strong style="color: #FFFFFF;">VELOX Racing Team</strong><br/>
+                <em>Zagazig National University &bull; Formula Student</em><br/>
+                <a href="mailto:velox.racing.znu@gmail.com" style="color: #64748B; text-decoration: none;">velox.racing.znu@gmail.com</a>
               </p>
             </td>
           </tr>
@@ -256,59 +202,66 @@ def build_accepted_email(name, subteam, role, invite_url):
     </tr>
   </table>
 </body>
-</html>
-"""
-    return html
+</html>"""
 
 def build_rejected_email(name, subteam):
     social_html = build_social_section_html()
-    html = f"""
-<!DOCTYPE html>
+    return f"""<!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Application Status — VELOX Racing</title>
 </head>
-<body style="margin: 0; padding: 0; background-color: #07090E; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #FFFFFF;">
-  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #07090E; padding: 40px 10px;">
+<body style="margin: 0; padding: 0; background-color: #07090E; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #FFFFFF;">
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #07090E; padding: 32px 12px;">
     <tr>
       <td align="center">
-        <table role="presentation" width="620" cellspacing="0" cellpadding="0" style="max-width: 620px; width: 100%; background: #0E121A; border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 16px; overflow: hidden; box-shadow: 0 25px 60px rgba(0,0,0,0.9);">
+        <table role="presentation" width="540" cellspacing="0" cellpadding="0" style="max-width: 540px; width: 100%; background: #0E121A; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 14px; overflow: hidden; box-shadow: 0 15px 40px rgba(0,0,0,0.85);">
           <tr>
-            <td height="5" style="background: #E10600;"></td>
+            <td height="4" style="background: #94A3B8;"></td>
           </tr>
           <tr>
-            <td style="padding: 34px 36px 20px 36px; text-align: center;">
+            <td style="padding: 28px 24px 16px 24px; text-align: center;">
               <a href="{VELOX_WEBSITE_URL}" target="_blank" style="text-decoration: none; display: inline-block;">
-                <img src="{VELOX_LOGO_URL}" alt="VELOX RACING" width="170" style="display: block; margin: 0 auto 14px auto; max-width: 170px; height: auto; border: 0;" />
+                <img src="{VELOX_LOGO_URL}" alt="VELOX RACING" width="140" style="display: block; margin: 0 auto 10px auto; max-width: 140px; height: auto; border: 0;" />
               </a>
-              <h1 style="margin: 0 0 4px 0; font-size: 24px; font-weight: 900; letter-spacing: 2.5px; color: #FFFFFF; text-transform: uppercase;">VELOX RACING</h1>
-              <p style="margin: 0; font-size: 11px; color: #E10600; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;">ZAGAZIG NATIONAL UNIVERSITY &bull; FORMULA STUDENT</p>
+              <div style="font-size: 20px; font-weight: 900; letter-spacing: 2px; color: #FFFFFF; text-transform: uppercase;">VELOX RACING</div>
+              <div style="font-size: 11px; font-weight: 700; color: #E10600; letter-spacing: 1.5px; text-transform: uppercase; margin-top: 3px;">Formula Student &bull; Zagazig National University</div>
             </td>
           </tr>
           <tr>
-            <td style="padding: 20px 36px 36px 36px;">
-              <h2 style="font-size: 18px; font-weight: 700; margin: 0 0 16px 0; color: #FFFFFF;">
+            <td style="padding: 16px 28px 28px 28px;">
+              <div style="text-align: center; margin-bottom: 20px;">
+                <span style="display: inline-block; background: rgba(148, 163, 184, 0.12); border: 1px solid rgba(148, 163, 184, 0.25); border-radius: 20px; padding: 5px 16px; font-size: 12px; font-weight: 700; color: #94A3B8; letter-spacing: 0.8px; text-transform: uppercase;">
+                  📋 Status: Application Update
+                </span>
+              </div>
+
+              <h2 style="font-size: 17px; font-weight: 700; margin: 0 0 12px 0; color: #FFFFFF;">
                 Dear {name},
               </h2>
-              <p style="font-size: 14px; line-height: 1.6; color: #CBD5E1; margin: 0 0 16px 0;">
-                Thank you for applying to <strong>VELOX Racing</strong> and taking part in our recruitment process for the <strong>{subteam}</strong> subteam.
+
+              <p style="font-size: 14px; line-height: 1.6; color: #CBD5E1; margin: 0 0 14px 0;">
+                Thank you for your interest in <strong>VELOX Racing</strong> and for applying for the <strong>{subteam}</strong> team.
               </p>
-              <p style="font-size: 14px; line-height: 1.6; color: #CBD5E1; margin: 0 0 16px 0;">
-                We received an exceptional number of highly qualified applications for this competitive Formula Student season. Following a rigorous evaluation of technical allocations and team quotas, we regret to inform you that we are unable to offer you a position on the active engineering crew at this time.
+
+              <p style="font-size: 14px; line-height: 1.6; color: #CBD5E1; margin: 0 0 14px 0;">
+                We received a very high volume of applications this season and, unfortunately, we are unable to offer you a position on the active engineering crew at this time due to strict team quotas.
               </p>
-              <p style="font-size: 14px; line-height: 1.6; color: #CBD5E1; margin: 0 0 20px 0;">
-                We were genuinely impressed by your initiative, academic passion, and commitment. We strongly encourage you to continue developing your engineering skills and invite you to attend our public university workshops and reapply in our upcoming recruitment cycles.
+
+              <p style="font-size: 14px; line-height: 1.6; color: #CBD5E1; margin: 0 0 14px 0;">
+                We truly appreciate your passion and encourage you to attend our public university workshops and reapply in future recruitment cycles.
               </p>
 
               {social_html}
 
-              <hr style="border: none; border-top: 1px solid rgba(255,255,255,0.08); margin: 24px 0;" />
-              <p style="font-size: 13px; line-height: 1.5; color: #94A3B8; margin: 0;">
-                We wish you every success in your academic and professional endeavors.<br/><br/>
-                Sincerely,<br/>
-                <strong style="color: #FFFFFF;">VELOX Racing Team Human Resources Directorate</strong><br/>
-                <em>Zagazig National University &mdash; Formula Student</em>
+              <p style="font-size: 12px; line-height: 1.5; color: #94A3B8; margin: 18px 0 0 0; text-align: center;">
+                We wish you all the best in your studies and future endeavors.<br/><br/>
+                Best regards,<br/>
+                <strong style="color: #FFFFFF;">VELOX Racing Team</strong><br/>
+                <em>Zagazig National University &bull; Formula Student</em><br/>
+                <a href="mailto:velox.racing.znu@gmail.com" style="color: #64748B; text-decoration: none;">velox.racing.znu@gmail.com</a>
               </p>
             </td>
           </tr>
@@ -317,64 +270,61 @@ def build_rejected_email(name, subteam):
     </tr>
   </table>
 </body>
-</html>
-"""
-    return html
+</html>"""
 
 def build_waitlist_email(name, subteam):
     social_html = build_social_section_html()
-    html = f"""
-<!DOCTYPE html>
+    return f"""<!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Application Status: Active Reserve — VELOX Racing</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Application Status — VELOX Racing</title>
 </head>
-<body style="margin: 0; padding: 0; background-color: #07090E; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #FFFFFF;">
-  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #07090E; padding: 40px 10px;">
+<body style="margin: 0; padding: 0; background-color: #07090E; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #FFFFFF;">
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #07090E; padding: 32px 12px;">
     <tr>
       <td align="center">
-        <table role="presentation" width="620" cellspacing="0" cellpadding="0" style="max-width: 620px; width: 100%; background: #0E121A; border: 1px solid rgba(245, 158, 11, 0.4); border-radius: 16px; overflow: hidden; box-shadow: 0 25px 60px rgba(0,0,0,0.9);">
+        <table role="presentation" width="540" cellspacing="0" cellpadding="0" style="max-width: 540px; width: 100%; background: #0E121A; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 14px; overflow: hidden; box-shadow: 0 15px 40px rgba(0,0,0,0.85);">
           <tr>
-            <td height="5" style="background: linear-gradient(90deg, #F59E0B, #E10600);"></td>
+            <td height="4" style="background: #F59E0B;"></td>
           </tr>
           <tr>
-            <td style="padding: 34px 36px 20px 36px; text-align: center;">
+            <td style="padding: 28px 24px 16px 24px; text-align: center;">
               <a href="{VELOX_WEBSITE_URL}" target="_blank" style="text-decoration: none; display: inline-block;">
-                <img src="{VELOX_LOGO_URL}" alt="VELOX RACING" width="170" style="display: block; margin: 0 auto 14px auto; max-width: 170px; height: auto; border: 0;" />
+                <img src="{VELOX_LOGO_URL}" alt="VELOX RACING" width="140" style="display: block; margin: 0 auto 10px auto; max-width: 140px; height: auto; border: 0;" />
               </a>
-              <h1 style="margin: 0 0 4px 0; font-size: 24px; font-weight: 900; letter-spacing: 2.5px; color: #FFFFFF; text-transform: uppercase;">VELOX RACING</h1>
-              <p style="margin: 0; font-size: 11px; color: #F59E0B; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;">ZAGAZIG NATIONAL UNIVERSITY &bull; FORMULA STUDENT</p>
+              <div style="font-size: 20px; font-weight: 900; letter-spacing: 2px; color: #FFFFFF; text-transform: uppercase;">VELOX RACING</div>
+              <div style="font-size: 11px; font-weight: 700; color: #F59E0B; letter-spacing: 1.5px; text-transform: uppercase; margin-top: 3px;">Formula Student &bull; Zagazig National University</div>
             </td>
           </tr>
           <tr>
-            <td style="padding: 20px 36px 36px 36px;">
-              <div style="background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.35); border-radius: 8px; padding: 12px 18px; margin-bottom: 24px; text-align: center;">
-                <span style="font-size: 13px; font-weight: 800; color: #FBBF24; letter-spacing: 1px; text-transform: uppercase;">
-                  ⏳ APPLICATION STATUS: ACTIVE RESERVE LIST
+            <td style="padding: 16px 28px 28px 28px;">
+              <div style="text-align: center; margin-bottom: 20px;">
+                <span style="display: inline-block; background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.35); border-radius: 20px; padding: 5px 16px; font-size: 12px; font-weight: 700; color: #FBBF24; letter-spacing: 0.8px; text-transform: uppercase;">
+                  ⏳ Status: Active Reserve
                 </span>
               </div>
-              <h2 style="font-size: 18px; font-weight: 700; margin: 0 0 16px 0; color: #FFFFFF;">
+
+              <h2 style="font-size: 17px; font-weight: 700; margin: 0 0 12px 0; color: #FFFFFF;">
                 Dear {name},
               </h2>
-              <p style="font-size: 14px; line-height: 1.6; color: #CBD5E1; margin: 0 0 16px 0;">
-                Thank you for applying to <strong>VELOX Racing</strong> for the <strong>{subteam}</strong> subteam.
+
+              <p style="font-size: 14px; line-height: 1.6; color: #CBD5E1; margin: 0 0 14px 0;">
+                Thank you for applying to <strong>VELOX Racing</strong> for the <strong>{subteam}</strong> team.
               </p>
-              <p style="font-size: 14px; line-height: 1.6; color: #CBD5E1; margin: 0 0 16px 0;">
-                Due to current subteam capacity, your application has been placed on our <strong>Active Reserve &amp; Waiting List</strong>. Your application received strong marks from our technical reviewers, and we want to keep your candidacy active as sprint deliverables progress.
-              </p>
-              <p style="font-size: 14px; line-height: 1.6; color: #CBD5E1; margin: 0 0 20px 0;">
-                Should additional capacity become available following initial onboarding, our Human Resources Directorate and Subteam Leads will reach out directly to offer you a spot on the engineering team.
+
+              <p style="font-size: 14px; line-height: 1.6; color: #CBD5E1; margin: 0 0 14px 0;">
+                Due to limited team capacity, your application has been placed on our <strong>Active Reserve</strong> list for the 2026 season. We were very impressed by your qualifications and our subteam leads will reach out directly if additional spots become available.
               </p>
 
               {social_html}
 
-              <hr style="border: none; border-top: 1px solid rgba(255,255,255,0.08); margin: 24px 0;" />
-              <p style="font-size: 13px; line-height: 1.5; color: #94A3B8; margin: 0;">
-                Thank you again for your patience and enthusiasm.<br/><br/>
+              <p style="font-size: 12px; line-height: 1.5; color: #94A3B8; margin: 18px 0 0 0; text-align: center;">
                 Best regards,<br/>
-                <strong style="color: #FFFFFF;">VELOX Racing Team Human Resources Directorate</strong><br/>
-                <em>Zagazig National University &mdash; Formula Student</em>
+                <strong style="color: #FFFFFF;">VELOX Racing Team</strong><br/>
+                <em>Zagazig National University &bull; Formula Student</em><br/>
+                <a href="mailto:velox.racing.znu@gmail.com" style="color: #64748B; text-decoration: none;">velox.racing.znu@gmail.com</a>
               </p>
             </td>
           </tr>
@@ -383,9 +333,7 @@ def build_waitlist_email(name, subteam):
     </tr>
   </table>
 </body>
-</html>
-"""
-    return html
+</html>"""
 
 class handler(BaseHTTPRequestHandler):
     def _send_json(self, status_code, data):
@@ -449,15 +397,15 @@ class handler(BaseHTTPRequestHandler):
         # Build Email Subject, HTML, and Plain Text
         norm_status = status.lower()
         if "accept" in norm_status:
-            subject = "🏁 OFFICIAL INVITATION: Welcome to VELOX Racing — Formula Student ZNU"
+            subject = "Welcome to VELOX Racing! 🏁"
             html_content = build_accepted_email(name, subteam, role, invite_url)
             plain_content = build_plain_accepted(name, subteam, role, invite_url)
         elif "reject" in norm_status:
-            subject = "VELOX Racing Team — Application Update (Silverstone 2026)"
+            subject = "VELOX Racing — Application Update"
             html_content = build_rejected_email(name, subteam)
             plain_content = build_plain_rejected(name, subteam)
         elif "wait" in norm_status:
-            subject = "VELOX Racing Team — Application Status: Active Reserve List"
+            subject = "VELOX Racing — Application Status Update"
             html_content = build_waitlist_email(name, subteam)
             plain_content = build_plain_waitlist(name, subteam)
         else:
