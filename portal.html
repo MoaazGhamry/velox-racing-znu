@@ -3093,6 +3093,7 @@
 
     function savePortalDb(db) {
       localStorage.setItem(DB_KEY, JSON.stringify(db));
+      try { localStorage.setItem('velox_portal_db_v7', JSON.stringify(db)); } catch (e) {}
     }
 
     // ==================== CYBER TELEMETRY & AUDIT STREAM ====================
@@ -6951,21 +6952,60 @@
           const db = getPortalDb();
 
           p.avatar = stagedPhotoData;
+          p.photo = stagedPhotoData;
           if (!db.personas) db.personas = {};
           if (!db.personas[currentPersonaKey]) {
             db.personas[currentPersonaKey] = { ...p };
           }
           db.personas[currentPersonaKey].avatar = stagedPhotoData;
+          db.personas[currentPersonaKey].photo = stagedPhotoData;
 
-          // Also update roster entry and accounts
+          const pNameNorm = (p.name || '').trim().toLowerCase();
+          const pIdNorm = (p.id || '').trim().toLowerCase();
           const authUser = (localStorage.getItem('velox_auth_user') || currentAuthUser || '').trim().toLowerCase();
-          const member = (db.membersRoster || []).find(m => 
-            (m.username && m.username.toLowerCase() === authUser) || 
-            m.id === p.id || 
-            (m.name && m.name.trim().toLowerCase() === p.name.trim().toLowerCase())
-          );
-          if (member) {
-            member.avatar = stagedPhotoData;
+
+          // Sync avatar & photo to all matching personas (aliases, username keys, etc.)
+          Object.keys(db.personas).forEach(key => {
+            const per = db.personas[key];
+            if (!per) return;
+            const perId = (per.id || '').trim().toLowerCase();
+            const perName = (per.name || '').trim().toLowerCase();
+            if ((pIdNorm && perId === pIdNorm) || (pNameNorm && perName === pNameNorm)) {
+              per.avatar = stagedPhotoData;
+              per.photo = stagedPhotoData;
+            }
+          });
+
+          // Dedicated safety sync for Ali Elgohary
+          if (pNameNorm.includes('ali') && pNameNorm.includes('gohary')) {
+            if (db.personas.ali) {
+              db.personas.ali.avatar = stagedPhotoData;
+              db.personas.ali.photo = stagedPhotoData;
+            }
+          }
+
+          // Also update roster entries and accounts with both avatar and photo
+          let targetRosterEmail = '';
+          (db.membersRoster || []).forEach(m => {
+            const mUser = (m.username || '').toLowerCase();
+            const mName = (m.name || '').trim().toLowerCase();
+            const mId = (m.id || '').toLowerCase();
+            if ((authUser && mUser === authUser) || (pIdNorm && (mUser === pIdNorm || mId === pIdNorm)) || (pNameNorm && mName === pNameNorm)) {
+              m.avatar = stagedPhotoData;
+              m.photo = stagedPhotoData;
+              if (m.email) targetRosterEmail = m.email;
+            }
+          });
+
+          if (db.accounts) {
+            db.accounts.forEach(a => {
+              const aUser = (a.username || '').toLowerCase();
+              const aName = (a.name || '').trim().toLowerCase();
+              if ((authUser && aUser === authUser) || (pIdNorm && aUser === pIdNorm) || (pNameNorm && aName === pNameNorm)) {
+                a.avatar = stagedPhotoData;
+                a.photo = stagedPhotoData;
+              }
+            });
           }
 
           savePortalDb(db);
@@ -6978,23 +7018,62 @@
             const cfg = window.VELOX_CONFIG || {};
             if (cfg.url && cfg.anonKey && !cfg.url.includes('your-project-id') && window.supabase) {
               const client = window.supabase.createClient(cfg.url, cfg.anonKey);
-              const targetEmail = p.email || (member && member.email) || '';
-              const targetName = p.name || '';
-
-              let query = client.from('applications').select('id, email, full_name');
-              if (targetEmail) {
-                query = query.eq('email', targetEmail);
-              } else if (targetName) {
-                query = query.eq('full_name', targetName);
+              let targetEmail = p.email || targetRosterEmail || '';
+              if (!targetEmail && db.invitations) {
+                const inv = db.invitations.find(i => 
+                  (i.inviteeName && i.inviteeName.trim().toLowerCase() === pNameNorm) ||
+                  (i.email && authUser && i.email.toLowerCase().includes(authUser))
+                );
+                if (inv && inv.email) targetEmail = inv.email;
               }
 
-              const { data: matchedRows } = await query;
-              if (matchedRows && matchedRows.length > 0) {
-                await client
+              const targetName = (p.name || '').trim();
+              let matchedId = null;
+
+              if (targetEmail) {
+                const { data: byEmail } = await client
+                  .from('applications')
+                  .select('id, email, full_name')
+                  .ilike('email', targetEmail);
+                if (byEmail && byEmail.length > 0) matchedId = byEmail[0].id;
+              }
+
+              if (!matchedId && targetName) {
+                const { data: byName } = await client
+                  .from('applications')
+                  .select('id, email, full_name')
+                  .ilike('full_name', targetName);
+                if (byName && byName.length > 0) matchedId = byName[0].id;
+              }
+
+              if (!matchedId && targetName) {
+                const { data: byPartialName } = await client
+                  .from('applications')
+                  .select('id, email, full_name')
+                  .ilike('full_name', `%${targetName}%`);
+                if (byPartialName && byPartialName.length > 0) matchedId = byPartialName[0].id;
+              }
+
+              if (!matchedId && authUser) {
+                const { data: byUserPrefix } = await client
+                  .from('applications')
+                  .select('id, email, full_name')
+                  .ilike('email', `${authUser}%`);
+                if (byUserPrefix && byUserPrefix.length > 0) matchedId = byUserPrefix[0].id;
+              }
+
+              if (matchedId) {
+                const { error: upErr } = await client
                   .from('applications')
                   .update({ portfolio_url: stagedPhotoData })
-                  .eq('id', matchedRows[0].id);
-                console.log('✓ Profile photo successfully synchronized to Supabase Cloud applications!');
+                  .eq('id', matchedId);
+                if (upErr) {
+                  console.warn('Supabase update returned error:', upErr);
+                } else {
+                  console.log('✓ Profile photo successfully synchronized to Supabase Cloud applications (id: ' + matchedId + ')!');
+                }
+              } else {
+                console.warn('Notice: Could not locate row in Supabase applications to sync photo.');
               }
             }
           } catch (supaErr) {
@@ -7074,7 +7153,8 @@
             // Check if in roster
             const rosterIdx = (db.membersRoster || []).findIndex(m => m.id === memberId || (m.name && m.name.toLowerCase() === normName));
             const cloudAvatar = (app.portfolio_url && (app.portfolio_url.startsWith('data:image/') || app.portfolio_url.startsWith('http') || app.portfolio_url.startsWith('photos/'))) ? app.portfolio_url : '';
-            const existingAvatar = rosterIdx !== -1 ? (db.membersRoster[rosterIdx].avatar || '') : '';
+            const existingAvatar = rosterIdx !== -1 ? (db.membersRoster[rosterIdx].avatar || db.membersRoster[rosterIdx].photo || '') : '';
+            const finalAvatar = cloudAvatar || existingAvatar || '';
 
             const rosterEntry = {
               id: memberId,
@@ -7087,10 +7167,14 @@
               username: username,
               points: (rosterIdx !== -1 && db.membersRoster[rosterIdx].points) || 0,
               status: 'Active',
-              avatar: cloudAvatar || existingAvatar
+              avatar: finalAvatar,
+              photo: finalAvatar
             };
 
             if (rosterIdx !== -1) {
+              if (finalAvatar && finalAvatar !== existingAvatar) {
+                updated = true;
+              }
               db.membersRoster[rosterIdx] = { ...db.membersRoster[rosterIdx], ...rosterEntry };
             } else {
               if (!db.membersRoster) db.membersRoster = [];
@@ -7110,12 +7194,25 @@
                 branch: 'Technical',
                 departments: [dept],
                 subteam: subteam,
-                avatar: cloudAvatar || existingAvatar,
+                avatar: finalAvatar,
+                photo: finalAvatar,
                 deptDesc: `${dept} Division • ${assignedRole}`
               };
               updated = true;
-            } else if (cloudAvatar && !db.personas[personaKey].avatar) {
-              db.personas[personaKey].avatar = cloudAvatar;
+            } else if (finalAvatar) {
+              if (db.personas[personaKey].avatar !== finalAvatar) updated = true;
+              db.personas[personaKey].avatar = finalAvatar;
+              db.personas[personaKey].photo = finalAvatar;
+            }
+
+            if (normName === 'ali elgohary') {
+              if (db.personas.ali) {
+                if (finalAvatar && db.personas.ali.avatar !== finalAvatar) updated = true;
+                if (finalAvatar) {
+                  db.personas.ali.avatar = finalAvatar;
+                  db.personas.ali.photo = finalAvatar;
+                }
+              }
             }
 
             // Ensure account

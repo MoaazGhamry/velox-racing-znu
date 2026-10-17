@@ -254,27 +254,75 @@ function getDynamicTeamData() {
 
   if (!portalDb) return data;
 
-  // 1. Sync persona avatar updates to static leaders
-  if (portalDb.personas) {
-    if (portalDb.personas.fatima && portalDb.personas.fatima.avatar) {
-      if (data.executives[0]) data.executives[0].photo = portalDb.personas.fatima.avatar;
+  // Universal avatar resolution helper across personas, membersRoster, and accounts
+  function findAvatarForPerson(id, name) {
+    if (!id && !name) return '';
+    const normId = (id || '').trim().toLowerCase();
+    const normName = (name || '').trim().toLowerCase();
+
+    // 1. Check portalDb.personas
+    if (portalDb.personas) {
+      for (const k in portalDb.personas) {
+        const p = portalDb.personas[k];
+        if (!p) continue;
+        const pId = (p.id || '').trim().toLowerCase();
+        const pName = (p.name || '').trim().toLowerCase();
+        if ((normId && pId === normId) || (normName && pName === normName)) {
+          if (p.avatar || p.photo) return p.avatar || p.photo;
+        }
+      }
     }
-    if (portalDb.personas.karim && portalDb.personas.karim.avatar) {
-      if (data.executives[1]) data.executives[1].photo = portalDb.personas.karim.avatar;
+
+    // 2. Check portalDb.membersRoster
+    if (Array.isArray(portalDb.membersRoster)) {
+      const found = portalDb.membersRoster.find(m => {
+        if (!m) return false;
+        const mId = (m.id || '').trim().toLowerCase();
+        const mName = (m.name || '').trim().toLowerCase();
+        return (normId && mId === normId) || (normName && mName === normName);
+      });
+      if (found && (found.avatar || found.photo)) return found.avatar || found.photo;
     }
-    if (portalDb.personas.romy && portalDb.personas.romy.avatar) {
-      if (data.technicalLeader) data.technicalLeader.photo = portalDb.personas.romy.avatar;
+
+    // 3. Check portalDb.accounts
+    if (Array.isArray(portalDb.accounts)) {
+      const foundAcc = portalDb.accounts.find(a => {
+        if (!a) return false;
+        const aName = (a.name || '').trim().toLowerCase();
+        return normName && aName === normName;
+      });
+      if (foundAcc && (foundAcc.avatar || foundAcc.photo)) return foundAcc.avatar || foundAcc.photo;
     }
-    if (portalDb.personas.moaaz && portalDb.personas.moaaz.avatar) {
-      if (data.managerialLeader) data.managerialLeader.photo = portalDb.personas.moaaz.avatar;
-      const ptDept = data.technicalDepartments.find(d => d.id === 'powertrain');
-      if (ptDept && ptDept.leader) ptDept.leader.photo = portalDb.personas.moaaz.avatar;
-    }
-    if (portalDb.personas.hassan && portalDb.personas.hassan.avatar) {
-      const mediaDept = data.nonTechnical.find(d => d.id === 'media');
-      if (mediaDept && mediaDept.leader) mediaDept.leader.photo = portalDb.personas.hassan.avatar;
-    }
+
+    return '';
   }
+
+  // 1. Sync persona & roster avatar updates to static executives and leadership
+  if (data.executives && Array.isArray(data.executives)) {
+    data.executives.forEach(exec => {
+      const av = findAvatarForPerson(exec.id, exec.name);
+      if (av) exec.photo = av;
+    });
+  }
+
+  if (data.technicalLeader) {
+    const av = findAvatarForPerson(data.technicalLeader.id, data.technicalLeader.name);
+    if (av) data.technicalLeader.photo = av;
+  }
+
+  if (data.managerialLeader) {
+    const av = findAvatarForPerson(data.managerialLeader.id, data.managerialLeader.name);
+    if (av) data.managerialLeader.photo = av;
+  }
+
+  // Sync avatars to all department leaders (Electrical, Powertrain, Media, etc.)
+  const allDepts = [...data.technicalDepartments, ...data.nonTechnical];
+  allDepts.forEach(dept => {
+    if (dept.leader) {
+      const av = findAvatarForPerson(dept.leader.id, dept.leader.name);
+      if (av) dept.leader.photo = av;
+    }
+  });
 
   // 2. Collect accepted members from roster and invitations with strict deduplication
   const activeMembers = [];
@@ -305,15 +353,7 @@ function getDynamicTeamData() {
       if (removedNames.has(normName) || m.status === 'Suspended' || m.status === 'Removed') return;
       if (seenNames.has(normName)) return;
 
-      let avatar = m.avatar || '';
-      if (!avatar && portalDb.personas) {
-        for (const k in portalDb.personas) {
-          if ((portalDb.personas[k].name && portalDb.personas[k].name.trim().toLowerCase() === normName) || portalDb.personas[k].id === m.id) {
-            if (portalDb.personas[k].avatar) avatar = portalDb.personas[k].avatar;
-            break;
-          }
-        }
-      }
+      const avatar = m.avatar || m.photo || findAvatarForPerson(m.id, cleanName) || '';
       const item = {
         id: m.id || ('mem-' + normName.replace(/[^a-z0-9]/g, '-')),
         name: cleanName,
@@ -322,7 +362,8 @@ function getDynamicTeamData() {
         branch: m.branch || 'Technical',
         department: m.dept || m.department || '',
         subteam: m.subteam || '',
-        avatar: avatar
+        avatar: avatar,
+        photo: avatar
       };
       if (!seenIds.has(item.id)) {
         seenIds.add(item.id);
@@ -333,7 +374,6 @@ function getDynamicTeamData() {
   }
 
   // Only ingest accepted invitations if the member is still active in membersRoster!
-  // If membersRoster exists and is non-empty, someone NOT in membersRoster was removed by admin!
   if (Array.isArray(portalDb.invitations)) {
     portalDb.invitations.filter(inv => inv.status === 'Accepted').forEach(inv => {
       if (!inv || !inv.inviteeName) return;
@@ -343,13 +383,11 @@ function getDynamicTeamData() {
 
       if (removedNames.has(normName)) return;
 
-      // If membersRoster exists and has members, verify that this invited member is still present in membersRoster!
       if (Array.isArray(portalDb.membersRoster) && portalDb.membersRoster.length > 0) {
         const stillInRoster = portalDb.membersRoster.some(m => m && m.name && m.name.trim().toLowerCase() === normName && m.status !== 'Suspended' && m.status !== 'Removed');
         if (!stillInRoster) return;
       }
 
-      // If already recorded from membersRoster or earlier invitation, skip
       if (seenNames.has(normName)) return;
 
       const id = 'mem-' + normName.replace(/[^a-z0-9]/g, '-');
@@ -358,15 +396,7 @@ function getDynamicTeamData() {
       seenIds.add(id);
       seenNames.add(normName);
 
-      let avatar = '';
-      if (portalDb.personas) {
-        for (const k in portalDb.personas) {
-          if (portalDb.personas[k].name && portalDb.personas[k].name.trim().toLowerCase() === normName) {
-            avatar = portalDb.personas[k].avatar || '';
-            break;
-          }
-        }
-      }
+      const avatar = findAvatarForPerson(id, cleanName) || '';
       activeMembers.push({
         id: id,
         name: cleanName,
@@ -375,14 +405,13 @@ function getDynamicTeamData() {
         branch: inv.branch || 'Technical',
         department: inv.department || '',
         subteam: inv.subteam || '',
-        avatar: avatar
+        avatar: avatar,
+        photo: avatar
       });
     });
   }
 
   // 3. Map members to departments and subteams
-  const allDepts = [...data.technicalDepartments, ...data.nonTechnical];
-
   activeMembers.forEach(member => {
     const targetDept = allDepts.find(d => {
       const dName = d.name.toLowerCase();
@@ -396,23 +425,37 @@ function getDynamicTeamData() {
       member.role.toLowerCase().includes('department leader') ||
       (member.role.toLowerCase().includes('leader') && (!member.subteam || member.subteam === '__DEPT_LEAD__' || member.subteam === 'All Subteams'));
 
-    if (isDeptLeader && !targetDept.leader) {
-      targetDept.leader = {
-        id: member.id,
-        name: member.name,
-        role: member.role,
-        photo: member.avatar || '',
-        department: targetDept.name,
-        department_ar: targetDept.name,
-        bio: `Appointed Department Leader of ${targetDept.name} Division at Velox Racing Formula Student Team.`,
-        responsibilities: [
-          `Executive engineering coordination and delivery milestones for ${targetDept.name}`,
-          `Direct technical supervision over ${targetDept.subteams.join(', ')} subteams`,
-          `Rules compliance and technical inspection preparation for Formula Student UK`
-        ],
-        quote: "Engineering precision, relentless testing, and disciplined teamwork drive our car to the podium."
-      };
-      return;
+    if (isDeptLeader) {
+      if (!targetDept.leader) {
+        targetDept.leader = {
+          id: member.id,
+          name: member.name,
+          role: member.role,
+          photo: member.photo || member.avatar || '',
+          avatar: member.avatar || member.photo || '',
+          department: targetDept.name,
+          department_ar: targetDept.name,
+          bio: `Appointed Department Leader of ${targetDept.name} Division at Velox Racing Formula Student Team.`,
+          responsibilities: [
+            `Executive engineering coordination and delivery milestones for ${targetDept.name}`,
+            `Direct technical supervision over ${targetDept.subteams.join(', ')} subteams`,
+            `Rules compliance and technical inspection preparation for Formula Student UK`
+          ],
+          quote: "Engineering precision, relentless testing, and disciplined teamwork drive our car to the podium."
+        };
+      } else {
+        // Target dept already has a leader (e.g. Electrical -> Ali Elgohary); sync their updated photo & role
+        const sameLeader = (targetDept.leader.id && targetDept.leader.id === member.id) ||
+          (targetDept.leader.name && member.name && targetDept.leader.name.trim().toLowerCase() === member.name.trim().toLowerCase());
+        if (sameLeader) {
+          if (member.photo || member.avatar) {
+            targetDept.leader.photo = member.photo || member.avatar;
+            targetDept.leader.avatar = member.photo || member.avatar;
+          }
+          if (member.role) targetDept.leader.role = member.role;
+        }
+      }
+      return; // Do NOT push department leaders down into subteamCrew!
     }
 
     let matchedSub = null;
@@ -438,12 +481,14 @@ function getDynamicTeamData() {
       if (alreadyExists) return;
 
       const isLead = member.role.toLowerCase().includes('leader') || member.roleType === 'subteam_lead';
+      const resolvedPhoto = member.photo || member.avatar || '';
       targetDept.subteamCrew[matchedSub].push({
         id: member.id,
         name: member.name,
         role: member.role,
         isLead: isLead,
-        photo: member.avatar || '',
+        photo: resolvedPhoto,
+        avatar: resolvedPhoto,
         subteam: matchedSub,
         department: targetDept.name,
         bio: `Formula Student engineering crew member in ${targetDept.name} — ${matchedSub} at Velox Racing.`,
@@ -599,8 +644,12 @@ async function syncCloudAcceptedMembers() {
         }
       }
 
+      const personaKey = 'user_' + (app.email ? app.email.split('@')[0] : normName).replace(/[^a-z0-9]/g, '');
+      const existingPersonaAvatar = (db.personas && db.personas[personaKey] && (db.personas[personaKey].avatar || db.personas[personaKey].photo)) ||
+        (normName === 'ali elgohary' && db.personas && db.personas['ali'] && (db.personas['ali'].avatar || db.personas['ali'].photo)) || '';
+
       const cloudAvatar = (app.portfolio_url && (app.portfolio_url.startsWith('data:image/') || app.portfolio_url.startsWith('http') || app.portfolio_url.startsWith('photos/'))) ? app.portfolio_url : '';
-      const resolvedAvatar = cloudAvatar || (existingRosterItem && existingRosterItem.avatar) || '';
+      const resolvedAvatar = cloudAvatar || (existingRosterItem && (existingRosterItem.avatar || existingRosterItem.photo)) || existingPersonaAvatar || '';
 
       const entry = {
         id: memberId,
@@ -614,16 +663,21 @@ async function syncCloudAcceptedMembers() {
         username: (app.email ? app.email.split('@')[0] : normName).replace(/[^a-z0-9]/g, ''),
         points: (existingRosterItem && existingRosterItem.points) || 0,
         status: 'Active',
-        avatar: resolvedAvatar
+        avatar: resolvedAvatar,
+        photo: resolvedAvatar
       };
 
       if (existingIdx !== -1) {
+        if (resolvedAvatar && (existingRosterItem.avatar !== resolvedAvatar || existingRosterItem.photo !== resolvedAvatar)) {
+          updated = true;
+        }
         db.membersRoster[existingIdx] = { 
           ...existingRosterItem, 
           ...entry,
           role: (existingRosterItem.role && existingRosterItem.role !== 'Team Member') ? existingRosterItem.role : entry.role,
           roleType: existingRosterItem.roleType || entry.roleType,
-          avatar: resolvedAvatar
+          avatar: resolvedAvatar,
+          photo: resolvedAvatar
         };
       } else {
         db.membersRoster.push(entry);
@@ -632,7 +686,6 @@ async function syncCloudAcceptedMembers() {
 
       // Ensure dynamic persona exists with avatar
       if (!db.personas) db.personas = {};
-      const personaKey = 'user_' + entry.username;
       if (!db.personas[personaKey]) {
         db.personas[personaKey] = {
           id: memberId,
@@ -643,10 +696,13 @@ async function syncCloudAcceptedMembers() {
           departments: [parsed.dept],
           subteam: parsed.subteam,
           avatar: resolvedAvatar,
+          photo: resolvedAvatar,
           deptDesc: `${parsed.branch} Division • ${parsed.dept}`
         };
       } else if (resolvedAvatar) {
+        if (db.personas[personaKey].avatar !== resolvedAvatar) updated = true;
         db.personas[personaKey].avatar = resolvedAvatar;
+        db.personas[personaKey].photo = resolvedAvatar;
       }
 
       // Provision inside portal account credentials if missing
@@ -657,7 +713,9 @@ async function syncCloudAcceptedMembers() {
           password: 'velox2026',
           personaKey: personaKey,
           name: cleanName,
-          status: 'Active'
+          status: 'Active',
+          avatar: resolvedAvatar,
+          photo: resolvedAvatar
         });
       }
 
@@ -672,16 +730,23 @@ async function syncCloudAcceptedMembers() {
           departments: ['Electrical'],
           subteam: '',
           avatar: resolvedAvatar,
+          photo: resolvedAvatar,
           deptDesc: 'Technical Engineering Division • Electrical Leader'
         };
         ['alielgohary', 'ali'].forEach(uKey => {
-          if (!db.accounts.some(a => a.username === uKey)) {
+          const acc = db.accounts.find(a => a.username === uKey);
+          if (acc) {
+            acc.avatar = resolvedAvatar;
+            acc.photo = resolvedAvatar;
+          } else {
             db.accounts.push({
               username: uKey,
               password: 'velox2026',
               personaKey: 'ali',
               name: 'Ali Elgohary',
-              status: 'Active'
+              status: 'Active',
+              avatar: resolvedAvatar,
+              photo: resolvedAvatar
             });
           }
         });
@@ -690,6 +755,7 @@ async function syncCloudAcceptedMembers() {
 
     if (updated || data.length > 0) {
       localStorage.setItem('velox_portal_db_v8', JSON.stringify(db));
+      localStorage.setItem('velox_portal_db_v7', JSON.stringify(db));
       if (typeof window.renderOrgChart === 'function') {
         window.renderOrgChart();
       }

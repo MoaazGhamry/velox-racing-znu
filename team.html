@@ -202,7 +202,7 @@
           ${data.executives.map(exec => `
             <div class="person-card clickable-member" data-member-id="${exec.id}" role="button" tabindex="0" title="${dict['modal.viewProfile'] || 'Click to view overview'}">
               <div class="avatar-circle">
-                ${exec.photo ? `<img src="${exec.photo}" alt="${exec.name}" class="avatar-img" />` : getInitials(exec.name)}
+                ${(exec.photo || exec.avatar) ? `<img src="${exec.photo || exec.avatar}" alt="${exec.name}" class="avatar-img" onerror="this.onerror=null;this.parentElement.innerHTML='${getInitials(exec.name)}';" />` : getInitials(exec.name)}
               </div>
               <span class="person-role">${tRole(exec.role)}</span>
               <h3 class="person-name">${exec.name}</h3>
@@ -249,7 +249,7 @@
             <div class="tree-tier tree-tier-lead" style="width: 100%;">
               <div class="person-card clickable-member" data-member-id="${data.technicalLeader.id}" role="button" tabindex="0" title="${dict['modal.viewProfile'] || 'Click to view overview'}" style="width: 100%;">
                 <div class="avatar-circle">
-                  ${data.technicalLeader.photo ? `<img src="${data.technicalLeader.photo}" alt="${data.technicalLeader.name}" class="avatar-img" />` : getInitials(data.technicalLeader.name)}
+                  ${(data.technicalLeader.photo || data.technicalLeader.avatar) ? `<img src="${data.technicalLeader.photo || data.technicalLeader.avatar}" alt="${data.technicalLeader.name}" class="avatar-img" onerror="this.onerror=null;this.parentElement.innerHTML='${getInitials(data.technicalLeader.name)}';" />` : getInitials(data.technicalLeader.name)}
                 </div>
                 <span class="person-role">${tRole(data.technicalLeader.role)}</span>
                 <h3 class="person-name">${data.technicalLeader.name}</h3>
@@ -274,7 +274,7 @@
                   ${dept.leader ? `
                     <div class="dept-lead clickable-member" data-member-id="${dept.leader.id}" role="button" tabindex="0" title="${dict['modal.viewProfile'] || 'Click to view overview'}">
                       <div class="dept-lead-avatar-wrap">
-                        ${dept.leader.photo ? `<img src="${dept.leader.photo}" alt="${dept.leader.name}" class="dept-lead-avatar" />` : getInitials(dept.leader.name)}
+                        ${(dept.leader.photo || dept.leader.avatar) ? `<img src="${dept.leader.photo || dept.leader.avatar}" alt="${dept.leader.name}" class="dept-lead-avatar" onerror="this.onerror=null;this.parentElement.innerHTML='${getInitials(dept.leader.name)}';" />` : getInitials(dept.leader.name)}
                       </div>
                       <div class="dept-lead-text">
                         <span class="dept-lead-badge">${tLeader} &bull; <span data-i18n="modal.viewProfile">${dict['modal.viewProfile'] || 'Overview'}</span> &rarr;</span>
@@ -301,7 +301,7 @@
                               ${crew.map(m => `
                                 <div class="subteam-crew-chip clickable-member ${m.isLead ? 'is-leader' : ''}" data-member-id="${m.id}" role="button" tabindex="0" title="${dict['modal.viewProfile'] || 'Click to view overview'}">
                                   <div class="subteam-chip-avatar">
-                                    ${m.photo ? `<img src="${m.photo}" alt="${m.name}" />` : getInitials(m.name)}
+                                    ${(m.photo || m.avatar) ? `<img src="${m.photo || m.avatar}" alt="${m.name}" onerror="this.onerror=null;this.parentElement.innerHTML='${getInitials(m.name)}';" />` : getInitials(m.name)}
                                   </div>
                                   <span class="subteam-chip-role">${m.isLead ? (dict['role.Subteam Leader'] || 'Lead') : (dict['role.Team Member'] || 'Member')}:</span>
                                   <span class="subteam-chip-name">${m.name}</span>
@@ -329,7 +329,7 @@
             <div class="tree-tier tree-tier-lead" style="width: 100%;">
               <div class="person-card clickable-member" data-member-id="${data.managerialLeader.id}" role="button" tabindex="0" title="${dict['modal.viewProfile'] || 'Click to view overview'}" style="width: 100%;">
                 <div class="avatar-circle">
-                  ${data.managerialLeader.photo ? `<img src="${data.managerialLeader.photo}" alt="${data.managerialLeader.name}" class="avatar-img" />` : getInitials(data.managerialLeader.name)}
+                  ${(data.managerialLeader.photo || data.managerialLeader.avatar) ? `<img src="${data.managerialLeader.photo || data.managerialLeader.avatar}" alt="${data.managerialLeader.name}" class="avatar-img" onerror="this.onerror=null;this.parentElement.innerHTML='${getInitials(data.managerialLeader.name)}';" />` : getInitials(data.managerialLeader.name)}
                 </div>
                 <span class="person-role" style="color: #38BDF8;">${tRole(data.managerialLeader.role)}</span>
                 <h3 class="person-name">${data.managerialLeader.name}</h3>
@@ -354,7 +354,7 @@
                   ${dept.leader ? `
                     <div class="dept-lead clickable-member" data-member-id="${dept.leader.id}" role="button" tabindex="0" title="${dict['modal.viewProfile'] || 'Click to view overview'}" style="border-color: rgba(56, 189, 248, 0.25);">
                       <div class="dept-lead-avatar-wrap" style="border-color: #38BDF8; color: #38BDF8;">
-                        ${dept.leader.photo ? `<img src="${dept.leader.photo}" alt="${dept.leader.name}" class="dept-lead-avatar" />` : getInitials(dept.leader.name)}
+                        ${(dept.leader.photo || dept.leader.avatar) ? `<img src="${dept.leader.photo || dept.leader.avatar}" alt="${dept.leader.name}" class="dept-lead-avatar" onerror="this.onerror=null;this.parentElement.innerHTML='${getInitials(dept.leader.name)}';" />` : getInitials(dept.leader.name)}
                       </div>
                       <div class="dept-lead-text">
                         <span class="dept-lead-badge" style="color: #38BDF8;">${tLeader} &bull; <span data-i18n="modal.viewProfile">${dict['modal.viewProfile'] || 'Overview'}</span> &rarr;</span>
@@ -381,7 +381,7 @@
                               ${crew.map(m => `
                                 <div class="subteam-crew-chip clickable-member ${m.isLead ? 'is-leader' : ''}" data-member-id="${m.id}" role="button" tabindex="0" title="${dict['modal.viewProfile'] || 'Click to view overview'}">
                                   <div class="subteam-chip-avatar">
-                                    ${m.photo ? `<img src="${m.photo}" alt="${m.name}" />` : getInitials(m.name)}
+                                    ${(m.photo || m.avatar) ? `<img src="${m.photo || m.avatar}" alt="${m.name}" onerror="this.onerror=null;this.parentElement.innerHTML='${getInitials(m.name)}';" />` : getInitials(m.name)}
                                   </div>
                                   <span class="subteam-chip-role">${m.isLead ? (dict['role.Subteam Leader'] || 'Lead') : (dict['role.Team Member'] || 'Member')}:</span>
                                   <span class="subteam-chip-name">${m.name}</span>
@@ -464,7 +464,7 @@
         <!-- Hero Row: Avatar + Name + Role -->
         <div class="member-modal-hero">
           <div class="member-modal-avatar-box">
-            ${member.photo ? `<img src="${member.photo}" alt="${name}" class="member-modal-avatar-img" />` : getInitials(name)}
+            ${(member.photo || member.avatar) ? `<img src="${member.photo || member.avatar}" alt="${name}" class="member-modal-avatar-img" onerror="this.onerror=null;this.parentElement.innerHTML='${getInitials(name)}';" />` : getInitials(name)}
           </div>
           <div class="member-modal-hero-info">
             <span class="member-modal-role-badge">${role}</span>
@@ -584,16 +584,24 @@
       }
     });
 
-    // Re-render org chart whenever language switches
+    // Re-render org chart whenever language switches or local storage changes (e.g. photo updated in portal)
     window.addEventListener('veloxLanguageChanged', () => {
       renderOrgChart();
+    });
+
+    window.addEventListener('storage', (e) => {
+      if (e.key && e.key.startsWith('velox_portal_db')) {
+        renderOrgChart();
+      }
     });
 
     document.addEventListener('DOMContentLoaded', () => {
       renderOrgChart();
       initThemeAndLang();
       if (typeof window.syncCloudAcceptedMembers === 'function') {
-        window.syncCloudAcceptedMembers();
+        window.syncCloudAcceptedMembers().then(() => {
+          renderOrgChart();
+        }).catch(err => console.warn('Cloud sync error:', err));
       }
     });
 
