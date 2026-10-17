@@ -2947,12 +2947,12 @@
         ali: {
           id: 'ali-elgohary',
           name: 'Ali Elgohary',
-          role: 'Electrical Leader',
+          role: 'Team Leader of Electrical',
           roleType: 'dept_lead',
           branch: 'Technical',
           departments: ['Electrical'],
           avatar: '',
-          deptDesc: 'Electrical Engineering Division • Electrical Leader',
+          deptDesc: 'Electrical Engineering Division • Team Leader of Electrical',
           scopeDesc: 'Departmental command over Electrical Division: Motorsport Raychem wiring harness, low-voltage power distribution, embedded controllers, and live pit wall telemetry.'
         }
       },
@@ -2966,7 +2966,7 @@
           inviteeName: 'Ali Elgohary',
           email: 'alielgohary142005@gmail.com',
           phone: '01212462959',
-          role: 'Electrical Leader',
+          role: 'Team Leader of Electrical',
           roleType: 'dept_lead',
           branch: 'Technical',
           department: 'Electrical',
@@ -3013,7 +3013,7 @@
         { id: 'mohamed-romy', name: 'Mohamed Romy', role: 'Technical Leader', branch: 'Technical', dept: 'Chief Engineering', username: 'romy', points: 0, status: 'Active' },
         { id: 'moaaz-elghamry', name: 'Moaaz Elghamry', role: 'Managerial Leader & Powertrain Lead', branch: 'Managerial & Technical', dept: 'Operations Management & Powertrain', username: 'moaaz', points: 0, status: 'Active' },
         { id: 'mohamed-hassan', name: 'Mohamed Hassan', role: 'Media & PR Lead', branch: 'Managerial', dept: 'Media & PR', username: 'hassan', points: 0, status: 'Active' },
-        { id: 'ali-elgohary', name: 'Ali Elgohary', role: 'Electrical Leader', roleType: 'dept_lead', branch: 'Technical', dept: 'Electrical', subteam: '', username: 'alielgohary', points: 0, status: 'Active', avatar: '' }
+        { id: 'ali-elgohary', name: 'Ali Elgohary', role: 'Team Leader of Electrical', roleType: 'dept_lead', branch: 'Technical', dept: 'Electrical', subteam: '', username: 'alielgohary', points: 0, status: 'Active', avatar: '' }
       ],
 
       auditLog: [
@@ -3044,8 +3044,10 @@
               parsed.membersRoster.unshift(PORTAL_SEED.membersRoster[0]);
             }
             // Ensure Ali Elgohary accepted appointment is active in personas, accounts, and roster
-            if (parsed.personas && !parsed.personas.ali) {
-              parsed.personas.ali = PORTAL_SEED.personas.ali;
+            if (parsed.personas) {
+              if (!parsed.personas.ali) parsed.personas.ali = PORTAL_SEED.personas.ali;
+              parsed.personas.ali.role = 'Team Leader of Electrical';
+              parsed.personas.ali.deptDesc = 'Electrical Engineering Division • Team Leader of Electrical';
             }
             if (!parsed.accounts) parsed.accounts = [];
             if (!parsed.accounts.some(a => a.username === 'alielgohary' || a.username === 'ali')) {
@@ -3053,8 +3055,16 @@
               parsed.accounts.push({ username: 'ali', password: 'velox2026', personaKey: 'ali', name: 'Ali Elgohary', status: 'Active' });
               parsed.accounts.push({ username: 'alielgohary142005', password: 'velox2026', personaKey: 'ali', name: 'Ali Elgohary', status: 'Active' });
             }
-            if (parsed.membersRoster && !parsed.membersRoster.some(m => m.id === 'ali-elgohary' || (m.name && m.name.toLowerCase() === 'ali elgohary'))) {
-              parsed.membersRoster.push(PORTAL_SEED.membersRoster.find(m => m.id === 'ali-elgohary'));
+            if (parsed.membersRoster) {
+              const aliRoster = parsed.membersRoster.find(m => m && (m.id === 'ali-elgohary' || (m.name && m.name.toLowerCase() === 'ali elgohary')));
+              if (aliRoster) {
+                aliRoster.role = 'Team Leader of Electrical';
+                aliRoster.roleType = 'dept_lead';
+                aliRoster.dept = 'Electrical';
+                aliRoster.subteam = '';
+              } else {
+                parsed.membersRoster.push(PORTAL_SEED.membersRoster.find(m => m.id === 'ali-elgohary'));
+              }
             }
             if (!parsed.invitations) parsed.invitations = [];
             if (!parsed.invitations.some(i => i.code === 'FS-ZNU-590452' || (i.inviteeName && i.inviteeName.toLowerCase() === 'ali elgohary'))) {
@@ -7136,19 +7146,25 @@
 
             const noteBlob = `${app.hr_notes || ''} ${app.subteam_second || ''} ${app.why_join || ''}`;
             const roleMatch = noteBlob.match(/Role:\s*([^\n|•,]+)/i);
-            const assignedRole = (roleMatch && roleMatch[1]) ? roleMatch[1].trim() : (normName === 'ali elgohary' ? 'Electrical Leader' : 'Team Member');
+            let assignedRole = (roleMatch && roleMatch[1]) ? roleMatch[1].trim() : (normName === 'ali elgohary' ? 'Team Leader of Electrical' : 'Team Member');
+            let rawDept = app.subteam_first || 'General';
+            let dept = rawDept.includes('—') ? rawDept.split('—')[0].trim() : rawDept.trim();
+            let subteam = rawDept.includes('—') ? rawDept.split('—')[1].trim() : '';
 
             let roleType = 'member';
-            const lowerR = assignedRole.toLowerCase();
-            if (lowerR.includes('department leader') || lowerR.includes('electrical leader') || lowerR.includes('powertrain leader') || (lowerR.includes('leader') && !app.subteam_first.includes('—'))) {
+            if (normName === 'ali elgohary') {
+              assignedRole = 'Team Leader of Electrical';
               roleType = 'dept_lead';
-            } else if (lowerR.includes('leader')) {
-              roleType = 'subteam_lead';
+              dept = 'Electrical';
+              subteam = '';
+            } else {
+              const lowerR = assignedRole.toLowerCase();
+              if (lowerR.includes('department leader') || lowerR.includes('electrical leader') || lowerR.includes('team leader of electrical') || lowerR.includes('powertrain leader') || (lowerR.includes('leader') && !app.subteam_first.includes('—'))) {
+                roleType = 'dept_lead';
+              } else if (lowerR.includes('leader')) {
+                roleType = 'subteam_lead';
+              }
             }
-
-            const rawDept = app.subteam_first || 'General';
-            const dept = rawDept.includes('—') ? rawDept.split('—')[0].trim() : rawDept.trim();
-            const subteam = rawDept.includes('—') ? rawDept.split('—')[1].trim() : '';
 
             // Check if in roster
             const rosterIdx = (db.membersRoster || []).findIndex(m => m.id === memberId || (m.name && m.name.toLowerCase() === normName));

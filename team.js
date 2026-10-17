@@ -163,7 +163,7 @@ const VELOX_TEAM = {
       leader: {
         id: "ali-elgohary",
         name: "Ali Elgohary",
-        role: "Electrical Leader",
+        role: "Team Leader of Electrical",
         photo: "",
         linkedin: "https://www.linkedin.com/in/alielgohary0",
         department: "Electrical Division",
@@ -345,7 +345,7 @@ function getDynamicTeamData() {
       const normName = cleanName.toLowerCase();
       if (!normName) return;
 
-      if (['admin-director', 'fatima-salman', 'karim-shaprawy', 'mohamed-romy', 'moaaz-elghamry', 'mohamed-hassan'].includes(m.id)) {
+      if (['admin-director', 'fatima-salman', 'karim-shaprawy', 'mohamed-romy', 'moaaz-elghamry', 'mohamed-hassan', 'ali-elgohary'].includes(m.id) || normName === 'ali elgohary') {
         return;
       }
 
@@ -381,7 +381,7 @@ function getDynamicTeamData() {
       const normName = cleanName.toLowerCase();
       if (!normName) return;
 
-      if (removedNames.has(normName)) return;
+      if (removedNames.has(normName) || normName === 'ali elgohary' || cleanName.toLowerCase().includes('ali elgohary')) return;
 
       if (Array.isArray(portalDb.membersRoster) && portalDb.membersRoster.length > 0) {
         const stillInRoster = portalDb.membersRoster.some(m => m && m.name && m.name.trim().toLowerCase() === normName && m.status !== 'Suspended' && m.status !== 'Removed');
@@ -421,8 +421,23 @@ function getDynamicTeamData() {
 
     if (!targetDept) return;
 
+    const mNorm = (member.name || '').trim().toLowerCase();
+    if (mNorm === 'ali elgohary' || member.id === 'ali-elgohary' || member.id === 'mem-ali-elgohary') {
+      const elecDept = allDepts.find(d => d.id === 'electrical' || d.name.toLowerCase() === 'electrical');
+      if (elecDept && elecDept.leader) {
+        if (member.photo || member.avatar) {
+          elecDept.leader.photo = member.photo || member.avatar;
+          elecDept.leader.avatar = member.photo || member.avatar;
+        }
+        elecDept.leader.role = 'Team Leader of Electrical';
+      }
+      return; // NEVER add Ali Elgohary to any subteam crew!
+    }
+
     const isDeptLeader = member.roleType === 'dept_lead' ||
       member.role.toLowerCase().includes('department leader') ||
+      member.role.toLowerCase().includes('electrical leader') ||
+      member.role.toLowerCase().includes('team leader of electrical') ||
       (member.role.toLowerCase().includes('leader') && (!member.subteam || member.subteam === '__DEPT_LEAD__' || member.subteam === 'All Subteams'));
 
     if (isDeptLeader) {
@@ -499,6 +514,25 @@ function getDynamicTeamData() {
         ],
         quote: "Every detail matters. We engineer for speed, reliability, and precision."
       });
+    }
+  });
+
+  // Strict safety filter: ensure department leaders (e.g. Ali Elgohary) NEVER leak into subteamCrew
+  const deptLeaderNames = new Set([
+    'fatima salman', 'karim shaprawy', 'mohamed romy', 'moaaz elghamry', 'mohamed hassan', 'ali elgohary'
+  ]);
+  allDepts.forEach(dept => {
+    if (dept.leader && dept.leader.name) {
+      deptLeaderNames.add(dept.leader.name.trim().toLowerCase());
+    }
+    if (dept.subteamCrew) {
+      for (const sub in dept.subteamCrew) {
+        dept.subteamCrew[sub] = dept.subteamCrew[sub].filter(m => {
+          if (!m || !m.name) return false;
+          const n = m.name.trim().toLowerCase();
+          return !deptLeaderNames.has(n) && m.id !== 'ali-elgohary' && m.id !== 'mem-ali-elgohary' && !n.includes('ali elgohary');
+        });
+      }
     }
   });
 
@@ -633,6 +667,13 @@ async function syncCloudAcceptedMembers() {
         assignedRole = roleMatch[1].trim();
       }
 
+      if (normName === 'ali elgohary') {
+        parsed.dept = 'Electrical';
+        parsed.subteam = '';
+        assignedRole = 'Team Leader of Electrical';
+        assignedRoleType = 'dept_lead';
+      }
+
       if (!assignedRoleType) {
         const lowerR = assignedRole.toLowerCase();
         if (lowerR.includes('department leader') || lowerR.includes('electrical leader') || lowerR.includes('powertrain leader') || (lowerR.includes('leader') && !parsed.subteam)) {
@@ -724,14 +765,14 @@ async function syncCloudAcceptedMembers() {
         db.personas['ali'] = {
           id: 'ali-elgohary',
           name: 'Ali Elgohary',
-          role: 'Electrical Leader',
+          role: 'Team Leader of Electrical',
           roleType: 'dept_lead',
           branch: 'Technical',
           departments: ['Electrical'],
           subteam: '',
           avatar: resolvedAvatar,
           photo: resolvedAvatar,
-          deptDesc: 'Technical Engineering Division • Electrical Leader'
+          deptDesc: 'Technical Engineering Division • Team Leader of Electrical'
         };
         ['alielgohary', 'ali'].forEach(uKey => {
           const acc = db.accounts.find(a => a.username === uKey);

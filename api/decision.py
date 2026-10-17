@@ -44,12 +44,12 @@ def build_plain_accepted(name, subteam, role, invite_url):
     return (
         f"Dear {name},\n\n"
         f"Congratulations! We are thrilled to welcome you to VELOX Racing as a {role} on the {subteam} team for our Silverstone 2026 Formula Student campaign.\n\n"
-        f"Please click the link below to activate your account and set your portal password:\n"
+        f"To activate your account and set your portal password, click here:\n"
         f"{invite_url}\n\n"
         f"Follow our journey & stay connected:\n"
-        f"• Instagram: {VELOX_INSTAGRAM_URL}\n"
-        f"• LinkedIn:  {VELOX_LINKEDIN_URL}\n"
-        f"• Facebook:  {VELOX_FACEBOOK_URL}\n\n"
+        f"• Instagram (Click Here): {VELOX_INSTAGRAM_URL}\n"
+        f"• LinkedIn (Click Here):  {VELOX_LINKEDIN_URL}\n"
+        f"• Facebook (Click Here):  {VELOX_FACEBOOK_URL}\n\n"
         f"Welcome to the team!\n\n"
         f"Best regards,\n"
         f"VELOX Racing Team\n"
@@ -64,9 +64,9 @@ def build_plain_rejected(name, subteam):
         f"We received a very high volume of applications this season and, unfortunately, we are unable to offer you a position on the active engineering crew at this time due to strict team quotas.\n\n"
         f"We truly appreciate your passion and encourage you to attend our public university workshops and reapply in future recruitment cycles.\n\n"
         f"Follow our car build and future opportunities:\n"
-        f"• Instagram: {VELOX_INSTAGRAM_URL}\n"
-        f"• LinkedIn:  {VELOX_LINKEDIN_URL}\n"
-        f"• Facebook:  {VELOX_FACEBOOK_URL}\n\n"
+        f"• Instagram (Click Here): {VELOX_INSTAGRAM_URL}\n"
+        f"• LinkedIn (Click Here):  {VELOX_LINKEDIN_URL}\n"
+        f"• Facebook (Click Here):  {VELOX_FACEBOOK_URL}\n\n"
         f"We wish you all the best in your studies and future endeavors.\n\n"
         f"Best regards,\n"
         f"VELOX Racing Team\n"
@@ -80,9 +80,9 @@ def build_plain_waitlist(name, subteam):
         f"Thank you for applying to VELOX Racing for the {subteam} team.\n\n"
         f"Due to limited team capacity, your application has been placed on our Active Reserve list for the 2026 season. We were very impressed by your qualifications and will reach out directly if additional spots open up.\n\n"
         f"In the meantime, stay connected with our car build and upcoming workshops:\n"
-        f"• Instagram: {VELOX_INSTAGRAM_URL}\n"
-        f"• LinkedIn:  {VELOX_LINKEDIN_URL}\n"
-        f"• Facebook:  {VELOX_FACEBOOK_URL}\n\n"
+        f"• Instagram (Click Here): {VELOX_INSTAGRAM_URL}\n"
+        f"• LinkedIn (Click Here):  {VELOX_LINKEDIN_URL}\n"
+        f"• Facebook (Click Here):  {VELOX_FACEBOOK_URL}\n\n"
         f"Thank you for your enthusiasm and passion for motorsport.\n\n"
         f"Best regards,\n"
         f"VELOX Racing Team\n"
@@ -94,23 +94,23 @@ def build_social_section_html():
     return f"""
     <div style="margin: 22px 0 16px 0; padding-top: 18px; border-top: 1px solid rgba(255, 255, 255, 0.08); text-align: center;">
       <p style="margin: 0 0 10px 0; font-size: 11px; font-weight: 700; color: #94A3B8; text-transform: uppercase; letter-spacing: 1px;">
-        Follow VELOX Racing
+        Follow VELOX Racing &bull; Stay Connected
       </p>
       <table role="presentation" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto;">
         <tr>
           <td style="padding: 0 5px;">
             <a href="{VELOX_INSTAGRAM_URL}" target="_blank" style="display: inline-block; background: #E1306C; color: #FFFFFF; font-size: 11px; font-weight: 700; text-decoration: none; padding: 7px 15px; border-radius: 5px;">
-              Instagram
+              Instagram (Click Here)
             </a>
           </td>
           <td style="padding: 0 5px;">
             <a href="{VELOX_LINKEDIN_URL}" target="_blank" style="display: inline-block; background: #0A66C2; color: #FFFFFF; font-size: 11px; font-weight: 700; text-decoration: none; padding: 7px 15px; border-radius: 5px;">
-              LinkedIn
+              LinkedIn (Click Here)
             </a>
           </td>
           <td style="padding: 0 5px;">
             <a href="{VELOX_FACEBOOK_URL}" target="_blank" style="display: inline-block; background: #1877F2; color: #FFFFFF; font-size: 11px; font-weight: 700; text-decoration: none; padding: 7px 15px; border-radius: 5px;">
-              Facebook
+              Facebook (Click Here)
             </a>
           </td>
         </tr>
@@ -178,13 +178,12 @@ def build_accepted_email(name, subteam, role, invite_url):
               <!-- CTA Button -->
               <div style="text-align: center; margin: 22px 0;">
                 <a href="{invite_url}" target="_blank" style="display: inline-block; background: #E10600; color: #FFFFFF; font-size: 14px; font-weight: 700; text-decoration: none; padding: 12px 28px; border-radius: 6px; box-shadow: 0 4px 14px rgba(225, 6, 0, 0.4);">
-                  Activate Account &amp; Set Password &rarr;
+                  Click Here to Activate Account &rarr;
                 </a>
               </div>
 
-              <p style="font-size: 11px; line-height: 1.4; color: #64748B; text-align: center; margin: 0 0 16px 0; word-break: break-all;">
-                Direct onboarding link:<br/>
-                <a href="{invite_url}" style="color: #38BDF8; text-decoration: underline;">{invite_url}</a>
+              <p style="font-size: 12px; line-height: 1.5; color: #94A3B8; text-align: center; margin: 0 0 16px 0;">
+                Direct onboarding link: <a href="{invite_url}" target="_blank" style="color: #38BDF8; font-weight: 700; text-decoration: underline;">Click Here</a>
               </p>
 
               {social_html}
@@ -193,6 +192,7 @@ def build_accepted_email(name, subteam, role, invite_url):
                 Best regards,<br/>
                 <strong style="color: #FFFFFF;">VELOX Racing Team</strong><br/>
                 <em>Zagazig National University &bull; Formula Student</em><br/>
+                Official Website: <a href="{VELOX_WEBSITE_URL}" target="_blank" style="color: #38BDF8; font-weight: 700; text-decoration: underline;">Click Here</a><br/>
                 <a href="mailto:velox.racing.znu@gmail.com" style="color: #64748B; text-decoration: none;">velox.racing.znu@gmail.com</a>
               </p>
             </td>
@@ -261,6 +261,7 @@ def build_rejected_email(name, subteam):
                 Best regards,<br/>
                 <strong style="color: #FFFFFF;">VELOX Racing Team</strong><br/>
                 <em>Zagazig National University &bull; Formula Student</em><br/>
+                Official Website: <a href="{VELOX_WEBSITE_URL}" target="_blank" style="color: #38BDF8; font-weight: 700; text-decoration: underline;">Click Here</a><br/>
                 <a href="mailto:velox.racing.znu@gmail.com" style="color: #64748B; text-decoration: none;">velox.racing.znu@gmail.com</a>
               </p>
             </td>
@@ -324,6 +325,7 @@ def build_waitlist_email(name, subteam):
                 Best regards,<br/>
                 <strong style="color: #FFFFFF;">VELOX Racing Team</strong><br/>
                 <em>Zagazig National University &bull; Formula Student</em><br/>
+                Official Website: <a href="{VELOX_WEBSITE_URL}" target="_blank" style="color: #38BDF8; font-weight: 700; text-decoration: underline;">Click Here</a><br/>
                 <a href="mailto:velox.racing.znu@gmail.com" style="color: #64748B; text-decoration: none;">velox.racing.znu@gmail.com</a>
               </p>
             </td>

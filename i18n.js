@@ -141,7 +141,8 @@ const VELOX_I18N = {
     'role.Technical Leader': 'Technical Leader',
     'role.Managerial Leader': 'Managerial Leader',
     'role.Powertrain Leader': 'Powertrain Leader',
-    'role.Electrical Leader': 'Electrical Leader',
+    'role.Electrical Leader': 'Team Leader of Electrical',
+    'role.Team Leader of Electrical': 'Team Leader of Electrical',
     'role.Media Lead': 'Media Lead',
     'nav.portal': 'Portal',
 
@@ -619,7 +620,8 @@ const VELOX_I18N = {
     'role.Technical Leader': 'المدير التقني',
     'role.Managerial Leader': 'المدير الإداري',
     'role.Powertrain Leader': 'مسؤول منظومة الدفع',
-    'role.Electrical Leader': 'مسؤول الأنظمة الكهربائية',
+    'role.Electrical Leader': 'قائد الأنظمة الكهربائية',
+    'role.Team Leader of Electrical': 'قائد الأنظمة الكهربائية',
     'role.Media Lead': 'مسؤول الإعلام والتسويق',
     'nav.portal': 'بوابة الفريق',
 

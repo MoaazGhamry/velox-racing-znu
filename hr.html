@@ -1114,9 +1114,9 @@
       let body = '';
 
       const socialSection = `Follow our journey & stay connected:
-• Instagram: https://www.instagram.com/velox_racing_znu?srtk=MWl2azlianJlZ3J3bg==
-• LinkedIn:  https://www.linkedin.com/company/velox-racing-team/
-• Facebook:  https://www.facebook.com/share/19Xcwun8Di/?mibextid=wwXIfr`;
+• Instagram (Click Here): https://www.instagram.com/velox_racing_znu?srtk=MWl2azlianJlZ3J3bg==
+• LinkedIn (Click Here):  https://www.linkedin.com/company/velox-racing-team/
+• Facebook (Click Here):  https://www.facebook.com/share/19Xcwun8Di/?mibextid=wwXIfr`;
 
       const norm = (status || 'New').toLowerCase();
       if (norm.includes('accept')) {
@@ -1125,7 +1125,7 @@
 
 Congratulations! We are thrilled to welcome you to VELOX Racing as a ${role} on the ${rawSub} team for our Silverstone 2026 Formula Student campaign.
 
-Please click the link below to activate your account and set your portal password:
+To activate your account and set your portal password, click here:
 ${inviteUrl}
 
 ${socialSection}
@@ -1244,13 +1244,12 @@ velox.racing.znu@gmail.com`;
 
               <div style="text-align: center; margin: 22px 0;">
                 <a href="${inviteUrl}" target="_blank" style="display: inline-block; background: #E10600; color: #FFFFFF; font-size: 14px; font-weight: 700; text-decoration: none; padding: 12px 28px; border-radius: 6px; box-shadow: 0 4px 14px rgba(225, 6, 0, 0.4);">
-                  Activate Account &amp; Set Password &rarr;
+                  Click Here to Activate Account &rarr;
                 </a>
               </div>
 
-              <p style="font-size: 11px; line-height: 1.4; color: #64748B; text-align: center; margin: 0 0 16px 0; word-break: break-all;">
-                Direct onboarding link:<br/>
-                <a href="${inviteUrl}" style="color: #38BDF8; text-decoration: underline;">${inviteUrl}</a>
+              <p style="font-size: 12px; line-height: 1.5; color: #94A3B8; text-align: center; margin: 0 0 16px 0;">
+                Direct onboarding link: <a href="${inviteUrl}" target="_blank" style="color: #38BDF8; font-weight: 700; text-decoration: underline;">Click Here</a>
               </p>`;
       } else if (norm.includes('wait')) {
         contentHtml = `
@@ -1313,23 +1312,23 @@ velox.racing.znu@gmail.com`;
 
               <div style="margin: 22px 0 16px 0; padding-top: 18px; border-top: 1px solid rgba(255, 255, 255, 0.08); text-align: center;">
                 <p style="margin: 0 0 10px 0; font-size: 11px; font-weight: 700; color: #94A3B8; text-transform: uppercase; letter-spacing: 1px;">
-                  Follow VELOX Racing
+                  Follow VELOX Racing &bull; Stay Connected
                 </p>
                 <table role="presentation" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto;">
                   <tr>
                     <td style="padding: 0 5px;">
                       <a href="${ig}" target="_blank" style="display: inline-block; background: #E1306C; color: #FFFFFF; font-size: 11px; font-weight: 700; text-decoration: none; padding: 7px 15px; border-radius: 5px;">
-                        Instagram
+                        Instagram (Click Here)
                       </a>
                     </td>
                     <td style="padding: 0 5px;">
                       <a href="${li}" target="_blank" style="display: inline-block; background: #0A66C2; color: #FFFFFF; font-size: 11px; font-weight: 700; text-decoration: none; padding: 7px 15px; border-radius: 5px;">
-                        LinkedIn
+                        LinkedIn (Click Here)
                       </a>
                     </td>
                     <td style="padding: 0 5px;">
                       <a href="${fb}" target="_blank" style="display: inline-block; background: #1877F2; color: #FFFFFF; font-size: 11px; font-weight: 700; text-decoration: none; padding: 7px 15px; border-radius: 5px;">
-                        Facebook
+                        Facebook (Click Here)
                       </a>
                     </td>
                   </tr>
@@ -1340,6 +1339,7 @@ velox.racing.znu@gmail.com`;
                 Best regards,<br/>
                 <strong style="color: #FFFFFF;">VELOX Racing Team</strong><br/>
                 <em>Zagazig National University &bull; Formula Student</em><br/>
+                Official Website: <a href="${web}" target="_blank" style="color: #38BDF8; font-weight: 700; text-decoration: underline;">Click Here</a><br/>
                 <a href="mailto:velox.racing.znu@gmail.com" style="color: #64748B; text-decoration: none;">velox.racing.znu@gmail.com</a>
               </p>
             </td>
