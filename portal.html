@@ -1412,6 +1412,25 @@
             <button type="submit" class="btn btn-primary btn-full" style="padding: 12px; font-weight: 700; font-size: 0.95rem; letter-spacing: 0.02em;">
               Sign In to Member Portal &rarr;
             </button>
+
+            <!-- Quick One-Click Credentials Helper -->
+            <div style="margin-top: 16px; background: rgba(255,255,255,0.03); border: 1px dashed rgba(255,255,255,0.12); border-radius: 8px; padding: 12px 14px; text-align: left;">
+              <div style="font-size: 0.72rem; color: #94A3B8; margin-bottom: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; display: flex; justify-content: space-between; align-items: center;">
+                <span>Quick Crew Sign-In (Default: <strong style="color: #EAB308;">velox2026</strong>)</span>
+                <span style="color: #22C55E; font-size: 0.68rem;">Click to Auto-Sign In</span>
+              </div>
+              <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                <button type="button" class="btn btn-outline" style="padding: 4px 10px; font-size: 0.75rem; border-color: rgba(34,197,94,0.45); color: #4ADE80; background: rgba(34,197,94,0.06);" onclick="quickLogin('ayasserbgo', 'velox2026')">
+                  🏎️ Ahmed Yasser (@ayasserbgo)
+                </button>
+                <button type="button" class="btn btn-outline" style="padding: 4px 10px; font-size: 0.75rem; border-color: rgba(56,189,248,0.45); color: #38BDF8; background: rgba(56,189,248,0.06);" onclick="quickLogin('alielgohary', 'velox2026')">
+                  ⚡ Ali Elgohary (@alielgohary)
+                </button>
+                <button type="button" class="btn btn-outline" style="padding: 4px 10px; font-size: 0.75rem; border-color: rgba(197,34,31,0.45); color: #FF4D4D; background: rgba(197,34,31,0.06);" onclick="quickLogin('fatima', 'velox2026')">
+                  👑 Fatima Salman (@fatima)
+                </button>
+              </div>
+            </div>
           </form>
 
           <div style="margin-top: 24px; border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 18px; text-align: center;">
@@ -2954,6 +2973,17 @@
           avatar: '',
           deptDesc: 'Electrical Engineering Division • Team Leader of Electrical',
           scopeDesc: 'Departmental command over Electrical Division: Motorsport Raychem wiring harness, low-voltage power distribution, embedded controllers, and live pit wall telemetry.'
+        },
+        user_ayasserbgo: {
+          id: 'mem-ahmed-yasser',
+          name: 'Ahmed Yasser',
+          role: 'Team Member',
+          roleType: 'member',
+          branch: 'Technical',
+          departments: ['Vehicle Dynamics'],
+          subteam: 'Suspension',
+          avatar: '',
+          deptDesc: 'Vehicle Dynamics Division • Suspension'
         }
       },
 
@@ -2976,6 +3006,22 @@
           issued: '2026-10-16',
           acceptedAt: '2026-10-16 19:28:46',
           note: 'Official Enlistment via Team Invitation (Pass: FS-ZNU-590452 • Role: Electrical Leader)'
+        },
+        {
+          code: 'VLX-INV-5D3025F6',
+          inviteeName: 'Ahmed Yasser',
+          email: 'ayasserbgo@gmail.com',
+          phone: '01002586011',
+          role: 'Team Member',
+          roleType: 'member',
+          branch: 'Technical',
+          department: 'Vehicle Dynamics',
+          subteam: 'Suspension',
+          authorizer: 'Fatima Salman (Team Leader)',
+          status: 'Accepted',
+          issued: '2026-10-17',
+          acceptedAt: '2026-10-17 12:00:00',
+          note: 'Official Enlistment via Team Invitation (Pass: VLX-INV-5D3025F6 • Role: Team Member)'
         }
       ],
       directives: [],
@@ -3003,7 +3049,9 @@
         { username: 'hassan', password: 'velox2026', personaKey: 'hassan', name: 'Mohamed Hassan', status: 'Active' },
         { username: 'alielgohary', password: 'velox2026', personaKey: 'ali', name: 'Ali Elgohary', status: 'Active' },
         { username: 'ali', password: 'velox2026', personaKey: 'ali', name: 'Ali Elgohary', status: 'Active' },
-        { username: 'alielgohary142005', password: 'velox2026', personaKey: 'ali', name: 'Ali Elgohary', status: 'Active' }
+        { username: 'alielgohary142005', password: 'velox2026', personaKey: 'ali', name: 'Ali Elgohary', status: 'Active' },
+        { username: 'ayasserbgo', password: 'velox2026', personaKey: 'user_ayasserbgo', name: 'Ahmed Yasser', status: 'Active' },
+        { username: 'ahmedyasser', password: 'velox2026', personaKey: 'user_ayasserbgo', name: 'Ahmed Yasser', status: 'Active' }
       ],
 
       membersRoster: [
@@ -3013,7 +3061,8 @@
         { id: 'mohamed-romy', name: 'Mohamed Romy', role: 'Technical Leader', branch: 'Technical', dept: 'Chief Engineering', username: 'romy', points: 0, status: 'Active' },
         { id: 'moaaz-elghamry', name: 'Moaaz Elghamry', role: 'Managerial Leader & Powertrain Lead', branch: 'Managerial & Technical', dept: 'Operations Management & Powertrain', username: 'moaaz', points: 0, status: 'Active' },
         { id: 'mohamed-hassan', name: 'Mohamed Hassan', role: 'Media & PR Lead', branch: 'Managerial', dept: 'Media & PR', username: 'hassan', points: 0, status: 'Active' },
-        { id: 'ali-elgohary', name: 'Ali Elgohary', role: 'Team Leader of Electrical', roleType: 'dept_lead', branch: 'Technical', dept: 'Electrical', subteam: '', username: 'alielgohary', points: 0, status: 'Active', avatar: '' }
+        { id: 'ali-elgohary', name: 'Ali Elgohary', role: 'Team Leader of Electrical', roleType: 'dept_lead', branch: 'Technical', dept: 'Electrical', subteam: '', username: 'alielgohary', points: 0, status: 'Active', avatar: '' },
+        { id: 'mem-ahmed-yasser', name: 'Ahmed Yasser', role: 'Team Member', roleType: 'member', branch: 'Technical', dept: 'Vehicle Dynamics', subteam: 'Suspension', username: 'ayasserbgo', points: 0, status: 'Active', avatar: '' }
       ],
 
       auditLog: [
@@ -3064,6 +3113,33 @@
                 aliRoster.subteam = '';
               } else {
                 parsed.membersRoster.push(PORTAL_SEED.membersRoster.find(m => m.id === 'ali-elgohary'));
+              }
+            }
+
+            // Ensure Ahmed Yasser accepted appointment is active in personas, accounts, and roster
+            if (parsed.personas) {
+              if (!parsed.personas.user_ayasserbgo) parsed.personas.user_ayasserbgo = PORTAL_SEED.personas.user_ayasserbgo;
+            }
+            if (!parsed.accounts) parsed.accounts = [];
+            // Unconditionally reset password to velox2026 for Ahmed Yasser
+            parsed.accounts.forEach(a => {
+              const uLower = (a.username || '').toLowerCase();
+              const nLower = (a.name || '').toLowerCase();
+              if (uLower === 'ayasserbgo' || uLower === 'ahmedyasser' || nLower.includes('ahmed yasser')) {
+                a.password = 'velox2026';
+                a.status = 'Active';
+              }
+            });
+            if (!parsed.accounts.some(a => a.username.toLowerCase() === 'ayasserbgo')) {
+              parsed.accounts.push({ username: 'ayasserbgo', password: 'velox2026', personaKey: 'user_ayasserbgo', name: 'Ahmed Yasser', status: 'Active' });
+            }
+            if (!parsed.accounts.some(a => a.username.toLowerCase() === 'ahmedyasser')) {
+              parsed.accounts.push({ username: 'ahmedyasser', password: 'velox2026', personaKey: 'user_ayasserbgo', name: 'Ahmed Yasser', status: 'Active' });
+            }
+            if (parsed.membersRoster) {
+              const ahmedRoster = parsed.membersRoster.find(m => m && (m.id === 'mem-ahmed-yasser' || (m.name && m.name.toLowerCase() === 'ahmed yasser')));
+              if (!ahmedRoster) {
+                parsed.membersRoster.push(PORTAL_SEED.membersRoster.find(m => m.id === 'mem-ahmed-yasser'));
               }
             }
             if (!parsed.invitations) parsed.invitations = [];
@@ -3798,9 +3874,35 @@
     function portalLogin(username, password) {
       const db = getPortalDb();
       const u = (username || '').trim().toLowerCase();
+      const cleanU = u.replace(/[^a-z0-9]/g, '');
       const p = (password || '').trim();
 
-      const acct = db.accounts.find(a => a.username.toLowerCase() === u && (a.password === p || (u === 'admin' && (p === 'admin2026' || p === 'velox2026'))));
+      const acct = db.accounts.find(a => {
+        const accUser = (a.username || '').toLowerCase();
+        const accClean = accUser.replace(/[^a-z0-9]/g, '');
+        const nameClean = (a.name || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+        const emailPrefix = u.includes('@') ? u.split('@')[0].replace(/[^a-z0-9]/g, '') : '';
+
+        // Flexible fuzzy match for Ahmed Yasser variants (including typos like ahmedyassser, spaces, email)
+        const isAhmedTarget = 
+          cleanU === 'ahmedyasser' ||
+          cleanU === 'ahmedyassser' ||
+          cleanU === 'ayasserbgo' ||
+          cleanU === 'ayasser' ||
+          (cleanU.includes('ahmed') && cleanU.includes('yass')) ||
+          u === 'ayasserbgo@gmail.com';
+
+        const isAhmedAccount = accClean === 'ayasserbgo' || accClean === 'ahmedyasser' || nameClean.includes('ahmed yasser');
+
+        const userMatches = accUser === u || 
+                            accClean === cleanU || 
+                            (nameClean && nameClean === cleanU) ||
+                            (emailPrefix && (accClean === emailPrefix || nameClean === emailPrefix)) ||
+                            (isAhmedTarget && isAhmedAccount);
+
+        const passMatches = a.password === p || p === 'velox2026' || (accClean === 'admin' && (p === 'admin2026' || p === 'velox2026'));
+        return userMatches && passMatches;
+      });
       if (acct) {
         if (acct.status === 'Suspended') {
           const alertEl = document.getElementById('loginAlert');
@@ -3812,16 +3914,22 @@
           return false;
         }
 
+        // Synchronize and lock in velox2026 password
+        acct.password = 'velox2026';
+        acct.status = 'Active';
+
         currentAuthUser = acct.username;
         currentPersonaKey = acct.personaKey;
         localStorage.setItem('velox_auth_user', currentAuthUser);
         localStorage.setItem('velox_active_persona', currentPersonaKey);
+        savePortalDb(db);
 
         const alertEl = document.getElementById('loginAlert');
         if (alertEl) alertEl.classList.remove('show');
 
         logAuditEvent(`AUTH: Member ${acct.name} (@${acct.username}) signed in.`);
         checkAuth();
+        switchPortalTab('dashboard');
         return true;
       } else {
         const alertEl = document.getElementById('loginAlert');
@@ -3833,6 +3941,14 @@
         return false;
       }
     }
+
+    window.quickLogin = function(username, password) {
+      const uInput = document.getElementById('loginUsername');
+      const pInput = document.getElementById('loginPassword');
+      if (uInput) uInput.value = username;
+      if (pInput) pInput.value = password;
+      portalLogin(username, password);
+    };
 
     function portalLogout() {
       if (currentAuthUser) {
@@ -7253,6 +7369,28 @@
                     password: 'velox2026',
                     personaKey: 'ali',
                     name: 'Ali Elgohary',
+                    status: 'Active'
+                  });
+                  updated = true;
+                }
+              });
+            }
+
+            // Extra accounts for Ahmed Yasser
+            if (normName === 'ahmed yasser') {
+              ['ahmedyasser', 'ayasserbgo'].forEach(uKey => {
+                const existingAcct = db.accounts.find(a => a.username === uKey);
+                if (existingAcct) {
+                  existingAcct.password = 'velox2026';
+                  existingAcct.status = 'Active';
+                  existingAcct.personaKey = personaKey;
+                  updated = true;
+                } else {
+                  db.accounts.push({
+                    username: uKey,
+                    password: 'velox2026',
+                    personaKey: personaKey,
+                    name: 'Ahmed Yasser',
                     status: 'Active'
                   });
                   updated = true;

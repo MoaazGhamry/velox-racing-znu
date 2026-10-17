@@ -777,6 +777,8 @@ async function syncCloudAcceptedMembers() {
         ['alielgohary', 'ali'].forEach(uKey => {
           const acc = db.accounts.find(a => a.username === uKey);
           if (acc) {
+            acc.password = 'velox2026';
+            acc.status = 'Active';
             acc.avatar = resolvedAvatar;
             acc.photo = resolvedAvatar;
           } else {
@@ -785,6 +787,29 @@ async function syncCloudAcceptedMembers() {
               password: 'velox2026',
               personaKey: 'ali',
               name: 'Ali Elgohary',
+              status: 'Active',
+              avatar: resolvedAvatar,
+              photo: resolvedAvatar
+            });
+          }
+        });
+      }
+
+      // Special provision for Ahmed Yasser
+      if (normName === 'ahmed yasser') {
+        ['ayasserbgo', 'ahmedyasser'].forEach(uKey => {
+          const acc = db.accounts.find(a => a.username === uKey);
+          if (acc) {
+            acc.password = 'velox2026';
+            acc.status = 'Active';
+            acc.avatar = resolvedAvatar;
+            acc.photo = resolvedAvatar;
+          } else {
+            db.accounts.push({
+              username: uKey,
+              password: 'velox2026',
+              personaKey: personaKey,
+              name: 'Ahmed Yasser',
               status: 'Active',
               avatar: resolvedAvatar,
               photo: resolvedAvatar
