@@ -545,6 +545,10 @@ p {
   gap: 12px;
 }
 
+.nav-login-mobile-btn {
+  display: none;
+}
+
 .nav-tools {
   display: flex;
   align-items: center;
@@ -3086,6 +3090,24 @@ p {
   /* On mobile header, hide the desktop "Join Us" button because it's prominent inside the hamburger drawer */
   .nav-cta > .btn {
     display: none !important;
+  }
+
+  .nav-login-mobile-btn {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    height: 34px;
+    padding: 0 11px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #FFFFFF !important;
+    background: linear-gradient(135deg, #E10600, #B91C1C);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 8px;
+    text-decoration: none;
+    white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(225, 6, 0, 0.35);
   }
 
   .nav-tools {
