@@ -3,7 +3,7 @@
  * Network-First Strategy + Live Connection Bypass
  */
 
-const CACHE_NAME = 'velox-live-v5.0';
+const CACHE_NAME = 'velox-live-v6.0';
 const PRECACHE_ASSETS = [
   '/',
   '/index.html',
@@ -11,8 +11,8 @@ const PRECACHE_ASSETS = [
   '/hr.html',
   '/portal.html',
   '/sponsorship.html',
-  '/style.css?v=5.0',
-  '/i18n.js?v=5.0',
+  '/style.css?v=6.0',
+  '/i18n.js?v=6.0',
   '/config.js',
   '/manifest.json',
   '/pwa-icon-192.png',
@@ -58,7 +58,7 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-// Fetch: NEVER cache team structure or live database connections
+// Fetch: NEVER cache team structure, stylesheets, or live database connections
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET' || !event.request.url.startsWith('http')) {
     return;
@@ -69,10 +69,12 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // ALWAYS BYPASS CACHE for team structure, team scripts, and database APIs
-  // Ensures team structure is ALWAYS 100% fresh from live connection
+  // ALWAYS BYPASS CACHE for team structure, styles, team scripts, and database APIs
+  // Ensures team structure and styling are ALWAYS 100% fresh from live connection
   const url = event.request.url;
   if (
+    url.includes('style.css') ||
+    url.includes('i18n.js') ||
     url.includes('team.js') ||
     url.includes('team.html') ||
     url.includes('supabase.co') ||

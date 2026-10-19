@@ -26,10 +26,53 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" />
 
   <!-- Shared Style with Cache Buster -->
-  <link rel="stylesheet" href="style.css?v=5.0" />
+  <link rel="stylesheet" href="style.css?v=6.0" />
 
   <!-- Localization Engine (Deferred for non-blocking render) -->
-  <script src="i18n.js?v=5.0" defer></script>
+  <script src="i18n.js?v=6.0" defer></script>
+
+  <style>
+    /* Guaranteed Light Mode text contrast — immune to stale browser cache */
+    [data-theme="light"] .subteam-crew-chip {
+      background: #FFFFFF !important;
+      border: 1px solid #CBD5E1 !important;
+      color: #0F172A !important;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06) !important;
+    }
+    [data-theme="light"] .subteam-crew-chip:hover {
+      background: #F8FAFC !important;
+      border-color: #C5221F !important;
+      color: #000000 !important;
+    }
+    [data-theme="light"] .subteam-chip-name {
+      color: #0F172A !important;
+      font-weight: 700 !important;
+    }
+    [data-theme="light"] .subteam-chip-role {
+      color: #64748B !important;
+      font-weight: 700 !important;
+    }
+    [data-theme="light"] .subteam-crew-chip.is-leader {
+      background: #FEF3C7 !important;
+      border-color: #F59E0B !important;
+      color: #78350F !important;
+    }
+    [data-theme="light"] .subteam-crew-chip.is-leader .subteam-chip-name {
+      color: #78350F !important;
+    }
+    [data-theme="light"] .subteam-crew-chip.is-leader .subteam-chip-role {
+      color: #B45309 !important;
+    }
+    [data-theme="light"] .subteam-pill {
+      color: #0F172A !important;
+      background: #F1F5F9 !important;
+      border-color: #CBD5E1 !important;
+    }
+    [data-theme="light"] .dept-name,
+    [data-theme="light"] .dept-lead-name {
+      color: #0F172A !important;
+    }
+  </style>
 </head>
 <body>
 
@@ -223,52 +266,48 @@
 
       let html = '';
 
-      // Tier 0: Academic Advisor (Prof. Dr. Tharwat Osman)
-      if (data.academicAdvisor) {
-        const adv = data.academicAdvisor;
-        const advKicker = dict['role.AcademicAdvisorKicker'] || 'Institutional Academic Advisory';
-        html += `
-          <div class="tree-tier tree-tier-advisor">
-            <div class="person-card advisor-card clickable-member" data-member-id="${adv.id}" role="button" tabindex="0" title="${dict['modal.viewProfile'] || 'Click to view overview'}">
-              <div class="advisor-crown-badge">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"></path></svg>
-                <span>${advKicker}</span>
-              </div>
-              <div class="avatar-circle advisor-avatar">
-                ${(adv.photo || adv.avatar) ? `<img src="${adv.photo || adv.avatar}" alt="${adv.name}" class="avatar-img" onerror="this.onerror=null;this.parentElement.innerHTML='${getInitials(adv.name)}';" />` : getInitials(adv.name)}
-              </div>
-              <span class="person-role advisor-role">${tRole(adv.role)}</span>
-              <h3 class="person-name advisor-name">${adv.name}</h3>
-              <p class="person-bio advisor-bio">${(currentLang === 'ar' && adv.bio_ar) ? adv.bio_ar : (adv.bio || '')}</p>
-              <div class="person-view-cue advisor-cue">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-                <span data-i18n="modal.viewProfile">${dict['modal.viewProfile'] || 'Click to view overview'}</span>
-              </div>
-            </div>
-          </div>
-          <div class="advisor-connector">
-            <div class="advisor-stem-vertical"></div>
-          </div>
-        `;
-      }
-
-      // Tier 1: Executive Leaders (Fatima & Karim)
+      // Top Tier: Executive Band with Dr. Tharwat Osman on the Right Side
       html += `
-        <div class="tree-tier tree-tier-exec">
-          ${data.executives.map(exec => `
-            <div class="person-card clickable-member" data-member-id="${exec.id}" role="button" tabindex="0" title="${dict['modal.viewProfile'] || 'Click to view overview'}">
-              <div class="avatar-circle">
-                ${(exec.photo || exec.avatar) ? `<img src="${exec.photo || exec.avatar}" alt="${exec.name}" class="avatar-img" onerror="this.onerror=null;this.parentElement.innerHTML='${getInitials(exec.name)}';" />` : getInitials(exec.name)}
+        <div class="tree-top-band">
+          <!-- Executive Leaders (Fatima & Karim) Centered -->
+          <div class="tree-tier tree-tier-exec">
+            ${data.executives.map(exec => `
+              <div class="person-card clickable-member" data-member-id="${exec.id}" role="button" tabindex="0" title="${dict['modal.viewProfile'] || 'Click to view overview'}">
+                <div class="avatar-circle">
+                  ${(exec.photo || exec.avatar) ? `<img src="${exec.photo || exec.avatar}" alt="${exec.name}" class="avatar-img" onerror="this.onerror=null;this.parentElement.innerHTML='${getInitials(exec.name)}';" />` : getInitials(exec.name)}
+                </div>
+                <span class="person-role">${tRole(exec.role)}</span>
+                <h3 class="person-name">${exec.name}</h3>
+                <p class="person-bio">${(currentLang === 'ar' && exec.bio_ar) ? exec.bio_ar : (exec.bio || '')}</p>
+                <div class="person-view-cue">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                  <span data-i18n="modal.viewProfile">${dict['modal.viewProfile'] || 'Click to view overview'}</span>
+                </div>
               </div>
-              <span class="person-role">${tRole(exec.role)}</span>
-              <h3 class="person-name">${exec.name}</h3>
-              <p class="person-bio">${(currentLang === 'ar' && exec.bio_ar) ? exec.bio_ar : (exec.bio || '')}</p>
-              <div class="person-view-cue">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-                <span data-i18n="modal.viewProfile">${dict['modal.viewProfile'] || 'Click to view overview'}</span>
+            `).join('')}
+          </div>
+
+          ${data.academicAdvisor ? `
+            <!-- Academic Advisor (Prof. Dr. Tharwat Osman) on the Right Side -->
+            <div class="tree-advisor-side-slot">
+              <div class="person-card advisor-card clickable-member" data-member-id="${data.academicAdvisor.id}" role="button" tabindex="0" title="${dict['modal.viewProfile'] || 'Click to view overview'}">
+                <div class="advisor-crown-badge">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"></path></svg>
+                  <span>${dict['role.AcademicAdvisorKicker'] || 'Institutional Academic Advisory'}</span>
+                </div>
+                <div class="avatar-circle advisor-avatar">
+                  ${(data.academicAdvisor.photo || data.academicAdvisor.avatar) ? `<img src="${data.academicAdvisor.photo || data.academicAdvisor.avatar}" alt="${data.academicAdvisor.name}" class="avatar-img" onerror="this.onerror=null;this.parentElement.innerHTML='${getInitials(data.academicAdvisor.name)}';" />` : getInitials(data.academicAdvisor.name)}
+                </div>
+                <span class="person-role advisor-role">${tRole(data.academicAdvisor.role)}</span>
+                <h3 class="person-name advisor-name">${data.academicAdvisor.name}</h3>
+                <p class="person-bio advisor-bio">${(currentLang === 'ar' && data.academicAdvisor.bio_ar) ? data.academicAdvisor.bio_ar : (data.academicAdvisor.bio || '')}</p>
+                <div class="person-view-cue advisor-cue">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                  <span data-i18n="modal.viewProfile">${dict['modal.viewProfile'] || 'Click to view overview'}</span>
+                </div>
               </div>
             </div>
-          `).join('')}
+          ` : ''}
         </div>
       `;
 

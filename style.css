@@ -4054,15 +4054,109 @@ p {
   flex-shrink: 0;
 }
 
-/* Tier 0: Academic Advisor */
-.tree-tier-advisor {
-  max-width: 350px;
-  margin: 0 auto;
+/* Top Executive Band: Centered Executives + Right-Side Academic Advisory */
+.tree-top-band {
   position: relative;
-  z-index: 2;
-  width: 100%;
   display: flex;
   justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto 24px;
+}
+
+.tree-top-band .tree-tier-exec {
+  margin: 0 auto;
+  max-width: 640px;
+  width: 100%;
+}
+
+.tree-advisor-side-slot {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 260px;
+  z-index: 4;
+}
+
+.tree-advisor-side-slot .advisor-card {
+  width: 100%;
+  margin: 0;
+}
+
+/* Subtle advisory link indicating faculty mentorship to the executive leaders */
+.tree-advisor-side-slot::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -26px;
+  width: 26px;
+  height: 2px;
+  border-top: 2px dashed rgba(245, 158, 11, 0.45);
+  transform: translateY(-50%);
+}
+
+/* In Arabic (RTL), maintain Dr. Tharwat physically on the right side */
+[dir="rtl"] .tree-top-band {
+  direction: ltr;
+}
+[dir="rtl"] .tree-top-band .tree-tier-exec,
+[dir="rtl"] .tree-top-band .tree-advisor-side-slot {
+  direction: rtl;
+}
+
+/* Mobile & Tablet Responsiveness (< 1120px): Clean stacking with zero overflow */
+@media (max-width: 1120px) {
+  .tree-top-band {
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .tree-advisor-side-slot {
+    position: static;
+    transform: none;
+    width: 100%;
+    max-width: 350px;
+    margin: 0 auto 12px;
+    order: -1; /* Display cleanly at the top of the executive hierarchy on mobile */
+  }
+
+  .tree-advisor-side-slot::before {
+    display: none;
+  }
+
+  .tree-top-band .tree-tier-exec {
+    max-width: 100%;
+    width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .tree-top-band {
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+
+  .tree-advisor-side-slot {
+    max-width: 100%;
+    padding: 0 4px;
+  }
+
+  .tree-advisor-side-slot .advisor-card {
+    padding: 12px 14px;
+  }
+
+  .tree-advisor-side-slot .advisor-avatar {
+    width: 50px !important;
+    height: 50px !important;
+  }
+
+  .tree-advisor-side-slot .advisor-name {
+    font-size: 0.98rem !important;
+  }
 }
 
 .advisor-card {
@@ -4163,19 +4257,6 @@ p {
   border-color: rgba(245, 158, 11, 0.28) !important;
   padding: 3px 10px;
   font-size: 0.68rem;
-}
-
-.advisor-connector {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  margin: 0;
-}
-
-.advisor-stem-vertical {
-  width: 2px;
-  height: 20px;
-  background: linear-gradient(180deg, #F59E0B 0%, var(--border) 100%);
 }
 
 /* ==========================================================================
@@ -4280,25 +4361,36 @@ p {
     margin-top: 4px !important;
   }
 
-  .tree-tier {
-    gap: 8px !important;
-    margin-bottom: 4px !important;
+  .tree-top-band {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    position: relative !important;
+    width: 100% !important;
+    margin: 0 auto 4px !important;
   }
 
-  .tree-tier-advisor {
-    max-width: 260px !important;
-    margin: 0 auto 2px !important;
+  .tree-top-band .tree-tier-exec {
+    max-width: 500px !important;
+    margin: 0 auto !important;
+  }
+
+  .tree-advisor-side-slot {
+    position: absolute !important;
+    right: 0 !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    width: 200px !important;
     page-break-inside: avoid !important;
   }
 
-  .advisor-connector {
-    margin-bottom: 2px !important;
+  .tree-advisor-side-slot::before {
+    display: none !important;
   }
 
-  .advisor-stem-vertical,
-  .tree-stem-vertical {
-    height: 10px !important;
-    background: #CBD5E1 !important;
+  .tree-tier {
+    gap: 8px !important;
+    margin-bottom: 4px !important;
   }
 
   .tree-branch-crossbar,
