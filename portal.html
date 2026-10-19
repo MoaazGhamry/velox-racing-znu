@@ -176,7 +176,7 @@
       align-items: center;
       flex-wrap: wrap;
       gap: 16px;
-      background: rgba(14, 16, 22, 0.85);
+      background: rgba(14, 16, 22, 0.95);
       border: 1px solid var(--portal-border);
       border-radius: var(--portal-radius-md);
       padding: 14px 20px;
@@ -184,6 +184,8 @@
       backdrop-filter: var(--portal-glass);
       -webkit-backdrop-filter: var(--portal-glass);
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+      position: relative;
+      z-index: 100;
     }
 
     .portal-user-profile {
@@ -391,14 +393,14 @@
       position: absolute;
       right: 0;
       left: auto;
-      top: calc(100% + 8px);
-      width: 350px;
+      top: calc(100% + 10px);
+      width: 360px;
       max-width: calc(100vw - 32px);
-      background: #0E1118;
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      border-radius: var(--portal-radius-md);
-      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.85);
-      z-index: 1050;
+      background: #181B24 !important;
+      border: 1px solid rgba(255, 255, 255, 0.2) !important;
+      border-radius: 14px !important;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.95), 0 0 0 1px rgba(255, 255, 255, 0.08), 0 0 25px rgba(225, 6, 0, 0.15) !important;
+      z-index: 9999 !important;
       padding: 16px;
       max-height: 420px;
       overflow-y: auto;
@@ -1877,116 +1879,160 @@
 
       <!-- 8. TAB 6: EXECUTIVE ADMIN DASHBOARD (LEADERSHIP COMMAND CENTER) -->
       <section class="portal-panel" id="panel-admin">
-        <div class="admin-dashboard-header" style="border: 1px solid rgba(197,34,31,0.35); border-radius: 14px; padding: 24px; margin-bottom: 26px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
-          <div>
-            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px;">
-              <span class="portal-role-pill role-executive">Admin Command Center</span>
-              <span style="font-size: 0.76rem; color: #10B981; display: flex; align-items: center; gap: 6px;">
-                <span style="width: 8px; height: 8px; border-radius: 50%; background: #10B981; display: inline-block;"></span> 256-Bit TLS Secured &bull; Live Operations
-              </span>
+        <!-- Admin Dashboard Hero Card -->
+        <div class="liquid-glass-card" style="padding: 24px 28px; margin-bottom: 24px; position: relative; overflow: hidden; border-color: rgba(225, 6, 0, 0.35);">
+          <div style="position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, #E10600, #F59E0B, #38BDF8);"></div>
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+            <div>
+              <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px;">
+                <span class="portal-role-pill role-executive">Admin Command Center</span>
+                <span style="font-size: 0.76rem; color: #10B981; display: inline-flex; align-items: center; gap: 6px; font-weight: 700;">
+                  <span style="width: 8px; height: 8px; border-radius: 50%; background: #10B981; display: inline-block; box-shadow: 0 0 8px #10B981;"></span> 256-Bit TLS Secured &bull; Live Operations
+                </span>
+              </div>
+              <h2 style="font-size: 1.55rem; font-weight: 900; margin: 0 0 6px 0; color: #FFFFFF;" data-i18n="admin.title">Executive Admin Dashboard</h2>
+              <p style="font-size: 0.85rem; color: var(--portal-text-muted); margin: 0;" data-i18n="admin.desc">
+                Centralized governance for candidate admissions, team credentials, clearance authorizations, and audit telemetry.
+              </p>
             </div>
-            <h2 style="font-size: 1.5rem; margin: 0 0 6px 0; color: var(--text);" data-i18n="admin.title">Executive Admin Dashboard</h2>
-            <p style="font-size: 0.85rem; color: var(--text-muted); margin: 0;" data-i18n="admin.desc">
-              Centralized governance for team accounts, candidate recruitment, and system audit.
-            </p>
-          </div>
-          <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-            <button type="button" class="btn btn-primary" id="addNewMemberModalBtn" style="padding: 8px 16px; font-size: 0.85rem;">
-              + New Member Account
-            </button>
-            <button type="button" class="btn btn-outline" onclick="openPortalModal('uploadModal')" style="padding: 8px 16px; font-size: 0.85rem;">
-              + Upload File
-            </button>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+              <button type="button" class="btn btn-primary" id="addNewMemberModalBtn" style="padding: 9px 18px; font-size: 0.84rem; display: inline-flex; align-items: center; gap: 8px;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                <span>+ New Member Account</span>
+              </button>
+              <button type="button" class="btn btn-outline" onclick="openPortalModal('uploadModal')" style="padding: 9px 18px; font-size: 0.84rem; display: inline-flex; align-items: center; gap: 8px;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                <span>+ Upload Deliverable</span>
+              </button>
+            </div>
           </div>
         </div>
 
-        <!-- Admin Overview KPI Cards -->
-        <div class="portal-stats-grid" style="margin-bottom: 28px;">
+        <!-- Admin Overview 4 KPI Cards -->
+        <div class="portal-stats-grid" style="margin-bottom: 24px;">
           <div class="portal-stat-box">
-            <div class="portal-stat-lbl" data-i18n="admin.kpiAccounts">Active Accounts</div>
-            <div class="portal-stat-val" id="adminKpiMembers" style="color: var(--text);">6</div>
-            <div class="portal-stat-desc">Provisioned team accounts</div>
+            <div class="portal-stat-lbl">
+              <span data-i18n="admin.kpiAccounts">Active Accounts</span>
+              <span style="color: #38BDF8; font-size: 0.72rem; font-weight: 700;">Roster</span>
+            </div>
+            <div class="portal-stat-val" id="adminKpiMembers">6</div>
+            <div class="portal-stat-desc">Provisioned team credentials</div>
           </div>
           <div class="portal-stat-box">
-            <div class="portal-stat-lbl" data-i18n="admin.kpiFiles">Vault Deliverables</div>
+            <div class="portal-stat-lbl">
+              <span data-i18n="admin.kpiFiles">Vault Assets</span>
+              <span style="color: #10B981; font-size: 0.72rem; font-weight: 700;">Secure</span>
+            </div>
             <div class="portal-stat-val" id="adminKpiFiles" style="color: #38BDF8;">0</div>
-            <div class="portal-stat-desc">Engineering assets & CAD</div>
+            <div class="portal-stat-desc">Engineering assets &amp; CAD models</div>
           </div>
           <div class="portal-stat-box">
-            <div class="portal-stat-lbl" data-i18n="admin.kpiRequests">Pending Requests</div>
-            <div class="portal-stat-val" id="adminKpiRequests" style="color: #E11D48;">0</div>
-            <div class="portal-stat-desc">Awaiting leader review</div>
+            <div class="portal-stat-lbl">
+              <span data-i18n="admin.kpiRequests">Pending Approvals</span>
+              <span style="color: #F43F5E; font-size: 0.72rem; font-weight: 700;">Action Req</span>
+            </div>
+            <div class="portal-stat-val" id="adminKpiRequests" style="color: #F43F5E;">0</div>
+            <div class="portal-stat-desc">Awaiting leader clearance review</div>
           </div>
           <div class="portal-stat-box">
-            <div class="portal-stat-lbl" data-i18n="admin.kpiCompleted">Completed Sprints</div>
+            <div class="portal-stat-lbl">
+              <span data-i18n="admin.kpiCompleted">Deliverables Verified</span>
+              <span style="color: #F59E0B; font-size: 0.72rem; font-weight: 700;">Sprints</span>
+            </div>
             <div class="portal-stat-val" id="adminKpiTasks" style="color: #10B981;">0</div>
-            <div class="portal-stat-desc">Verified deliverables</div>
+            <div class="portal-stat-desc">Approved sprint submissions</div>
           </div>
         </div>
 
-        <!-- Admin Module 0: Recruitment & Signup Applications Control Center -->
-        <div class="portal-panel-card liquid-glass-card" id="adminApplicantsSection" style="margin-bottom: 28px; border: 1px solid rgba(225, 29, 72, 0.45); box-shadow: 0 6px 28px rgba(225, 29, 72, 0.12);">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid var(--border); padding-bottom: 14px; flex-wrap: wrap; gap: 12px;">
+        <!-- Admin Quick Switcher Navigation Bar -->
+        <div style="display: flex; gap: 8px; margin-bottom: 24px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none;">
+          <a href="#adminApplicantsSection" class="btn btn-outline" style="padding: 7px 16px; font-size: 0.8rem; border-radius: 9999px; text-decoration: none; display: inline-flex; align-items: center; gap: 7px; color: #FFF; background: rgba(225,6,0,0.12); border-color: rgba(225,6,0,0.35);">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#E10600" stroke-width="2.5"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><polyline points="17 11 19 13 23 9"></polyline></svg>
+            <span>Recruitment Pipeline</span>
+          </a>
+          <a href="#adminAccessQueueSection" class="btn btn-outline" style="padding: 7px 16px; font-size: 0.8rem; border-radius: 9999px; text-decoration: none; display: inline-flex; align-items: center; gap: 7px; color: #CBD5E1;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+            <span>Access Approvals</span>
+          </a>
+          <a href="#adminRosterSection" class="btn btn-outline" style="padding: 7px 16px; font-size: 0.8rem; border-radius: 9999px; text-decoration: none; display: inline-flex; align-items: center; gap: 7px; color: #CBD5E1;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+            <span>Team Accounts</span>
+          </a>
+          <a href="#adminDeliverablesSection" class="btn btn-outline" style="padding: 7px 16px; font-size: 0.8rem; border-radius: 9999px; text-decoration: none; display: inline-flex; align-items: center; gap: 7px; color: #CBD5E1;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+            <span>Deliverables</span>
+          </a>
+          <a href="#adminAuditLogCard" class="btn btn-outline" style="padding: 7px 16px; font-size: 0.8rem; border-radius: 9999px; text-decoration: none; display: inline-flex; align-items: center; gap: 7px; color: #CBD5E1;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#06B6D4" stroke-width="2"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+            <span>Mission Telemetry</span>
+          </a>
+        </div>
+
+        <!-- Admin Module 0: Recruitment & Candidate Pipeline -->
+        <div class="portal-panel-card liquid-glass-card" id="adminApplicantsSection" style="margin-bottom: 28px; padding: 24px; border: 1px solid rgba(225, 6, 0, 0.35); box-shadow: 0 10px 35px rgba(0, 0, 0, 0.45), 0 0 25px rgba(225, 6, 0, 0.08); position: relative; overflow: hidden;">
+          <div style="position: absolute; top: 0; left: 0; right: 0; height: 2px; background: #E10600;"></div>
+          
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 16px; flex-wrap: wrap; gap: 14px;">
             <div>
               <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 4px;">
-                <h3 style="margin: 0; font-size: 1.25rem; color: var(--text); display: flex; align-items: center; gap: 8px;">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2.5"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><polyline points="17 11 19 13 23 9"></polyline></svg>
+                <h3 style="margin: 0; font-size: 1.25rem; font-weight: 800; color: #FFFFFF; display: flex; align-items: center; gap: 8px;">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E10600" stroke-width="2.5"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><polyline points="17 11 19 13 23 9"></polyline></svg>
                   <span data-i18n="admin.recruitmentTitle">Recruitment &amp; Candidate Pipeline</span>
                 </h3>
                 <span id="signupProcessStatusBadge" class="portal-role-pill" style="background: rgba(34, 197, 94, 0.15); color: #4ADE80; border: 1px solid rgba(34, 197, 94, 0.4); font-weight: 700;">Recruitment: OPEN</span>
               </div>
-              <p style="margin: 0; font-size: 0.82rem; color: var(--text-muted);" data-i18n="admin.recruitmentDesc">
+              <p style="margin: 0; font-size: 0.82rem; color: var(--portal-text-muted);" data-i18n="admin.recruitmentDesc">
                 Review candidate applications, schedule interviews, and accept members into team structure.
               </p>
             </div>
             <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-              <button type="button" class="btn btn-primary" onclick="syncApplicationsFromCloud(true)" style="font-size: 0.82rem; padding: 6px 14px; display: inline-flex; align-items: center; gap: 6px;" title="Synchronize applications from Supabase Cloud">
+              <button type="button" class="btn btn-primary" onclick="syncApplicationsFromCloud(true)" style="font-size: 0.82rem; padding: 7px 14px; display: inline-flex; align-items: center; gap: 6px;" title="Synchronize applications from Supabase Cloud">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg>
                 <span>Sync Cloud</span>
               </button>
-              <button type="button" class="btn btn-outline" id="toggleRecruitmentBtn" onclick="toggleRecruitmentStatus()" style="font-size: 0.82rem; padding: 6px 14px; display: inline-flex; align-items: center; gap: 6px;">
+              <button type="button" class="btn btn-outline" id="toggleRecruitmentBtn" onclick="toggleRecruitmentStatus()" style="font-size: 0.82rem; padding: 7px 14px; display: inline-flex; align-items: center; gap: 6px;">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
                 <span data-i18n="admin.toggleIntakeBtn">Toggle Public Intake</span>
               </button>
-              <button type="button" class="btn btn-outline" onclick="purgeTestApplicants()" style="font-size: 0.82rem; padding: 6px 14px; color: #EF4444; border-color: rgba(239, 68, 68, 0.4); display: inline-flex; align-items: center; gap: 6px;" title="Delete all test applicant records">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
-                <span data-i18n="admin.cleanBtn">Clean Test Applicants</span>
-              </button>
-              <button type="button" class="btn btn-outline" onclick="exportApplicationsCsv()" style="font-size: 0.82rem; padding: 6px 14px; display: inline-flex; align-items: center; gap: 6px;" title="Export applicants list as CSV">
+              <button type="button" class="btn btn-outline" onclick="exportApplicationsCsv()" style="font-size: 0.82rem; padding: 7px 14px; display: inline-flex; align-items: center; gap: 6px;" title="Export applicants list as CSV">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
                 <span data-i18n="admin.exportBtn">Export CSV</span>
+              </button>
+              <button type="button" class="btn btn-outline" onclick="purgeTestApplicants()" style="font-size: 0.82rem; padding: 7px 14px; color: #EF4444; border-color: rgba(239, 68, 68, 0.4); display: inline-flex; align-items: center; gap: 6px;" title="Delete all test applicant records">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                <span data-i18n="admin.cleanBtn">Clean Tests</span>
               </button>
             </div>
           </div>
 
           <!-- Recruitment Control KPIs -->
-          <div class="portal-stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); margin-bottom: 18px;">
-            <div class="portal-stat-box" style="padding: 12px 14px;">
+          <div class="portal-stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); margin-bottom: 20px; gap: 10px;">
+            <div class="portal-stat-box" style="padding: 14px 16px;">
               <div class="portal-stat-lbl">Total Applicants</div>
-              <div class="portal-stat-val" id="recruitmentTotalKpi" style="font-size: 1.4rem; color: var(--text);">0</div>
+              <div class="portal-stat-val" id="recruitmentTotalKpi" style="font-size: 1.5rem; color: #FFFFFF;">0</div>
             </div>
-            <div class="portal-stat-box" style="padding: 12px 14px;">
+            <div class="portal-stat-box" style="padding: 14px 16px;">
               <div class="portal-stat-lbl">New Submissions</div>
-              <div class="portal-stat-val" id="recruitmentNewKpi" style="font-size: 1.4rem; color: #38BDF8;">0</div>
+              <div class="portal-stat-val" id="recruitmentNewKpi" style="font-size: 1.5rem; color: #38BDF8;">0</div>
             </div>
-            <div class="portal-stat-box" style="padding: 12px 14px;">
-              <div class="portal-stat-lbl">Shortlisted / Interview</div>
-              <div class="portal-stat-val" id="recruitmentInterviewKpi" style="font-size: 1.4rem; color: #FBBF24;">0</div>
+            <div class="portal-stat-box" style="padding: 14px 16px;">
+              <div class="portal-stat-lbl">Shortlisted</div>
+              <div class="portal-stat-val" id="recruitmentInterviewKpi" style="font-size: 1.5rem; color: #FBBF24;">0</div>
             </div>
-            <div class="portal-stat-box" style="padding: 12px 14px;">
-              <div class="portal-stat-lbl">Accepted &amp; Provisioned</div>
-              <div class="portal-stat-val" id="recruitmentAcceptedKpi" style="font-size: 1.4rem; color: #22C55E;">0</div>
+            <div class="portal-stat-box" style="padding: 14px 16px;">
+              <div class="portal-stat-lbl">Accepted</div>
+              <div class="portal-stat-val" id="recruitmentAcceptedKpi" style="font-size: 1.5rem; color: #22C55E;">0</div>
             </div>
-            <div class="portal-stat-box" style="padding: 12px 14px;">
+            <div class="portal-stat-box" style="padding: 14px 16px;">
               <div class="portal-stat-lbl">Rejected</div>
-              <div class="portal-stat-val" id="recruitmentRejectedKpi" style="font-size: 1.4rem; color: #EF4444;">0</div>
+              <div class="portal-stat-val" id="recruitmentRejectedKpi" style="font-size: 1.5rem; color: #EF4444;">0</div>
             </div>
           </div>
 
           <!-- Filter & Search Controls -->
-          <div style="display: flex; gap: 10px; margin-bottom: 14px; flex-wrap: wrap;">
-            <input type="text" id="recruitmentSearch" placeholder="Search applicant by name, email, or phone..." class="form-control" style="flex: 1; min-width: 220px; padding: 7px 12px; font-size: 0.84rem;" oninput="renderApplicationsList()" />
-            <select id="recruitmentStatusFilter" class="form-control" style="width: auto; min-width: 150px; padding: 7px 12px; font-size: 0.84rem;" onchange="renderApplicationsList()">
+          <div style="display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap;">
+            <input type="text" id="recruitmentSearch" placeholder="Search applicant by name, email, or phone..." class="form-control" style="flex: 1; min-width: 220px; padding: 9px 14px; font-size: 0.84rem;" oninput="renderApplicationsList()" />
+            <select id="recruitmentStatusFilter" class="form-control" style="width: auto; min-width: 160px; padding: 9px 14px; font-size: 0.84rem;" onchange="renderApplicationsList()">
               <option value="All">All Statuses</option>
               <option value="New">New</option>
               <option value="Shortlisted">Shortlisted</option>
@@ -2017,38 +2063,42 @@
         </div>
 
         <!-- Admin Module 1: Access Authorization Queue -->
-        <div class="portal-panel-card" style="margin-bottom: 28px;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid var(--border); padding-bottom: 12px; flex-wrap: wrap; gap: 10px;">
+        <div class="portal-panel-card liquid-glass-card" id="adminAccessQueueSection" style="margin-bottom: 28px; padding: 24px; border: 1px solid rgba(245, 158, 11, 0.35); position: relative; overflow: hidden;">
+          <div style="position: absolute; top: 0; left: 0; right: 0; height: 2px; background: #F59E0B;"></div>
+          
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 14px; flex-wrap: wrap; gap: 12px;">
             <div>
-              <h3 style="margin: 0 0 4px 0; font-size: 1.15rem; color: var(--text); display: flex; align-items: center; gap: 8px;">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E11D48" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-                Download Access Authorization Queue
+              <h3 style="margin: 0 0 4px 0; font-size: 1.2rem; font-weight: 800; color: #FFFFFF; display: flex; align-items: center; gap: 8px;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                <span>Download Access Authorization Queue</span>
               </h3>
-              <p style="margin: 0; font-size: 0.8rem; color: var(--text-muted);">
-                Normal team members cannot download restricted engineering data without approval. Leaders approve requests here to immediately grant download clearance.
+              <p style="margin: 0; font-size: 0.8rem; color: var(--portal-text-muted);">
+                Protected engineering files require leader clearance. Authorize requests instantly to grant download privileges.
               </p>
             </div>
-            <span class="portal-role-pill" id="adminQueueCountBadge" style="background: rgba(225,29,72,0.15); color: #FB7185; border: 1px solid rgba(225,29,72,0.4);">0 Pending Requests</span>
+            <span class="portal-role-pill" id="adminQueueCountBadge" style="background: rgba(245, 158, 11, 0.15); color: #FBBF24; border: 1px solid rgba(245, 158, 11, 0.4);">0 Pending Requests</span>
           </div>
           <div id="adminAccessQueueContainer">
             <!-- Populated dynamically via renderAdminDashboard() -->
           </div>
         </div>
 
-        <!-- Admin Module 2: Team Roster & Account Credentials Governance -->
-        <div class="portal-panel-card" style="margin-bottom: 28px;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid var(--border); padding-bottom: 12px; flex-wrap: wrap; gap: 12px;">
+        <!-- Admin Module 2: Team Accounts & Credential Governance -->
+        <div class="portal-panel-card liquid-glass-card" id="adminRosterSection" style="margin-bottom: 28px; padding: 24px; border: 1px solid rgba(56, 189, 248, 0.35); position: relative; overflow: hidden;">
+          <div style="position: absolute; top: 0; left: 0; right: 0; height: 2px; background: #38BDF8;"></div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 14px; flex-wrap: wrap; gap: 12px;">
             <div>
-              <h3 style="margin: 0 0 4px 0; font-size: 1.15rem; color: var(--text); display: flex; align-items: center; gap: 8px;">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-                Team Accounts & Credential Governance
+              <h3 style="margin: 0 0 4px 0; font-size: 1.2rem; font-weight: 800; color: #FFFFFF; display: flex; align-items: center; gap: 8px;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                <span>Team Accounts &amp; Credential Governance</span>
               </h3>
-              <p style="margin: 0; font-size: 0.8rem; color: var(--text-muted);">
-                Manage usernames, reset passwords, suspend/activate accounts, or adjust roles across branches.
+              <p style="margin: 0; font-size: 0.8rem; color: var(--portal-text-muted);">
+                Manage usernames, reset passwords, suspend/activate accounts, or assign leadership roles across branches.
               </p>
             </div>
             <div style="display: flex; gap: 8px;">
-              <input type="text" id="adminRosterSearch" placeholder="Filter by name, username, or role..." class="form-control" style="padding: 6px 12px; font-size: 0.82rem; width: 220px;" oninput="renderStructure()" />
+              <input type="text" id="adminRosterSearch" placeholder="Filter by name, username, or role..." class="form-control" style="padding: 7px 14px; font-size: 0.82rem; width: 240px;" oninput="renderStructure()" />
             </div>
           </div>
           <div class="vault-table-wrap">
@@ -2073,15 +2123,17 @@
         </div>
 
         <!-- Admin Module 3: Sprint Deliverable Verification -->
-        <div class="portal-panel-card" style="margin-bottom: 28px;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid var(--border); padding-bottom: 12px;">
+        <div class="portal-panel-card liquid-glass-card" id="adminDeliverablesSection" style="margin-bottom: 28px; padding: 24px; border: 1px solid rgba(16, 185, 129, 0.35); position: relative; overflow: hidden;">
+          <div style="position: absolute; top: 0; left: 0; right: 0; height: 2px; background: #10B981;"></div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 14px;">
             <div>
-              <h3 style="margin: 0 0 4px 0; font-size: 1.15rem; color: var(--text); display: flex; align-items: center; gap: 8px;">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-                Sprint Deliverable Verification Queue
+              <h3 style="margin: 0 0 4px 0; font-size: 1.2rem; font-weight: 800; color: #FFFFFF; display: flex; align-items: center; gap: 8px;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+                <span>Sprint Deliverable Verification Queue</span>
               </h3>
-              <p style="margin: 0; font-size: 0.8rem; color: var(--text-muted);">
-                Review completed deliverables submitted by team members to approve points or request revisions.
+              <p style="margin: 0; font-size: 0.8rem; color: var(--portal-text-muted);">
+                Review completed deliverables submitted by team members to approve points or request engineering revisions.
               </p>
             </div>
           </div>
@@ -2091,29 +2143,31 @@
         </div>
 
         <!-- Admin Module 4: High-Tech Security & Audit Telemetry Terminal -->
-        <div class="portal-panel-card liquid-glass-card" id="adminAuditLogCard" style="border-color: rgba(56, 189, 248, 0.35); box-shadow: 0 15px 40px rgba(0,0,0,0.6), 0 0 25px rgba(56, 189, 248, 0.08);">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; border-bottom: 1px solid var(--border); padding-bottom: 12px; flex-wrap: wrap; gap: 10px;">
+        <div class="portal-panel-card liquid-glass-card" id="adminAuditLogCard" style="border: 1px solid rgba(6, 182, 212, 0.35); box-shadow: 0 15px 40px rgba(0,0,0,0.6), 0 0 25px rgba(6, 182, 212, 0.08); padding: 24px; position: relative; overflow: hidden;">
+          <div style="position: absolute; top: 0; left: 0; right: 0; height: 2px; background: #06B6D4;"></div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 14px; flex-wrap: wrap; gap: 12px;">
             <div>
               <div style="display: flex; align-items: center; gap: 8px;">
                 <span style="width: 8px; height: 8px; border-radius: 50%; background: #22C55E; display: inline-block; box-shadow: 0 0 8px #22C55E;"></span>
-                <h3 style="margin: 0; font-size: 1.15rem; color: var(--text); display: flex; align-items: center; gap: 6px;">
+                <h3 style="margin: 0; font-size: 1.2rem; font-weight: 800; color: #FFFFFF; display: flex; align-items: center; gap: 6px;">
                   Security &amp; Audit Mission Telemetry Terminal
                 </h3>
                 <span class="portal-role-pill" style="font-size: 0.68rem; background: rgba(56,189,248,0.12); color: #38BDF8; border: 1px solid rgba(56,189,248,0.3); font-family: monospace;">256-BIT TLS &bull; QUANTUM SECURED</span>
               </div>
-              <p style="margin: 2px 0 0 0; font-size: 0.78rem; color: var(--text-dim);">
+              <p style="margin: 2px 0 0 0; font-size: 0.78rem; color: var(--portal-text-dim);">
                 Real-time mission-critical audit stream, authentication logs, clearance authorizations, and presidential decrees.
               </p>
             </div>
             <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
-              <button type="button" class="btn btn-outline" style="padding: 4px 10px; font-size: 0.75rem;" onclick="exportAuditLog('txt')">Export TXT</button>
-              <button type="button" class="btn btn-outline" style="padding: 4px 10px; font-size: 0.75rem;" onclick="exportAuditLog('json')">Export JSON</button>
-              <button type="button" class="btn btn-outline" style="padding: 4px 10px; font-size: 0.75rem; color: var(--status-rejected); border-color: rgba(239,68,68,0.4);" onclick="clearAuditLog()">Clear Log</button>
+              <button type="button" class="btn btn-outline" style="padding: 5px 12px; font-size: 0.75rem;" onclick="exportAuditLog('txt')">Export TXT</button>
+              <button type="button" class="btn btn-outline" style="padding: 5px 12px; font-size: 0.75rem;" onclick="exportAuditLog('json')">Export JSON</button>
+              <button type="button" class="btn btn-outline" style="padding: 5px 12px; font-size: 0.75rem; color: #F43F5E; border-color: rgba(244,63,94,0.4);" onclick="clearAuditLog()">Clear Log</button>
             </div>
           </div>
 
           <!-- Telemetry Terminal Toolbar: Filter Chips + Search -->
-          <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 12px; flex-wrap: wrap;">
+          <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 14px; flex-wrap: wrap;">
             <div class="telemetry-filter-chips" style="display: flex; gap: 6px; flex-wrap: wrap;">
               <button type="button" class="telemetry-chip active" id="tFilter-ALL" onclick="setTelemetryFilter('ALL')">ALL EVENTS</button>
               <button type="button" class="telemetry-chip" id="tFilter-SECURITY" onclick="setTelemetryFilter('SECURITY')">SECURITY</button>
@@ -2122,7 +2176,7 @@
               <button type="button" class="telemetry-chip" id="tFilter-DIRECTIVE" onclick="setTelemetryFilter('DIRECTIVE')">DIRECTIVES</button>
               <button type="button" class="telemetry-chip" id="tFilter-VAULT" onclick="setTelemetryFilter('VAULT')">VAULT / TASKS</button>
             </div>
-            <input type="text" id="telemetrySearchInput" placeholder="Filter telemetry by keyword..." class="form-control" style="width: auto; min-width: 200px; padding: 4px 10px; font-size: 0.78rem;" oninput="renderAuditLog()" />
+            <input type="text" id="telemetrySearchInput" placeholder="Filter telemetry by keyword..." class="form-control" style="width: auto; min-width: 200px; padding: 6px 12px; font-size: 0.78rem;" oninput="renderAuditLog()" />
           </div>
 
           <!-- Telemetry Console Container -->
@@ -6284,6 +6338,33 @@
       if (inviteCode) {
         window.location.href = 'invite.html?code=' + inviteCode;
         return;
+      }
+      // Mobile Hamburger Navigation Menu Toggle
+      const hamburgerBtn = document.getElementById('hamburgerBtn');
+      const navMenu = document.getElementById('navMenu');
+      if (hamburgerBtn && navMenu) {
+        hamburgerBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const isOpen = navMenu.classList.toggle('active');
+          hamburgerBtn.classList.toggle('open', isOpen);
+          hamburgerBtn.setAttribute('aria-expanded', isOpen);
+        });
+
+        document.addEventListener('click', (e) => {
+          if (!navMenu.contains(e.target) && !hamburgerBtn.contains(e.target)) {
+            navMenu.classList.remove('active');
+            hamburgerBtn.classList.remove('open');
+            hamburgerBtn.setAttribute('aria-expanded', false);
+          }
+        });
+
+        navMenu.querySelectorAll('.nav-link').forEach(link => {
+          link.addEventListener('click', () => {
+            navMenu.classList.remove('active');
+            hamburgerBtn.classList.remove('open');
+            hamburgerBtn.setAttribute('aria-expanded', false);
+          });
+        });
       }
 
       // 1. Portal Login Form
