@@ -39,16 +39,17 @@
     :root {
       --portal-bg: #07080A;
       --portal-surface: #0E1015;
-      --portal-card: rgba(18, 20, 26, 0.75);
-      --portal-card-hover: rgba(24, 27, 36, 0.9);
+      --portal-card: rgba(18, 20, 26, 0.85);
+      --portal-card-hover: rgba(26, 29, 38, 0.95);
       --portal-border: rgba(255, 255, 255, 0.08);
-      --portal-border-hover: rgba(225, 6, 0, 0.35);
-      --portal-glass: blur(18px) saturate(180%);
+      --portal-border-hover: rgba(225, 6, 0, 0.4);
+      --portal-glass: blur(20px) saturate(180%);
       
       --portal-red: #E10600;
       --portal-red-hover: #B80500;
-      --portal-red-glow: rgba(225, 6, 0, 0.3);
+      --portal-red-glow: rgba(225, 6, 0, 0.35);
       --portal-gold: #F59E0B;
+      --portal-gold-glow: rgba(245, 158, 11, 0.25);
       --portal-cyan: #38BDF8;
       --portal-emerald: #10B981;
       
@@ -57,8 +58,8 @@
       --portal-text-dim: #64748B;
       
       --portal-radius-sm: 8px;
-      --portal-radius-md: 12px;
-      --portal-radius-lg: 16px;
+      --portal-radius-md: 14px;
+      --portal-radius-lg: 18px;
       --portal-radius-full: 9999px;
     }
 
@@ -85,6 +86,11 @@
       padding-right: 18px;
     }
 
+    @keyframes portalFadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     /* ==================== AUTHENTICATION GATE ==================== */
     .portal-login-section {
       max-width: 480px;
@@ -93,13 +99,8 @@
       animation: portalFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    @keyframes portalFadeIn {
-      from { opacity: 0; transform: translateY(14px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
     .portal-login-card {
-      background: linear-gradient(165deg, rgba(20, 22, 28, 0.92) 0%, rgba(10, 11, 15, 0.97) 100%);
+      background: linear-gradient(165deg, rgba(20, 22, 28, 0.95) 0%, rgba(10, 11, 15, 0.98) 100%);
       border: 1px solid rgba(225, 6, 0, 0.35);
       border-radius: var(--portal-radius-lg);
       padding: 38px 32px;
@@ -168,7 +169,7 @@
       display: flex;
     }
 
-    /* ==================== WORKSPACE HEADER & PROFILE MENU ==================== */
+    /* ==================== WORKSPACE HEADER & USER BAR ==================== */
     .portal-user-bar {
       display: flex;
       justify-content: space-between;
@@ -182,7 +183,7 @@
       margin-bottom: 18px;
       backdrop-filter: var(--portal-glass);
       -webkit-backdrop-filter: var(--portal-glass);
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
     }
 
     .portal-user-profile {
@@ -192,11 +193,11 @@
     }
 
     .portal-user-avatar {
-      width: 46px;
-      height: 46px;
+      width: 48px;
+      height: 48px;
       border-radius: 50%;
       background: rgba(255, 255, 255, 0.06);
-      border: 2px solid rgba(225, 6, 0, 0.5);
+      border: 2px solid rgba(225, 6, 0, 0.6);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -205,12 +206,12 @@
       overflow: hidden;
       flex-shrink: 0;
       transition: all 0.2s ease;
-      box-shadow: 0 0 14px rgba(225, 6, 0, 0.2);
+      box-shadow: 0 0 16px rgba(225, 6, 0, 0.25);
     }
 
     .portal-user-avatar:hover {
       border-color: var(--portal-red);
-      transform: scale(1.04);
+      transform: scale(1.05);
     }
 
     .avatar-edit-badge {
@@ -218,7 +219,7 @@
       bottom: 0;
       right: 0;
       left: 0;
-      background: rgba(0, 0, 0, 0.65);
+      background: rgba(0, 0, 0, 0.7);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -247,6 +248,13 @@
       color: var(--portal-text-muted);
       display: block;
       line-height: 1.35;
+    }
+
+    .portal-header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
     }
 
     /* Role Pills */
@@ -286,6 +294,97 @@
       border: 1px solid rgba(255, 255, 255, 0.15);
     }
 
+    /* ==================== USER PROFILE DROPDOWN MENU ==================== */
+    .user-profile-menu {
+      position: relative;
+      display: inline-block;
+    }
+
+    .user-profile-trigger-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: var(--portal-radius-full);
+      padding: 7px 14px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #FFFFFF;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+
+    .user-profile-trigger-btn:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(56, 189, 248, 0.5);
+      box-shadow: 0 0 14px rgba(56, 189, 248, 0.25);
+    }
+
+    .user-profile-dropdown {
+      display: none;
+      position: absolute;
+      top: calc(100% + 10px);
+      right: 0;
+      left: auto;
+      width: 250px;
+      background: #181B24 !important;
+      border: 1px solid rgba(255, 255, 255, 0.2) !important;
+      border-radius: 14px !important;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.95), 0 0 0 1px rgba(255, 255, 255, 0.08), 0 0 25px rgba(225, 6, 0, 0.15) !important;
+      padding: 10px !important;
+      z-index: 9999 !important;
+      animation: portalFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .user-profile-dropdown.open {
+      display: block !important;
+    }
+
+    .dropdown-header-info {
+      padding: 10px 12px 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      margin-bottom: 8px;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 8px;
+    }
+
+    .dropdown-item-btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      background: transparent;
+      border: none;
+      border-radius: 8px;
+      color: #FFFFFF !important;
+      font-size: 0.84rem;
+      font-weight: 600;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      text-decoration: none;
+      font-family: inherit;
+      box-sizing: border-box;
+    }
+
+    .dropdown-item-btn:hover {
+      background: rgba(255, 255, 255, 0.1) !important;
+      color: #FFFFFF !important;
+      transform: translateX(3px);
+    }
+
+    .dropdown-item-btn.item-danger {
+      color: #F87171 !important;
+    }
+
+    .dropdown-item-btn.item-danger:hover {
+      background: rgba(239, 68, 68, 0.2) !important;
+      color: #EF4444 !important;
+    }
+
     /* Notification Dropdown */
     #notifDropdown {
       display: none;
@@ -296,10 +395,10 @@
       width: 350px;
       max-width: calc(100vw - 32px);
       background: #0E1118;
-      border: 1px solid rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.14);
       border-radius: var(--portal-radius-md);
-      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.8);
-      z-index: 1000;
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.85);
+      z-index: 1050;
       padding: 16px;
       max-height: 420px;
       overflow-y: auto;
@@ -324,26 +423,112 @@
 
     /* ==================== EXECUTIVE SUPREME CONSOLE ==================== */
     .presidential-supreme-deck {
-      background: linear-gradient(135deg, rgba(20, 18, 14, 0.95) 0%, rgba(12, 12, 16, 0.98) 100%);
+      background: linear-gradient(135deg, rgba(24, 20, 14, 0.95) 0%, rgba(13, 14, 18, 0.98) 100%);
       border: 1px solid rgba(245, 158, 11, 0.35);
       border-radius: var(--portal-radius-md);
-      padding: 16px 20px;
-      margin-bottom: 20px;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4), 0 0 20px rgba(245, 158, 11, 0.08);
+      padding: 18px 22px;
+      margin-bottom: 22px;
+      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.5), 0 0 25px rgba(245, 158, 11, 0.08);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .presidential-supreme-deck::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #F59E0B 0%, #E10600 50%, #38BDF8 100%);
+    }
+
+    .presidential-deck-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .presidential-deck-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .presidential-deck-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .exec-action-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: var(--portal-radius-full);
+      padding: 6px 14px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #E2E8F0;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      text-decoration: none;
+      font-family: inherit;
+    }
+
+    .exec-action-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+      filter: brightness(1.25);
+    }
+
+    .presidential-deck-telemetry {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 10px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(255, 255, 255, 0.07);
+    }
+
+    .exec-telemetry-chip {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 8px;
+      padding: 8px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.78rem;
+    }
+
+    .exec-telemetry-chip span {
+      color: var(--portal-text-muted);
+    }
+
+    .exec-telemetry-chip strong {
+      font-size: 0.95rem;
+      color: #FFFFFF;
+      font-weight: 800;
     }
 
     /* ==================== SEGMENTED NAVIGATION TABS ==================== */
     .portal-tabs-nav {
       display: flex;
       gap: 6px;
-      background: rgba(14, 16, 22, 0.9);
+      background: rgba(14, 16, 22, 0.92);
       border: 1px solid var(--portal-border);
       border-radius: var(--portal-radius-md);
       padding: 6px;
       margin-bottom: 22px;
       overflow-x: auto;
       scrollbar-width: none;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
     }
 
     .portal-tabs-nav::-webkit-scrollbar {
@@ -364,6 +549,7 @@
       cursor: pointer;
       white-space: nowrap;
       transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      font-family: inherit;
     }
 
     .portal-tab-btn:hover {
@@ -480,7 +666,7 @@
       letter-spacing: -0.02em;
     }
 
-    .portal-stat-sub {
+    .portal-stat-sub, .portal-stat-desc {
       font-size: 0.76rem;
       color: var(--portal-text-dim);
     }
@@ -500,7 +686,7 @@
       border-color: rgba(255, 255, 255, 0.14);
     }
 
-    /* ==================== TABLES ==================== */
+    /* ==================== TABLES & TOOLBARS ==================== */
     .vault-toolbar {
       display: flex;
       justify-content: space-between;
@@ -510,11 +696,45 @@
       margin-bottom: 18px;
     }
 
-    .vault-table-wrapper {
+    .vault-filters {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+
+    .vault-filter-btn {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--portal-radius-full);
+      padding: 6px 14px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--portal-text-muted);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+
+    .vault-filter-btn:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #FFFFFF;
+    }
+
+    .vault-filter-btn.active {
+      background: var(--portal-red);
+      border-color: var(--portal-red);
+      color: #FFFFFF;
+      box-shadow: 0 2px 10px rgba(225, 6, 0, 0.35);
+    }
+
+    .vault-table-wrap, .vault-table-wrapper {
       width: 100%;
       overflow-x: auto;
-      border-radius: var(--portal-radius-sm);
+      border-radius: var(--portal-radius-md);
       border: 1px solid var(--portal-border);
+      background: rgba(10, 12, 16, 0.6);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
     }
 
     .vault-table {
@@ -525,19 +745,19 @@
     }
 
     .vault-table th {
-      background: rgba(255, 255, 255, 0.03);
+      background: rgba(255, 255, 255, 0.04);
       color: var(--portal-text-muted);
       font-size: 0.74rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.06em;
-      padding: 12px 14px;
+      padding: 13px 16px;
       border-bottom: 1px solid var(--portal-border);
       white-space: nowrap;
     }
 
     .vault-table td {
-      padding: 14px;
+      padding: 14px 16px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.04);
       color: var(--portal-text);
       vertical-align: middle;
@@ -545,6 +765,59 @@
 
     .vault-table tr:hover td {
       background: rgba(255, 255, 255, 0.02);
+    }
+
+    /* ==================== FORM CONTROLS ==================== */
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .form-row .form-group {
+      flex: 1;
+      min-width: 220px;
+    }
+
+    .form-control, input[type="text"], input[type="email"], input[type="password"], input[type="url"], input[type="file"], select, textarea {
+      width: 100%;
+      background: rgba(14, 16, 22, 0.85) !important;
+      border: 1px solid rgba(255, 255, 255, 0.12) !important;
+      color: #FFFFFF !important;
+      border-radius: var(--portal-radius-sm) !important;
+      padding: 9px 13px;
+      font-size: 0.86rem;
+      font-family: inherit;
+      box-sizing: border-box;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .form-control:focus, input:focus, select:focus, textarea:focus {
+      border-color: var(--portal-red) !important;
+      box-shadow: 0 0 0 3px rgba(225, 6, 0, 0.22) !important;
+      outline: none !important;
+    }
+
+    label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #CBD5E1;
+      margin-bottom: 6px;
+    }
+
+    label .req {
+      color: var(--portal-red);
+      margin-left: 3px;
+    }
+
+    select option {
+      background: #0E1015;
+      color: #FFFFFF;
     }
 
     /* ==================== BUTTONS ==================== */
@@ -555,6 +828,7 @@
       font-weight: 700;
       box-shadow: 0 4px 14px var(--portal-red-glow);
       transition: all 0.2s ease;
+      cursor: pointer;
     }
 
     .btn-primary:hover {
@@ -569,11 +843,44 @@
       border: 1px solid var(--portal-border);
       color: var(--portal-text);
       transition: all 0.2s ease;
+      cursor: pointer;
     }
 
     .btn-outline:hover {
       background: rgba(255, 255, 255, 0.08);
-      border-color: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+
+    .btn-full {
+      width: 100%;
+      display: block;
+      text-align: center;
+      padding: 11px 18px;
+    }
+
+    /* ==================== TELEMETRY CHIPS ==================== */
+    .telemetry-chip {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--portal-radius-full);
+      padding: 4px 10px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--portal-text-muted);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+
+    .telemetry-chip:hover {
+      color: #FFFFFF;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .telemetry-chip.active {
+      background: rgba(56, 189, 248, 0.2);
+      border-color: var(--portal-cyan);
+      color: var(--portal-cyan);
     }
 
     /* ==================== MODALS ==================== */
@@ -583,9 +890,9 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: rgba(0, 0, 0, 0.78);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
+      background: rgba(0, 0, 0, 0.82);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       z-index: 2000;
       display: none;
       align-items: center;
@@ -594,26 +901,141 @@
       animation: portalFadeIn 0.2s ease;
     }
 
+    .portal-modal-backdrop.active,
     .portal-modal-backdrop.open {
-      display: flex;
+      display: flex !important;
     }
 
-    .portal-modal-card {
-      background: #111319;
-      border: 1px solid rgba(255, 255, 255, 0.12);
+    .portal-modal-box, .portal-modal-card {
+      background: #101218;
+      border: 1px solid rgba(255, 255, 255, 0.14);
       border-radius: var(--portal-radius-lg);
       width: 100%;
       max-width: 580px;
       max-height: 90vh;
       overflow-y: auto;
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9);
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9), 0 0 35px rgba(225, 6, 0, 0.1);
       padding: 26px;
       position: relative;
     }
 
+    .portal-modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .portal-modal-header h3 {
+      margin: 0;
+      font-size: 1.18rem;
+      font-weight: 800;
+      color: #FFFFFF;
+    }
+
+    .portal-modal-close {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #CBD5E1;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .portal-modal-close:hover {
+      background: rgba(225, 6, 0, 0.2);
+      border-color: var(--portal-red);
+      color: #FFFFFF;
+    }
+
+    /* ==================== PODIUM & LEADERBOARD ==================== */
+    .podium-container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      gap: 16px;
+      margin: 30px auto 40px;
+      max-width: 700px;
+      padding: 0 10px;
+    }
+
+    .podium-step {
+      flex: 1;
+      text-align: center;
+      background: var(--portal-card);
+      border: 1px solid var(--portal-border);
+      border-radius: var(--portal-radius-md) var(--portal-radius-md) 0 0;
+      padding: 20px 12px 14px;
+      position: relative;
+      transition: transform 0.2s ease;
+    }
+
+    .podium-step:hover {
+      transform: translateY(-4px);
+    }
+
+    .podium-step.gold {
+      order: 2;
+      height: 220px;
+      border-color: rgba(245, 158, 11, 0.5);
+      background: linear-gradient(180deg, rgba(245, 158, 11, 0.12) 0%, rgba(14, 16, 22, 0.95) 100%);
+      box-shadow: 0 0 30px rgba(245, 158, 11, 0.15);
+    }
+
+    .podium-step.silver {
+      order: 1;
+      height: 180px;
+      border-color: rgba(148, 163, 184, 0.35);
+      background: linear-gradient(180deg, rgba(148, 163, 184, 0.1) 0%, rgba(14, 16, 22, 0.95) 100%);
+    }
+
+    .podium-step.bronze {
+      order: 3;
+      height: 150px;
+      border-color: rgba(217, 119, 6, 0.35);
+      background: linear-gradient(180deg, rgba(217, 119, 6, 0.1) 0%, rgba(14, 16, 22, 0.95) 100%);
+    }
+
+    .podium-rank-badge {
+      position: absolute;
+      top: -16px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 0.95rem;
+      color: #000;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    }
+
+    .podium-step.gold .podium-rank-badge {
+      background: #F59E0B;
+    }
+
+    .podium-step.silver .podium-rank-badge {
+      background: #94A3B8;
+    }
+
+    .podium-step.bronze .podium-rank-badge {
+      background: #D97706;
+    }
+
     /* ==================== LIGHT MODE POLISH ==================== */
-    [data-theme="light"] .portal-app-header {
-      background: rgba(255, 255, 255, 0.95);
+    [data-theme="light"] .portal-user-bar {
+      background: #FFFFFF;
       border-color: rgba(0, 0, 0, 0.09);
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
     }
@@ -635,6 +1057,7 @@
       border-color: rgba(0, 0, 0, 0.08) !important;
       box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04) !important;
     }
+    [data-theme="light"] .portal-modal-box,
     [data-theme="light"] .portal-modal-card {
       background: #FFFFFF;
       border-color: rgba(0, 0, 0, 0.12);
@@ -646,10 +1069,17 @@
       border-color: rgba(0, 0, 0, 0.12);
       box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
     }
+    [data-theme="light"] .dropdown-item-btn {
+      color: #334155;
+    }
+    [data-theme="light"] .dropdown-item-btn:hover {
+      background: rgba(0, 0, 0, 0.05);
+      color: #0F172A;
+    }
 
     /* ==================== RESPONSIVE RULES ==================== */
     @media (max-width: 840px) {
-      .portal-app-header {
+      .portal-user-bar {
         flex-direction: column;
         align-items: flex-start;
       }
@@ -660,6 +1090,13 @@
       .portal-stats-grid {
         grid-template-columns: 1fr 1fr;
       }
+      .presidential-deck-top {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .presidential-deck-actions {
+        width: 100%;
+      }
     }
 
     @media (max-width: 540px) {
@@ -669,6 +1106,22 @@
       .portal-tab-btn {
         padding: 8px 12px;
         font-size: 0.8rem;
+      }
+      .podium-container {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .podium-step.gold {
+        order: 1;
+        height: auto;
+      }
+      .podium-step.silver {
+        order: 2;
+        height: auto;
+      }
+      .podium-step.bronze {
+        order: 3;
+        height: auto;
       }
     }
   </style>
