@@ -7783,7 +7783,7 @@
 
                 // Tier 2: Authenticated username / email prefix match (e.g. madaldynahmd539)
                 if (!matchedId && authUser) {
-                  const m = acceptedApps.find(a => a.email && a.email.toLowerCase().startsWith(authUser));
+                  const m = acceptedApps.find(a => a.email && (a.email.toLowerCase().startsWith(authUser) || a.email.toLowerCase().includes(authUser)));
                   if (m) matchedId = m.id;
                 }
 
@@ -7795,7 +7795,7 @@
 
                 // Tier 4: Tokenized word intersection (e.g. ['ahmed', 'emad'] matching 'Ahmed Emad EL-Din kameL')
                 if (!matchedId && pNameNorm) {
-                  const pTokens = pNameNorm.split(/[\s_\-.]+/).filter(t => t.length >= 3);
+                  const pTokens = pNameNorm.split(/[\s_\-.]+/).filter(t => t.length >= 2);
                   if (pTokens.length > 0) {
                     const m = acceptedApps.find(a => {
                       const aTokens = (a.full_name || '').toLowerCase().split(/[\s_\-.]+/);
@@ -7816,17 +7816,36 @@
                 }
               }
 
+              let isSuccess = false;
               if (matchedId) {
                 const { error: upErr } = await client
                   .from('applications')
                   .update({ portfolio_url: stagedPhotoData })
                   .eq('id', matchedId);
-                if (upErr) {
-                  console.warn('Supabase update returned error:', upErr);
-                  alert('Warning: Cloud database update encountered an issue: ' + (upErr.message || 'Check connection'));
-                } else {
-                  console.log('✓ Profile photo successfully synchronized to Supabase Cloud applications (id: ' + matchedId + ')!');
-                }
+                if (!upErr) isSuccess = true;
+                else console.warn('Supabase update returned error:', upErr);
+              }
+
+              // Fallback 1: Direct update by email if matchedId didn't succeed
+              if (!isSuccess && targetEmail) {
+                const { error: emErr } = await client
+                  .from('applications')
+                  .update({ portfolio_url: stagedPhotoData })
+                  .ilike('email', targetEmail.trim());
+                if (!emErr) isSuccess = true;
+              }
+
+              // Fallback 2: Direct update by full name if still needed
+              if (!isSuccess && p.name) {
+                const { error: nmErr } = await client
+                  .from('applications')
+                  .update({ portfolio_url: stagedPhotoData })
+                  .ilike('full_name', `%${p.name.trim()}%`);
+                if (!nmErr) isSuccess = true;
+              }
+
+              if (isSuccess) {
+                console.log('✓ Profile photo successfully synchronized to Supabase Cloud applications!');
               } else {
                 console.warn('Notice: Could not locate row in Supabase applications to sync photo.');
               }
@@ -7935,6 +7954,7 @@
             const rosterEntry = {
               id: memberId,
               name: cleanName,
+              email: app.email || '',
               role: existingRole,
               roleType: existingRoleType,
               branch: existingBranch,
@@ -7965,6 +7985,7 @@
               db.personas[personaKey] = {
                 id: memberId,
                 name: cleanName,
+                email: app.email || '',
                 role: assignedRole,
                 roleType: roleType,
                 branch: 'Technical',
@@ -7975,10 +7996,13 @@
                 deptDesc: `${dept} Division • ${assignedRole}`
               };
               updated = true;
-            } else if (finalAvatar) {
-              if (db.personas[personaKey].avatar !== finalAvatar) updated = true;
-              db.personas[personaKey].avatar = finalAvatar;
-              db.personas[personaKey].photo = finalAvatar;
+            } else {
+              db.personas[personaKey].email = app.email || db.personas[personaKey].email || '';
+              if (finalAvatar) {
+                if (db.personas[personaKey].avatar !== finalAvatar) updated = true;
+                db.personas[personaKey].avatar = finalAvatar;
+                db.personas[personaKey].photo = finalAvatar;
+              }
             }
 
             if (normName === 'ali elgohary') {

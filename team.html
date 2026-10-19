@@ -26,10 +26,10 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" />
 
   <!-- Shared Style with Cache Buster -->
-  <link rel="stylesheet" href="style.css?v=6.2" />
+  <link rel="stylesheet" href="style.css?v=7.0" />
 
   <!-- Localization Engine (Deferred for non-blocking render) -->
-  <script src="i18n.js?v=6.2" defer></script>
+  <script src="i18n.js?v=7.0" defer></script>
 
   <style>
     /* Guaranteed Light Mode text contrast — immune to stale browser cache */
@@ -294,10 +294,10 @@
   </footer>
 
   <!-- Config and Live Cloud Sync Source -->
-  <script src="config.js?v=5.0"></script>
+  <script src="config.js?v=7.1"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <!-- Team Data Source — Always fetched fresh over live connection -->
-  <script src="team.js?v=5.0"></script>
+  <script src="team.js?v=7.1"></script>
 
   <script>
     // Minimal mobile navigation toggle
@@ -785,7 +785,7 @@
     });
 
     window.addEventListener('storage', (e) => {
-      if (e.key && e.key.startsWith('velox_portal_db')) {
+      if (e.key && (e.key.startsWith('velox_portal_db') || e.key === 'velox_live_cloud_members')) {
         renderOrgChart();
       }
     });

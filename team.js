@@ -273,65 +273,91 @@ window._veloxRealtimeSubscribed = false;
  * ALWAYS driven by the live database connection (window._liveCloudAcceptedMembers).
  * Completely eliminates stale cached phantom members.
  */
+// Initialize live cloud members from local cache immediately on script load so there is zero flash of empty/stale tree
+if (typeof window !== 'undefined' && !window._liveCloudAcceptedMembers) {
+  try {
+    const cachedLive = localStorage.getItem('velox_live_cloud_members');
+    if (cachedLive) {
+      window._liveCloudAcceptedMembers = JSON.parse(cachedLive);
+    }
+  } catch (e) {}
+}
+
+function getPortalDb() {
+  if (typeof localStorage === 'undefined') return null;
+  const raw = localStorage.getItem('velox_portal_db_v8');
+  if (!raw) return null;
+  try { return JSON.parse(raw); } catch (e) { return null; }
+}
+
+// Universal avatar resolution helper across personas, membersRoster, and accounts
+function findAvatarForPerson(id, name) {
+  if (!id && !name) return '';
+  const normId = (id || '').trim().toLowerCase();
+  const normName = (name || '').trim().toLowerCase();
+
+  // 0. Check live cloud accepted members
+  if (typeof window !== 'undefined' && Array.isArray(window._liveCloudAcceptedMembers)) {
+    const foundCloud = window._liveCloudAcceptedMembers.find(m => {
+      if (!m) return false;
+      const mId = (m.id || '').trim().toLowerCase();
+      const mName = (m.name || '').trim().toLowerCase();
+      return (normId && mId === normId) || (normName && mName === normName);
+    });
+    if (foundCloud && (foundCloud.photo || foundCloud.avatar)) {
+      return foundCloud.photo || foundCloud.avatar;
+    }
+  }
+
+  const portalDb = getPortalDb();
+
+  // 1. Check portalDb.personas
+  if (portalDb && portalDb.personas) {
+    for (const k in portalDb.personas) {
+      const p = portalDb.personas[k];
+      if (!p) continue;
+      const pId = (p.id || '').trim().toLowerCase();
+      const pName = (p.name || '').trim().toLowerCase();
+      if ((normId && pId === normId) || (normName && pName === normName)) {
+        if (p.avatar || p.photo) return p.avatar || p.photo;
+      }
+    }
+  }
+
+  // 2. Check portalDb.membersRoster
+  if (portalDb && Array.isArray(portalDb.membersRoster)) {
+    const found = portalDb.membersRoster.find(m => {
+      if (!m) return false;
+      const mId = (m.id || '').trim().toLowerCase();
+      const mName = (m.name || '').trim().toLowerCase();
+      return (normId && mId === normId) || (normName && mName === normName);
+    });
+    if (found && (found.avatar || found.photo)) return found.avatar || found.photo;
+  }
+
+  // 3. Check portalDb.accounts
+  if (portalDb && Array.isArray(portalDb.accounts)) {
+    const foundAcc = portalDb.accounts.find(a => {
+      if (!a) return false;
+      const aName = (a.name || '').trim().toLowerCase();
+      return normName && aName === normName;
+    });
+    if (foundAcc && (foundAcc.avatar || foundAcc.photo)) return foundAcc.avatar || foundAcc.photo;
+  }
+
+  return '';
+}
+if (typeof window !== 'undefined') window.findAvatarForPerson = findAvatarForPerson;
+
 function getDynamicTeamData() {
   const data = JSON.parse(JSON.stringify(VELOX_TEAM));
+  const portalDb = getPortalDb();
 
   // If live cloud members haven't been fetched yet, trigger cloud sync immediately
-  if (!Array.isArray(window._liveCloudAcceptedMembers)) {
+  if (typeof window !== 'undefined' && !Array.isArray(window._liveCloudAcceptedMembers)) {
     if (typeof syncCloudAcceptedMembers === 'function' && !window._isCloudSyncing) {
       setTimeout(() => { syncCloudAcceptedMembers(); }, 1);
     }
-  }
-
-  let portalDb = null;
-  if (typeof localStorage !== 'undefined') {
-    const raw = localStorage.getItem('velox_portal_db_v8');
-    if (raw) {
-      try { portalDb = JSON.parse(raw); } catch (e) {}
-    }
-  }
-
-  // Universal avatar resolution helper across personas, membersRoster, and accounts
-  function findAvatarForPerson(id, name) {
-    if (!id && !name) return '';
-    const normId = (id || '').trim().toLowerCase();
-    const normName = (name || '').trim().toLowerCase();
-
-    // 1. Check portalDb.personas
-    if (portalDb && portalDb.personas) {
-      for (const k in portalDb.personas) {
-        const p = portalDb.personas[k];
-        if (!p) continue;
-        const pId = (p.id || '').trim().toLowerCase();
-        const pName = (p.name || '').trim().toLowerCase();
-        if ((normId && pId === normId) || (normName && pName === normName)) {
-          if (p.avatar || p.photo) return p.avatar || p.photo;
-        }
-      }
-    }
-
-    // 2. Check portalDb.membersRoster
-    if (portalDb && Array.isArray(portalDb.membersRoster)) {
-      const found = portalDb.membersRoster.find(m => {
-        if (!m) return false;
-        const mId = (m.id || '').trim().toLowerCase();
-        const mName = (m.name || '').trim().toLowerCase();
-        return (normId && mId === normId) || (normName && mName === normName);
-      });
-      if (found && (found.avatar || found.photo)) return found.avatar || found.photo;
-    }
-
-    // 3. Check portalDb.accounts
-    if (portalDb && Array.isArray(portalDb.accounts)) {
-      const foundAcc = portalDb.accounts.find(a => {
-        if (!a) return false;
-        const aName = (a.name || '').trim().toLowerCase();
-        return normName && aName === normName;
-      });
-      if (foundAcc && (foundAcc.avatar || foundAcc.photo)) return foundAcc.avatar || foundAcc.photo;
-    }
-
-    return '';
   }
 
   // 1. Sync persona & roster avatar updates to static executives and leadership
@@ -651,15 +677,24 @@ async function syncCloudAcceptedMembers() {
           const u = app.portfolio_url.trim();
           if (u.startsWith('data:image/') || u.startsWith('photos/')) {
             avatar = u;
+          } else if (u.includes('drive.google.com')) {
+            const driveMatch = u.match(/\/d\/([a-zA-Z0-9_-]+)/) || u.match(/id=([a-zA-Z0-9_-]+)/);
+            if (driveMatch && driveMatch[1]) {
+              avatar = `https://drive.google.com/thumbnail?id=${driveMatch[1]}&sz=w400`;
+            }
           } else if (u.startsWith('http://') || u.startsWith('https://')) {
-            const isNonImageDoc = u.includes('docs.google.com') || u.includes('drive.google.com') || u.includes('linkedin.com') || (u.includes('github.com/') && !u.includes('avatars.githubusercontent.com'));
+            const isNonImageDoc = u.includes('docs.google.com') || u.includes('linkedin.com') || (u.includes('github.com/') && !u.includes('avatars.githubusercontent.com'));
             if (!isNonImageDoc) {
               avatar = u;
             }
           }
         }
         if (!avatar) {
-          avatar = findAvatarForPerson(memberId, cleanName);
+          if (typeof findAvatarForPerson === 'function') {
+            avatar = findAvatarForPerson(memberId, cleanName);
+          } else if (typeof window !== 'undefined' && typeof window.findAvatarForPerson === 'function') {
+            avatar = window.findAvatarForPerson(memberId, cleanName);
+          }
         }
 
         seenNames.add(normName);
@@ -683,6 +718,11 @@ async function syncCloudAcceptedMembers() {
     // Assign live in-memory list (Source of Truth)
     window._liveCloudAcceptedMembers = liveList;
     window._isCloudConnected = true;
+
+    // Cache live list to localStorage so the org chart paints immediately on any visit
+    try {
+      localStorage.setItem('velox_live_cloud_members', JSON.stringify(liveList));
+    } catch (e) {}
 
     // Prune old removed members from localStorage so stale cached ghosts are deleted
     try {
@@ -765,8 +805,9 @@ if (typeof window !== "undefined") {
   window.getMemberById = getMemberById;
   window.parseDeptAndSubteam = parseDeptAndSubteam;
   window.syncCloudAcceptedMembers = syncCloudAcceptedMembers;
+  window.findAvatarForPerson = findAvatarForPerson;
 }
 
 if (typeof module !== "undefined" && module.exports) {
-  module.exports = { VELOX_TEAM, getDynamicTeamData, getSubteamsList, getMemberById, parseDeptAndSubteam, syncCloudAcceptedMembers };
+  module.exports = { VELOX_TEAM, getDynamicTeamData, getSubteamsList, getMemberById, parseDeptAndSubteam, syncCloudAcceptedMembers, findAvatarForPerson };
 }
