@@ -22,7 +22,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" />
 
   <!-- Shared Style with Cache Buster -->
-  <link rel="stylesheet" href="style.css?v=4.0" />
+  <link rel="stylesheet" href="style.css?v=4.1" />
   <!-- App Configuration & Supabase Cloud Sync -->
   <script src="config.js?v=4.0"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -1154,6 +1154,24 @@
       body.is-authenticated #portalNavLoginMobile,
       body.is-authenticated .nav-cta a[href="/portal"].nav-login-mobile-btn {
         display: none !important;
+      }
+      .nav-menu.open,
+      .nav-menu.active {
+        display: flex !important;
+        position: fixed !important;
+        top: calc(var(--nav-height, 64px) + var(--safe-top, 0px) + 8px) !important;
+        left: 12px !important;
+        right: 12px !important;
+        background: #0E1017 !important;
+        backdrop-filter: blur(32px) saturate(200%) !important;
+        -webkit-backdrop-filter: blur(32px) saturate(200%) !important;
+        border: 1px solid rgba(255, 255, 255, 0.16) !important;
+        border-radius: 16px !important;
+        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.98), 0 0 0 1px rgba(255, 255, 255, 0.1) !important;
+        flex-direction: column !important;
+        padding: 16px !important;
+        gap: 6px !important;
+        z-index: 999999 !important;
       }
     }
 
@@ -6522,29 +6540,32 @@
         return;
       }
       // Mobile Hamburger Navigation Menu Toggle
-      const hamburgerBtn = document.getElementById('hamburgerBtn');
-      const navMenu = document.getElementById('navMenu');
+      const hamburgerBtn = document.getElementById('hamburgerBtn') || document.getElementById('hamburger');
+      const navMenu = document.getElementById('navMenu') || document.getElementById('navLinks');
       if (hamburgerBtn && navMenu) {
         hamburgerBtn.addEventListener('click', (e) => {
           e.stopPropagation();
-          const isOpen = navMenu.classList.toggle('active');
+          const isOpen = navMenu.classList.toggle('open');
+          navMenu.classList.toggle('active', isOpen);
           hamburgerBtn.classList.toggle('open', isOpen);
-          hamburgerBtn.setAttribute('aria-expanded', isOpen);
+          hamburgerBtn.setAttribute('aria-expanded', String(isOpen));
         });
 
         document.addEventListener('click', (e) => {
           if (!navMenu.contains(e.target) && !hamburgerBtn.contains(e.target)) {
+            navMenu.classList.remove('open');
             navMenu.classList.remove('active');
             hamburgerBtn.classList.remove('open');
-            hamburgerBtn.setAttribute('aria-expanded', false);
+            hamburgerBtn.setAttribute('aria-expanded', 'false');
           }
         });
 
-        navMenu.querySelectorAll('.nav-link').forEach(link => {
+        navMenu.querySelectorAll('.nav-link, a').forEach(link => {
           link.addEventListener('click', () => {
+            navMenu.classList.remove('open');
             navMenu.classList.remove('active');
             hamburgerBtn.classList.remove('open');
-            hamburgerBtn.setAttribute('aria-expanded', false);
+            hamburgerBtn.setAttribute('aria-expanded', 'false');
           });
         });
       }
