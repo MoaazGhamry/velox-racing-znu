@@ -425,12 +425,12 @@
 
     /* ==================== EXECUTIVE SUPREME CONSOLE ==================== */
     .presidential-supreme-deck {
-      background: linear-gradient(135deg, rgba(24, 20, 14, 0.95) 0%, rgba(13, 14, 18, 0.98) 100%);
-      border: 1px solid rgba(245, 158, 11, 0.35);
+      background: linear-gradient(135deg, rgba(20, 18, 14, 0.96) 0%, rgba(12, 13, 17, 0.98) 100%);
+      border: 1px solid rgba(245, 158, 11, 0.3);
       border-radius: var(--portal-radius-md);
-      padding: 18px 22px;
-      margin-bottom: 22px;
-      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.5), 0 0 25px rgba(245, 158, 11, 0.08);
+      padding: 14px 18px;
+      margin-bottom: 18px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(245, 158, 11, 0.06);
       position: relative;
       overflow: hidden;
     }
@@ -450,51 +450,53 @@
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      gap: 14px;
-      margin-bottom: 14px;
+      gap: 10px;
+      margin-bottom: 12px;
     }
 
     .presidential-deck-header {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
     }
 
     .presidential-deck-actions {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       flex-wrap: wrap;
     }
 
     .exec-action-btn {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      justify-content: center;
+      gap: 5px;
       background: rgba(255, 255, 255, 0.04);
       border: 1px solid rgba(255, 255, 255, 0.14);
-      border-radius: var(--portal-radius-full);
-      padding: 6px 14px;
-      font-size: 0.78rem;
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-size: 0.74rem;
       font-weight: 700;
       color: #E2E8F0;
       cursor: pointer;
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all 0.15s ease;
       text-decoration: none;
       font-family: inherit;
+      white-space: nowrap;
     }
 
     .exec-action-btn:hover {
       transform: translateY(-1px);
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
-      filter: brightness(1.25);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      filter: brightness(1.2);
     }
 
     .presidential-deck-telemetry {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-      gap: 10px;
-      padding-top: 12px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      padding-top: 10px;
       border-top: 1px solid rgba(255, 255, 255, 0.07);
     }
 
@@ -502,19 +504,25 @@
       background: rgba(255, 255, 255, 0.03);
       border: 1px solid rgba(255, 255, 255, 0.06);
       border-radius: 8px;
-      padding: 8px 12px;
+      padding: 6px 8px;
       display: flex;
-      justify-content: space-between;
+      flex-direction: column;
       align-items: center;
-      font-size: 0.78rem;
+      justify-content: center;
+      text-align: center;
+      gap: 2px;
     }
 
     .exec-telemetry-chip span {
+      font-size: 0.65rem;
       color: var(--portal-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
     }
 
     .exec-telemetry-chip strong {
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       color: #FFFFFF;
       font-weight: 800;
     }
@@ -1216,6 +1224,55 @@
       .portal-login-subtitle {
         font-size: 0.68rem !important;
       }
+      .presidential-supreme-deck {
+        padding: 12px 14px !important;
+        margin-bottom: 14px !important;
+        border-radius: 12px !important;
+      }
+      .presidential-deck-top {
+        margin-bottom: 10px !important;
+        gap: 8px !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+      }
+      .presidential-deck-header {
+        width: 100% !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+      }
+      .presidential-deck-actions {
+        width: 100% !important;
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 6px !important;
+      }
+      .presidential-deck-actions .exec-action-btn:last-child {
+        grid-column: span 2;
+      }
+      .exec-action-btn {
+        padding: 7px 8px !important;
+        font-size: 0.72rem !important;
+        justify-content: center !important;
+        border-radius: 6px !important;
+      }
+      .presidential-deck-telemetry {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 6px !important;
+        padding-top: 8px !important;
+      }
+      .exec-telemetry-chip {
+        padding: 6px 10px !important;
+        flex-direction: row !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+      }
+      .exec-telemetry-chip span {
+        font-size: 0.68rem !important;
+      }
+      .exec-telemetry-chip strong {
+        font-size: 0.88rem !important;
+      }
       .portal-user-bar {
         padding: 14px 16px !important;
         border-radius: 14px !important;
@@ -1523,49 +1580,47 @@
         <!-- Global Presidential Sovereign Decree Banner (Appears across portal when active) -->
         <div id="leaderDecreeBanner" style="margin-bottom: 20px;"></div>
 
-        <!-- SUPREME PRESIDENTIAL COMMAND DECK -->
-        <div id="fatimaPresidentialCommandDeck" class="presidential-supreme-deck" style="display: none; margin-bottom: 22px;">
+        <!-- EXECUTIVE COMMAND DECK (LEADER & VICE LEADER ONLY) -->
+        <div id="fatimaPresidentialCommandDeck" class="presidential-supreme-deck" style="display: none; margin-bottom: 18px;">
           <div class="presidential-deck-top">
             <div class="presidential-deck-header">
-              <div style="width: 38px; height: 38px; border-radius: 10px; background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.4); display: flex; align-items: center; justify-content: center; color: #F59E0B; flex-shrink: 0;">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
+              <div style="width: 30px; height: 30px; border-radius: 8px; background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.4); display: flex; align-items: center; justify-content: center; color: #F59E0B; flex-shrink: 0;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
               </div>
-              <div>
-                <div style="display: flex; align-items: center; gap: 8px;">
-                  <h3 style="font-size: 1.05rem; font-weight: 800; margin: 0; color: #FFFFFF;" class="deck-title-text" data-i18n="deck.headline">
-                    Executive Command Console
-                  </h3>
-                  <span style="background: rgba(16, 185, 129, 0.15); color: #10B981; border: 1px solid rgba(16, 185, 129, 0.35); padding: 1px 7px; border-radius: 9999px; font-size: 0.64rem; font-weight: 700;">
-                    LIVE GOVERNANCE
-                  </span>
-                </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <h3 style="font-size: 0.98rem; font-weight: 800; margin: 0; color: #FFFFFF;" class="deck-title-text" data-i18n="deck.headline">
+                  Executive Console
+                </h3>
+                <span style="background: rgba(16, 185, 129, 0.15); color: #10B981; border: 1px solid rgba(16, 185, 129, 0.35); padding: 1px 6px; border-radius: 9999px; font-size: 0.6rem; font-weight: 700;">
+                  LIVE
+                </span>
               </div>
             </div>
 
             <!-- Presidential Actions Row -->
             <div class="presidential-deck-actions">
               <button type="button" class="exec-action-btn" onclick="launchPresidentialDirectiveAction()" style="background: rgba(245, 158, 11, 0.12); border-color: rgba(245, 158, 11, 0.35); color: #FBBF24;">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                 <span data-i18n="deck.btnDirective">Directive</span>
               </button>
 
               <button type="button" class="exec-action-btn" onclick="executiveFastTrackApproveAll()" style="color: #38BDF8; border-color: rgba(56, 189, 248, 0.35);">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
                 <span data-i18n="deck.btnClearAll">Authorize All</span>
               </button>
 
               <button type="button" class="exec-action-btn" onclick="jumpToRecruitmentIntake()" style="color: #A78BFA; border-color: rgba(167, 139, 250, 0.35);">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg>
                 <span data-i18n="deck.btnRecruitment">Recruitment</span>
               </button>
 
               <button type="button" class="exec-action-btn" id="masterRecruitmentGateBtn" onclick="toggleMasterRecruitmentIntake()" style="color: #10B981; border-color: rgba(16, 185, 129, 0.35);">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
                 <span>Intake: <strong id="masterIntakeStatusText">OPEN</strong></span>
               </button>
 
               <button type="button" class="exec-action-btn" onclick="jumpToCyberTelemetry()" style="color: #F43F5E; border-color: rgba(244, 63, 94, 0.35);">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
                 <span data-i18n="deck.btnAudit">Telemetry</span>
               </button>
             </div>
@@ -1574,12 +1629,12 @@
           <!-- Live Command Telemetry Strip -->
           <div class="presidential-deck-telemetry">
             <div class="exec-telemetry-chip">
-              <span data-i18n="deck.roster">Active Crew</span>
+              <span data-i18n="deck.roster">Crew</span>
               <strong id="deckRosterCount">15</strong>
             </div>
 
             <div class="exec-telemetry-chip">
-              <span data-i18n="deck.pipeline">Recruitment Pipeline</span>
+              <span data-i18n="deck.pipeline">Pipeline</span>
               <strong id="deckApplicantCount">0</strong>
             </div>
 
@@ -1590,7 +1645,7 @@
             </div>
 
             <div class="exec-telemetry-chip">
-              <span data-i18n="deck.security">System Security</span>
+              <span data-i18n="deck.security">Security</span>
               <strong style="color: #10B981;">SECURE</strong>
             </div>
           </div>
@@ -4123,6 +4178,12 @@
       let cleanDept = p.deptDesc || (p.branch + ' • ' + (p.departments ? p.departments.join(', ') : p.dept));
       if (cleanDept.includes('• Dual Operational & Powertrain Authority') || cleanDept.includes('Dual Operational')) {
         cleanDept = 'Managerial & Technical Division • Powertrain, Media & PR';
+      }
+      if (cleanDept.includes('Executive Governance & Overall Leadership') || cleanDept.includes('Omni-Clearance')) {
+        cleanDept = 'Executive Governance • Team Leadership';
+      }
+      if (cleanDept.includes('Operations, Build Management & Sponsorship')) {
+        cleanDept = 'Operations & Build Governance';
       }
       deptEl.textContent = cleanDept;
 

@@ -238,18 +238,18 @@ const VELOX_I18N = {
     'tab.invitations': 'Invitations',
     'tab.admin': 'Admin Dashboard',
 
-    // Fatima Salman Deck
-    'deck.title': 'Supreme Leadership Command',
-    'deck.headline': 'Executive Sovereign Command Console',
-    'deck.jurisdiction': 'Universal executive jurisdiction over all technical engineering and operations divisions.',
-    'deck.btnDirective': 'Issue Directive',
+    // Executive Leader Deck
+    'deck.title': 'Executive Command',
+    'deck.headline': 'Executive Console',
+    'deck.jurisdiction': 'Leadership jurisdiction over engineering and operations divisions.',
+    'deck.btnDirective': 'Directive',
     'deck.btnClearAll': 'Authorize All',
-    'deck.btnRecruitment': 'Recruitment Center',
-    'deck.btnAudit': 'System Telemetry',
-    'deck.roster': 'Active Crew',
-    'deck.pipeline': 'Recruitment Pipeline',
-    'deck.directives': 'Active Directives',
-    'deck.security': 'System Security',
+    'deck.btnRecruitment': 'Recruitment',
+    'deck.btnAudit': 'Telemetry',
+    'deck.roster': 'Crew',
+    'deck.pipeline': 'Pipeline',
+    'deck.directives': 'Directives',
+    'deck.security': 'Security',
 
     // Dashboard Overview
     'kpi.velocity': 'Velocity Points',
@@ -718,18 +718,18 @@ const VELOX_I18N = {
     'tab.invitations': 'الدعوات الرسمية',
     'tab.admin': 'لوحة الإدارة',
 
-    // Fatima Salman Deck
-    'deck.title': 'القيادة الرئاسية العليا',
-    'deck.headline': 'المقر الرئاسي للقيادة والسيادة التنفيذية',
-    'deck.jurisdiction': 'صلاحيات قيادية شاملة على كافة الأقسام الهندسية والعملياتية والإدارية.',
-    'deck.btnDirective': 'إصدار توجيه',
+    // Executive Leader Deck
+    'deck.title': 'لوحة القيادة',
+    'deck.headline': 'لوحة القيادة التنفيذية',
+    'deck.jurisdiction': 'صلاحيات قيادية للأقسام الهندسية والعملياتية.',
+    'deck.btnDirective': 'توجيه',
     'deck.btnClearAll': 'اعتماد الكل',
-    'deck.btnRecruitment': 'مركز التوظيف',
-    'deck.btnAudit': 'سجل الأمان',
-    'deck.roster': 'أعضاء الفريق',
-    'deck.pipeline': 'طلبات الانضمام',
-    'deck.directives': 'التوجيهات النشطة',
-    'deck.security': 'حالة الأمان',
+    'deck.btnRecruitment': 'التوظيف',
+    'deck.btnAudit': 'التيليميتري',
+    'deck.roster': 'الفريق',
+    'deck.pipeline': 'المتقدمين',
+    'deck.directives': 'التوجيهات',
+    'deck.security': 'الأمان',
 
     // Dashboard Overview
     'kpi.velocity': 'نقاط السرعة',
