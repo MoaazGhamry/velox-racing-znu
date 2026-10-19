@@ -7629,7 +7629,7 @@
           reader.onload = function(evt) {
             const img = new Image();
             img.onload = function() {
-              const maxDim = 320;
+              const maxDim = 240;
               let width = img.width;
               let height = img.height;
               if (width > height) {
@@ -7649,7 +7649,7 @@
               canvas.height = height;
               const ctx = canvas.getContext('2d');
               ctx.drawImage(img, 0, 0, width, height);
-              stagedPhotoData = canvas.toDataURL('image/jpeg', 0.85);
+              stagedPhotoData = canvas.toDataURL('image/jpeg', 0.78);
 
               const p = getActivePersona();
               window.updatePhotoPreviewCircle(stagedPhotoData, p.name);
@@ -7767,39 +7767,53 @@
                 if (inv && inv.email) targetEmail = inv.email;
               }
 
-              const targetName = (p.name || '').trim();
+              // Fetch all currently accepted applications for guaranteed precision matching
+              const { data: acceptedApps, error: fetchErr } = await client
+                .from('applications')
+                .select('id, email, full_name')
+                .eq('status', 'Accepted');
+
               let matchedId = null;
+              if (Array.isArray(acceptedApps) && acceptedApps.length > 0) {
+                // Tier 1: Exact or case-insensitive email match
+                if (targetEmail) {
+                  const m = acceptedApps.find(a => a.email && a.email.trim().toLowerCase() === targetEmail.trim().toLowerCase());
+                  if (m) matchedId = m.id;
+                }
 
-              if (targetEmail) {
-                const { data: byEmail } = await client
-                  .from('applications')
-                  .select('id, email, full_name')
-                  .ilike('email', targetEmail);
-                if (byEmail && byEmail.length > 0) matchedId = byEmail[0].id;
-              }
+                // Tier 2: Authenticated username / email prefix match (e.g. madaldynahmd539)
+                if (!matchedId && authUser) {
+                  const m = acceptedApps.find(a => a.email && a.email.toLowerCase().startsWith(authUser));
+                  if (m) matchedId = m.id;
+                }
 
-              if (!matchedId && targetName) {
-                const { data: byName } = await client
-                  .from('applications')
-                  .select('id, email, full_name')
-                  .ilike('full_name', targetName);
-                if (byName && byName.length > 0) matchedId = byName[0].id;
-              }
+                // Tier 3: Exact normalized name match
+                if (!matchedId && pNameNorm) {
+                  const m = acceptedApps.find(a => a.full_name && a.full_name.trim().toLowerCase() === pNameNorm);
+                  if (m) matchedId = m.id;
+                }
 
-              if (!matchedId && targetName) {
-                const { data: byPartialName } = await client
-                  .from('applications')
-                  .select('id, email, full_name')
-                  .ilike('full_name', `%${targetName}%`);
-                if (byPartialName && byPartialName.length > 0) matchedId = byPartialName[0].id;
-              }
+                // Tier 4: Tokenized word intersection (e.g. ['ahmed', 'emad'] matching 'Ahmed Emad EL-Din kameL')
+                if (!matchedId && pNameNorm) {
+                  const pTokens = pNameNorm.split(/[\s_\-.]+/).filter(t => t.length >= 3);
+                  if (pTokens.length > 0) {
+                    const m = acceptedApps.find(a => {
+                      const aTokens = (a.full_name || '').toLowerCase().split(/[\s_\-.]+/);
+                      const matches = pTokens.filter(t => aTokens.some(at => at.includes(t) || t.includes(at)));
+                      return matches.length >= Math.min(2, pTokens.length);
+                    });
+                    if (m) matchedId = m.id;
+                  }
+                }
 
-              if (!matchedId && authUser) {
-                const { data: byUserPrefix } = await client
-                  .from('applications')
-                  .select('id, email, full_name')
-                  .ilike('email', `${authUser}%`);
-                if (byUserPrefix && byUserPrefix.length > 0) matchedId = byUserPrefix[0].id;
+                // Tier 5: Substring containment match
+                if (!matchedId && pNameNorm) {
+                  const m = acceptedApps.find(a => {
+                    const an = (a.full_name || '').trim().toLowerCase();
+                    return an.includes(pNameNorm) || pNameNorm.includes(an);
+                  });
+                  if (m) matchedId = m.id;
+                }
               }
 
               if (matchedId) {
@@ -7809,6 +7823,7 @@
                   .eq('id', matchedId);
                 if (upErr) {
                   console.warn('Supabase update returned error:', upErr);
+                  alert('Warning: Cloud database update encountered an issue: ' + (upErr.message || 'Check connection'));
                 } else {
                   console.log('✓ Profile photo successfully synchronized to Supabase Cloud applications (id: ' + matchedId + ')!');
                 }
@@ -7827,6 +7842,8 @@
 
           closePortalModal('editPhotoModal');
           logAuditEvent(`PROFILE: ${p.name} updated their profile photo.`);
+          // Trigger storage event so other open pages (e.g. team.html) immediately update
+          window.dispatchEvent(new Event('storage'));
           alert('Profile photo successfully updated and saved to the database! Your photo is now live on your Portal and the Team Structure Org Chart.');
         });
       }

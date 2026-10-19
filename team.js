@@ -298,7 +298,7 @@ function getDynamicTeamData() {
     const normName = (name || '').trim().toLowerCase();
 
     // 1. Check portalDb.personas
-    if (portalDb.personas) {
+    if (portalDb && portalDb.personas) {
       for (const k in portalDb.personas) {
         const p = portalDb.personas[k];
         if (!p) continue;
@@ -311,7 +311,7 @@ function getDynamicTeamData() {
     }
 
     // 2. Check portalDb.membersRoster
-    if (Array.isArray(portalDb.membersRoster)) {
+    if (portalDb && Array.isArray(portalDb.membersRoster)) {
       const found = portalDb.membersRoster.find(m => {
         if (!m) return false;
         const mId = (m.id || '').trim().toLowerCase();
@@ -322,7 +322,7 @@ function getDynamicTeamData() {
     }
 
     // 3. Check portalDb.accounts
-    if (Array.isArray(portalDb.accounts)) {
+    if (portalDb && Array.isArray(portalDb.accounts)) {
       const foundAcc = portalDb.accounts.find(a => {
         if (!a) return false;
         const aName = (a.name || '').trim().toLowerCase();
@@ -361,11 +361,14 @@ function getDynamicTeamData() {
     }
   });
 
-  // 2. Dynamic Crew: NEVER rely on stale localStorage cache.
+  // 2. Dynamic Crew:
   // Team structure is strictly driven by the live database connection (window._liveCloudAcceptedMembers).
   let activeMembers = [];
   if (Array.isArray(window._liveCloudAcceptedMembers)) {
     activeMembers = [...window._liveCloudAcceptedMembers];
+  } else if (portalDb && Array.isArray(portalDb.membersRoster) && portalDb.membersRoster.length > 0) {
+    // Initial optimistic paint while live cloud connection finishes
+    activeMembers = portalDb.membersRoster.filter(m => m && m.name && m.status !== 'Suspended' && m.status !== 'Removed' && !['admin-director', 'fatima-salman', 'karim-shaprawy', 'mohamed-romy', 'moaaz-elghamry', 'mohamed-hassan', 'ali-elgohary'].includes(m.id));
   }
 
   // 3. Map members to departments and subteams
@@ -583,7 +586,7 @@ async function syncCloudAcceptedMembers() {
     const client = window.supabase.createClient(cfg.url, cfg.anonKey);
     const { data, error } = await client
       .from('applications')
-      .select('id, full_name, email, subteam_first, subteam_second, status, hr_notes, why_join, portfolio_url, accepted_choice, updated_at')
+      .select('id, full_name, email, subteam_first, subteam_second, status, hr_notes, why_join, portfolio_url, created_at')
       .eq('status', 'Accepted');
 
     if (error) {
@@ -643,7 +646,21 @@ async function syncCloudAcceptedMembers() {
           }
         }
 
-        const avatar = (app.portfolio_url && (app.portfolio_url.startsWith('data:image/') || app.portfolio_url.startsWith('http') || app.portfolio_url.startsWith('photos/'))) ? app.portfolio_url : '';
+        let avatar = '';
+        if (app.portfolio_url) {
+          const u = app.portfolio_url.trim();
+          if (u.startsWith('data:image/') || u.startsWith('photos/')) {
+            avatar = u;
+          } else if (u.startsWith('http://') || u.startsWith('https://')) {
+            const isNonImageDoc = u.includes('docs.google.com') || u.includes('drive.google.com') || u.includes('linkedin.com') || (u.includes('github.com/') && !u.includes('avatars.githubusercontent.com'));
+            if (!isNonImageDoc) {
+              avatar = u;
+            }
+          }
+        }
+        if (!avatar) {
+          avatar = findAvatarForPerson(memberId, cleanName);
+        }
 
         seenNames.add(normName);
         seenIds.add(memberId);

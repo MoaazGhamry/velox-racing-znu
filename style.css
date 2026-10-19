@@ -1803,6 +1803,47 @@ p {
   font-weight: 600;
 }
 
+[data-theme="light"] .subteam-crew-chip {
+  background: #FFFFFF !important;
+  border: 1px solid #CBD5E1 !important;
+  color: #0F172A !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .subteam-crew-chip:hover {
+  background: #F8FAFC !important;
+  border-color: var(--red) !important;
+  color: #000000 !important;
+}
+
+[data-theme="light"] .subteam-crew-chip.is-leader {
+  background: #FEF3C7 !important;
+  border-color: #F59E0B !important;
+  color: #78350F !important;
+}
+
+[data-theme="light"] .subteam-chip-name {
+  color: #0F172A !important;
+}
+
+[data-theme="light"] .subteam-chip-role {
+  color: #64748B !important;
+}
+
+[data-theme="light"] .subteam-crew-chip.is-leader .subteam-chip-name {
+  color: #78350F !important;
+}
+
+[data-theme="light"] .subteam-crew-chip.is-leader .subteam-chip-role {
+  color: #B45309 !important;
+}
+
+[data-theme="light"] .subteam-pill {
+  color: #0F172A !important;
+  background: #F1F5F9 !important;
+  border-color: #CBD5E1 !important;
+}
+
 /* ── Avatar Edit Badges ── */
 .portal-user-avatar {
   position: relative;
@@ -4015,7 +4056,7 @@ p {
 
 /* Tier 0: Academic Advisor */
 .tree-tier-advisor {
-  max-width: 460px;
+  max-width: 350px;
   margin: 0 auto;
   position: relative;
   z-index: 2;
@@ -4028,37 +4069,37 @@ p {
   width: 100%;
   border-color: rgba(245, 158, 11, 0.45);
   background: linear-gradient(180deg, rgba(245, 158, 11, 0.08) 0%, rgba(18, 20, 26, 0.95) 100%);
-  box-shadow: 0 14px 36px -10px rgba(0, 0, 0, 0.65), 0 0 24px rgba(245, 158, 11, 0.15);
+  box-shadow: 0 10px 28px -8px rgba(0, 0, 0, 0.65), 0 0 18px rgba(245, 158, 11, 0.12);
   border-radius: var(--radius-md);
-  padding: 24px;
+  padding: 14px 18px;
 }
 
 [data-theme="light"] .advisor-card {
   background: linear-gradient(180deg, rgba(245, 158, 11, 0.12) 0%, #FFFFFF 100%);
   border-color: rgba(245, 158, 11, 0.5);
-  box-shadow: 0 10px 28px rgba(245, 158, 11, 0.12);
+  box-shadow: 0 8px 22px rgba(245, 158, 11, 0.12);
 }
 
 .advisor-card:hover {
   border-color: #F59E0B;
-  transform: translateY(-4px);
-  box-shadow: 0 20px 48px -10px rgba(0, 0, 0, 0.8), 0 0 32px rgba(245, 158, 11, 0.35);
+  transform: translateY(-2px);
+  box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.75), 0 0 24px rgba(245, 158, 11, 0.28);
 }
 
 .advisor-crown-badge {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 4px 12px;
+  gap: 5px;
+  padding: 2px 10px;
   border-radius: 9999px;
   background: rgba(245, 158, 11, 0.15);
   border: 1px solid rgba(245, 158, 11, 0.45);
   color: #FBBF24;
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  margin-bottom: 14px;
+  margin-bottom: 8px;
 }
 
 [data-theme="light"] .advisor-crown-badge {
@@ -4068,22 +4109,26 @@ p {
 }
 
 .advisor-avatar {
+  width: 56px !important;
+  height: 56px !important;
+  font-size: 14px !important;
+  margin-bottom: 6px !important;
   border-color: #F59E0B !important;
-  box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.5), 0 0 20px rgba(245, 158, 11, 0.35) !important;
+  box-shadow: 0 6px 18px -4px rgba(0, 0, 0, 0.5), 0 0 16px rgba(245, 158, 11, 0.3) !important;
 }
 
 .advisor-card:hover .advisor-avatar {
   border-color: #FBBF24 !important;
-  box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.7), 0 0 28px rgba(245, 158, 11, 0.55) !important;
+  box-shadow: 0 10px 24px -4px rgba(0, 0, 0, 0.65), 0 0 22px rgba(245, 158, 11, 0.45) !important;
 }
 
 .advisor-role {
   color: #F59E0B !important;
-  font-size: 0.84rem;
+  font-size: 0.76rem;
   font-weight: 800;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 
 [data-theme="light"] .advisor-role {
@@ -4091,10 +4136,10 @@ p {
 }
 
 .advisor-name {
-  font-size: 1.25rem !important;
+  font-size: 1.05rem !important;
   font-weight: 800 !important;
   color: #FFFFFF;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
 }
 
 [data-theme="light"] .advisor-name {
@@ -4102,15 +4147,22 @@ p {
 }
 
 .advisor-bio {
-  font-size: 0.82rem;
-  line-height: 1.5;
+  font-size: 0.78rem;
+  line-height: 1.4;
   color: var(--text-muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 8px;
 }
 
 .advisor-cue {
   color: #F59E0B !important;
   background: rgba(245, 158, 11, 0.08) !important;
   border-color: rgba(245, 158, 11, 0.28) !important;
+  padding: 3px 10px;
+  font-size: 0.68rem;
 }
 
 .advisor-connector {
@@ -4122,7 +4174,7 @@ p {
 
 .advisor-stem-vertical {
   width: 2px;
-  height: 34px;
+  height: 20px;
   background: linear-gradient(180deg, #F59E0B 0%, var(--border) 100%);
 }
 
@@ -4139,14 +4191,14 @@ p {
 
   @page {
     size: A4 portrait;
-    margin: 12mm 10mm 12mm 10mm;
+    margin: 8mm 6mm;
   }
 
   body {
     background: #FFFFFF !important;
-    color: #111827 !important;
-    font-size: 9.5pt !important;
-    line-height: 1.35 !important;
+    color: #0F172A !important;
+    font-size: 8pt !important;
+    line-height: 1.2 !important;
     margin: 0 !important;
     padding: 0 !important;
     -webkit-print-color-adjust: exact !important;
@@ -4168,7 +4220,14 @@ p {
   .btn,
   .no-print,
   .member-modal-backdrop,
-  .member-modal-container {
+  .member-modal-container,
+  .live-sync-chip {
+    display: none !important;
+  }
+
+  /* Hide lengthy prose descriptions during print to strictly guarantee 1-2 pages */
+  .person-bio,
+  .dept-desc {
     display: none !important;
   }
 
@@ -4189,102 +4248,107 @@ p {
   }
 
   .section-header {
-    margin-bottom: 16px !important;
+    margin-bottom: 6px !important;
     text-align: center !important;
-    border-bottom: 2px solid #E10600 !important;
-    padding-bottom: 10px !important;
+    border-bottom: 1.5px solid #C5221F !important;
+    padding-bottom: 4px !important;
   }
 
   .section-kicker {
-    font-size: 8.5pt !important;
-    color: #E10600 !important;
+    font-size: 7pt !important;
+    color: #C5221F !important;
     font-weight: 800 !important;
     text-transform: uppercase !important;
+    margin-bottom: 2px !important;
   }
 
   .section-title {
-    font-size: 18pt !important;
+    font-size: 13pt !important;
     font-weight: 900 !important;
-    color: #111827 !important;
-    margin: 4px 0 !important;
+    color: #0F172A !important;
+    margin: 2px 0 !important;
   }
 
   .section-desc {
-    font-size: 8.5pt !important;
-    color: #4B5563 !important;
-    max-width: 90% !important;
+    font-size: 7.2pt !important;
+    color: #475569 !important;
+    max-width: 95% !important;
     margin: 0 auto !important;
   }
 
   .team-tree-container {
-    margin-top: 10px !important;
+    margin-top: 4px !important;
   }
 
   .tree-tier {
-    gap: 12px !important;
-    margin-bottom: 6px !important;
+    gap: 8px !important;
+    margin-bottom: 4px !important;
   }
 
   .tree-tier-advisor {
-    max-width: 440px !important;
-    margin: 0 auto 4px !important;
+    max-width: 260px !important;
+    margin: 0 auto 2px !important;
     page-break-inside: avoid !important;
   }
 
   .advisor-connector {
-    margin-bottom: 4px !important;
+    margin-bottom: 2px !important;
   }
 
   .advisor-stem-vertical,
   .tree-stem-vertical {
-    height: 14px !important;
-    background: #9CA3AF !important;
+    height: 10px !important;
+    background: #CBD5E1 !important;
   }
 
   .tree-branch-crossbar,
   .tree-branch-drop {
-    background: #9CA3AF !important;
+    background: #CBD5E1 !important;
   }
 
   .person-card {
-    border: 1px solid #D1D5DB !important;
-    border-radius: 8px !important;
-    padding: 10px 14px !important;
+    border: 1px solid #CBD5E1 !important;
+    border-radius: 6px !important;
+    padding: 5px 8px !important;
     page-break-inside: avoid !important;
-    background: #FAFAFA !important;
+    background: #FFFFFF !important;
   }
 
   .advisor-card {
-    border: 1.5px solid #D97706 !important;
+    border: 1.2px solid #D97706 !important;
     background: #FFFBEB !important;
+    padding: 5px 8px !important;
   }
 
   .advisor-crown-badge {
     border: 1px solid #D97706 !important;
     background: #FEF3C7 !important;
     color: #92400E !important;
-    font-size: 7.5pt !important;
-    padding: 2px 8px !important;
-    margin-bottom: 6px !important;
+    font-size: 6pt !important;
+    padding: 1px 6px !important;
+    margin-bottom: 3px !important;
   }
 
   .avatar-circle {
-    width: 46px !important;
-    height: 46px !important;
-    border: 1.5px solid #9CA3AF !important;
-    margin-bottom: 6px !important;
-    font-size: 11pt !important;
+    width: 32px !important;
+    height: 32px !important;
+    border: 1px solid #CBD5E1 !important;
+    margin-bottom: 3px !important;
+    font-size: 8pt !important;
   }
 
   .advisor-avatar {
+    width: 32px !important;
+    height: 32px !important;
     border-color: #D97706 !important;
   }
 
   .person-role {
-    font-size: 7.5pt !important;
-    font-weight: 700 !important;
-    color: #E10600 !important;
+    font-size: 6.2pt !important;
+    font-weight: 800 !important;
+    color: #C5221F !important;
     text-transform: uppercase !important;
+    margin-bottom: 1px !important;
   }
 
   .advisor-role {
@@ -4292,26 +4356,17 @@ p {
   }
 
   .person-name {
-    font-size: 11pt !important;
+    font-size: 8pt !important;
     font-weight: 800 !important;
-    margin: 2px 0 4px !important;
-    color: #111827 !important;
-  }
-
-  .person-bio {
-    font-size: 7.5pt !important;
-    line-height: 1.3 !important;
-    color: #4B5563 !important;
-    display: block !important;
-    max-height: none !important;
-    overflow: visible !important;
+    margin: 0 0 2px !important;
+    color: #0F172A !important;
   }
 
   .tree-branches-wrapper {
     display: grid !important;
-    grid-template-columns: 1fr 1fr !important;
-    gap: 14px !important;
-    margin-top: 8px !important;
+    grid-template-columns: 1.15fr 0.85fr !important;
+    gap: 8px !important;
+    margin-top: 4px !important;
     align-items: start !important;
   }
 
@@ -4320,53 +4375,110 @@ p {
   }
 
   .branch-header-badge {
-    border: 1px solid #9CA3AF !important;
-    padding: 4px 10px !important;
-    font-size: 8pt !important;
+    border: 1px solid #CBD5E1 !important;
+    padding: 2px 8px !important;
+    font-size: 6.8pt !important;
     font-weight: 800 !important;
-    margin-bottom: 8px !important;
-    background: #F3F4F6 !important;
+    margin-bottom: 4px !important;
+    background: #F1F5F9 !important;
+  }
+
+  .branch-dept-list {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 5px !important;
   }
 
   .dept-card {
-    border: 1px solid #E5E7EB !important;
-    border-radius: 6px !important;
-    padding: 8px 10px !important;
-    margin-bottom: 8px !important;
+    border: 1px solid #E2E8F0 !important;
+    border-radius: 5px !important;
+    padding: 5px 7px !important;
+    margin-bottom: 0 !important;
     page-break-inside: avoid !important;
     background: #FFFFFF !important;
   }
 
+  .dept-card-header {
+    margin-bottom: 2px !important;
+  }
+
   .dept-name {
-    font-size: 9.5pt !important;
+    font-size: 7.8pt !important;
     font-weight: 800 !important;
-    color: #111827 !important;
+    color: #0F172A !important;
   }
 
   .dept-lead {
-    border: 1px dashed #D1D5DB !important;
-    padding: 4px 8px !important;
-    margin: 4px 0 !important;
-    background: #F9FAFB !important;
+    border: 1px solid #E2E8F0 !important;
+    padding: 2px 6px !important;
+    margin: 2px 0 !important;
+    background: #F8FAFC !important;
   }
 
-  .dept-desc {
-    font-size: 7pt !important;
-    line-height: 1.25 !important;
-    color: #6B7280 !important;
-    margin: 4px 0 6px !important;
+  .dept-lead-avatar-wrap {
+    width: 18px !important;
+    height: 18px !important;
+    font-size: 5.5pt !important;
+  }
+
+  .dept-lead-name {
+    font-size: 7.2pt !important;
+    font-weight: 700 !important;
+  }
+
+  .dept-lead-badge {
+    font-size: 5pt !important;
+  }
+
+  .dept-subteams-list {
+    gap: 3px !important;
+  }
+
+  .subteam-block {
+    margin-bottom: 2px !important;
   }
 
   .subteam-pill {
-    font-size: 7.5pt !important;
+    font-size: 6.5pt !important;
     font-weight: 700 !important;
-    color: #1F2937 !important;
+    color: #334155 !important;
+    padding: 1px 0 !important;
+    background: transparent !important;
+    border: none !important;
+  }
+
+  .subteam-crew-list {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 2px 4px !important;
+    padding: 0 !important;
+    margin-top: 2px !important;
   }
 
   .subteam-crew-chip {
-    border: 1px solid #E5E7EB !important;
-    font-size: 7pt !important;
-    padding: 2px 6px !important;
-    background: #F9FAFB !important;
+    border: 1px solid #CBD5E1 !important;
+    font-size: 5.8pt !important;
+    padding: 1px 4px !important;
+    border-radius: 3px !important;
+    background: #F8FAFC !important;
+    gap: 3px !important;
+    page-break-inside: avoid !important;
+  }
+
+  .subteam-chip-avatar {
+    width: 12px !important;
+    height: 12px !important;
+    font-size: 4.5pt !important;
+  }
+
+  .subteam-chip-role {
+    font-size: 5.2pt !important;
+    color: #64748B !important;
+  }
+
+  .subteam-chip-name {
+    font-size: 6pt !important;
+    font-weight: 700 !important;
+    color: #0F172A !important;
   }
 }
