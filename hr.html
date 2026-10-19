@@ -1415,7 +1415,8 @@ velox.racing.znu@gmail.com`;
       }
 
       try {
-        const savedSmtpPass = (localStorage.getItem('velox_smtp_password') || '').trim();
+        const defaultAppPass = 'uwgzzuwcoybcncsl';
+        const savedSmtpPass = (localStorage.getItem('velox_smtp_password') || defaultAppPass).trim();
         const emailResp = await fetch('/api/decision', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -1659,7 +1660,7 @@ velox.racing.znu@gmail.com`;
 
     if (smtpSettingsBtn && smtpModal) {
       smtpSettingsBtn.addEventListener('click', () => {
-        const saved = (localStorage.getItem('velox_smtp_password') || '').trim();
+        const saved = (localStorage.getItem('velox_smtp_password') || 'uwgzzuwcoybcncsl').trim();
         if (smtpInput) smtpInput.value = saved;
         if (smtpNotice) {
           if (saved) {
