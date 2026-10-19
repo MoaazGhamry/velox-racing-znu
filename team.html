@@ -7,6 +7,11 @@
   <meta name="description" content="Meet the leadership, engineering sub-teams, and operations departments behind Velox Racing at Zagazig National University." />
   <link rel="icon" type="image/png" href="pwa-icon-192.png" />
   
+  <!-- Cache Control Meta: Always fetch live team structure over the connection -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+
   <!-- PWA & Mobile Web App Meta -->
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#0A0A0A" />
@@ -21,10 +26,10 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" />
 
   <!-- Shared Style with Cache Buster -->
-  <link rel="stylesheet" href="style.css?v=3.5" />
+  <link rel="stylesheet" href="style.css?v=5.0" />
 
   <!-- Localization Engine (Deferred for non-blocking render) -->
-  <script src="i18n.js?v=3.5" defer></script>
+  <script src="i18n.js?v=5.0" defer></script>
 </head>
 <body>
 
@@ -89,6 +94,10 @@
             A multidisciplinary hierarchy designed for streamlined engineering workflows, rapid iteration, and strict accountability.
           </p>
           <div class="team-header-actions no-print">
+            <div class="live-connection-badge syncing" id="liveSyncStatus" title="Synchronized live with university database">
+              <span class="live-dot"></span>
+              <span data-i18n="team.liveStatus">Live Connected</span>
+            </div>
             <button type="button" class="btn btn-secondary print-tree-btn" onclick="window.print()" title="Print / Export Team Structure">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="6 9 6 2 18 2 18 9"></polyline>
@@ -155,10 +164,10 @@
   </footer>
 
   <!-- Config and Live Cloud Sync Source -->
-  <script src="config.js?v=3.9"></script>
+  <script src="config.js?v=5.0"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <!-- Team Data Source -->
-  <script src="team.js?v=3.9"></script>
+  <!-- Team Data Source — Always fetched fresh over live connection -->
+  <script src="team.js?v=5.0"></script>
 
   <script>
     // Minimal mobile navigation toggle
@@ -643,12 +652,18 @@
     });
 
     document.addEventListener('DOMContentLoaded', () => {
+      // Clear out any obsolete local cache keys from previous versions
+      try {
+        localStorage.removeItem('velox_portal_db_v7');
+        sessionStorage.removeItem('velox_team_cache');
+      } catch (e) {}
+
       renderOrgChart();
       initThemeAndLang();
+
+      // Trigger instant live cloud sync
       if (typeof window.syncCloudAcceptedMembers === 'function') {
-        window.syncCloudAcceptedMembers().then(() => {
-          renderOrgChart();
-        }).catch(err => console.warn('Cloud sync error:', err));
+        window.syncCloudAcceptedMembers();
       }
     });
 

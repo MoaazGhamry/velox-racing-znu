@@ -136,6 +136,8 @@ const VELOX_I18N = {
     'team.branchOpsTitle': 'Operations & Business Branch',
     'team.leaderRole': 'Leader',
     'team.printBtn': 'Print Team Structure',
+    'team.liveStatus': 'Live Connected',
+    'team.liveSyncing': 'Syncing with University DB...',
 
     // Team Roles & Departments (for dynamic org chart)
     'role.Academic Advisor': 'Academic Advisor',
@@ -620,6 +622,8 @@ const VELOX_I18N = {
     'team.branchOpsTitle': 'قطاع الإدارة والعمليات',
     'team.leaderRole': 'مسؤول القسم',
     'team.printBtn': 'طباعة الهيكل التنظيمي',
+    'team.liveStatus': 'مُحدّث بالاتصال المباشر',
+    'team.liveSyncing': 'جاري التحديث مع قاعدة البيانات...',
 
     // Team Roles & Departments (for dynamic org chart)
     'role.Academic Advisor': 'المشرف الأكاديمي العام',

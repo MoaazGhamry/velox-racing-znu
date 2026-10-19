@@ -262,21 +262,34 @@ const VELOX_TEAM = {
 };
 
 /**
- * Merges static VELOX_TEAM with dynamic portal database (velox_portal_db_v8).
- * Automatically updates the Team Structure when invitations are accepted or photos are edited.
+// In-memory live cloud store — strictly driven by live connection, never by stale cache
+window._liveCloudAcceptedMembers = null;
+window._isCloudSyncing = false;
+window._isCloudConnected = false;
+window._veloxRealtimeSubscribed = false;
+
+/**
+ * Generates dynamic team structure.
+ * ALWAYS driven by the live database connection (window._liveCloudAcceptedMembers).
+ * Completely eliminates stale cached phantom members.
  */
 function getDynamicTeamData() {
   const data = JSON.parse(JSON.stringify(VELOX_TEAM));
-  if (typeof localStorage === 'undefined') return data;
 
-  let portalDb = null;
-  const dbKey = localStorage.getItem('velox_portal_db_v8') ? 'velox_portal_db_v8' : 'velox_portal_db_v7';
-  const raw = localStorage.getItem(dbKey) || localStorage.getItem('velox_portal_db_v8');
-  if (raw) {
-    try { portalDb = JSON.parse(raw); } catch (e) {}
+  // If live cloud members haven't been fetched yet, trigger cloud sync immediately
+  if (!Array.isArray(window._liveCloudAcceptedMembers)) {
+    if (typeof syncCloudAcceptedMembers === 'function' && !window._isCloudSyncing) {
+      setTimeout(() => { syncCloudAcceptedMembers(); }, 1);
+    }
   }
 
-  if (!portalDb) return data;
+  let portalDb = null;
+  if (typeof localStorage !== 'undefined') {
+    const raw = localStorage.getItem('velox_portal_db_v8');
+    if (raw) {
+      try { portalDb = JSON.parse(raw); } catch (e) {}
+    }
+  }
 
   // Universal avatar resolution helper across personas, membersRoster, and accounts
   function findAvatarForPerson(id, name) {
@@ -348,91 +361,11 @@ function getDynamicTeamData() {
     }
   });
 
-  // 2. Collect accepted members from roster and invitations with strict deduplication
-  const activeMembers = [];
-  const seenIds = new Set();
-  const seenNames = new Set();
-
-  // Collect set of removed member names/ids to ALWAYS filter out
-  const removedNames = new Set();
-  if (Array.isArray(portalDb.removedMembers)) {
-    portalDb.removedMembers.forEach(r => {
-      const n = (typeof r === 'string' ? r : (r.name || r.id || '')).trim().toLowerCase();
-      if (n) removedNames.add(n);
-    });
-  }
-
-  if (Array.isArray(portalDb.membersRoster)) {
-    portalDb.membersRoster.forEach(m => {
-      if (!m || !m.name) return;
-      const cleanName = m.name.trim();
-      const normName = cleanName.toLowerCase();
-      if (!normName) return;
-
-      if (['admin-director', 'fatima-salman', 'karim-shaprawy', 'mohamed-romy', 'moaaz-elghamry', 'mohamed-hassan', 'ali-elgohary'].includes(m.id) || normName === 'ali elgohary') {
-        return;
-      }
-
-      // Check if member is marked removed or suspended
-      if (removedNames.has(normName) || m.status === 'Suspended' || m.status === 'Removed') return;
-      if (seenNames.has(normName)) return;
-
-      const avatar = m.avatar || m.photo || findAvatarForPerson(m.id, cleanName) || '';
-      const item = {
-        id: m.id || ('mem-' + normName.replace(/[^a-z0-9]/g, '-')),
-        name: cleanName,
-        role: m.role || 'Team Member',
-        roleType: m.roleType || '',
-        branch: m.branch || 'Technical',
-        department: m.dept || m.department || '',
-        subteam: m.subteam || '',
-        avatar: avatar,
-        photo: avatar
-      };
-      if (!seenIds.has(item.id)) {
-        seenIds.add(item.id);
-        seenNames.add(normName);
-        activeMembers.push(item);
-      }
-    });
-  }
-
-  // Only ingest accepted invitations if the member is still active in membersRoster!
-  if (Array.isArray(portalDb.invitations)) {
-    portalDb.invitations.filter(inv => inv.status === 'Accepted').forEach(inv => {
-      if (!inv || !inv.inviteeName) return;
-      const cleanName = inv.inviteeName.trim();
-      const normName = cleanName.toLowerCase();
-      if (!normName) return;
-
-      if (removedNames.has(normName) || normName === 'ali elgohary' || cleanName.toLowerCase().includes('ali elgohary')) return;
-
-      if (Array.isArray(portalDb.membersRoster) && portalDb.membersRoster.length > 0) {
-        const stillInRoster = portalDb.membersRoster.some(m => m && m.name && m.name.trim().toLowerCase() === normName && m.status !== 'Suspended' && m.status !== 'Removed');
-        if (!stillInRoster) return;
-      }
-
-      if (seenNames.has(normName)) return;
-
-      const id = 'mem-' + normName.replace(/[^a-z0-9]/g, '-');
-      if (seenIds.has(id)) return;
-
-      seenIds.add(id);
-      seenNames.add(normName);
-
-      const avatar = findAvatarForPerson(id, cleanName) || '';
-      activeMembers.push({
-        id: id,
-        name: cleanName,
-        role: inv.role || 'Team Member',
-        roleType: inv.roleType || '',
-        branch: inv.branch || 'Technical',
-        department: inv.department || '',
-        subteam: inv.subteam || '',
-        avatar: avatar,
-        photo: avatar
-      });
-    });
+  // 2. Dynamic Crew: NEVER rely on stale localStorage cache.
+  // Team structure is strictly driven by the live database connection (window._liveCloudAcceptedMembers).
+  let activeMembers = [];
+  if (Array.isArray(window._liveCloudAcceptedMembers)) {
+    activeMembers = [...window._liveCloudAcceptedMembers];
   }
 
   // 3. Map members to departments and subteams
@@ -632,79 +565,57 @@ function parseDeptAndSubteam(rawChoice) {
 
 /**
  * Fetches accepted applicants directly from Supabase and merges them into
- * the dynamic Team Structure database (velox_portal_db_v8).
+/**
+ * Real-Time Cloud Synchronization
+ * Connects directly to Supabase to fetch only currently accepted applications.
+ * Updates in-memory team structure, attaches realtime websocket listeners,
+ * and purges stale cached entries from localStorage.
  */
 async function syncCloudAcceptedMembers() {
   if (typeof window === 'undefined') return;
   const cfg = window.VELOX_CONFIG || {};
   if (!cfg.url || !cfg.anonKey || cfg.url.includes('your-project-id') || !window.supabase) return;
 
+  if (window._isCloudSyncing) return;
+  window._isCloudSyncing = true;
+
   try {
     const client = window.supabase.createClient(cfg.url, cfg.anonKey);
     const { data, error } = await client
       .from('applications')
-      .select('id, full_name, email, subteam_first, subteam_second, status, hr_notes, why_join, portfolio_url')
+      .select('id, full_name, email, subteam_first, subteam_second, status, hr_notes, why_join, portfolio_url, accepted_choice, updated_at')
       .eq('status', 'Accepted');
 
-    if (error || !Array.isArray(data) || data.length === 0) return;
-
-    let db = {};
-    try {
-      db = JSON.parse(localStorage.getItem('velox_portal_db_v8') || '{}');
-    } catch (e) {}
-    if (!db.membersRoster) db.membersRoster = [];
-
-    const removedNames = new Set();
-    if (Array.isArray(db.removedMembers)) {
-      db.removedMembers.forEach(r => {
-        const n = (typeof r === 'string' ? r : (r.name || r.id || '')).trim().toLowerCase();
-        if (n) removedNames.add(n);
-      });
+    if (error) {
+      console.warn('[VELOX Live Connection] Query notice:', error);
+      window._isCloudSyncing = false;
+      return;
     }
 
-    // Clean out any removed members currently sitting in membersRoster
-    if (db.membersRoster) {
-      db.membersRoster = db.membersRoster.filter(m => !m || !m.name || !removedNames.has(m.name.trim().toLowerCase()));
-    }
+    const liveList = [];
+    const seenNames = new Set();
+    const seenIds = new Set();
 
-    let updated = false;
-    data.forEach(app => {
-      if (!app || !app.full_name) return;
-      const cleanName = app.full_name.trim();
-      const normName = cleanName.toLowerCase();
-      if (!normName) return;
+    if (Array.isArray(data)) {
+      data.forEach(app => {
+        if (!app || !app.full_name) return;
+        const cleanName = app.full_name.trim();
+        const normName = cleanName.toLowerCase();
+        if (!normName || seenNames.has(normName)) return;
 
-      if (removedNames.has(normName)) return;
+        // Choice 1 vs Choice 2 evaluation
+        let targetChoice = app.subteam_first;
+        const notes = `${app.hr_notes || ''} ${app.why_join || ''}`;
+        if (app.accepted_choice === '2' || app.accepted_choice === 2 || notes.includes('[Accepted: Option 2') || notes.includes('Option 2: 2nd Choice') || notes.includes('Accepted: Option 2')) {
+          targetChoice = app.subteam_second || app.subteam_first;
+        }
 
-      // Check if Option 2 was accepted in application notes or choices
-      let targetSubteamChoice = app.subteam_first;
-      const fullNotes = `${app.hr_notes || ''} ${app.why_join || ''}`;
-      if (fullNotes.includes('[Accepted: Option 2') || fullNotes.includes('Option 2: 2nd Choice') || fullNotes.includes('Accepted: Option 2') || (app.accepted_choice === '2')) {
-        targetSubteamChoice = app.subteam_second || app.subteam_first;
-      }
-      const parsed = parseDeptAndSubteam(targetSubteamChoice);
-      const memberId = 'mem-' + normName.replace(/[^a-z0-9]/g, '-');
+        const parsed = parseDeptAndSubteam(targetChoice);
+        const memberId = 'mem-' + normName.replace(/[^a-z0-9]/g, '-');
 
-      const existingIdx = db.membersRoster.findIndex(m => 
-        (m.name && m.name.trim().toLowerCase() === normName) || m.id === memberId
-      );
+        let assignedRole = 'Team Member';
+        let assignedRoleType = 'member';
 
-      const existingRosterItem = existingIdx !== -1 ? db.membersRoster[existingIdx] : null;
-
-      // If the member was already manually modified by a Leader in the portal, preserve their leader-assigned dept, subteam, and branch!
-      if (existingRosterItem && (existingRosterItem.manualOverride || (existingRosterItem.dept && existingRosterItem.dept !== parsed.dept && !fullNotes.includes(existingRosterItem.dept)))) {
-        parsed.dept = existingRosterItem.dept;
-        parsed.subteam = existingRosterItem.subteam || parsed.subteam;
-        parsed.branch = existingRosterItem.branch || parsed.branch;
-      }
-
-      let assignedRole = (existingRosterItem && existingRosterItem.role) 
-        ? existingRosterItem.role 
-        : 'Team Member';
-      let assignedRoleType = (existingRosterItem && existingRosterItem.roleType) ? existingRosterItem.roleType : '';
-
-      // Check if app was a direct invitation with an appointed role in hr_notes / subteam_second / why_join
-      if (!existingRosterItem || !existingRosterItem.role || existingRosterItem.role === 'Team Member') {
         const noteBlob = `${app.hr_notes || ''} ${app.subteam_second || ''} ${app.why_join || ''}`;
         const roleMatch = noteBlob.match(/Role:\s*([A-Za-z0-9&/ ]+?)(?:\s*\(|\s*\.|\s*\||\s*•|\s*,|\s*\n|$)/i);
         if (roleMatch && roleMatch[1]) {
@@ -713,174 +624,102 @@ async function syncCloudAcceptedMembers() {
             assignedRole = matchedR;
           }
         }
-      }
 
-      if (normName === 'ali elgohary') {
-        parsed.dept = 'Electrical';
-        parsed.subteam = '';
-        assignedRole = 'Team Leader of Electrical';
-        assignedRoleType = 'dept_lead';
-      }
-
-      if (!assignedRoleType) {
-        const lowerR = assignedRole.toLowerCase();
-        if (lowerR.includes('department leader') || lowerR.includes('electrical leader') || lowerR.includes('powertrain leader') || (lowerR.includes('leader') && !parsed.subteam)) {
+        if (normName === 'ali elgohary') {
+          parsed.dept = 'Electrical';
+          parsed.subteam = '';
+          assignedRole = 'Team Leader of Electrical';
           assignedRoleType = 'dept_lead';
-        } else if (lowerR.includes('leader') || lowerR.includes('lead')) {
-          assignedRoleType = 'subteam_lead';
-        } else {
-          assignedRoleType = 'member';
         }
-      }
 
-      const personaKey = 'user_' + (app.email ? app.email.split('@')[0] : normName).replace(/[^a-z0-9]/g, '');
-      const existingPersonaAvatar = (db.personas && db.personas[personaKey] && (db.personas[personaKey].avatar || db.personas[personaKey].photo)) ||
-        (normName === 'ali elgohary' && db.personas && db.personas['ali'] && (db.personas['ali'].avatar || db.personas['ali'].photo)) || '';
-
-      const cloudAvatar = (app.portfolio_url && (app.portfolio_url.startsWith('data:image/') || app.portfolio_url.startsWith('http') || app.portfolio_url.startsWith('photos/'))) ? app.portfolio_url : '';
-      const resolvedAvatar = cloudAvatar || (existingRosterItem && (existingRosterItem.avatar || existingRosterItem.photo)) || existingPersonaAvatar || '';
-
-      const entry = {
-        id: memberId,
-        name: cleanName,
-        role: assignedRole,
-        roleType: assignedRoleType,
-        branch: parsed.branch,
-        department: parsed.dept,
-        dept: parsed.dept,
-        subteam: parsed.subteam,
-        username: (app.email ? app.email.split('@')[0] : normName).replace(/[^a-z0-9]/g, ''),
-        points: (existingRosterItem && existingRosterItem.points) || 0,
-        status: 'Active',
-        avatar: resolvedAvatar,
-        photo: resolvedAvatar
-      };
-
-      if (existingIdx !== -1) {
-        if (resolvedAvatar && (existingRosterItem.avatar !== resolvedAvatar || existingRosterItem.photo !== resolvedAvatar)) {
-          updated = true;
+        if (!assignedRoleType) {
+          const lowerR = assignedRole.toLowerCase();
+          if (lowerR.includes('department leader') || lowerR.includes('electrical leader') || lowerR.includes('powertrain leader') || (lowerR.includes('leader') && !parsed.subteam)) {
+            assignedRoleType = 'dept_lead';
+          } else if (lowerR.includes('leader') || lowerR.includes('lead')) {
+            assignedRoleType = 'subteam_lead';
+          } else {
+            assignedRoleType = 'member';
+          }
         }
-        const hasManualOverride = existingRosterItem.manualOverride;
-        db.membersRoster[existingIdx] = { 
-          ...entry,
-          ...existingRosterItem, 
-          dept: hasManualOverride ? existingRosterItem.dept : entry.dept,
-          subteam: hasManualOverride ? (existingRosterItem.subteam || '') : entry.subteam,
-          branch: hasManualOverride ? existingRosterItem.branch : entry.branch,
-          department: hasManualOverride ? existingRosterItem.dept : entry.dept,
-          role: (existingRosterItem.role && existingRosterItem.role !== 'Team Member') ? existingRosterItem.role : entry.role,
-          roleType: existingRosterItem.roleType || entry.roleType,
-          avatar: resolvedAvatar,
-          photo: resolvedAvatar
-        };
-      } else {
-        db.membersRoster.push(entry);
-        updated = true;
-      }
 
-      // Ensure dynamic persona exists with avatar
-      if (!db.personas) db.personas = {};
-      if (!db.personas[personaKey]) {
-        db.personas[personaKey] = {
+        const avatar = (app.portfolio_url && (app.portfolio_url.startsWith('data:image/') || app.portfolio_url.startsWith('http') || app.portfolio_url.startsWith('photos/'))) ? app.portfolio_url : '';
+
+        seenNames.add(normName);
+        seenIds.add(memberId);
+
+        liveList.push({
           id: memberId,
           name: cleanName,
           role: assignedRole,
           roleType: assignedRoleType,
           branch: parsed.branch,
-          departments: [parsed.dept],
+          department: parsed.dept,
           subteam: parsed.subteam,
-          avatar: resolvedAvatar,
-          photo: resolvedAvatar,
-          deptDesc: `${parsed.branch} Division • ${parsed.dept}`
-        };
-      } else if (resolvedAvatar) {
-        if (db.personas[personaKey].avatar !== resolvedAvatar) updated = true;
-        db.personas[personaKey].avatar = resolvedAvatar;
-        db.personas[personaKey].photo = resolvedAvatar;
-      }
-
-      // Provision inside portal account credentials if missing
-      if (!db.accounts) db.accounts = [];
-      if (!db.accounts.some(a => a.username === entry.username)) {
-        db.accounts.push({
-          username: entry.username,
-          password: 'velox2026',
-          personaKey: personaKey,
-          name: cleanName,
-          status: 'Active',
-          avatar: resolvedAvatar,
-          photo: resolvedAvatar
+          avatar: avatar,
+          photo: avatar,
+          email: app.email || ''
         });
-      }
+      });
+    }
 
-      // Special provision for Ali Elgohary
-      if (normName === 'ali elgohary') {
-        db.personas['ali'] = {
-          id: 'ali-elgohary',
-          name: 'Ali Elgohary',
-          role: 'Team Leader of Electrical',
-          roleType: 'dept_lead',
-          branch: 'Technical',
-          departments: ['Electrical'],
-          subteam: '',
-          avatar: resolvedAvatar,
-          photo: resolvedAvatar,
-          deptDesc: 'Technical Engineering Division • Team Leader of Electrical'
-        };
-        ['alielgohary', 'ali'].forEach(uKey => {
-          const acc = db.accounts.find(a => a.username === uKey);
-          if (acc) {
-            acc.password = 'velox2026';
-            acc.status = 'Active';
-            acc.avatar = resolvedAvatar;
-            acc.photo = resolvedAvatar;
-          } else {
-            db.accounts.push({
-              username: uKey,
-              password: 'velox2026',
-              personaKey: 'ali',
-              name: 'Ali Elgohary',
-              status: 'Active',
-              avatar: resolvedAvatar,
-              photo: resolvedAvatar
-            });
-          }
-        });
-      }
+    // Assign live in-memory list (Source of Truth)
+    window._liveCloudAcceptedMembers = liveList;
+    window._isCloudConnected = true;
 
-      // Special provision for Ahmed Yasser
-      if (normName === 'ahmed yasser') {
-        ['ayasserbgo', 'ahmedyasser'].forEach(uKey => {
-          const acc = db.accounts.find(a => a.username === uKey);
-          if (acc) {
-            acc.password = 'velox2026';
-            acc.status = 'Active';
-            acc.avatar = resolvedAvatar;
-            acc.photo = resolvedAvatar;
-          } else {
-            db.accounts.push({
-              username: uKey,
-              password: 'velox2026',
-              personaKey: personaKey,
-              name: 'Ahmed Yasser',
-              status: 'Active',
-              avatar: resolvedAvatar,
-              photo: resolvedAvatar
-            });
-          }
-        });
+    // Prune old removed members from localStorage so stale cached ghosts are deleted
+    try {
+      const dbRaw = localStorage.getItem('velox_portal_db_v8');
+      if (dbRaw) {
+        const db = JSON.parse(dbRaw);
+        if (db && db.membersRoster) {
+          const staticLeadIds = new Set(['admin-director', 'fatima-salman', 'karim-shaprawy', 'mohamed-romy', 'moaaz-elghamry', 'mohamed-hassan', 'ali-elgohary']);
+          db.membersRoster = db.membersRoster.filter(m => staticLeadIds.has(m.id) || seenNames.has((m.name || '').trim().toLowerCase()));
+          localStorage.setItem('velox_portal_db_v8', JSON.stringify(db));
+        }
       }
-    });
+    } catch (e) {}
 
-    if (updated || data.length > 0) {
-      localStorage.setItem('velox_portal_db_v8', JSON.stringify(db));
-      localStorage.setItem('velox_portal_db_v7', JSON.stringify(db));
-      if (typeof window.renderOrgChart === 'function') {
-        window.renderOrgChart();
-      }
+    // Re-render UI with live connection data
+    if (typeof window.renderOrgChart === 'function') {
+      window.renderOrgChart();
+    }
+
+    // Update connection status chip if present in UI
+    const connEl = document.getElementById('liveSyncStatus');
+    if (connEl) {
+      connEl.classList.remove('offline', 'syncing');
+      connEl.classList.add('connected');
+      const isAr = (localStorage.getItem('velox_lang') || 'en') === 'ar';
+      connEl.innerHTML = `<span class="live-dot"></span> <span>${isAr ? 'مُحدّث بالاتصال المباشر' : 'Live Connected'} (${liveList.length})</span>`;
+    }
+
+    // Attach Realtime listener for zero-delay live updates across all clients
+    if (client.channel && !window._veloxRealtimeSubscribed) {
+      window._veloxRealtimeSubscribed = true;
+      client.channel('realtime_live_team_sync')
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'applications' }, (payload) => {
+          console.log('[VELOX Live Connection] Realtime DB change received:', payload.eventType);
+          window._isCloudSyncing = false;
+          syncCloudAcceptedMembers();
+        })
+        .subscribe();
     }
   } catch (err) {
-    console.warn('Supabase accepted applications sync notice:', err);
+    console.warn('[VELOX Live Connection] Sync notice:', err);
+  } finally {
+    window._isCloudSyncing = false;
+  }
+}
+
+// Auto-trigger live connection sync immediately upon team.js evaluation
+if (typeof window !== 'undefined') {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      syncCloudAcceptedMembers();
+    });
+  } else {
+    setTimeout(() => { syncCloudAcceptedMembers(); }, 1);
   }
 }
 

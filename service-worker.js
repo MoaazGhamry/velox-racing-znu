@@ -1,20 +1,18 @@
 /**
  * VELOX RACING PWA SERVICE WORKER
- * Network-First Strategy + Total Cache Buster
+ * Network-First Strategy + Live Connection Bypass
  */
 
-const CACHE_NAME = 'velox-clean-v4.1';
+const CACHE_NAME = 'velox-live-v5.0';
 const PRECACHE_ASSETS = [
   '/',
   '/index.html',
-  '/team.html',
   '/join.html',
   '/hr.html',
   '/portal.html',
   '/sponsorship.html',
-  '/style.css?v=3.8',
-  '/i18n.js?v=3.8',
-  '/team.js?v=3.8',
+  '/style.css?v=5.0',
+  '/i18n.js?v=5.0',
   '/config.js',
   '/manifest.json',
   '/pwa-icon-192.png',
@@ -32,7 +30,7 @@ const PRECACHE_ASSETS = [
   '/photos/Mohamed Romy.jpeg'
 ];
 
-// Install: pre-cache assets & force instant activation
+// Install: pre-cache static assets & force instant activation
 self.addEventListener('install', (event) => {
   self.skipWaiting();
   event.waitUntil(
@@ -44,7 +42,7 @@ self.addEventListener('install', (event) => {
   );
 });
 
-// Activate: PURGE ALL OLD CACHES (Deletes old themes and legacy assets)
+// Activate: PURGE ALL OLD CACHES immediately
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((keys) => {
@@ -60,8 +58,7 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-// Fetch: Network-First strategy
-// Users always get fresh live changes, with smooth offline support
+// Fetch: NEVER cache team structure or live database connections
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET' || !event.request.url.startsWith('http')) {
     return;
@@ -72,6 +69,24 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
+  // ALWAYS BYPASS CACHE for team structure, team scripts, and database APIs
+  // Ensures team structure is ALWAYS 100% fresh from live connection
+  const url = event.request.url;
+  if (
+    url.includes('team.js') ||
+    url.includes('team.html') ||
+    url.includes('supabase.co') ||
+    url.includes('/team')
+  ) {
+    event.respondWith(
+      fetch(event.request, { cache: 'no-store' }).catch(() => {
+        return caches.match(event.request);
+      })
+    );
+    return;
+  }
+
+  // Standard Network-First strategy for remaining static pages
   event.respondWith(
     fetch(event.request)
       .then((networkResponse) => {
