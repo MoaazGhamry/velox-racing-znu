@@ -162,6 +162,70 @@ def build_reset_email_plain(recipient_name, reset_code, reset_link):
         f"Zagazig National University — Formula Student"
     )
 
+KNOWN_OFFICIAL_ACCOUNTS = {
+    "velox.racing.znu@gmail.com": "Executive Administration",
+    "alielgohary142005@gmail.com": "Ali Elgohary",
+    "ayasserbgo@gmail.com": "Ahmed Yasser",
+    "romememo541@gmail.com": "Mohamed Ahmed Romy",
+    "29212023100207@meceng.znu.edu.eg": "Moaaz Elghamry"
+}
+
+def verify_email_registered(email, settings):
+    """
+    Checks if email exists in:
+    1. Known official team leadership/admin accounts
+    2. Custom member passwords in system settings
+    3. Supabase applications database table (excluding Rejected and system-settings)
+    Returns: (is_registered, recipient_name, error_reason)
+    """
+    clean_email = (email or '').strip().lower()
+    if not clean_email or '@' not in clean_email:
+        return False, None, "Invalid email format. Please enter a valid email address."
+
+    if clean_email == 'system-settings@velox.internal':
+        return False, None, "Internal system address cannot be modified."
+
+    # 1. Known official leadership and team administrator accounts
+    if clean_email in KNOWN_OFFICIAL_ACCOUNTS:
+        return True, KNOWN_OFFICIAL_ACCOUNTS[clean_email], None
+
+    # 2. Check if admin configured custom password for this email or username
+    passwords = settings.get('passwords', {}) if isinstance(settings, dict) else {}
+    if clean_email in passwords:
+        u_name = clean_email.split('@')[0].capitalize()
+        return True, u_name, None
+
+    # 3. Query Supabase applications table (authoritative database of applicants and members)
+    try:
+        safe_email = urllib.parse.quote(clean_email)
+        url = f"{SUPABASE_URL}/rest/v1/applications?email=ilike.{safe_email}&select=id,full_name,email,status"
+        req = urllib.request.Request(url, headers={
+            'apikey': SUPABASE_KEY,
+            'Authorization': f'Bearer {SUPABASE_KEY}'
+        })
+        with urllib.request.urlopen(req, timeout=8) as resp:
+            apps = json.loads(resp.read().decode('utf-8'))
+            
+            # Filter out internal settings record
+            valid_apps = [a for a in apps if (a.get('email') or '').lower() != 'system-settings@velox.internal']
+            
+            if valid_apps and len(valid_apps) > 0:
+                app = valid_apps[0]
+                status = (app.get('status') or '').strip()
+                full_name = app.get('full_name') or clean_email.split('@')[0].capitalize()
+                
+                # Check if the candidate was rejected
+                if status.lower() == 'rejected':
+                    return False, full_name, "This email is associated with an unaccepted application and does not have active portal access. / هذا البريد مسجل كطلب غير مقبول ولا يملك صلاحية دخول."
+                
+                # Accepted, Reviewed, Interview, or New candidate
+                return True, full_name, None
+    except Exception as e:
+        print("verify_email_registered Supabase error:", e)
+
+    # Email not found in any database
+    return False, None, "This email address is not registered in our database. Only registered team members can request a password reset. / هذا البريد الإلكتروني غير مسجل في قاعدة بيانات الفريق. لا يمكن إرسال كود الاسترجاع إلا للحسابات المسجلة فقط."
+
 class handler(BaseHTTPRequestHandler):
     def _send_json(self, status_code, data):
         self.send_response(status_code)
@@ -208,26 +272,17 @@ class handler(BaseHTTPRequestHandler):
 
         # ---------------- ACTION 1: Request Code / Link ----------------
         if action == 'request_code':
-            # Check if email exists in Supabase applications or known leadership
-            recipient_name = data.get('name', '').strip()
-            if not recipient_name:
-                try:
-                    # Query Supabase for candidate full_name
-                    safe_email = urllib.parse.quote(email)
-                    url = f"{SUPABASE_URL}/rest/v1/applications?email=eq.{safe_email}&select=full_name,status"
-                    req = urllib.request.Request(url, headers={
-                        'apikey': SUPABASE_KEY,
-                        'Authorization': f'Bearer {SUPABASE_KEY}'
-                    })
-                    with urllib.request.urlopen(req, timeout=6) as resp:
-                        apps = json.loads(resp.read().decode('utf-8'))
-                        if apps and len(apps) > 0 and apps[0].get('full_name'):
-                            recipient_name = apps[0]['full_name']
-                except Exception:
-                    pass
+            # Strictly verify email is registered in Supabase database or official team accounts
+            is_registered, verified_name, error_reason = verify_email_registered(email, settings)
+            if not is_registered:
+                self._send_json(404, {
+                    "status": "error",
+                    "error": "email_not_registered",
+                    "message": error_reason or "This email is not registered in our database. / هذا البريد الإلكتروني غير مسجل في قاعدة بيانات الفريق."
+                })
+                return
 
-            if not recipient_name:
-                recipient_name = email.split('@')[0].capitalize()
+            recipient_name = data.get('name', '').strip() or verified_name or email.split('@')[0].capitalize()
 
             # Generate 6-digit code and token
             code = f"{random.randint(100000, 999999)}"
