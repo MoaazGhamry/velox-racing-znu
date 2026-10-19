@@ -26,10 +26,10 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" />
 
   <!-- Shared Style with Cache Buster -->
-  <link rel="stylesheet" href="style.css?v=6.1" />
+  <link rel="stylesheet" href="style.css?v=6.2" />
 
   <!-- Localization Engine (Deferred for non-blocking render) -->
-  <script src="i18n.js?v=6.1" defer></script>
+  <script src="i18n.js?v=6.2" defer></script>
 
   <style>
     /* Guaranteed Light Mode text contrast — immune to stale browser cache */
@@ -110,6 +110,53 @@
       .tree-top-three .advisor-card {
         width: 100% !important;
         max-width: 100% !important;
+      }
+      /* Team Leader ALWAYS ON TOP in mobile */
+      .tree-top-three .team-leader-card {
+        order: 1 !important;
+      }
+      .tree-top-three .vice-leader-card {
+        order: 2 !important;
+      }
+      .tree-top-three .advisor-card {
+        order: 3 !important;
+      }
+    }
+
+    @media print {
+      .tree-top-three {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+        align-items: stretch !important;
+        gap: 5px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 auto 3px !important;
+      }
+      /* Team Leader ALWAYS ON TOP when printing */
+      .tree-top-three .team-leader-card {
+        order: 1 !important;
+        flex: 0 0 52% !important;
+        width: 52% !important;
+        max-width: 52% !important;
+        margin: 0 auto 2px !important;
+        border: 1.5px solid #C5221F !important;
+        background: #FEF2F2 !important;
+      }
+      .tree-top-three .vice-leader-card {
+        order: 2 !important;
+        flex: 0 0 46% !important;
+        width: 46% !important;
+        max-width: 46% !important;
+      }
+      .tree-top-three .advisor-card {
+        order: 3 !important;
+        flex: 0 0 46% !important;
+        width: 46% !important;
+        max-width: 46% !important;
+        border: 1.2px solid #D97706 !important;
+        background: #FFFBEB !important;
       }
     }
   </style>
@@ -314,7 +361,7 @@
       html += `
         <div class="tree-top-three">
           ${karim ? `
-            <div class="person-card clickable-member" data-member-id="${karim.id}" role="button" tabindex="0" title="${dict['modal.viewProfile'] || 'Click to view overview'}">
+            <div class="person-card vice-leader-card clickable-member" data-member-id="${karim.id}" role="button" tabindex="0" title="${dict['modal.viewProfile'] || 'Click to view overview'}">
               <div class="avatar-circle">
                 ${(karim.photo || karim.avatar) ? `<img src="${karim.photo || karim.avatar}" alt="${karim.name}" class="avatar-img" onerror="this.onerror=null;this.parentElement.innerHTML='${getInitials(karim.name)}';" />` : getInitials(karim.name)}
               </div>
@@ -329,7 +376,7 @@
           ` : ''}
 
           ${fatima ? `
-            <div class="person-card clickable-member" data-member-id="${fatima.id}" role="button" tabindex="0" title="${dict['modal.viewProfile'] || 'Click to view overview'}">
+            <div class="person-card team-leader-card clickable-member" data-member-id="${fatima.id}" role="button" tabindex="0" title="${dict['modal.viewProfile'] || 'Click to view overview'}">
               <div class="avatar-circle">
                 ${(fatima.photo || fatima.avatar) ? `<img src="${fatima.photo || fatima.avatar}" alt="${fatima.name}" class="avatar-img" onerror="this.onerror=null;this.parentElement.innerHTML='${getInitials(fatima.name)}';" />` : getInitials(fatima.name)}
               </div>
@@ -344,7 +391,7 @@
           ` : ''}
 
           ${adv ? `
-            <div class="person-card advisor-card clickable-member" data-member-id="${adv.id}" role="button" tabindex="0" title="${dict['modal.viewProfile'] || 'Click to view overview'}">
+            <div class="person-card advisor-card academic-advisor-card clickable-member" data-member-id="${adv.id}" role="button" tabindex="0" title="${dict['modal.viewProfile'] || 'Click to view overview'}">
               <div class="advisor-crown-badge">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"></path></svg>
                 <span>${dict['role.AcademicAdvisorKicker'] || 'Institutional Academic Advisory'}</span>

@@ -4083,7 +4083,28 @@ p {
   max-width: 330px;
 }
 
-/* Mobile & Tablet Responsiveness (< 920px): Clean centered stacking */
+/* Executive Leadership Cards ordering (Desktop: side by side with Team Leader in center) */
+.tree-top-three .vice-leader-card {
+  order: 1;
+}
+.tree-top-three .team-leader-card {
+  order: 2;
+}
+.tree-top-three .advisor-card {
+  order: 3;
+}
+
+[dir="rtl"] .tree-top-three .advisor-card {
+  order: 1;
+}
+[dir="rtl"] .tree-top-three .team-leader-card {
+  order: 2;
+}
+[dir="rtl"] .tree-top-three .vice-leader-card {
+  order: 3;
+}
+
+/* Mobile & Tablet Responsiveness (< 920px): Clean centered stacking with Team Leader ON TOP */
 @media (max-width: 920px) {
   .tree-top-three {
     flex-direction: column !important;
@@ -4105,7 +4126,17 @@ p {
     box-sizing: border-box !important;
   }
 
+  /* Team Leader ALWAYS ON TOP on mobile */
+  .tree-top-three .team-leader-card {
+    order: 1 !important;
+  }
+
+  .tree-top-three .vice-leader-card {
+    order: 2 !important;
+  }
+
   .tree-top-three .advisor-card {
+    order: 3 !important;
     width: 100% !important;
     max-width: 100% !important;
   }
@@ -4313,16 +4344,16 @@ p {
 
   .tree-top-three {
     display: flex !important;
+    flex-wrap: wrap !important;
     justify-content: center !important;
     align-items: stretch !important;
-    gap: 6px !important;
+    gap: 5px !important;
     width: 100% !important;
     max-width: 100% !important;
     margin: 0 auto 3px !important;
   }
 
   .tree-top-three .person-card {
-    flex: 1 !important;
     padding: 3px 6px !important;
     border: 1px solid #CBD5E1 !important;
     border-radius: 4px !important;
@@ -4330,7 +4361,29 @@ p {
     page-break-inside: avoid !important;
   }
 
+  /* Team Leader ALWAYS ON TOP when printing */
+  .tree-top-three .team-leader-card {
+    order: 1 !important;
+    flex: 0 0 52% !important;
+    width: 52% !important;
+    max-width: 52% !important;
+    margin: 0 auto 2px !important;
+    border: 1.5px solid #C5221F !important;
+    background: #FEF2F2 !important;
+  }
+
+  .tree-top-three .vice-leader-card {
+    order: 2 !important;
+    flex: 0 0 46% !important;
+    width: 46% !important;
+    max-width: 46% !important;
+  }
+
   .tree-top-three .advisor-card {
+    order: 3 !important;
+    flex: 0 0 46% !important;
+    width: 46% !important;
+    max-width: 46% !important;
     border: 1.2px solid #D97706 !important;
     background: #FFFBEB !important;
   }
