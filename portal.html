@@ -1670,6 +1670,10 @@
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
               <span>Update My Photo</span>
             </button>
+            <button type="button" class="btn btn-outline" id="dashRoleControlBtn" onclick="openDedicatedRoleModal()" style="display: none; align-items: center; gap: 7px; padding: 10px 16px; color: #F59E0B; border-color: rgba(245, 158, 11, 0.45); background: rgba(245, 158, 11, 0.05);" title="Assign and adjust member roles and leadership positions">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><polyline points="17 11 19 13 23 9"></polyline></svg>
+              <span>Manage Member Roles</span>
+            </button>
             <a href="team.html" target="_blank" class="btn btn-outline" style="display: inline-flex; align-items: center; gap: 7px; padding: 10px 16px; color: #38BDF8; border-color: rgba(56, 189, 248, 0.4); text-decoration: none;">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
               <span>Team Org Chart &rarr;</span>
@@ -2512,6 +2516,63 @@
         </div>
 
         <button type="submit" class="btn btn-primary btn-full">Update Password & Notify</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Dedicated Feature Modal: Member Role & Branch Assignment -->
+  <div class="portal-modal-backdrop" id="dedicatedRoleModal">
+    <div class="portal-modal-box" style="max-width: 500px;">
+      <div class="portal-modal-header" style="border-bottom: 1px solid var(--border); padding-bottom: 12px; margin-bottom: 18px;">
+        <div>
+          <span style="font-size: 0.72rem; color: #38BDF8; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; display: block; margin-bottom: 2px;">⚡ Leadership Assignment</span>
+          <h3 style="margin: 0; font-size: 1.25rem; color: var(--text);">Member Role &amp; Title Control</h3>
+        </div>
+        <button type="button" class="portal-modal-close" onclick="closePortalModal('dedicatedRoleModal')">&times;</button>
+      </div>
+      <form id="dedicatedRoleForm">
+        <div class="form-group">
+          <label for="dedicatedRoleMemberSelect">Select Team Member<span class="req">*</span></label>
+          <select id="dedicatedRoleMemberSelect" class="form-control" style="font-weight: 700;" required onchange="onDedicatedRoleMemberChanged(this.value)">
+            <!-- Populated dynamically via openDedicatedRoleModal() -->
+          </select>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="dedicatedRoleTitleSelect">Designated Role / Title<span class="req">*</span></label>
+            <select id="dedicatedRoleTitleSelect" class="form-control" style="font-weight: 700;" required>
+              <option value="Team Member">Team Member</option>
+              <option value="Subteam Leader">Subteam Leader</option>
+              <option value="Technical Leader">Technical Leader</option>
+              <option value="Managerial Leader">Managerial Leader</option>
+              <option value="Vice Team Leader">Vice Team Leader</option>
+              <option value="Team Leader">Team Leader</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="dedicatedRoleBranchSelect">Branch Division<span class="req">*</span></label>
+            <select id="dedicatedRoleBranchSelect" class="form-control" required>
+              <option value="Technical">Technical Engineering</option>
+              <option value="Managerial">Managerial &amp; Operations</option>
+              <option value="Executive">Executive</option>
+              <option value="Shared">Shared Multi-Group</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="dedicatedRoleDeptInput">Assigned Subteam / Department<span class="req">*</span></label>
+          <input type="text" id="dedicatedRoleDeptInput" class="form-control" placeholder="e.g. Powertrain — Motor or Aerodynamics" required />
+        </div>
+
+        <div style="background: rgba(56, 189, 248, 0.06); border: 1px solid rgba(56, 189, 248, 0.2); border-radius: 8px; padding: 10px 14px; margin-bottom: 16px; font-size: 0.78rem; color: var(--text-muted); line-height: 1.45;">
+          ℹ️ Changes take effect immediately across the internal portal, leadership hierarchies, and team org charts.
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-full" style="padding: 10px 16px; font-weight: 700;">
+          Save &amp; Update Member Role
+        </button>
       </form>
     </div>
   </div>
@@ -4056,6 +4117,12 @@
       const queueCard = document.getElementById('accessRequestsQueueCard');
       if (queueCard) {
         queueCard.style.display = isLeader ? 'block' : 'none';
+      }
+
+      // Standalone Manage Member Roles Button (visible to all Leaders)
+      const dashRoleBtn = document.getElementById('dashRoleControlBtn');
+      if (dashRoleBtn) {
+        dashRoleBtn.style.display = isLeader ? 'inline-flex' : 'none';
       }
 
       // Update Points KPI
@@ -6138,6 +6205,77 @@
       openPortalModal('resetPasswordModal');
     }
 
+    // Standalone Role & Leadership Title Feature
+    function openDedicatedRoleModal(preselectedMemberId = null) {
+      const db = getPortalDb();
+      const p = getActivePersona();
+      if (!isLeaderRole(p)) {
+        alert('Access Denied: Only leadership can assign or adjust member roles.');
+        return;
+      }
+
+      const selectEl = document.getElementById('dedicatedRoleMemberSelect');
+      const titleSelect = document.getElementById('dedicatedRoleTitleSelect');
+      const branchSelect = document.getElementById('dedicatedRoleBranchSelect');
+      const deptInput = document.getElementById('dedicatedRoleDeptInput');
+      if (!selectEl) return;
+
+      // Populate manageable members based on jurisdiction
+      const manageableMembers = db.membersRoster.filter(m => canManageMember(p, m));
+      if (manageableMembers.length === 0) {
+        alert('No members available within your jurisdiction to manage.');
+        return;
+      }
+
+      selectEl.innerHTML = manageableMembers.map(m => `
+        <option value="${m.id}">${m.name} (${m.role} • ${m.dept})</option>
+      `).join('');
+
+      // Setup title options based on jurisdiction
+      if (isTeamLeader(p)) {
+        titleSelect.innerHTML = `
+          <option value="Team Member">Team Member</option>
+          <option value="Subteam Leader">Subteam Leader</option>
+          <option value="Technical Leader">Technical Leader</option>
+          <option value="Managerial Leader">Managerial Leader</option>
+          <option value="Vice Team Leader">Vice Team Leader</option>
+          <option value="Team Leader">Team Leader</option>
+        `;
+        branchSelect.innerHTML = `
+          <option value="Technical">Technical Engineering</option>
+          <option value="Managerial">Managerial &amp; Operations</option>
+          <option value="Executive">Executive</option>
+          <option value="Shared">Shared Multi-Group</option>
+        `;
+      } else {
+        titleSelect.innerHTML = `
+          <option value="Team Member">Team Member</option>
+          <option value="Subteam Leader">Subteam Leader</option>
+        `;
+        branchSelect.innerHTML = `
+          <option value="${p.branch}">${p.branch}</option>
+        `;
+      }
+
+      const targetId = preselectedMemberId || manageableMembers[0].id;
+      selectEl.value = targetId;
+      onDedicatedRoleMemberChanged(targetId);
+
+      openPortalModal('dedicatedRoleModal');
+    }
+
+    function onDedicatedRoleMemberChanged(memberId) {
+      const db = getPortalDb();
+      const m = db.membersRoster.find(x => x.id === memberId);
+      if (!m) return;
+      const titleSelect = document.getElementById('dedicatedRoleTitleSelect');
+      const branchSelect = document.getElementById('dedicatedRoleBranchSelect');
+      const deptInput = document.getElementById('dedicatedRoleDeptInput');
+      if (titleSelect) titleSelect.value = m.role || 'Team Member';
+      if (branchSelect) branchSelect.value = m.branch || 'Technical';
+      if (deptInput) deptInput.value = m.dept || '';
+    }
+
     async function deleteMember(memberId) {
       const db = getPortalDb();
       const p = getActivePersona();
@@ -6784,6 +6922,73 @@
         renderCompetition();
         alert(`Member ${member.name} successfully updated!`);
       });
+
+      // Dedicated Role & Title Form Submit
+      const dedicatedRoleForm = document.getElementById('dedicatedRoleForm');
+      if (dedicatedRoleForm) {
+        dedicatedRoleForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const db = getPortalDb();
+          const p = getActivePersona();
+          const memberId = document.getElementById('dedicatedRoleMemberSelect').value;
+          const member = db.membersRoster.find(m => m.id === memberId);
+          if (!member) return;
+
+          if (!canManageMember(p, member)) {
+            alert('Access Denied: You do not have authority to edit this member.');
+            return;
+          }
+
+          const oldRole = member.role;
+          const newRole = document.getElementById('dedicatedRoleTitleSelect').value;
+          const newBranch = document.getElementById('dedicatedRoleBranchSelect').value;
+          const newDept = document.getElementById('dedicatedRoleDeptInput').value.trim();
+
+          member.role = newRole;
+          member.branch = newBranch;
+          member.dept = newDept;
+
+          // Compute roleType
+          const lowerR = newRole.toLowerCase();
+          let computedRoleType = 'member';
+          if (newRole === 'Team Leader' || newRole === 'Vice Team Leader' || lowerR.includes('executive')) {
+            computedRoleType = 'executive';
+          } else if (newRole === 'Technical Leader' || lowerR.includes('chief engineer')) {
+            computedRoleType = 'technical_lead';
+          } else if (newRole === 'Managerial Leader' || lowerR.includes('operations management')) {
+            computedRoleType = 'managerial_lead';
+          } else if (lowerR.includes('subteam leader') || lowerR.includes('leader') || lowerR.includes('lead')) {
+            computedRoleType = 'subteam_lead';
+          }
+          member.roleType = computedRoleType;
+
+          if (db.personas[memberId]) {
+            db.personas[memberId].role = newRole;
+            db.personas[memberId].roleType = computedRoleType;
+            db.personas[memberId].branch = newBranch;
+            db.personas[memberId].departments = [newDept];
+          }
+
+          logAuditEvent(`GOVERNANCE: Member ${member.name} assigned title "${newRole}" in ${newDept} by ${p.name}.`);
+
+          if (!isTeamLeader(p)) {
+            addNotification({
+              title: 'Role Assignment',
+              message: `${p.name} (${p.role}) appointed ${member.name} as "${newRole}" in ${newDept}.`,
+              author: p.name,
+              type: 'governance',
+              target: ['fatima', 'karim']
+            });
+          }
+
+          savePortalDb(db);
+          closePortalModal('dedicatedRoleModal');
+          renderStructure();
+          renderAdminDashboard();
+          renderCompetition();
+          alert(`✓ Title updated! ${member.name} is now designated as "${newRole}".`);
+        });
+      }
 
       // 12. Invitation Generator Form Submit (Fatima & Karim only)
       const invForm = document.getElementById('invitationForm');
