@@ -3,7 +3,7 @@
  * Network-First Strategy + Live Connection Bypass
  */
 
-const CACHE_NAME = 'velox-live-v6.0';
+const CACHE_NAME = 'velox-live-v6.1';
 const PRECACHE_ASSETS = [
   '/',
   '/index.html',
@@ -11,8 +11,8 @@ const PRECACHE_ASSETS = [
   '/hr.html',
   '/portal.html',
   '/sponsorship.html',
-  '/style.css?v=6.0',
-  '/i18n.js?v=6.0',
+  '/style.css?v=6.1',
+  '/i18n.js?v=6.1',
   '/config.js',
   '/manifest.json',
   '/pwa-icon-192.png',

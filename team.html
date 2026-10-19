@@ -26,10 +26,10 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" />
 
   <!-- Shared Style with Cache Buster -->
-  <link rel="stylesheet" href="style.css?v=6.0" />
+  <link rel="stylesheet" href="style.css?v=6.1" />
 
   <!-- Localization Engine (Deferred for non-blocking render) -->
-  <script src="i18n.js?v=6.0" defer></script>
+  <script src="i18n.js?v=6.1" defer></script>
 
   <style>
     /* Guaranteed Light Mode text contrast — immune to stale browser cache */
@@ -71,6 +71,46 @@
     [data-theme="light"] .dept-name,
     [data-theme="light"] .dept-lead-name {
       color: #0F172A !important;
+    }
+
+    /* Executive Leadership Cards Mobile Sizing Fix */
+    .tree-top-three {
+      display: flex;
+      justify-content: center;
+      align-items: stretch;
+      gap: 20px;
+      width: 100%;
+      max-width: 1040px;
+      margin: 0 auto 24px;
+    }
+    .tree-top-three .person-card {
+      min-height: fit-content !important;
+      height: auto !important;
+      overflow: visible !important;
+    }
+    @media (max-width: 920px) {
+      .tree-top-three {
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 16px !important;
+        width: 100% !important;
+        max-width: 360px !important;
+        margin: 0 auto 20px !important;
+      }
+      .tree-top-three .person-card {
+        flex: 0 0 auto !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        height: auto !important;
+        min-height: auto !important;
+        padding: 24px 18px !important;
+        overflow: visible !important;
+        box-sizing: border-box !important;
+      }
+      .tree-top-three .advisor-card {
+        width: 100% !important;
+        max-width: 100% !important;
+      }
     }
   </style>
 </head>
