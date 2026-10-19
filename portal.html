@@ -2574,8 +2574,48 @@
           </div>
         </div>
         <div class="form-group">
-          <label for="editMemberSubteam">Department / Subteams</label>
-          <input type="text" id="editMemberSubteam" class="form-control" placeholder="e.g. Powertrain, or Aero & Media" />
+          <label for="editMemberSubteamSelect">Department / Subteam Division <span class="req">*</span></label>
+          <select id="editMemberSubteamSelect" class="form-control" required style="font-size: 0.88rem; font-weight: 600; background: rgba(15, 23, 42, 0.85); color: #FFF; border: 1px solid var(--border);">
+            <optgroup label="Technical: Body & Chassis">
+              <option value="Body & Chassis — Body" data-dept="Body & Chassis" data-sub="Body" data-branch="Technical">Body &amp; Chassis — Body (Aerodynamics &amp; Fairings)</option>
+              <option value="Body & Chassis — Chassis" data-dept="Body & Chassis" data-sub="Chassis" data-branch="Technical">Body &amp; Chassis — Chassis (Tubular Spaceframe)</option>
+              <option value="Body & Chassis" data-dept="Body & Chassis" data-sub="" data-branch="Technical">Body &amp; Chassis (General / Department Lead)</option>
+            </optgroup>
+            <optgroup label="Technical: Vehicle Dynamics">
+              <option value="Vehicle Dynamics — Suspension" data-dept="Vehicle Dynamics" data-sub="Suspension" data-branch="Technical">Vehicle Dynamics — Suspension (Double-Wishbone Kinematics)</option>
+              <option value="Vehicle Dynamics — Steering" data-dept="Vehicle Dynamics" data-sub="Steering" data-branch="Technical">Vehicle Dynamics — Steering (Ackermann Geometry)</option>
+              <option value="Vehicle Dynamics — Brakes" data-dept="Vehicle Dynamics" data-sub="Brakes" data-branch="Technical">Vehicle Dynamics — Brakes (Hydraulic &amp; Balance Bar)</option>
+              <option value="Vehicle Dynamics" data-dept="Vehicle Dynamics" data-sub="" data-branch="Technical">Vehicle Dynamics (General / Department Lead)</option>
+            </optgroup>
+            <optgroup label="Technical: Powertrain">
+              <option value="Powertrain — Motor" data-dept="Powertrain" data-sub="Motor" data-branch="Technical">Powertrain — Motor (Mounting, Thermal &amp; Cooling)</option>
+              <option value="Powertrain — Transmission" data-dept="Powertrain" data-sub="Transmission" data-branch="Technical">Powertrain — Transmission (Reduction Ratio &amp; Differential)</option>
+              <option value="Powertrain" data-dept="Powertrain" data-sub="" data-branch="Technical">Powertrain (General / Department Lead)</option>
+            </optgroup>
+            <optgroup label="Technical: Electrical">
+              <option value="Electrical — Wiring & Harness" data-dept="Electrical" data-sub="Wiring & Harness" data-branch="Technical">Electrical — Wiring &amp; Harness (Motorsport Loom &amp; IP67)</option>
+              <option value="Electrical — Control & Embedded System" data-dept="Electrical" data-sub="Control & Embedded System" data-branch="Technical">Electrical — Control &amp; Embedded System (ECU, CAN-bus &amp; Telemetry)</option>
+              <option value="Electrical" data-dept="Electrical" data-sub="" data-branch="Technical">Electrical (General / Department Lead)</option>
+            </optgroup>
+            <optgroup label="Managerial: Media & PR">
+              <option value="Media & PR — Photography & Video" data-dept="Media & PR" data-sub="Photography & Video" data-branch="Managerial">Media &amp; PR — Photography &amp; Video (Cinematic Documentation)</option>
+              <option value="Media & PR — Social Media & Public Relations" data-dept="Media & PR" data-sub="Social Media & Public Relations" data-branch="Managerial">Media &amp; PR — Social Media &amp; PR (Brand Architecture)</option>
+              <option value="Media & PR" data-dept="Media & PR" data-sub="" data-branch="Managerial">Media &amp; PR (General / Department Lead)</option>
+            </optgroup>
+            <optgroup label="Managerial: Business (Team Director)">
+              <option value="Business (Team Director) — Pitch Presenters & Market Analysis" data-dept="Business (Team Director)" data-sub="Pitch Presenters & Market Analysis" data-branch="Managerial">Business (Team Director) — Pitch Presenters &amp; Market Analysis</option>
+              <option value="Business (Team Director) — Financial Modeling & Cost Analysis" data-dept="Business (Team Director)" data-sub="Financial Modeling & Cost Analysis" data-branch="Managerial">Business (Team Director) — Financial Modeling &amp; Cost Analysis</option>
+              <option value="Business (Team Director) — Cost & Manufacturing Specialist" data-dept="Business (Team Director)" data-sub="Cost & Manufacturing Specialist" data-branch="Managerial">Business (Team Director) — Cost &amp; Manufacturing Specialist (CBOM)</option>
+              <option value="Business (Team Director) — Corporate Relations & Sponsorship" data-dept="Business (Team Director)" data-sub="Corporate Relations & Sponsorship" data-branch="Managerial">Business (Team Director) — Corporate Relations &amp; Sponsorship</option>
+              <option value="Business (Team Director) — Media & Brand Specialist" data-dept="Business (Team Director)" data-sub="Media & Brand Specialist" data-branch="Managerial">Business (Team Director) — Media &amp; Brand Specialist</option>
+              <option value="Business (Team Director)" data-dept="Business (Team Director)" data-sub="" data-branch="Managerial">Business (Team Director) (General / Department Lead)</option>
+            </optgroup>
+            <optgroup label="Executive Management & Overall Leadership">
+              <option value="Executive Management & Institutional Governance — Executive Leadership" data-dept="Executive Management & Institutional Governance" data-sub="Executive Leadership" data-branch="Executive">Executive Management &amp; Institutional Governance (Team Leadership)</option>
+              <option value="Operations, Build Management & Partnerships — Operations Governance" data-dept="Operations, Build Management & Partnerships" data-sub="Operations Governance" data-branch="Executive">Operations, Build Management &amp; Partnerships (Vice Leadership)</option>
+            </optgroup>
+          </select>
+          <input type="hidden" id="editMemberSubteam" />
         </div>
         <button type="submit" class="btn btn-primary btn-full">Save Changes to Roster</button>
       </form>
@@ -5222,6 +5262,15 @@
       const year = (app.academic_year || app.year || 'Undergraduate').trim();
       const subteam1 = (app.subteam_first || app.subteam1 || 'Body & Chassis').trim();
       const subteam2 = (app.subteam_second || app.subteam2 || '').trim();
+
+      let effectiveSubteam1 = subteam1;
+      let effectiveChoice = app.accepted_choice || '1';
+      const noteBlob = `${app.hr_notes || ''} ${app.why_join || ''}`;
+      if (noteBlob.includes('[Accepted: Option 2') || noteBlob.includes('Option 2: 2nd Choice') || noteBlob.includes('Accepted: Option 2') || app.accepted_choice === '2') {
+        effectiveChoice = '2';
+        if (subteam2) effectiveSubteam1 = subteam2;
+      }
+
       const commitment = (app.time_commitment || app.commitment || 'Flexible (10-15 hrs/wk)').trim();
       const statement = (app.why_join || app.statement || '').trim();
       const portfolio = (app.portfolio_url || app.portfolio || '').trim();
@@ -5239,10 +5288,12 @@
         faculty: faculty,
         year: year,
         academic_year: year,
-        subteam1: subteam1,
-        subteam_first: subteam1,
+        subteam1: effectiveSubteam1,
+        subteam_first: effectiveSubteam1,
         subteam2: subteam2,
         subteam_second: subteam2,
+        accepted_choice: effectiveChoice,
+        hr_notes: app.hr_notes || '',
         commitment: commitment,
         time_commitment: commitment,
         statement: statement,
@@ -5690,6 +5741,15 @@
           ` : ''}
 
           <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px; border-top: 1px solid var(--border); padding-top: 14px; flex-wrap: wrap;">
+            ${canManage && app.status !== 'Accepted' ? `
+              <div style="width: 100%; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; background: rgba(255,255,255,0.03); padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border); margin-bottom: 6px;">
+                <label for="dossierChoiceSelect" style="font-size: 0.82rem; font-weight: 700; color: #FFF; margin: 0;">Enroll into Preference:</label>
+                <select id="dossierChoiceSelect" class="form-control" style="width: auto; max-width: 100%; font-size: 0.82rem; padding: 4px 10px; height: 34px;">
+                  <option value="1" ${(app.accepted_choice === '1' || !app.accepted_choice) ? 'selected' : ''}>Option 1 (1st Choice): ${app.subteam1 || 'Primary'}</option>
+                  ${app.subteam2 ? `<option value="2" ${app.accepted_choice === '2' ? 'selected' : ''}>Option 2 (2nd Choice): ${app.subteam2}</option>` : ''}
+                </select>
+              </div>
+            ` : ''}
             <button type="button" class="btn btn-outline" onclick="closePortalModal('appDetailsModal')" style="padding: 7px 16px; font-size: 0.84rem;">
               Close Dossier
             </button>
@@ -5791,8 +5851,11 @@
       }
 
       const newMemberId = 'mem-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
-      const chosenDept = app.subteam1 || 'Body & Chassis';
-      const chosenBranch = getBranchForDeptName(chosenDept);
+      const choiceSel = document.getElementById('dossierChoiceSelect');
+      const chosenChoice = choiceSel ? choiceSel.value : (app.accepted_choice || '1');
+      const chosenDept = (chosenChoice === '2' && (app.subteam2 || app.subteam_second)) ? (app.subteam2 || app.subteam_second) : (app.subteam1 || app.subteam_first || 'Body & Chassis');
+      const parsed = (typeof parseDeptAndSubteam === 'function') ? parseDeptAndSubteam(chosenDept) : { dept: chosenDept, subteam: '', branch: getBranchForDeptName(chosenDept) };
+      const chosenBranch = parsed.branch || getBranchForDeptName(chosenDept);
 
       // Provision active account
       db.accounts.push({
@@ -5808,11 +5871,15 @@
         id: newMemberId,
         name: app.name,
         role: 'Team Member',
+        roleType: 'member',
         branch: chosenBranch,
-        dept: chosenDept,
+        dept: parsed.dept,
+        subteam: parsed.subteam,
+        department: parsed.dept,
         username: derivedUsername,
         points: 0,
-        status: 'Active'
+        status: 'Active',
+        manualOverride: true
       });
 
       // Provision member persona
@@ -5822,16 +5889,34 @@
         role: 'Team Member',
         roleType: 'member',
         branch: chosenBranch,
-        departments: [chosenDept],
+        departments: [parsed.dept],
+        subteam: parsed.subteam,
         avatar: '',
-        deptDesc: `${chosenDept} Specialist Member`,
+        deptDesc: `${parsed.dept} Specialist Member`,
         scopeDesc: 'Assigned specialist member. Complete tasks to earn points on the Silverstone leaderboard.'
       };
 
       // Mark application as Accepted
       app.status = 'Accepted';
+      app.accepted_choice = chosenChoice;
+      app.subteam1 = chosenDept;
+      app.subteam_first = chosenDept;
       app.provisionedUsername = derivedUsername;
       app.provisionedAt = new Date().toISOString();
+      saveApplicationsList(apps);
+
+      // Live Supabase update so database reflects the accepted choice & subteam!
+      try {
+        const cfg = window.VELOX_CONFIG || {};
+        if (cfg.url && cfg.anonKey && !cfg.url.includes('your-project-id') && window.supabase) {
+          const client = window.supabase.createClient(cfg.url, cfg.anonKey);
+          client.from('applications').update({
+            status: 'Accepted',
+            subteam_first: chosenDept,
+            hr_notes: `[Accepted: Option ${chosenChoice} - ${chosenDept}]`
+          }).eq('id', app.id).then(() => {}).catch(e => console.warn('Supabase app update:', e));
+        }
+      } catch (e) {}
       saveApplicationsList(apps);
 
       logAuditEvent(`[RECRUITMENT] Candidate ${app.name} ACCEPTED & PROVISIONED by ${p.name} as @${derivedUsername}.`);
@@ -6345,6 +6430,7 @@
 
       const roleSelect = document.getElementById('editMemberRole');
       const branchSelect = document.getElementById('editMemberBranch');
+      const subteamSelect = document.getElementById('editMemberSubteamSelect');
       const subteamInput = document.getElementById('editMemberSubteam');
 
       // Adjust options based on jurisdiction
@@ -6385,9 +6471,86 @@
         branchSelect.innerHTML = `<option value="${p.branch}">${p.branch}</option>`;
       }
 
+      // Filter subteam optgroups according to role jurisdiction
+      if (subteamSelect) {
+        const groups = subteamSelect.querySelectorAll('optgroup');
+        groups.forEach(g => {
+          const lbl = (g.label || '').toLowerCase();
+          if (isTeamLeader(p)) {
+            g.style.display = '';
+            Array.from(g.children).forEach(c => c.disabled = false);
+          } else if (p.id === 'mohamed-romy') {
+            const isTech = lbl.includes('technical');
+            g.style.display = isTech ? '' : 'none';
+            Array.from(g.children).forEach(c => c.disabled = !isTech);
+          } else if (p.id === 'moaaz-elghamry') {
+            const isAllowed = lbl.includes('managerial') || lbl.includes('powertrain');
+            g.style.display = isAllowed ? '' : 'none';
+            Array.from(g.children).forEach(c => c.disabled = !isAllowed);
+          } else if (p.id === 'mohamed-hassan') {
+            const isMedia = lbl.includes('media');
+            g.style.display = isMedia ? '' : 'none';
+            Array.from(g.children).forEach(c => c.disabled = !isMedia);
+          } else if (p.id === 'ali-elgohary') {
+            const isElec = lbl.includes('electrical');
+            g.style.display = isElec ? '' : 'none';
+            Array.from(g.children).forEach(c => c.disabled = !isElec);
+          }
+        });
+
+        // Resolve existing member's division in select
+        const mDept = (m.dept || '').toLowerCase();
+        const mSub = (m.subteam || '').toLowerCase();
+        let matchedIndex = -1;
+
+        for (let i = 0; i < subteamSelect.options.length; i++) {
+          const opt = subteamSelect.options[i];
+          if (opt.disabled) continue;
+          const optDept = (opt.getAttribute('data-dept') || '').toLowerCase();
+          const optSub = (opt.getAttribute('data-sub') || '').toLowerCase();
+          if (mSub && optSub && (mSub === optSub || mSub.includes(optSub) || optSub.includes(mSub)) && (mDept === optDept || mDept.includes(optDept) || optDept.includes(mDept))) {
+            matchedIndex = i;
+            break;
+          }
+        }
+
+        if (matchedIndex === -1) {
+          for (let i = 0; i < subteamSelect.options.length; i++) {
+            const opt = subteamSelect.options[i];
+            if (opt.disabled) continue;
+            const optDept = (opt.getAttribute('data-dept') || '').toLowerCase();
+            const optVal = opt.value.toLowerCase();
+            if (mDept && (optDept === mDept || mDept.includes(optDept) || optVal.includes(mDept))) {
+              matchedIndex = i;
+              break;
+            }
+          }
+        }
+
+        if (matchedIndex !== -1) {
+          subteamSelect.selectedIndex = matchedIndex;
+        }
+
+        const selOpt = subteamSelect.selectedOptions[0];
+        if (selOpt) {
+          const b = selOpt.getAttribute('data-branch');
+          if (b && (!branchSelect.value || isTeamLeader(p))) branchSelect.value = b;
+          if (subteamInput) subteamInput.value = selOpt.value;
+        }
+
+        subteamSelect.onchange = () => {
+          const cur = subteamSelect.selectedOptions[0];
+          if (cur) {
+            const b = cur.getAttribute('data-branch');
+            if (b) branchSelect.value = b;
+            if (subteamInput) subteamInput.value = cur.value;
+          }
+        };
+      }
+
       roleSelect.value = m.role;
-      branchSelect.value = m.branch;
-      subteamInput.value = m.dept;
+      if (m.branch) branchSelect.value = m.branch;
+      if (subteamInput && !subteamInput.value) subteamInput.value = m.dept;
 
       openPortalModal('editMemberModal');
     }
@@ -7088,7 +7251,7 @@
       });
 
       // 11. Edit Member Form Submit (Strict Jurisdiction Enforcement)
-      document.getElementById('editMemberForm').addEventListener('submit', (e) => {
+      document.getElementById('editMemberForm').addEventListener('submit', async (e) => {
         e.preventDefault();
         const db = getPortalDb();
         const p = getActivePersona();
@@ -7102,14 +7265,32 @@
         }
 
         const oldRole = member.role;
+        const newName = document.getElementById('editMemberName').value.trim();
         const newRole = document.getElementById('editMemberRole').value;
         const newBranch = document.getElementById('editMemberBranch').value;
-        const newDept = document.getElementById('editMemberSubteam').value.trim();
 
-        member.name = document.getElementById('editMemberName').value.trim();
+        const subSelect = document.getElementById('editMemberSubteamSelect');
+        const chosenOpt = subSelect ? subSelect.selectedOptions[0] : null;
+
+        let newDept = '';
+        let newSubteam = '';
+        if (chosenOpt) {
+          newDept = chosenOpt.getAttribute('data-dept') || chosenOpt.value;
+          newSubteam = chosenOpt.getAttribute('data-sub') || '';
+        } else {
+          const raw = (document.getElementById('editMemberSubteam') ? document.getElementById('editMemberSubteam').value : '').trim();
+          const parsed = (typeof parseDeptAndSubteam === 'function') ? parseDeptAndSubteam(raw) : { dept: raw, subteam: '', branch: newBranch };
+          newDept = parsed.dept;
+          newSubteam = parsed.subteam;
+        }
+
+        member.name = newName;
         member.role = newRole;
         member.branch = newBranch;
         member.dept = newDept;
+        member.subteam = newSubteam;
+        member.department = newDept;
+        member.manualOverride = true; // Protect from raw cloud sync overwrite
 
         // Compute and assign exact roleType
         const lowerR = newRole.toLowerCase();
@@ -7121,7 +7302,7 @@
         } else if (newRole === 'Managerial Leader' || lowerR.includes('operations management')) {
           computedRoleType = 'managerial_lead';
         } else if (lowerR.includes('subteam leader') || lowerR.includes('leader') || lowerR.includes('lead')) {
-          computedRoleType = 'subteam_lead';
+          computedRoleType = (!newSubteam || lowerR.includes('team leader of') || lowerR.includes('department leader')) ? 'dept_lead' : 'subteam_lead';
         }
         member.roleType = computedRoleType;
 
@@ -7135,15 +7316,40 @@
           db.personas[id].roleType = computedRoleType;
           db.personas[id].branch = member.branch;
           db.personas[id].departments = [member.dept];
+          db.personas[id].subteam = member.subteam;
+          db.personas[id].deptDesc = `${member.branch} Division • ${member.dept}${member.subteam ? ' — ' + member.subteam : ''}`;
         }
 
-        logAuditEvent(`GOVERNANCE: Member ${member.name} details updated by ${p.name} (Role: ${newRole}, Type: ${computedRoleType}).`);
+        const fullSubString = newSubteam ? `${newDept} — ${newSubteam}` : newDept;
+
+        // Live Cloud Synchronization with Supabase
+        try {
+          const cfg = window.VELOX_CONFIG || {};
+          if (cfg.url && cfg.anonKey && !cfg.url.includes('your-project-id') && window.supabase) {
+            const client = window.supabase.createClient(cfg.url, cfg.anonKey);
+            const notesTag = `[Leader Assigned: ${fullSubString} (${newRole})]`;
+            let cloudQuery = client.from('applications').update({
+              subteam_first: fullSubString,
+              status: 'Accepted',
+              hr_notes: notesTag
+            });
+            if (member.email) {
+              await cloudQuery.eq('email', member.email);
+            } else {
+              await cloudQuery.ilike('full_name', `%${member.name}%`);
+            }
+          }
+        } catch (cloudErr) {
+          console.warn('Supabase member live sync notice:', cloudErr);
+        }
+
+        logAuditEvent(`GOVERNANCE: Member ${member.name} details updated by ${p.name} (Role: ${newRole}, Division: ${fullSubString}, Branch: ${newBranch}).`);
 
         // If updated by a sub-leader (Romy, Moaaz, Ali, Hassan), automatically notify Fatima & Karim!
         if (!isTeamLeader(p)) {
           addNotification({
             title: 'Subteam Roster Update',
-            message: `${p.name} (${p.role}) changed ${member.name}'s role from "${oldRole}" to "${member.role}" in ${member.dept}.`,
+            message: `${p.name} (${p.role}) updated ${member.name}'s division to "${fullSubString}" (${member.role}).`,
             author: p.name,
             type: 'governance',
             target: ['fatima', 'karim']
@@ -7155,7 +7361,10 @@
         renderStructure();
         renderAdminDashboard();
         renderCompetition();
-        alert(`Member ${member.name} successfully updated!`);
+        if (typeof window.renderOrgChart === 'function') {
+          window.renderOrgChart();
+        }
+        alert(`✓ Member ${member.name} successfully updated!\n\n• Role: ${newRole}\n• Division: ${fullSubString}\n• Branch: ${newBranch}`);
       });
 
       // Dedicated Role & Title Form Submit

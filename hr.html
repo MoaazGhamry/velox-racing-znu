@@ -1640,6 +1640,9 @@ velox.racing.znu@gmail.com`;
 
       if (supabaseClient && !isDemoMode) {
         let updatePayload = { status: newStatus, hr_notes: finalNotes };
+        if (newStatus === 'Accepted') {
+          updatePayload.subteam_first = getSelectedSubteam(currentApplicant);
+        }
         let { error } = await supabaseClient
           .from('applications')
           .update(updatePayload)

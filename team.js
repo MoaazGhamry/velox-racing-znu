@@ -649,7 +649,13 @@ async function syncCloudAcceptedMembers() {
 
       if (removedNames.has(normName)) return;
 
-      const parsed = parseDeptAndSubteam(app.subteam_first);
+      // Check if Option 2 was accepted in application notes or choices
+      let targetSubteamChoice = app.subteam_first;
+      const fullNotes = `${app.hr_notes || ''} ${app.why_join || ''}`;
+      if (fullNotes.includes('[Accepted: Option 2') || fullNotes.includes('Option 2: 2nd Choice') || fullNotes.includes('Accepted: Option 2') || (app.accepted_choice === '2')) {
+        targetSubteamChoice = app.subteam_second || app.subteam_first;
+      }
+      const parsed = parseDeptAndSubteam(targetSubteamChoice);
       const memberId = 'mem-' + normName.replace(/[^a-z0-9]/g, '-');
 
       const existingIdx = db.membersRoster.findIndex(m => 
@@ -657,6 +663,14 @@ async function syncCloudAcceptedMembers() {
       );
 
       const existingRosterItem = existingIdx !== -1 ? db.membersRoster[existingIdx] : null;
+
+      // If the member was already manually modified by a Leader in the portal, preserve their leader-assigned dept, subteam, and branch!
+      if (existingRosterItem && (existingRosterItem.manualOverride || (existingRosterItem.dept && existingRosterItem.dept !== parsed.dept && !fullNotes.includes(existingRosterItem.dept)))) {
+        parsed.dept = existingRosterItem.dept;
+        parsed.subteam = existingRosterItem.subteam || parsed.subteam;
+        parsed.branch = existingRosterItem.branch || parsed.branch;
+      }
+
       let assignedRole = (existingRosterItem && existingRosterItem.role) 
         ? existingRosterItem.role 
         : 'Team Member';
@@ -719,9 +733,14 @@ async function syncCloudAcceptedMembers() {
         if (resolvedAvatar && (existingRosterItem.avatar !== resolvedAvatar || existingRosterItem.photo !== resolvedAvatar)) {
           updated = true;
         }
+        const hasManualOverride = existingRosterItem.manualOverride;
         db.membersRoster[existingIdx] = { 
-          ...existingRosterItem, 
           ...entry,
+          ...existingRosterItem, 
+          dept: hasManualOverride ? existingRosterItem.dept : entry.dept,
+          subteam: hasManualOverride ? (existingRosterItem.subteam || '') : entry.subteam,
+          branch: hasManualOverride ? existingRosterItem.branch : entry.branch,
+          department: hasManualOverride ? existingRosterItem.dept : entry.dept,
           role: (existingRosterItem.role && existingRosterItem.role !== 'Team Member') ? existingRosterItem.role : entry.role,
           roleType: existingRosterItem.roleType || entry.roleType,
           avatar: resolvedAvatar,
