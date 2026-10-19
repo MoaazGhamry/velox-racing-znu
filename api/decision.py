@@ -92,25 +92,25 @@ def build_plain_waitlist(name, subteam):
 
 def build_social_section_html():
     return f"""
-    <div style="margin: 22px 0 16px 0; padding-top: 18px; border-top: 1px solid rgba(255, 255, 255, 0.08); text-align: center;">
-      <p style="margin: 0 0 10px 0; font-size: 11px; font-weight: 700; color: #94A3B8; text-transform: uppercase; letter-spacing: 1px;">
+    <div style="margin: 24px 0 16px 0; padding-top: 18px; border-top: 1px solid #232936; text-align: center;">
+      <p style="margin: 0 0 12px 0; font-size: 11px; font-weight: 700; color: #8F9CAE; text-transform: uppercase; letter-spacing: 1px;">
         Follow VELOX Racing &bull; Stay Connected
       </p>
       <table role="presentation" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto;">
         <tr>
-          <td style="padding: 0 5px;">
-            <a href="{VELOX_INSTAGRAM_URL}" target="_blank" style="display: inline-block; background: #E1306C; color: #FFFFFF; font-size: 11px; font-weight: 700; text-decoration: none; padding: 7px 15px; border-radius: 5px;">
-              Instagram (Click Here)
+          <td style="padding: 0 4px;">
+            <a href="{VELOX_INSTAGRAM_URL}" target="_blank" style="display: inline-block; background: #1B212D; border: 1px solid #2C3545; color: #E2E8F0; font-size: 11px; font-weight: 600; text-decoration: none; padding: 7px 14px; border-radius: 6px;">
+              Instagram &rarr;
             </a>
           </td>
-          <td style="padding: 0 5px;">
-            <a href="{VELOX_LINKEDIN_URL}" target="_blank" style="display: inline-block; background: #0A66C2; color: #FFFFFF; font-size: 11px; font-weight: 700; text-decoration: none; padding: 7px 15px; border-radius: 5px;">
-              LinkedIn (Click Here)
+          <td style="padding: 0 4px;">
+            <a href="{VELOX_LINKEDIN_URL}" target="_blank" style="display: inline-block; background: #1B212D; border: 1px solid #2C3545; color: #E2E8F0; font-size: 11px; font-weight: 600; text-decoration: none; padding: 7px 14px; border-radius: 6px;">
+              LinkedIn &rarr;
             </a>
           </td>
-          <td style="padding: 0 5px;">
-            <a href="{VELOX_FACEBOOK_URL}" target="_blank" style="display: inline-block; background: #1877F2; color: #FFFFFF; font-size: 11px; font-weight: 700; text-decoration: none; padding: 7px 15px; border-radius: 5px;">
-              Facebook (Click Here)
+          <td style="padding: 0 4px;">
+            <a href="{VELOX_FACEBOOK_URL}" target="_blank" style="display: inline-block; background: #1B212D; border: 1px solid #2C3545; color: #E2E8F0; font-size: 11px; font-weight: 600; text-decoration: none; padding: 7px 14px; border-radius: 6px;">
+              Facebook &rarr;
             </a>
           </td>
         </tr>
@@ -127,72 +127,72 @@ def build_accepted_email(name, subteam, role, invite_url):
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Welcome to VELOX Racing!</title>
 </head>
-<body style="margin: 0; padding: 0; background-color: #07090E; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #FFFFFF;">
-  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #07090E; padding: 32px 12px;">
+<body style="margin: 0; padding: 0; background-color: #0F1218; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #E2E8F0;">
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #0F1218; padding: 36px 12px;">
     <tr>
       <td align="center">
-        <table role="presentation" width="540" cellspacing="0" cellpadding="0" style="max-width: 540px; width: 100%; background: #0E121A; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 14px; overflow: hidden; box-shadow: 0 15px 40px rgba(0,0,0,0.85);">
+        <table role="presentation" width="540" cellspacing="0" cellpadding="0" style="max-width: 540px; width: 100%; background: #161B24; border: 1px solid #252D3C; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.45);">
           <!-- Top Accent Bar -->
           <tr>
-            <td height="4" style="background: #E10600;"></td>
+            <td height="3" style="background: #E10600;"></td>
           </tr>
-          <!-- Header with Logo -->
+          <!-- Header with Logo & Brand -->
           <tr>
-            <td style="padding: 28px 24px 16px 24px; text-align: center;">
+            <td style="padding: 24px 24px 14px 24px; text-align: center; border-bottom: 1px solid #202735;">
               <a href="{VELOX_WEBSITE_URL}" target="_blank" style="text-decoration: none; display: inline-block;">
-                <img src="{VELOX_LOGO_URL}" alt="VELOX RACING" width="140" style="display: block; margin: 0 auto 10px auto; max-width: 140px; height: auto; border: 0;" />
+                <img src="{VELOX_LOGO_URL}" alt="VELOX RACING" width="68" style="display: block; margin: 0 auto 10px auto; max-width: 68px; height: auto; border: 0;" />
               </a>
-              <div style="font-size: 20px; font-weight: 900; letter-spacing: 2px; color: #FFFFFF; text-transform: uppercase;">VELOX RACING</div>
-              <div style="font-size: 11px; font-weight: 700; color: #E10600; letter-spacing: 1.5px; text-transform: uppercase; margin-top: 3px;">Formula Student &bull; Zagazig National University</div>
+              <div style="font-size: 17px; font-weight: 800; letter-spacing: 1.5px; color: #FFFFFF; text-transform: uppercase;">VELOX RACING</div>
+              <div style="font-size: 11px; font-weight: 600; color: #E10600; letter-spacing: 1px; text-transform: uppercase; margin-top: 2px;">Formula Student &bull; Zagazig National University</div>
             </td>
           </tr>
           <!-- Content Body -->
           <tr>
-            <td style="padding: 16px 28px 28px 28px;">
-              <div style="text-align: center; margin-bottom: 20px;">
-                <span style="display: inline-block; background: rgba(34, 197, 94, 0.12); border: 1px solid rgba(34, 197, 94, 0.35); border-radius: 20px; padding: 5px 16px; font-size: 12px; font-weight: 700; color: #4ADE80; letter-spacing: 0.8px; text-transform: uppercase;">
-                  🏁 Status: Accepted
+            <td style="padding: 24px 28px 24px 28px;">
+              <div style="text-align: center; margin-bottom: 18px;">
+                <span style="display: inline-block; background: rgba(34, 197, 94, 0.12); border: 1px solid rgba(34, 197, 94, 0.35); border-radius: 20px; padding: 4px 14px; font-size: 11px; font-weight: 700; color: #4ADE80; letter-spacing: 0.8px; text-transform: uppercase;">
+                  🏁 Application Status: Accepted
                 </span>
               </div>
 
-              <h2 style="font-size: 17px; font-weight: 700; margin: 0 0 12px 0; color: #FFFFFF;">
+              <h2 style="font-size: 16px; font-weight: 700; margin: 0 0 12px 0; color: #FFFFFF;">
                 Dear {name},
               </h2>
 
-              <p style="font-size: 14px; line-height: 1.6; color: #CBD5E1; margin: 0 0 16px 0;">
-                Congratulations! We are thrilled to welcome you to <strong>VELOX Racing</strong> as a <strong>{role}</strong> on the <strong>{subteam}</strong> team for our Silverstone 2026 campaign.
+              <p style="font-size: 13.5px; line-height: 1.6; color: #CBD5E1; margin: 0 0 16px 0;">
+                Congratulations! We are pleased to welcome you to <strong>VELOX Racing</strong> as a <strong>{role}</strong> on the <strong>{subteam}</strong> team for our Silverstone 2026 Formula Student campaign.
               </p>
 
               <!-- Role Box -->
-              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background: #151A25; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; margin: 16px 0; padding: 12px 16px;">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background: #1C2330; border: 1px solid #283344; border-radius: 8px; margin: 16px 0; padding: 12px 16px;">
                 <tr>
-                  <td style="font-size: 13px; color: #94A3B8;">Role: <strong style="color: #FFFFFF;">{role}</strong></td>
-                  <td style="font-size: 13px; color: #94A3B8; text-align: right;">Subteam: <strong style="color: #38BDF8;">{subteam}</strong></td>
+                  <td style="font-size: 12.5px; color: #94A3B8;">Role: <strong style="color: #FFFFFF;">{role}</strong></td>
+                  <td style="font-size: 12.5px; color: #94A3B8; text-align: right;">Subteam: <strong style="color: #38BDF8;">{subteam}</strong></td>
                 </tr>
               </table>
 
-              <p style="font-size: 14px; line-height: 1.6; color: #CBD5E1; margin: 0 0 20px 0;">
-                Please click the button below to activate your account and set your member portal password:
+              <p style="font-size: 13.5px; line-height: 1.6; color: #CBD5E1; margin: 0 0 20px 0;">
+                Please click the button below to complete your onboarding, set your member credentials, and access the internal portal:
               </p>
 
               <!-- CTA Button -->
-              <div style="text-align: center; margin: 22px 0;">
-                <a href="{invite_url}" target="_blank" style="display: inline-block; background: #E10600; color: #FFFFFF; font-size: 14px; font-weight: 700; text-decoration: none; padding: 12px 28px; border-radius: 6px; box-shadow: 0 4px 14px rgba(225, 6, 0, 0.4);">
-                  Click Here to Activate Account &rarr;
+              <div style="text-align: center; margin: 20px 0;">
+                <a href="{invite_url}" target="_blank" style="display: inline-block; background: #E10600; color: #FFFFFF; font-size: 13.5px; font-weight: 700; text-decoration: none; padding: 11px 26px; border-radius: 6px; box-shadow: 0 4px 12px rgba(225, 6, 0, 0.35);">
+                  Activate Portal Account &rarr;
                 </a>
               </div>
 
-              <p style="font-size: 12px; line-height: 1.5; color: #94A3B8; text-align: center; margin: 0 0 16px 0;">
-                Direct onboarding link: <a href="{invite_url}" target="_blank" style="color: #38BDF8; font-weight: 700; text-decoration: underline;">Click Here</a>
+              <p style="font-size: 11.5px; line-height: 1.5; color: #8F9CAE; text-align: center; margin: 0 0 16px 0;">
+                Direct activation link: <a href="{invite_url}" target="_blank" style="color: #38BDF8; font-weight: 600; text-decoration: underline;">Click Here</a>
               </p>
 
               {social_html}
 
-              <p style="font-size: 12px; line-height: 1.5; color: #94A3B8; margin: 18px 0 0 0; text-align: center;">
+              <p style="font-size: 11.5px; line-height: 1.5; color: #8F9CAE; margin: 18px 0 0 0; text-align: center;">
                 Best regards,<br/>
-                <strong style="color: #FFFFFF;">VELOX Racing Team</strong><br/>
+                <strong style="color: #E2E8F0;">VELOX Racing Team</strong><br/>
                 <em>Zagazig National University &bull; Formula Student</em><br/>
-                Official Website: <a href="{VELOX_WEBSITE_URL}" target="_blank" style="color: #38BDF8; font-weight: 700; text-decoration: underline;">Click Here</a><br/>
+                <a href="{VELOX_WEBSITE_URL}" target="_blank" style="color: #38BDF8; font-weight: 600; text-decoration: none;">velox-racing-znu.vercel.app</a><br/>
                 <a href="mailto:velox.racing.znu@gmail.com" style="color: #64748B; text-decoration: none;">velox.racing.znu@gmail.com</a>
               </p>
             </td>
@@ -213,55 +213,55 @@ def build_rejected_email(name, subteam):
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Application Status — VELOX Racing</title>
 </head>
-<body style="margin: 0; padding: 0; background-color: #07090E; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #FFFFFF;">
-  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #07090E; padding: 32px 12px;">
+<body style="margin: 0; padding: 0; background-color: #0F1218; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #E2E8F0;">
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #0F1218; padding: 36px 12px;">
     <tr>
       <td align="center">
-        <table role="presentation" width="540" cellspacing="0" cellpadding="0" style="max-width: 540px; width: 100%; background: #0E121A; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 14px; overflow: hidden; box-shadow: 0 15px 40px rgba(0,0,0,0.85);">
+        <table role="presentation" width="540" cellspacing="0" cellpadding="0" style="max-width: 540px; width: 100%; background: #161B24; border: 1px solid #252D3C; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.45);">
           <tr>
-            <td height="4" style="background: #94A3B8;"></td>
+            <td height="3" style="background: #64748B;"></td>
           </tr>
           <tr>
-            <td style="padding: 28px 24px 16px 24px; text-align: center;">
+            <td style="padding: 24px 24px 14px 24px; text-align: center; border-bottom: 1px solid #202735;">
               <a href="{VELOX_WEBSITE_URL}" target="_blank" style="text-decoration: none; display: inline-block;">
-                <img src="{VELOX_LOGO_URL}" alt="VELOX RACING" width="140" style="display: block; margin: 0 auto 10px auto; max-width: 140px; height: auto; border: 0;" />
+                <img src="{VELOX_LOGO_URL}" alt="VELOX RACING" width="68" style="display: block; margin: 0 auto 10px auto; max-width: 68px; height: auto; border: 0;" />
               </a>
-              <div style="font-size: 20px; font-weight: 900; letter-spacing: 2px; color: #FFFFFF; text-transform: uppercase;">VELOX RACING</div>
-              <div style="font-size: 11px; font-weight: 700; color: #E10600; letter-spacing: 1.5px; text-transform: uppercase; margin-top: 3px;">Formula Student &bull; Zagazig National University</div>
+              <div style="font-size: 17px; font-weight: 800; letter-spacing: 1.5px; color: #FFFFFF; text-transform: uppercase;">VELOX RACING</div>
+              <div style="font-size: 11px; font-weight: 600; color: #94A3B8; letter-spacing: 1px; text-transform: uppercase; margin-top: 2px;">Formula Student &bull; Zagazig National University</div>
             </td>
           </tr>
           <tr>
-            <td style="padding: 16px 28px 28px 28px;">
-              <div style="text-align: center; margin-bottom: 20px;">
-                <span style="display: inline-block; background: rgba(148, 163, 184, 0.12); border: 1px solid rgba(148, 163, 184, 0.25); border-radius: 20px; padding: 5px 16px; font-size: 12px; font-weight: 700; color: #94A3B8; letter-spacing: 0.8px; text-transform: uppercase;">
-                  📋 Status: Application Update
+            <td style="padding: 24px 28px 24px 28px;">
+              <div style="text-align: center; margin-bottom: 18px;">
+                <span style="display: inline-block; background: rgba(148, 163, 184, 0.12); border: 1px solid rgba(148, 163, 184, 0.25); border-radius: 20px; padding: 4px 14px; font-size: 11px; font-weight: 700; color: #94A3B8; letter-spacing: 0.8px; text-transform: uppercase;">
+                  📋 Application Status: Update
                 </span>
               </div>
 
-              <h2 style="font-size: 17px; font-weight: 700; margin: 0 0 12px 0; color: #FFFFFF;">
+              <h2 style="font-size: 16px; font-weight: 700; margin: 0 0 12px 0; color: #FFFFFF;">
                 Dear {name},
               </h2>
 
-              <p style="font-size: 14px; line-height: 1.6; color: #CBD5E1; margin: 0 0 14px 0;">
+              <p style="font-size: 13.5px; line-height: 1.6; color: #CBD5E1; margin: 0 0 14px 0;">
                 Thank you for your interest in <strong>VELOX Racing</strong> and for applying for the <strong>{subteam}</strong> team.
               </p>
 
-              <p style="font-size: 14px; line-height: 1.6; color: #CBD5E1; margin: 0 0 14px 0;">
-                We received a very high volume of applications this season and, unfortunately, we are unable to offer you a position on the active engineering crew at this time due to strict team quotas.
+              <p style="font-size: 13.5px; line-height: 1.6; color: #CBD5E1; margin: 0 0 14px 0;">
+                We received a very high volume of applications this season and, unfortunately, we are unable to offer you a position on the active engineering crew at this time due to strict team capacity limits.
               </p>
 
-              <p style="font-size: 14px; line-height: 1.6; color: #CBD5E1; margin: 0 0 14px 0;">
+              <p style="font-size: 13.5px; line-height: 1.6; color: #CBD5E1; margin: 0 0 14px 0;">
                 We truly appreciate your passion and encourage you to attend our public university workshops and reapply in future recruitment cycles.
               </p>
 
               {social_html}
 
-              <p style="font-size: 12px; line-height: 1.5; color: #94A3B8; margin: 18px 0 0 0; text-align: center;">
+              <p style="font-size: 11.5px; line-height: 1.5; color: #8F9CAE; margin: 18px 0 0 0; text-align: center;">
                 We wish you all the best in your studies and future endeavors.<br/><br/>
                 Best regards,<br/>
-                <strong style="color: #FFFFFF;">VELOX Racing Team</strong><br/>
+                <strong style="color: #E2E8F0;">VELOX Racing Team</strong><br/>
                 <em>Zagazig National University &bull; Formula Student</em><br/>
-                Official Website: <a href="{VELOX_WEBSITE_URL}" target="_blank" style="color: #38BDF8; font-weight: 700; text-decoration: underline;">Click Here</a><br/>
+                <a href="{VELOX_WEBSITE_URL}" target="_blank" style="color: #38BDF8; font-weight: 600; text-decoration: none;">velox-racing-znu.vercel.app</a><br/>
                 <a href="mailto:velox.racing.znu@gmail.com" style="color: #64748B; text-decoration: none;">velox.racing.znu@gmail.com</a>
               </p>
             </td>
@@ -282,50 +282,50 @@ def build_waitlist_email(name, subteam):
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Application Status — VELOX Racing</title>
 </head>
-<body style="margin: 0; padding: 0; background-color: #07090E; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #FFFFFF;">
-  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #07090E; padding: 32px 12px;">
+<body style="margin: 0; padding: 0; background-color: #0F1218; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #E2E8F0;">
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #0F1218; padding: 36px 12px;">
     <tr>
       <td align="center">
-        <table role="presentation" width="540" cellspacing="0" cellpadding="0" style="max-width: 540px; width: 100%; background: #0E121A; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 14px; overflow: hidden; box-shadow: 0 15px 40px rgba(0,0,0,0.85);">
+        <table role="presentation" width="540" cellspacing="0" cellpadding="0" style="max-width: 540px; width: 100%; background: #161B24; border: 1px solid #252D3C; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.45);">
           <tr>
-            <td height="4" style="background: #F59E0B;"></td>
+            <td height="3" style="background: #F59E0B;"></td>
           </tr>
           <tr>
-            <td style="padding: 28px 24px 16px 24px; text-align: center;">
+            <td style="padding: 24px 24px 14px 24px; text-align: center; border-bottom: 1px solid #202735;">
               <a href="{VELOX_WEBSITE_URL}" target="_blank" style="text-decoration: none; display: inline-block;">
-                <img src="{VELOX_LOGO_URL}" alt="VELOX RACING" width="140" style="display: block; margin: 0 auto 10px auto; max-width: 140px; height: auto; border: 0;" />
+                <img src="{VELOX_LOGO_URL}" alt="VELOX RACING" width="68" style="display: block; margin: 0 auto 10px auto; max-width: 68px; height: auto; border: 0;" />
               </a>
-              <div style="font-size: 20px; font-weight: 900; letter-spacing: 2px; color: #FFFFFF; text-transform: uppercase;">VELOX RACING</div>
-              <div style="font-size: 11px; font-weight: 700; color: #F59E0B; letter-spacing: 1.5px; text-transform: uppercase; margin-top: 3px;">Formula Student &bull; Zagazig National University</div>
+              <div style="font-size: 17px; font-weight: 800; letter-spacing: 1.5px; color: #FFFFFF; text-transform: uppercase;">VELOX RACING</div>
+              <div style="font-size: 11px; font-weight: 600; color: #F59E0B; letter-spacing: 1px; text-transform: uppercase; margin-top: 2px;">Formula Student &bull; Zagazig National University</div>
             </td>
           </tr>
           <tr>
-            <td style="padding: 16px 28px 28px 28px;">
-              <div style="text-align: center; margin-bottom: 20px;">
-                <span style="display: inline-block; background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.35); border-radius: 20px; padding: 5px 16px; font-size: 12px; font-weight: 700; color: #FBBF24; letter-spacing: 0.8px; text-transform: uppercase;">
-                  ⏳ Status: Active Reserve
+            <td style="padding: 24px 28px 24px 28px;">
+              <div style="text-align: center; margin-bottom: 18px;">
+                <span style="display: inline-block; background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.35); border-radius: 20px; padding: 4px 14px; font-size: 11px; font-weight: 700; color: #FBBF24; letter-spacing: 0.8px; text-transform: uppercase;">
+                  ⏳ Application Status: Active Reserve
                 </span>
               </div>
 
-              <h2 style="font-size: 17px; font-weight: 700; margin: 0 0 12px 0; color: #FFFFFF;">
+              <h2 style="font-size: 16px; font-weight: 700; margin: 0 0 12px 0; color: #FFFFFF;">
                 Dear {name},
               </h2>
 
-              <p style="font-size: 14px; line-height: 1.6; color: #CBD5E1; margin: 0 0 14px 0;">
+              <p style="font-size: 13.5px; line-height: 1.6; color: #CBD5E1; margin: 0 0 14px 0;">
                 Thank you for applying to <strong>VELOX Racing</strong> for the <strong>{subteam}</strong> team.
               </p>
 
-              <p style="font-size: 14px; line-height: 1.6; color: #CBD5E1; margin: 0 0 14px 0;">
-                Due to limited team capacity, your application has been placed on our <strong>Active Reserve</strong> list for the 2026 season. We were very impressed by your qualifications and our subteam leads will reach out directly if additional spots become available.
+              <p style="font-size: 13.5px; line-height: 1.6; color: #CBD5E1; margin: 0 0 14px 0;">
+                Due to limited team capacity, your application has been placed on our <strong>Active Reserve</strong> list for the 2026 season. We were very impressed by your qualifications and will reach out directly if additional spots become available.
               </p>
 
               {social_html}
 
-              <p style="font-size: 12px; line-height: 1.5; color: #94A3B8; margin: 18px 0 0 0; text-align: center;">
+              <p style="font-size: 11.5px; line-height: 1.5; color: #8F9CAE; margin: 18px 0 0 0; text-align: center;">
                 Best regards,<br/>
-                <strong style="color: #FFFFFF;">VELOX Racing Team</strong><br/>
+                <strong style="color: #E2E8F0;">VELOX Racing Team</strong><br/>
                 <em>Zagazig National University &bull; Formula Student</em><br/>
-                Official Website: <a href="{VELOX_WEBSITE_URL}" target="_blank" style="color: #38BDF8; font-weight: 700; text-decoration: underline;">Click Here</a><br/>
+                <a href="{VELOX_WEBSITE_URL}" target="_blank" style="color: #38BDF8; font-weight: 600; text-decoration: none;">velox-racing-znu.vercel.app</a><br/>
                 <a href="mailto:velox.racing.znu@gmail.com" style="color: #64748B; text-decoration: none;">velox.racing.znu@gmail.com</a>
               </p>
             </td>
