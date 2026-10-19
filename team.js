@@ -7,6 +7,30 @@
 const VELOX_TEAM = {
   instagramUrl: "https://www.instagram.com/velox_racing_znu?srtk=MWl2azlianJlZ3J3bg==",
   linkedinUrl: "https://www.linkedin.com/company/velox-racing-team/",
+  academicAdvisor: {
+    id: "tharwat-osman",
+    role: "Academic Advisor",
+    name: "Prof. Dr. Tharwat Osman",
+    photo: "",
+    department: "Academic & Institutional Advisory Board",
+    department_ar: "هيئة الإشراف الأكاديمي والاستشاري",
+    bio: "Commands academic mentorship, engineering faculty coordination, advanced manufacturing laboratory access, and university institutional sponsorship for Formula Student Silverstone 2026.",
+    bio_ar: "يقود الإشراف الأكاديمي العام والتنسيق المؤسسي مع إدارة الجامعة وكلية الهندسة، وتسهيل الوصول للورش والمعامل الهندسية المتطورة لدعم مشاركة الفريق في سيلفرستون.",
+    responsibilities: [
+      "Official academic mentorship, institutional faculty patronage, and educational governance",
+      "Coordination with Zagazig National University presidency and engineering leadership",
+      "Engineering research validation, manufacturing laboratory access, and design safety review",
+      "Institutional compliance, university budget advocacy, and international competition representation"
+    ],
+    responsibilities_ar: [
+      "الإشراف الأكاديمي الرسمي ورعاية الفريق المؤسسية تحت مظلة كلية الهندسة وجامعة الزقازيق الأهلية",
+      "التنسيق المؤسسي المستمر مع قيادات الجامعة لتوفير المعامل والورش الهندسية المتقدمة",
+      "المراجعة العلمية وتسهيل استخدام معامل التصنيع والاختبارات الميكانيكية والكهربائية المتطورة",
+      "الحوكمة الأكاديمية والتمثيل المؤسسي لدعم مشاركة الفريق الدولية في مسابقة فورمولا ستيودنت بسيلفرستون"
+    ],
+    quote: "Our mission is empowering engineering students to bridge theoretical science and world-class motorsport reality on the international stage at Silverstone.",
+    quote_ar: "رسالتنا هي تمكين طلابنا المبدعين في كلية الهندسة من تحويل العلوم النظرية إلى واقع هندسي ينافس على أعلى المستويات الدولية في حلبة سيلفرستون."
+  },
   executives: [
     {
       id: "fatima-salman",
@@ -547,6 +571,9 @@ function getDynamicTeamData() {
 function getMemberById(id) {
   if (!id) return null;
   const data = (typeof getDynamicTeamData === 'function') ? getDynamicTeamData() : VELOX_TEAM;
+  if (data.academicAdvisor && (data.academicAdvisor.id === id || data.academicAdvisor.name === id)) {
+    return data.academicAdvisor;
+  }
   if (data.technicalLeader && (data.technicalLeader.id === id || data.technicalLeader.name === id)) {
     return data.technicalLeader;
   }

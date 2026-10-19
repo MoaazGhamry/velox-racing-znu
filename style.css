@@ -3924,4 +3924,401 @@ p {
     width: 100%;
     justify-content: center;
   }
+}
+
+/* ==========================================================================
+   ACADEMIC ADVISOR TIER & ORG CHART PRINT ENHANCEMENTS
+   Zagazig National University | Institutional Advisory Board
+   ========================================================================== */
+.team-header-actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+}
+
+.print-tree-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  border-radius: var(--radius-full);
+  background: var(--bg-card);
+  color: var(--text);
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.print-tree-btn:hover {
+  border-color: rgba(225, 6, 0, 0.5);
+  color: var(--red);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px -4px rgba(225, 6, 0, 0.25);
+}
+
+.print-tree-btn svg {
+  flex-shrink: 0;
+}
+
+/* Tier 0: Academic Advisor */
+.tree-tier-advisor {
+  max-width: 460px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.advisor-card {
+  width: 100%;
+  border-color: rgba(245, 158, 11, 0.45);
+  background: linear-gradient(180deg, rgba(245, 158, 11, 0.08) 0%, rgba(18, 20, 26, 0.95) 100%);
+  box-shadow: 0 14px 36px -10px rgba(0, 0, 0, 0.65), 0 0 24px rgba(245, 158, 11, 0.15);
+  border-radius: var(--radius-md);
+  padding: 24px;
+}
+
+[data-theme="light"] .advisor-card {
+  background: linear-gradient(180deg, rgba(245, 158, 11, 0.12) 0%, #FFFFFF 100%);
+  border-color: rgba(245, 158, 11, 0.5);
+  box-shadow: 0 10px 28px rgba(245, 158, 11, 0.12);
+}
+
+.advisor-card:hover {
+  border-color: #F59E0B;
+  transform: translateY(-4px);
+  box-shadow: 0 20px 48px -10px rgba(0, 0, 0, 0.8), 0 0 32px rgba(245, 158, 11, 0.35);
+}
+
+.advisor-crown-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  background: rgba(245, 158, 11, 0.15);
+  border: 1px solid rgba(245, 158, 11, 0.45);
+  color: #FBBF24;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 14px;
+}
+
+[data-theme="light"] .advisor-crown-badge {
+  background: rgba(245, 158, 11, 0.2);
+  color: #B45309;
+  border-color: rgba(245, 158, 11, 0.6);
+}
+
+.advisor-avatar {
+  border-color: #F59E0B !important;
+  box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.5), 0 0 20px rgba(245, 158, 11, 0.35) !important;
+}
+
+.advisor-card:hover .advisor-avatar {
+  border-color: #FBBF24 !important;
+  box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.7), 0 0 28px rgba(245, 158, 11, 0.55) !important;
+}
+
+.advisor-role {
+  color: #F59E0B !important;
+  font-size: 0.84rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+[data-theme="light"] .advisor-role {
+  color: #B45309 !important;
+}
+
+.advisor-name {
+  font-size: 1.25rem !important;
+  font-weight: 800 !important;
+  color: #FFFFFF;
+  margin-bottom: 8px;
+}
+
+[data-theme="light"] .advisor-name {
+  color: #0F172A;
+}
+
+.advisor-bio {
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+.advisor-cue {
+  color: #F59E0B !important;
+  background: rgba(245, 158, 11, 0.08) !important;
+  border-color: rgba(245, 158, 11, 0.28) !important;
+}
+
+.advisor-connector {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin: 0;
+}
+
+.advisor-stem-vertical {
+  width: 2px;
+  height: 34px;
+  background: linear-gradient(180deg, #F59E0B 0%, var(--border) 100%);
+}
+
+/* ==========================================================================
+   PRINT STYLESHEET — FORMULA STUDENT OFFICIAL TEAM STRUCTURE DOCUMENT
+   ========================================================================== */
+@media print {
+  *, *::before, *::after {
+    background: transparent !important;
+    color: #000000 !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  @page {
+    size: A4 portrait;
+    margin: 12mm 10mm 12mm 10mm;
+  }
+
+  body {
+    background: #FFFFFF !important;
+    color: #111827 !important;
+    font-size: 9.5pt !important;
+    line-height: 1.35 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  header,
+  nav,
+  footer,
+  .navbar,
+  .nav-toggle,
+  .mobile-nav-drawer,
+  .theme-toggle,
+  .lang-switcher,
+  .team-header-actions,
+  .print-tree-btn,
+  .branch-filter-nav,
+  .person-view-cue,
+  .btn,
+  .no-print,
+  .member-modal-backdrop,
+  .member-modal-container {
+    display: none !important;
+  }
+
+  main {
+    padding-top: 0 !important;
+    margin: 0 !important;
+  }
+
+  .section {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .container {
+    max-width: 100% !important;
+    width: 100% !important;
+    padding: 0 !important;
+  }
+
+  .section-header {
+    margin-bottom: 16px !important;
+    text-align: center !important;
+    border-bottom: 2px solid #E10600 !important;
+    padding-bottom: 10px !important;
+  }
+
+  .section-kicker {
+    font-size: 8.5pt !important;
+    color: #E10600 !important;
+    font-weight: 800 !important;
+    text-transform: uppercase !important;
+  }
+
+  .section-title {
+    font-size: 18pt !important;
+    font-weight: 900 !important;
+    color: #111827 !important;
+    margin: 4px 0 !important;
+  }
+
+  .section-desc {
+    font-size: 8.5pt !important;
+    color: #4B5563 !important;
+    max-width: 90% !important;
+    margin: 0 auto !important;
+  }
+
+  .team-tree-container {
+    margin-top: 10px !important;
+  }
+
+  .tree-tier {
+    gap: 12px !important;
+    margin-bottom: 6px !important;
+  }
+
+  .tree-tier-advisor {
+    max-width: 440px !important;
+    margin: 0 auto 4px !important;
+    page-break-inside: avoid !important;
+  }
+
+  .advisor-connector {
+    margin-bottom: 4px !important;
+  }
+
+  .advisor-stem-vertical,
+  .tree-stem-vertical {
+    height: 14px !important;
+    background: #9CA3AF !important;
+  }
+
+  .tree-branch-crossbar,
+  .tree-branch-drop {
+    background: #9CA3AF !important;
+  }
+
+  .person-card {
+    border: 1px solid #D1D5DB !important;
+    border-radius: 8px !important;
+    padding: 10px 14px !important;
+    page-break-inside: avoid !important;
+    background: #FAFAFA !important;
+  }
+
+  .advisor-card {
+    border: 1.5px solid #D97706 !important;
+    background: #FFFBEB !important;
+  }
+
+  .advisor-crown-badge {
+    border: 1px solid #D97706 !important;
+    background: #FEF3C7 !important;
+    color: #92400E !important;
+    font-size: 7.5pt !important;
+    padding: 2px 8px !important;
+    margin-bottom: 6px !important;
+  }
+
+  .avatar-circle {
+    width: 46px !important;
+    height: 46px !important;
+    border: 1.5px solid #9CA3AF !important;
+    margin-bottom: 6px !important;
+    font-size: 11pt !important;
+  }
+
+  .advisor-avatar {
+    border-color: #D97706 !important;
+  }
+
+  .person-role {
+    font-size: 7.5pt !important;
+    font-weight: 700 !important;
+    color: #E10600 !important;
+    text-transform: uppercase !important;
+  }
+
+  .advisor-role {
+    color: #B45309 !important;
+  }
+
+  .person-name {
+    font-size: 11pt !important;
+    font-weight: 800 !important;
+    margin: 2px 0 4px !important;
+    color: #111827 !important;
+  }
+
+  .person-bio {
+    font-size: 7.5pt !important;
+    line-height: 1.3 !important;
+    color: #4B5563 !important;
+    display: block !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  .tree-branches-wrapper {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 14px !important;
+    margin-top: 8px !important;
+    align-items: start !important;
+  }
+
+  .tree-branch-col {
+    page-break-inside: avoid !important;
+  }
+
+  .branch-header-badge {
+    border: 1px solid #9CA3AF !important;
+    padding: 4px 10px !important;
+    font-size: 8pt !important;
+    font-weight: 800 !important;
+    margin-bottom: 8px !important;
+    background: #F3F4F6 !important;
+  }
+
+  .dept-card {
+    border: 1px solid #E5E7EB !important;
+    border-radius: 6px !important;
+    padding: 8px 10px !important;
+    margin-bottom: 8px !important;
+    page-break-inside: avoid !important;
+    background: #FFFFFF !important;
+  }
+
+  .dept-name {
+    font-size: 9.5pt !important;
+    font-weight: 800 !important;
+    color: #111827 !important;
+  }
+
+  .dept-lead {
+    border: 1px dashed #D1D5DB !important;
+    padding: 4px 8px !important;
+    margin: 4px 0 !important;
+    background: #F9FAFB !important;
+  }
+
+  .dept-desc {
+    font-size: 7pt !important;
+    line-height: 1.25 !important;
+    color: #6B7280 !important;
+    margin: 4px 0 6px !important;
+  }
+
+  .subteam-pill {
+    font-size: 7.5pt !important;
+    font-weight: 700 !important;
+    color: #1F2937 !important;
+  }
+
+  .subteam-crew-chip {
+    border: 1px solid #E5E7EB !important;
+    font-size: 7pt !important;
+    padding: 2px 6px !important;
+    background: #F9FAFB !important;
+  }
 }

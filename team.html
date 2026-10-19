@@ -88,6 +88,16 @@
           <p class="section-desc" data-i18n="team.desc">
             A multidisciplinary hierarchy designed for streamlined engineering workflows, rapid iteration, and strict accountability.
           </p>
+          <div class="team-header-actions no-print">
+            <button type="button" class="btn btn-secondary print-tree-btn" onclick="window.print()" title="Print / Export Team Structure">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 6 2 18 2 18 9"></polyline>
+                <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+                <rect x="6" y="14" width="12" height="8"></rect>
+              </svg>
+              <span data-i18n="team.printBtn">Print Team Structure</span>
+            </button>
+          </div>
         </div>
 
         <!-- Dynamic Org Chart Root -->
@@ -203,6 +213,35 @@
       const tLeader = dict['team.leaderRole'] || 'Leader';
 
       let html = '';
+
+      // Tier 0: Academic Advisor (Prof. Dr. Tharwat Osman)
+      if (data.academicAdvisor) {
+        const adv = data.academicAdvisor;
+        const advKicker = dict['role.AcademicAdvisorKicker'] || 'Institutional Academic Advisory';
+        html += `
+          <div class="tree-tier tree-tier-advisor">
+            <div class="person-card advisor-card clickable-member" data-member-id="${adv.id}" role="button" tabindex="0" title="${dict['modal.viewProfile'] || 'Click to view overview'}">
+              <div class="advisor-crown-badge">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"></path></svg>
+                <span>${advKicker}</span>
+              </div>
+              <div class="avatar-circle advisor-avatar">
+                ${(adv.photo || adv.avatar) ? `<img src="${adv.photo || adv.avatar}" alt="${adv.name}" class="avatar-img" onerror="this.onerror=null;this.parentElement.innerHTML='${getInitials(adv.name)}';" />` : getInitials(adv.name)}
+              </div>
+              <span class="person-role advisor-role">${tRole(adv.role)}</span>
+              <h3 class="person-name advisor-name">${adv.name}</h3>
+              <p class="person-bio advisor-bio">${(currentLang === 'ar' && adv.bio_ar) ? adv.bio_ar : (adv.bio || '')}</p>
+              <div class="person-view-cue advisor-cue">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                <span data-i18n="modal.viewProfile">${dict['modal.viewProfile'] || 'Click to view overview'}</span>
+              </div>
+            </div>
+          </div>
+          <div class="advisor-connector">
+            <div class="advisor-stem-vertical"></div>
+          </div>
+        `;
+      }
 
       // Tier 1: Executive Leaders (Fatima & Karim)
       html += `

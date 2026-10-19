@@ -135,8 +135,12 @@ const VELOX_I18N = {
     'team.branchTechTitle': 'Technical Engineering Branch',
     'team.branchOpsTitle': 'Operations & Business Branch',
     'team.leaderRole': 'Leader',
+    'team.printBtn': 'Print Team Structure',
 
     // Team Roles & Departments (for dynamic org chart)
+    'role.Academic Advisor': 'Academic Advisor',
+    'role.AcademicAdvisorKicker': 'Institutional Academic Advisory',
+    'dept.Academic & Institutional Advisory Board': 'Academic & Institutional Advisory Board',
     'role.Team Leader': 'Team Leader',
     'role.Vice Team Leader': 'Vice Team Leader',
     'role.Technical Leader': 'Technical Leader',
@@ -615,8 +619,12 @@ const VELOX_I18N = {
     'team.branchTechTitle': 'القطاع الهندسي والتقني',
     'team.branchOpsTitle': 'قطاع الإدارة والعمليات',
     'team.leaderRole': 'مسؤول القسم',
+    'team.printBtn': 'طباعة الهيكل التنظيمي',
 
     // Team Roles & Departments (for dynamic org chart)
+    'role.Academic Advisor': 'المشرف الأكاديمي العام',
+    'role.AcademicAdvisorKicker': 'هيئة الإشراف الأكاديمي ورعاية الجامعة',
+    'dept.Academic & Institutional Advisory Board': 'هيئة الإشراف الأكاديمي والاستشاري',
     'role.Team Leader': 'قائد الفريق',
     'role.Vice Team Leader': 'نائب قائد الفريق',
     'role.Technical Leader': 'المدير التقني',
