@@ -1308,7 +1308,23 @@ document.addEventListener('DOMContentLoaded', () => {
       card.style.transition = 'none';
     });
   });
-
+  // 17.5. Dynamic Auth State Sync in Navbar
+  try {
+    const authUser = localStorage.getItem('velox_auth_user');
+    if (authUser) {
+      document.body.classList.add('is-authenticated');
+      const isPortalPage = window.location.pathname.endsWith('portal.html') || window.location.pathname === '/portal';
+      document.querySelectorAll('.nav-login-mobile-btn, a[href="/portal"].btn-outline').forEach(btn => {
+        if (isPortalPage) {
+          btn.style.setProperty('display', 'none', 'important');
+        } else {
+          const span = btn.querySelector('span');
+          if (span) span.textContent = 'Portal';
+          btn.title = 'Inside Portal (@' + authUser + ')';
+        }
+      });
+    }
+  } catch (e) {}
 
 });
 

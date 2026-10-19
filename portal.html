@@ -1079,7 +1079,19 @@
       color: #0F172A;
     }
 
-    /* ==================== RESPONSIVE RULES ==================== */
+    /* When user is authenticated in portal, hide login buttons and suppress verbose scope banners */
+    body.is-authenticated .nav-login-mobile-btn,
+    body.is-authenticated .nav-login-desktop-btn,
+    body.is-authenticated #portalNavLoginMobile,
+    body.is-authenticated a[href="/portal"].nav-login-mobile-btn,
+    body.is-authenticated a[href="/portal"].btn-outline {
+      display: none !important;
+    }
+
+    #userScopeBanner {
+      display: none !important;
+    }
+
     .nav-login-mobile-btn {
       display: none;
     }
@@ -1121,7 +1133,7 @@
     }
 
     @media (max-width: 768px) {
-      .nav-login-mobile-btn {
+      body:not(.is-authenticated) .nav-login-mobile-btn {
         display: inline-flex !important;
         align-items: center;
         justify-content: center;
@@ -1137,6 +1149,11 @@
         text-decoration: none;
         white-space: nowrap;
         box-shadow: 0 2px 8px rgba(225, 6, 0, 0.35);
+      }
+      body.is-authenticated .nav-login-mobile-btn,
+      body.is-authenticated #portalNavLoginMobile,
+      body.is-authenticated .nav-cta a[href="/portal"].nav-login-mobile-btn {
+        display: none !important;
       }
     }
 
@@ -1290,7 +1307,7 @@
               <span class="lang-label" id="langLabel">AR</span>
             </button>
           </div>
-          <a href="/portal" class="nav-login-mobile-btn" title="Member Login" aria-label="Member Login">
+          <a href="/portal" class="nav-login-mobile-btn" id="portalNavLoginMobile" title="Member Login" aria-label="Member Login">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><polyline points="10 17 15 12 10 7"></polyline><line x1="15" y1="12" x2="3" y2="12"></line></svg>
             <span data-i18n="nav.login">Login</span>
           </a>
@@ -1405,7 +1422,7 @@
             <!-- Primary Action -->
             <button type="button" class="btn btn-primary" id="openUploadBtn" style="padding: 7px 16px; font-size: 0.82rem; font-weight: 700; display: inline-flex; align-items: center; gap: 6px;">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-              <span>+ Upload Data</span>
+              <span>Upload Data</span>
             </button>
 
             <!-- Live Notification Bell -->
@@ -1460,17 +1477,8 @@
           </div>
         </div>
 
-        <!-- Clearance & Jurisdiction Scope Banner -->
-        <div id="userScopeBanner">
-          <div style="display: flex; align-items: center; gap: 12px;">
-            <span id="scopeBadgeIcon" style="display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px;"></span>
-            <div>
-              <strong id="scopeTitle" style="color: var(--portal-text); font-size: 0.88rem; display: block; margin-bottom: 2px;">Executive Omni-Clearance</strong>
-              <span id="scopeDesc" style="color: var(--portal-text-muted); font-size: 0.78rem; line-height: 1.4;">Full omni-directional command over all engineering and operational divisions.</span>
-            </div>
-          </div>
-          <span id="scopeActionBadge" class="portal-role-pill role-executive" style="font-size: 0.72rem; letter-spacing: 0.05em;">Universal Command</span>
-        </div>
+        <!-- Hidden Container for deprecated banner -->
+        <div id="userScopeBanner" style="display: none !important;"></div>
 
         <!-- Global Presidential Sovereign Decree Banner (Appears across portal when active) -->
         <div id="leaderDecreeBanner" style="margin-bottom: 20px;"></div>
@@ -1485,14 +1493,11 @@
               <div>
                 <div style="display: flex; align-items: center; gap: 8px;">
                   <h3 style="font-size: 1.05rem; font-weight: 800; margin: 0; color: #FFFFFF;" class="deck-title-text" data-i18n="deck.headline">
-                    Executive Sovereign Console
+                    Executive Command Console
                   </h3>
                   <span style="background: rgba(16, 185, 129, 0.15); color: #10B981; border: 1px solid rgba(16, 185, 129, 0.35); padding: 1px 7px; border-radius: 9999px; font-size: 0.64rem; font-weight: 700;">
                     LIVE GOVERNANCE
                   </span>
-                </div>
-                <div style="font-size: 0.74rem; color: var(--portal-text-dim); margin-top: 1px;">
-                  Universal executive jurisdiction over engineering &amp; Silverstone operations
                 </div>
               </div>
             </div>
@@ -1623,69 +1628,37 @@
           </div>
         </div>
 
-        <!-- Sprint Directives & Quick Command Hub -->
-        <div class="liquid-glass-card" style="padding: 24px; margin-bottom: 28px; position: relative; overflow: hidden;">
-          <div style="position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, #E10600, #38BDF8, #F59E0B);"></div>
+        <!-- Active Sprint Focus & Fast Actions -->
+        <div class="liquid-glass-card" style="padding: 18px 22px; margin-bottom: 24px; position: relative; overflow: hidden; border-color: rgba(225, 6, 0, 0.3);">
+          <div style="position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, #E10600, #38BDF8, #F59E0B);"></div>
           
-          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 16px;">
-            <div style="display: flex; align-items: center; gap: 10px;">
-              <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #22C55E; box-shadow: 0 0 12px #22C55E;"></span>
-              <h3 style="margin: 0; font-size: 1.18rem; color: var(--text); font-weight: 800; display: flex; align-items: center; gap: 8px;">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E10600" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-                <span>Sprint Directives &amp; Quick Command Hub</span>
-              </h3>
-            </div>
-            <div style="display: flex; align-items: center; gap: 8px;">
-              <span style="font-size: 0.76rem; color: #38BDF8; font-weight: 700; background: rgba(56, 189, 248, 0.12); border: 1px solid rgba(56, 189, 248, 0.35); padding: 4px 12px; border-radius: 9999px;">
-                ⚡ Formula Student UK Pipeline Active
-              </span>
-            </div>
-          </div>
-
-          <!-- Directive Focus Box -->
-          <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 12px; padding: 16px; margin-bottom: 20px;">
-            <div style="display: flex; align-items: flex-start; gap: 12px;">
-              <div style="background: rgba(225,6,0,0.15); border: 1px solid rgba(225,6,0,0.3); border-radius: 8px; padding: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px;">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E10600" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-              </div>
-              <div style="flex: 1;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; flex-wrap: wrap; gap: 6px;">
-                  <strong style="font-size: 0.92rem; color: #FFFFFF;" id="directiveFocusTitle">Active Chassis &amp; Systems Packaging Sprint</strong>
-                  <span style="font-size: 0.72rem; color: #F59E0B; font-weight: 700; background: rgba(245, 158, 11, 0.12); padding: 2px 8px; border-radius: 4px;">Paddock Operations &bull; Live Roster Sync</span>
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <span style="display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: #22C55E; box-shadow: 0 0 10px #22C55E; flex-shrink: 0;"></span>
+              <div>
+                <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                  <strong style="font-size: 1rem; color: #FFFFFF;" id="directiveFocusTitle">VX-01 Systems Packaging Sprint</strong>
+                  <span style="font-size: 0.7rem; color: #38BDF8; font-weight: 700; background: rgba(56, 189, 248, 0.12); border: 1px solid rgba(56, 189, 248, 0.3); padding: 2px 8px; border-radius: 9999px;">
+                    Silverstone 2026
+                  </span>
                 </div>
-                <p style="margin: 0; font-size: 0.85rem; color: var(--text-muted); line-height: 1.55;" id="directiveFocusDesc">
-                  Directives are allocated by branch and department. All engineering subteam members are empowered to submit verified CAD, aerodynamic CFD analyses, or managerial sponsor reports directly into the Data Vault. Completing deliverables earns Velocity Points on the team leaderboards.
-                </p>
+                <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 2px;">
+                  Paddock Operations &bull; Live Roster Sync
+                </div>
               </div>
             </div>
-          </div>
 
-          <!-- Direct Command Actions -->
-          <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
-            <button type="button" class="btn btn-primary" onclick="openPortalModal('uploadModal')" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; font-weight: 700;">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-              <span>+ Upload Deliverable</span>
-            </button>
-            <button type="button" class="btn btn-outline" onclick="switchPortalTab('vault')" style="display: inline-flex; align-items: center; gap: 7px; padding: 10px 16px;">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
-              <span>Browse Vault</span>
-            </button>
-            <button type="button" class="btn btn-outline" onclick="switchPortalTab('tasks')" style="display: inline-flex; align-items: center; gap: 7px; padding: 10px 16px;">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-              <span>Task Center</span>
-            </button>
-            <button type="button" class="btn btn-outline" onclick="openEditPhotoModal()" style="display: inline-flex; align-items: center; gap: 7px; padding: 10px 16px; color: #A78BFA; border-color: rgba(167, 139, 250, 0.4);">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
-              <span>Update My Photo</span>
-            </button>
-            <button type="button" class="btn btn-outline" id="dashRoleControlBtn" onclick="openDedicatedRoleModal()" style="display: none; align-items: center; gap: 7px; padding: 10px 16px; color: #F59E0B; border-color: rgba(245, 158, 11, 0.45); background: rgba(245, 158, 11, 0.05);" title="Assign and adjust member roles and leadership positions">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><polyline points="17 11 19 13 23 9"></polyline></svg>
-              <span>Manage Member Roles</span>
-            </button>
-            <a href="team.html" target="_blank" class="btn btn-outline" style="display: inline-flex; align-items: center; gap: 7px; padding: 10px 16px; color: #38BDF8; border-color: rgba(56, 189, 248, 0.4); text-decoration: none;">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-              <span>Team Org Chart &rarr;</span>
-            </a>
+            <!-- Fast Actions -->
+            <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
+              <button type="button" class="btn btn-primary" onclick="openPortalModal('uploadModal')" style="display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; font-weight: 700; font-size: 0.82rem;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                <span>Upload Deliverable</span>
+              </button>
+              <button type="button" class="btn btn-outline" id="dashRoleControlBtn" onclick="openDedicatedRoleModal()" style="display: none; align-items: center; gap: 6px; padding: 8px 14px; font-size: 0.82rem; color: #F59E0B; border-color: rgba(245, 158, 11, 0.45);" title="Assign and adjust member roles">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><polyline points="17 11 19 13 23 9"></polyline></svg>
+                <span>Manage Roles</span>
+              </button>
+            </div>
           </div>
         </div>
 
@@ -2940,8 +2913,8 @@
           branch: 'Executive',
           departments: ['All'],
           avatar: '',
-          deptDesc: 'Executive System Administration & Recruitment Command • Omni-Clearance',
-          scopeDesc: 'Universal omni-directional command over recruitment pipeline, signup controls, candidate admission, and account governance.'
+          deptDesc: 'Executive Administration • System Governance',
+          scopeDesc: ''
         },
         fatima: {
           id: 'fatima-salman',
@@ -2951,8 +2924,8 @@
           branch: 'Executive',
           departments: ['All'],
           avatar: 'photos/Fatima Salman.jpeg',
-          deptDesc: 'Executive Governance & Overall Leadership • Omni-Clearance',
-          scopeDesc: 'Universal omni-directional authority across all technical, operational, and institutional divisions. Authorized to modify all team roles, approve all data downloads, and issue official team credentials.'
+          deptDesc: 'Executive Governance • Team Leadership',
+          scopeDesc: ''
         },
         karim: {
           id: 'karim-shaprawy',
@@ -2962,8 +2935,8 @@
           branch: 'Executive',
           departments: ['All'],
           avatar: 'photos/Karim Shaprawy.jpeg',
-          deptDesc: 'Operations, Build Management & Sponsorship • Omni-Clearance',
-          scopeDesc: 'Omni-directional operational oversight, workshop manufacturing discipline, and static event strategy. Authorized with Team Leader to manage team roles, approve downloads, and issue invitations.'
+          deptDesc: 'Operations & Build Governance',
+          scopeDesc: ''
         },
         romy: {
           id: 'mohamed-romy',
@@ -2973,8 +2946,8 @@
           branch: 'Technical',
           departments: ['Body & Chassis', 'Vehicle Dynamics', 'Powertrain', 'Electrical'],
           avatar: 'photos/Mohamed Romy.jpeg',
-          deptDesc: 'Technical Engineering Branch • Full Technical Archive Access',
-          scopeDesc: 'Full authority over Technical Branch (Body & Chassis, Vehicle Dynamics, Powertrain, Electrical). Authorized to assign technical sprint deliverables, manage technical subteams, and approve technical downloads. Governance actions automatically notify Team Leaders.'
+          deptDesc: 'Chief Engineering • Technical Subteams',
+          scopeDesc: ''
         },
         moaaz: {
           id: 'moaaz-elghamry',
@@ -2982,10 +2955,10 @@
           role: 'Managerial Leader & Powertrain Lead',
           roleType: 'managerial_lead',
           branch: 'Managerial & Technical',
-          departments: ['Media & PR', 'Business (Team Director)', 'Powertrain'],
+          departments: ['Media & PR', 'Business', 'Powertrain'],
           avatar: 'photos/Moaaz Elghamry.jpeg',
-          deptDesc: 'Managerial Leader & Powertrain Leader • Dual Operational & Powertrain Authority',
-          scopeDesc: 'Dual leadership command: Managerial Branch (Media & PR, Business) plus Powertrain Subteam Lead. Authorized to assign deliverables, oversee operational workflows, and manage members within jurisdiction. Governance actions automatically notify Team Leaders.'
+          deptDesc: 'Managerial & Technical Division • Powertrain, Media & PR',
+          scopeDesc: ''
         },
         hassan: {
           id: 'mohamed-hassan',
@@ -2995,8 +2968,8 @@
           branch: 'Managerial',
           departments: ['Media & PR'],
           avatar: 'photos/Mohamed Hassan.jpeg',
-          deptDesc: 'Media & Public Relations Lead',
-          scopeDesc: 'Subteam command over Media, photography, racecar documentary films, and public relations. Authorized to assign media deliverables and manage media crew. Actions automatically notify Managerial Leader and Team Leaders.'
+          deptDesc: 'Media & Public Relations',
+          scopeDesc: ''
         },
         ali: {
           id: 'ali-elgohary',
@@ -3876,6 +3849,10 @@
     let currentAuthUser = localStorage.getItem('velox_auth_user') || null;
     let currentPersonaKey = localStorage.getItem('velox_active_persona') || 'fatima';
 
+    if (currentAuthUser) {
+      document.body.classList.add('is-authenticated');
+    }
+
     function checkAuth() {
       const db = getPortalDb();
       const loginSection = document.getElementById('portalLoginSection');
@@ -3889,6 +3866,13 @@
             alert('Your account is currently suspended by Executive Administration. Please contact Team Leadership.');
             return false;
           }
+          document.body.classList.add('is-authenticated');
+          const mobileLoginBtn = document.getElementById('portalNavLoginMobile');
+          if (mobileLoginBtn) mobileLoginBtn.style.setProperty('display', 'none', 'important');
+          document.querySelectorAll('.nav-login-mobile-btn, .nav-login-desktop-btn').forEach(btn => {
+            btn.style.setProperty('display', 'none', 'important');
+          });
+
           currentPersonaKey = acct.personaKey;
           localStorage.setItem('velox_active_persona', currentPersonaKey);
           if (loginSection) loginSection.style.display = 'none';
@@ -3901,6 +3885,12 @@
       }
 
       // Not authenticated: reveal login gate
+      document.body.classList.remove('is-authenticated');
+      const mobileLoginBtn = document.getElementById('portalNavLoginMobile');
+      if (mobileLoginBtn) mobileLoginBtn.style.removeProperty('display');
+      document.querySelectorAll('.nav-login-mobile-btn, .nav-login-desktop-btn').forEach(btn => {
+        btn.style.removeProperty('display');
+      });
       if (loginSection) loginSection.style.display = 'block';
       if (mainSection) mainSection.style.display = 'none';
       return false;
@@ -3991,6 +3981,12 @@
       }
       localStorage.removeItem('velox_auth_user');
       currentAuthUser = null;
+      document.body.classList.remove('is-authenticated');
+      const mobileLoginBtn = document.getElementById('portalNavLoginMobile');
+      if (mobileLoginBtn) mobileLoginBtn.style.removeProperty('display');
+      document.querySelectorAll('.nav-login-mobile-btn, .nav-login-desktop-btn').forEach(btn => {
+        btn.style.removeProperty('display');
+      });
       const uInput = document.getElementById('loginUsername');
       const pInput = document.getElementById('loginPassword');
       if (uInput) uInput.value = '';
@@ -4037,7 +4033,7 @@
             departments: [pDept],
             subteam: pSubteam,
             avatar: pAvatar,
-            deptDesc: `${pBranch} Division • ${pDept}${pSubteam ? ' — ' + pSubteam : ''}`
+            deptDesc: `${pBranch} • ${pDept}${pSubteam ? ' — ' + pSubteam : ''}`
           };
           savePortalDb(db);
           return db.personas[pKey];
@@ -4078,68 +4074,21 @@
       else if (p.roleType === 'technical_lead' || (p.roleType === 'subteam_lead' && p.branch === 'Technical')) badgeClass = 'role-tech';
       else if (p.roleType === 'managerial_lead' || (p.roleType === 'subteam_lead' && p.branch === 'Managerial')) badgeClass = 'role-ops';
 
-      nameEl.innerHTML = `${p.name} <span class="portal-role-pill ${badgeClass}">${p.role}</span>`;
-      deptEl.textContent = p.deptDesc || p.branch;
-
-      // Update Distinct Clearance & Jurisdiction Scope Banner
-      const banner = document.getElementById('userScopeBanner');
-      const iconEl = document.getElementById('scopeBadgeIcon');
-      const titleEl = document.getElementById('scopeTitle');
-      const descEl = document.getElementById('scopeDesc');
-      const actionBadge = document.getElementById('scopeActionBadge');
-
-      if (banner && titleEl && descEl && iconEl && actionBadge) {
-        if (p.id === 'admin-director') {
-          iconEl.innerHTML = getPortalIcon('shield', 22, '', '#EF4444');
-          titleEl.textContent = t('scope.admin.title', 'Executive Administrator • Recruitment & System Command');
-          descEl.textContent = t('scope.admin.desc', 'Universal omni-directional command over recruitment pipeline, signup controls, candidate admission, and account governance.');
-          actionBadge.textContent = t('scope.admin.badge', 'Executive Omni-Command');
-          actionBadge.className = 'portal-role-pill role-executive';
-          banner.style.borderLeftColor = 'var(--red)';
-        } else if (p.id === 'fatima-salman') {
-          iconEl.innerHTML = getPortalIcon('crown', 22, '', '#F59E0B');
-          titleEl.textContent = t('scope.fatima.title', 'Team Leader • Executive Governance Command');
-          descEl.textContent = t('scope.fatima.desc', 'Universal omni-directional authority across all technical, operational, and institutional divisions. Authorized to modify all team roles, approve all data downloads, and issue official team credentials.');
-          actionBadge.textContent = t('scope.fatima.badge', 'Universal Authority');
-          actionBadge.className = 'portal-role-pill role-executive';
-          banner.style.borderLeftColor = 'var(--red)';
-        } else if (p.id === 'karim-shaprawy') {
-          iconEl.innerHTML = getPortalIcon('zap', 22, '', '#EF4444');
-          titleEl.textContent = t('scope.karim.title', 'Vice Team Leader • Operations & Build Governance');
-          descEl.textContent = t('scope.karim.desc', 'Omni-directional operational oversight, workshop manufacturing discipline, and static event strategy. Authorized with Team Leader to manage team roles, approve downloads, and issue invitations.');
-          actionBadge.textContent = t('scope.karim.badge', 'Executive Operations');
-          actionBadge.className = 'portal-role-pill role-executive';
-          banner.style.borderLeftColor = 'var(--red)';
-        } else if (p.id === 'mohamed-romy') {
-          iconEl.innerHTML = getPortalIcon('car', 22, '', '#38BDF8');
-          titleEl.textContent = t('scope.romy.title', 'Technical Leader • Chief Engineering Command');
-          descEl.textContent = t('scope.romy.desc', 'Full command over Technical Branch (Body & Chassis, Vehicle Dynamics, Powertrain, Electrical). Authorized to assign technical deliverables, manage subteam members, and approve technical file downloads. Changes automatically notify Team Leaders.');
-          actionBadge.textContent = t('scope.romy.badge', 'Technical Command');
-          actionBadge.className = 'portal-role-pill role-tech';
-          banner.style.borderLeftColor = '#38BDF8';
-        } else if (p.id === 'moaaz-elghamry') {
-          iconEl.innerHTML = getPortalIcon('tool', 22, '', '#FBBF24');
-          titleEl.textContent = t('scope.moaaz.title', 'Dual Command • Managerial Leader & Powertrain Subteam Lead');
-          descEl.textContent = t('scope.moaaz.desc', 'Dual leadership command: Managerial Branch (HR, Media & PR, Business) plus Powertrain engineering. Authorized to assign deliverables, oversee operational workflows, and manage members within jurisdiction. Changes automatically notify Team Leaders.');
-          actionBadge.textContent = t('scope.moaaz.badge', 'Dual Branch Command');
-          actionBadge.className = 'portal-role-pill role-ops';
-          banner.style.borderLeftColor = '#FBBF24';
-        } else if (p.id === 'mohamed-hassan') {
-          iconEl.innerHTML = getPortalIcon('camera', 22, '', '#FBBF24');
-          titleEl.textContent = t('scope.hassan.title', 'Media & PR Lead • Visual Identity & Brand Architecture');
-          descEl.textContent = t('scope.hassan.desc', 'Subteam command over Media, photography, racecar documentary films, and social campaigns. Authorized to assign media deliverables and manage media crew. Changes automatically notify Managerial Leader and Team Leaders.');
-          actionBadge.textContent = t('scope.hassan.badge', 'Media & PR Lead');
-          actionBadge.className = 'portal-role-pill role-ops';
-          banner.style.borderLeftColor = '#FBBF24';
-        } else {
-          iconEl.innerHTML = getPortalIcon('tool', 22, '', 'rgba(255,255,255,0.7)');
-          titleEl.textContent = `${t('scope.member.title', 'Team Member')} • ${p.branch} (${p.departments.join(', ')})`;
-          descEl.textContent = t('scope.member.desc', 'Assigned engineer/operations member. Read-only roster view. Complete assigned sprint tasks on time to earn Velocity Points and badges on the Silverstone Leaderboard.');
-          actionBadge.textContent = t('scope.member.badge', 'Specialist Member');
-          actionBadge.className = 'portal-role-pill role-member';
-          banner.style.borderLeftColor = 'rgba(255,255,255,0.2)';
-        }
+      let displayName = p.name || 'Member';
+      if (p.id === 'moaaz-elghamry' && (displayName.toLowerCase().includes('managerial') || displayName.toLowerCase().includes('lead'))) {
+        displayName = 'Moaaz Elghamry';
       }
+      nameEl.innerHTML = `${displayName} <span class="portal-role-pill ${badgeClass}">${p.role}</span>`;
+
+      let cleanDept = p.deptDesc || (p.branch + ' • ' + (p.departments ? p.departments.join(', ') : p.dept));
+      if (cleanDept.includes('• Dual Operational & Powertrain Authority') || cleanDept.includes('Dual Operational')) {
+        cleanDept = 'Managerial & Technical Division • Powertrain, Media & PR';
+      }
+      deptEl.textContent = cleanDept;
+
+      // Suppress verbose scope banner permanently to declutter dashboard
+      const banner = document.getElementById('userScopeBanner');
+      if (banner) banner.style.display = 'none';
 
       const isLeader = (p.roleType === 'executive' || p.roleType === 'technical_lead' || p.roleType === 'managerial_lead' || p.roleType === 'subteam_lead');
 
@@ -4219,11 +4168,10 @@
       if (!p || !isTeamLeader(p)) {
         deck.style.display = 'none';
         const banner = document.getElementById('userScopeBanner');
-        if (banner) banner.style.display = 'flex';
+        if (banner) banner.style.display = 'none';
         return;
       }
       deck.style.display = 'block';
-      // Hide the redundant static scope banner for Team Leaders who already have the command console
       const scopeBanner = document.getElementById('userScopeBanner');
       if (scopeBanner) scopeBanner.style.display = 'none';
 
