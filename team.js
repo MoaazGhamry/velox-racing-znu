@@ -628,6 +628,7 @@ async function syncCloudAcceptedMembers() {
     if (Array.isArray(data)) {
       data.forEach(app => {
         if (!app || !app.full_name) return;
+        if (app.email === 'system-settings@velox.internal' || app.full_name.includes('SYSTEM_SETTINGS')) return;
         const cleanName = app.full_name.trim();
         const normName = cleanName.toLowerCase();
         if (!normName || seenNames.has(normName)) return;

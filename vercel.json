@@ -25,6 +25,7 @@
     }
   ],
   "rewrites": [
+    { "source": "/api/reset-password", "destination": "/api/reset_password" },
     { "source": "/team", "destination": "/team.html" },
     { "source": "/join", "destination": "/join.html" },
     { "source": "/hr", "destination": "/hr.html" },

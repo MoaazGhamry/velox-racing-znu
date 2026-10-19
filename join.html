@@ -253,13 +253,17 @@
           </div>
 
           <!-- Recruitment Closed Notice (Controlled via Admin Dashboard) -->
-          <div id="recruitmentClosedNotice" style="display: none; background: rgba(225, 29, 72, 0.08); border: 1px solid rgba(225, 29, 72, 0.35); border-radius: var(--radius-md); padding: 40px 28px; text-align: center; margin-top: 10px;">
-            <div style="font-size: 2.5rem; margin-bottom: 14px;">🔒</div>
-            <h2 style="font-size: 1.7rem; margin-bottom: 12px; color: #FFF;">Recruitment Currently Closed</h2>
-            <p style="color: var(--text-muted); max-width: 540px; margin: 0 auto 24px auto; font-size: 0.95rem; line-height: 1.6;">
-              Applications for VELOX Racing are temporarily closed by the Administration for applicant evaluations. Please follow our official Instagram and LinkedIn pages for updates on the next recruitment cycle.
+          <div id="recruitmentClosedNotice" style="display: none; background: rgba(225, 29, 72, 0.08); border: 1px solid rgba(225, 29, 72, 0.35); border-radius: var(--radius-md); padding: 44px 28px; text-align: center; margin-top: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.4);">
+            <div style="font-size: 2.8rem; margin-bottom: 14px;">🔒</div>
+            <h2 style="font-size: 1.8rem; margin-bottom: 12px; color: #FFF;" data-i18n="join.closedTitle">Recruitment Currently Closed / باب الانضمام مغلق حالياً</h2>
+            <p style="color: var(--text-muted); max-width: 580px; margin: 0 auto 24px auto; font-size: 0.96rem; line-height: 1.7;" data-i18n="join.closedDesc">
+              تم إغلاق باب التقديم لفريق VELOX Racing حالياً لتقييم المتقدمين واستكمال المرحلة الحالية. تابعونا على صفحاتنا الرسمية لمعرفة موعد فتح باب التقديم للمراحل القادمة.<br/>
+              Applications for VELOX Racing are currently closed for applicant evaluations. Please follow our official channels for upcoming recruitment announcements.
             </p>
-            <a href="/" class="btn btn-outline">Back to Homepage &rarr;</a>
+            <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+              <a href="/" class="btn btn-primary" data-i18n="join.btnHome">الرئيسية / Homepage</a>
+              <a href="/team" class="btn btn-outline" data-i18n="join.btnTeam">هيكل الفريق / Team Structure</a>
+            </div>
           </div>
         </div>
       </div>
@@ -438,18 +442,58 @@
       facultySelectEl.addEventListener('change', updateAcademicYearOptions);
     }
 
-    // Check if Recruitment Process was Toggled Closed in Admin Dashboard
-    function checkRecruitmentStatus() {
-      const isClosed = localStorage.getItem('velox_recruitment_open') === 'false';
+    // Check if Recruitment Process was Toggled Closed in Admin Dashboard or Supabase Cloud
+    async function checkRecruitmentStatus() {
       const formEl = document.getElementById('joinForm');
       const closedNotice = document.getElementById('recruitmentClosedNotice');
-      if (isClosed) {
-        if (formEl) formEl.style.display = 'none';
-        if (closedNotice) closedNotice.style.display = 'block';
-      } else {
-        if (formEl && (!successScreen || successScreen.style.display !== 'block')) formEl.style.display = 'block';
-        if (closedNotice) closedNotice.style.display = 'none';
+      
+      const applyState = (isOpen) => {
+        if (!isOpen) {
+          if (formEl) formEl.style.display = 'none';
+          if (closedNotice) closedNotice.style.display = 'block';
+        } else {
+          if (formEl && (!successScreen || successScreen.style.display !== 'block')) formEl.style.display = 'block';
+          if (closedNotice) closedNotice.style.display = 'none';
+        }
+      };
+
+      // 1. Instant check from local cache if present
+      const localVal = localStorage.getItem('velox_recruitment_open');
+      if (localVal === 'false') {
+        applyState(false);
       }
+
+      // 2. Authoritative live check from Supabase cloud (works in incognito & across all devices)
+      try {
+        const cfg = window.VELOX_CONFIG || {};
+        if (cfg.url && cfg.anonKey) {
+          const fetchUrl = `${cfg.url}/rest/v1/applications?email=eq.system-settings@velox.internal&select=hr_notes`;
+          const resp = await fetch(fetchUrl, {
+            headers: {
+              'apikey': cfg.anonKey,
+              'Authorization': `Bearer ${cfg.anonKey}`
+            }
+          });
+          if (resp.ok) {
+            const data = await resp.json();
+            if (Array.isArray(data) && data.length > 0 && data[0].hr_notes) {
+              try {
+                const settings = JSON.parse(data[0].hr_notes);
+                if (typeof settings.recruitment_open === 'boolean') {
+                  const isOpen = settings.recruitment_open;
+                  localStorage.setItem('velox_recruitment_open', isOpen ? 'true' : 'false');
+                  applyState(isOpen);
+                  return isOpen;
+                }
+              } catch (parseErr) {}
+            }
+          }
+        }
+      } catch (cloudErr) {
+        console.warn('Recruitment gate cloud status check:', cloudErr);
+      }
+
+      return localVal !== 'false';
     }
 
     // Interactive Skill Chips & Radio Pills
@@ -580,6 +624,17 @@
 
       submitBtn.disabled = true;
       submitBtn.textContent = isAr ? 'جاري إرسال الطلب...' : 'Submitting Application...';
+
+      // Verify live recruitment status
+      const isOpenLive = await checkRecruitmentStatus();
+      if (!isOpenLive) {
+        showError(isAr 
+          ? 'تم إغلاق باب التقديم رسمياً من قِبل إدارة الفريق. لا يمكن استقبال طلبات جديدة حالياً.' 
+          : 'Recruitment is currently closed by Team Administration. Applications cannot be accepted at this time.');
+        submitBtn.disabled = false;
+        submitBtn.textContent = isAr ? 'إرسال طلب الانضمام' : 'Submit Application';
+        return;
+      }
 
       try {
         const cfg = window.VELOX_CONFIG || {};

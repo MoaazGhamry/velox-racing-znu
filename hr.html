@@ -671,9 +671,9 @@
             .order('created_at', { ascending: false });
 
           if (!error && Array.isArray(data)) {
-            cloudApps = data;
-            if (data.length > 0) {
-              updateCloudStatusBanner(`<strong>Cloud Database Connected:</strong> ${data.length} candidate application(s) synchronized live from Supabase.`, 'success');
+            cloudApps = data.filter(d => d && d.email !== 'system-settings@velox.internal');
+            if (cloudApps.length > 0) {
+              updateCloudStatusBanner(`<strong>Cloud Database Connected:</strong> ${cloudApps.length} candidate application(s) synchronized live from Supabase.`, 'success');
             } else {
               updateCloudStatusBanner('<strong>Cloud Connected:</strong> Connected to Supabase table <code>applications</code>. Ready for incoming candidate submissions.', 'info');
             }

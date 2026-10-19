@@ -3,7 +3,7 @@
  * Network-First Strategy + Live Connection Bypass
  */
 
-const CACHE_NAME = 'velox-live-v7.0';
+const CACHE_NAME = 'velox-live-v8.0';
 const PRECACHE_ASSETS = [
   '/',
   '/index.html',
@@ -11,8 +11,8 @@ const PRECACHE_ASSETS = [
   '/hr.html',
   '/portal.html',
   '/sponsorship.html',
-  '/style.css?v=7.0',
-  '/i18n.js?v=7.0',
+  '/style.css?v=8.0',
+  '/i18n.js?v=8.0',
   '/config.js',
   '/manifest.json',
   '/pwa-icon-192.png',
@@ -69,10 +69,14 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // ALWAYS BYPASS CACHE for team structure, styles, team scripts, and database APIs
-  // Ensures team structure and styling are ALWAYS 100% fresh from live connection
+  // ALWAYS BYPASS CACHE for live endpoints, forms, portals, and database APIs
   const url = event.request.url;
   if (
+    url.includes('/api/') ||
+    url.includes('join.html') ||
+    url.includes('/join') ||
+    url.includes('portal.html') ||
+    url.includes('/portal') ||
     url.includes('style.css') ||
     url.includes('i18n.js') ||
     url.includes('team.js') ||

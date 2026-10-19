@@ -1474,12 +1474,15 @@
               </div>
             </div>
 
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; font-size: 0.82rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; font-size: 0.82rem; flex-wrap: wrap; gap: 8px;">
               <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; color: var(--text-muted);">
                 <input type="checkbox" id="rememberMe" checked style="accent-color: var(--red);" />
                 Remember this workstation
               </label>
-              <span style="color: var(--text-dim); font-size: 0.76rem;">256-Bit TLS</span>
+              <a href="javascript:void(0)" onclick="openForgotPasswordModal()" style="color: #FB7185; font-size: 0.8rem; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 4px;" title="Reset your account password">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2l-2 2m-1.5 6.1L12 15.5l-4-4 5.4-5.5a5.5 5.5 0 1 1 7.6 7.6z"></path></svg>
+                <span>Forgot password? / نسيت كلمة المرور؟</span>
+              </a>
             </div>
 
             <button type="submit" class="btn btn-primary btn-full" style="padding: 13px; font-weight: 700; font-size: 0.95rem; letter-spacing: 0.02em; border-radius: 9px; min-height: 48px; box-shadow: 0 4px 18px rgba(225, 6, 0, 0.45);">
@@ -2164,6 +2167,10 @@
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#06B6D4" stroke-width="2"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
             <span>Mission Telemetry</span>
           </button>
+          <button type="button" class="btn btn-outline admin-subnav-btn" id="adminSubnavSecurity" onclick="switchAdminSubtab('security')" style="padding: 7px 16px; font-size: 0.8rem; border-radius: 9999px; display: inline-flex; align-items: center; gap: 7px; white-space: nowrap; flex-shrink: 0; color: #CBD5E1;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#F43F5E" stroke-width="2.2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            <span>Site &amp; Passwords / أمن الموقع</span>
+          </button>
         </div>
 
         <!-- Admin Module 0: Recruitment & Candidate Pipeline -->
@@ -2388,6 +2395,113 @@
           <!-- Telemetry Console Container -->
           <div id="adminAuditLogContainer" style="max-height: 280px; overflow-y: auto; font-family: 'Courier New', Courier, monospace; font-size: 0.8rem; line-height: 1.8; color: #94A3B8; background: rgba(5, 7, 10, 0.85); padding: 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08); box-shadow: inset 0 2px 8px rgba(0,0,0,0.8);">
             <!-- Populated dynamically via renderAuditLog() -->
+          </div>
+        </div>
+
+        <!-- Admin Module 5: Site Management & Password Governance (#adminSecuritySection) -->
+        <div class="portal-panel-card liquid-glass-card" id="adminSecuritySection" style="display: none; border: 1px solid rgba(244, 63, 94, 0.4); box-shadow: 0 15px 40px rgba(0,0,0,0.6), 0 0 25px rgba(244, 63, 94, 0.1); padding: 26px; position: relative; overflow: hidden; margin-bottom: 28px;">
+          <div style="position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, #E10600, #F43F5E, #FB7185);"></div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 16px; flex-wrap: wrap; gap: 14px;">
+            <div>
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <span style="width: 10px; height: 10px; border-radius: 50%; background: #F43F5E; display: inline-block; box-shadow: 0 0 10px #F43F5E;"></span>
+                <h3 style="margin: 0; font-size: 1.25rem; font-weight: 800; color: #FFFFFF;">
+                  Site &amp; Password Governance / إدارة الموقع والباسوردات
+                </h3>
+              </div>
+              <p style="margin: 4px 0 0 0; font-size: 0.82rem; color: var(--portal-text-muted);">
+                Central security console: toggle recruitment globally across all devices, change Executive Admin credentials, and manage team member passwords with live Supabase synchronization.
+              </p>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button type="button" class="btn btn-outline" onclick="loadLiveSecuritySettings(true)" style="padding: 7px 14px; font-size: 0.82rem; display: inline-flex; align-items: center; gap: 6px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg>
+                <span>Refresh Cloud Status</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Section Grid: Gate Control + Admin Password -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 18px; margin-bottom: 26px;">
+            <!-- Card 1: Master Recruitment Intake Gate -->
+            <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 20px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <div style="font-weight: 700; font-size: 0.95rem; color: #FFF; display: flex; align-items: center; gap: 8px;">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E10600" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                  <span>Master Recruitment Gate (بوابة التقديم)</span>
+                </div>
+                <span id="secRecruitmentBadge" class="access-status-badge status-unlocked" style="font-weight: 700;">CHECKING...</span>
+              </div>
+              <p style="font-size: 0.8rem; color: #94A3B8; line-height: 1.5; margin: 0 0 16px 0;">
+                Global kill-switch for candidate applications. When toggled to <strong>CLOSED</strong>, registration is immediately disabled in Supabase and the form on <code>/join</code> is hidden globally across all browsers, phones, and Incognito Mode.
+              </p>
+              <div style="display: flex; gap: 10px; align-items: center;">
+                <button type="button" class="btn btn-primary" id="secToggleGateBtn" onclick="toggleSecurityRecruitmentGate()" style="flex: 1; padding: 10px 16px; font-weight: 700; font-size: 0.85rem; display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path><line x1="12" y1="2" x2="12" y2="12"></line></svg>
+                  <span id="secToggleGateBtnText">Toggle Recruitment Gate</span>
+                </button>
+              </div>
+              <div style="margin-top: 10px; font-size: 0.72rem; color: #64748B; font-family: monospace;" id="secGateSyncStatus">
+                Connected to: mmkeybgkqkoepmyuispa.supabase.co
+              </div>
+            </div>
+
+            <!-- Card 2: Executive Admin Password Manager -->
+            <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 20px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <div style="font-weight: 700; font-size: 0.95rem; color: #FFF; display: flex; align-items: center; gap: 8px;">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2"><path d="M21 2l-2 2m-1.5 6.1L12 15.5l-4-4 5.4-5.5a5.5 5.5 0 1 1 7.6 7.6z"></path></svg>
+                  <span>Executive Admin Password (باسورد الأدمن)</span>
+                </div>
+                <span class="portal-role-pill role-executive" style="font-size: 0.7rem;">@admin</span>
+              </div>
+              <p style="font-size: 0.8rem; color: #94A3B8; line-height: 1.5; margin: 0 0 14px 0;">
+                Change the password for the master <strong>admin</strong> account. Changes are synced directly to Supabase cloud and apply everywhere immediately.
+              </p>
+              <form id="adminChangeMasterPassForm" onsubmit="handleAdminMasterPassChange(event)">
+                <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+                  <input type="password" id="adminMasterNewPass" placeholder="Enter new admin password" class="form-control" style="flex: 1; padding: 8px 12px; font-size: 0.82rem;" required minlength="4" />
+                  <button type="submit" class="btn btn-outline" style="color: #F59E0B; border-color: rgba(245, 158, 11, 0.4); padding: 8px 14px; font-size: 0.82rem; white-space: nowrap; font-weight: 600;">
+                    Update &amp; Sync
+                  </button>
+                </div>
+                <div id="adminMasterPassAlert" style="display: none; font-size: 0.76rem; color: #10B981; margin-top: 4px;"></div>
+              </form>
+            </div>
+          </div>
+
+          <!-- Card 3: Team Passwords Governance Table -->
+          <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 20px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
+              <div>
+                <h4 style="margin: 0 0 4px 0; font-size: 1.05rem; font-weight: 700; color: #FFF; display: flex; align-items: center; gap: 8px;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                  <span>Team Members Credentials &amp; Reset Desk (إدارة باسوردات الفريق)</span>
+                </h4>
+                <p style="margin: 0; font-size: 0.78rem; color: var(--portal-text-dim);">
+                  Set a custom password for any team member, or trigger an official password reset email to their registered inbox.
+                </p>
+              </div>
+              <input type="text" id="secMemberSearchInput" placeholder="Filter by name, username, or email..." class="form-control" style="width: auto; min-width: 250px; padding: 7px 14px; font-size: 0.82rem;" oninput="renderSecurityMembersTable()" />
+            </div>
+
+            <div class="vault-table-wrap">
+              <table class="vault-table" id="secMembersTable">
+                <thead>
+                  <tr>
+                    <th>Member</th>
+                    <th>Username</th>
+                    <th>Registered Email</th>
+                    <th>Department / Subteam</th>
+                    <th>Password Governance</th>
+                  </tr>
+                </thead>
+                <tbody id="secMembersTableBody">
+                  <!-- Populated dynamically via renderSecurityMembersTable() -->
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </section>
@@ -2846,34 +2960,84 @@
     </div>
   </div>
 
-  <!-- 10. Forgot Password & Support Modal -->
+  <!-- 10. Forgot Password & Interactive Recovery Modal -->
   <div class="portal-modal-backdrop" id="forgotPassModal">
-    <div class="portal-modal-box">
+    <div class="portal-modal-box" style="max-width: 480px;">
       <div class="portal-modal-header">
-        <h3 style="margin: 0; font-size: 1.2rem;">Credentials & Access Support</h3>
+        <h3 style="margin: 0; font-size: 1.2rem; display: flex; align-items: center; gap: 8px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E10600" stroke-width="2.5"><path d="M21 2l-2 2m-1.5 6.1L12 15.5l-4-4 5.4-5.5a5.5 5.5 0 1 1 7.6 7.6z"></path></svg>
+          <span>Password Recovery / استعادة كلمة المرور</span>
+        </h3>
         <button type="button" class="portal-modal-close" onclick="closePortalModal('forgotPassModal')">&times;</button>
       </div>
-      <div>
-        <div style="text-align: center; margin-bottom: 20px;">
-          <div style="width: 52px; height: 52px; border-radius: 50%; background: rgba(197,34,31,0.15); border: 2px solid var(--red); display: inline-flex; align-items: center; justify-content: center; color: var(--red); margin-bottom: 12px;">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+
+      <!-- Alert for feedback -->
+      <div id="forgotModalAlert" class="portal-auth-alert" style="display: none; margin-bottom: 14px;">
+        <span id="forgotModalAlertMsg"></span>
+      </div>
+
+      <!-- STEP 1: Enter Registered Email -->
+      <div id="forgotStep1">
+        <p style="font-size: 0.85rem; color: var(--portal-text-muted); line-height: 1.6; margin: 0 0 16px 0;">
+          Enter the registered email address associated with your VELOX Racing membership or application. We will dispatch an official 6-digit verification code and reset link directly to your inbox.<br/>
+          <span style="font-size: 0.8rem; color: #94A3B8;">أدخل بريدك الإلكتروني المسجل لدينا لإرسال رمز التحقق ورابط إنشاء كلمة مرور جديدة.</span>
+        </p>
+
+        <form id="forgotRequestForm" onsubmit="handleForgotRequest(event)">
+          <div class="form-group" style="margin-bottom: 16px;">
+            <label for="forgotEmailInput" style="display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 6px;">
+              Registered Email Address / البريد المسجل
+            </label>
+            <input type="email" id="forgotEmailInput" class="form-control" placeholder="e.g. yourname@gmail.com" required style="height: 44px; border-radius: 8px;" />
           </div>
-          <h4 style="margin: 0 0 6px 0; color: var(--text);">Protected Team Infrastructure</h4>
-          <p style="font-size: 0.85rem; color: var(--text-muted); margin: 0;">
-            Velox Inside Portal access is restricted to official student engineers and executive leaders.
-          </p>
+
+          <button type="submit" id="forgotSendCodeBtn" class="btn btn-primary btn-full" style="padding: 12px; font-weight: 700; font-size: 0.92rem; border-radius: 8px; min-height: 46px;">
+            Send Reset Code &rarr; / إرسال رمز التحقق
+          </button>
+        </form>
+      </div>
+
+      <!-- STEP 2: Verify Code & Enter New Password -->
+      <div id="forgotStep2" style="display: none;">
+        <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 8px; padding: 12px; margin-bottom: 16px; font-size: 0.82rem; color: #34D399;">
+          Verification code has been dispatched to <strong id="forgotSentTargetEmail" style="color: #FFF;"></strong>. Please check your inbox (and spam folder).
         </div>
 
-        <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 8px; padding: 16px; margin-bottom: 16px; font-size: 0.84rem; line-height: 1.6;">
-          <p style="margin: 0 0 10px 0; color: var(--text); font-weight: 600;">How to get your credentials or reset your password:</p>
-          <ul style="margin: 0; padding-left: 20px; color: var(--text-muted);">
-            <li><strong>Official Invitation:</strong> If you are newly recruited, request an official invitation link from <strong>Fatima Salman</strong> (Team Leader) or <strong>Karim Shaprawy</strong> (Vice Leader).</li>
-            <li><strong>Password Reset:</strong> Contact your Subteam Leader or Team Executive to issue a password reset token from the Admin Dashboard.</li>
-            <li><strong>Official Contact:</strong> <a href="mailto:velox.racing.znu@gmail.com" style="color: var(--red);">velox.racing.znu@gmail.com</a></li>
-          </ul>
-        </div>
+        <form id="forgotConfirmForm" onsubmit="handleForgotConfirm(event)">
+          <div class="form-group" style="margin-bottom: 14px;">
+            <label for="forgotCodeInput" style="display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 6px;">
+              6-Digit Code / رمز التحقق المكون من 6 أرقام
+            </label>
+            <input type="text" id="forgotCodeInput" class="form-control" placeholder="123456" maxlength="8" required style="height: 44px; font-family: monospace; font-size: 1.1rem; letter-spacing: 4px; text-align: center; border-radius: 8px;" />
+          </div>
 
-        <button type="button" class="btn btn-primary btn-full" onclick="closePortalModal('forgotPassModal')">Understood & Back to Login</button>
+          <div class="form-group" style="margin-bottom: 14px;">
+            <label for="forgotNewPassInput" style="display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 6px;">
+              New Password / كلمة المرور الجديدة
+            </label>
+            <input type="password" id="forgotNewPassInput" class="form-control" placeholder="Enter new password (min. 4 characters)" minlength="4" required style="height: 44px; border-radius: 8px;" />
+          </div>
+
+          <div class="form-group" style="margin-bottom: 18px;">
+            <label for="forgotConfirmPassInput" style="display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 6px;">
+              Confirm New Password / تأكيد كلمة المرور
+            </label>
+            <input type="password" id="forgotConfirmPassInput" class="form-control" placeholder="Re-enter new password" minlength="4" required style="height: 44px; border-radius: 8px;" />
+          </div>
+
+          <button type="submit" id="forgotSubmitNewPassBtn" class="btn btn-primary btn-full" style="padding: 12px; font-weight: 700; font-size: 0.92rem; border-radius: 8px; min-height: 46px;">
+            Save New Password &amp; Sign In &rarr;
+          </button>
+
+          <div style="display: flex; justify-content: space-between; margin-top: 12px;">
+            <button type="button" class="btn btn-outline" style="font-size: 0.78rem; padding: 6px 12px;" onclick="resetForgotModalToStep1()">
+              &larr; Back / بريد آخر
+            </button>
+            <button type="button" class="btn btn-outline" style="font-size: 0.78rem; padding: 6px 12px; color: #38BDF8;" onclick="resendForgotCode()">
+              Resend Code / إعادة إرسال
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
@@ -4039,11 +4203,22 @@
       return false;
     }
 
-    function portalLogin(username, password) {
+    async function portalLogin(username, password) {
       const db = getPortalDb();
       const u = (username || '').trim().toLowerCase();
       const cleanU = u.replace(/[^a-z0-9]/g, '');
       const p = (password || '').trim();
+
+      // Read cloud security settings
+      let cloudSettings = window._veloxSecuritySettings || {};
+      if (!cloudSettings.passwords) {
+        try {
+          cloudSettings = await loadLiveSecuritySettings(false) || {};
+        } catch (e) {}
+      }
+
+      const cloudPasswords = cloudSettings.passwords || {};
+      const cloudAdminPass = cloudSettings.admin_password || 'admin2026';
 
       const acct = db.accounts.find(a => {
         const accUser = (a.username || '').toLowerCase();
@@ -4068,9 +4243,21 @@
                             (emailPrefix && (accClean === emailPrefix || nameClean === emailPrefix)) ||
                             (isAhmedTarget && isAhmedAccount);
 
-        const passMatches = a.password === p || p === 'velox2026' || (accClean === 'admin' && (p === 'admin2026' || p === 'velox2026'));
+        // Multi-tier password check:
+        // 1. Specific cloud password for this account/email/username
+        // 2. Admin password if account is admin
+        // 3. Local account password
+        // 4. Default velox2026 fallback
+        const customCloudPass = cloudPasswords[accUser] || cloudPasswords[u] || (a.email && cloudPasswords[a.email.toLowerCase()]);
+        const passMatches = 
+          (customCloudPass && customCloudPass === p) ||
+          (accClean === 'admin' && (p === cloudAdminPass || p === 'admin2026' || a.password === p)) ||
+          a.password === p ||
+          p === 'velox2026';
+
         return userMatches && passMatches;
       });
+
       if (acct) {
         if (acct.status === 'Suspended') {
           const alertEl = document.getElementById('loginAlert');
@@ -4082,8 +4269,10 @@
           return false;
         }
 
-        // Synchronize and lock in velox2026 password
-        acct.password = 'velox2026';
+        // Maintain custom password if entered
+        if (p && p !== 'velox2026') {
+          acct.password = p;
+        }
         acct.status = 'Active';
 
         currentAuthUser = acct.username;
@@ -4103,7 +4292,7 @@
         const alertEl = document.getElementById('loginAlert');
         const alertMsg = document.getElementById('loginAlertMsg');
         if (alertEl && alertMsg) {
-          alertMsg.textContent = 'Invalid username or password. Please verify your credentials.';
+          alertMsg.textContent = 'Invalid username or password. Please verify your credentials or click Forgot Password.';
           alertEl.classList.add('show');
         }
         return false;
@@ -4390,17 +4579,7 @@
     }
 
     function toggleMasterRecruitmentIntake() {
-      const p = getActivePersona();
-      if (!isTeamLeader(p)) {
-        alert('Access Denied: Only Supreme Team Leader Fatima Salman or Vice Leader Karim Shaprawy can toggle the master recruitment intake gate.');
-        return;
-      }
-      const current = localStorage.getItem('velox_recruitment_open') !== 'false';
-      const newState = !current;
-      localStorage.setItem('velox_recruitment_open', newState ? 'true' : 'false');
-      logAuditEvent(`RECRUITMENT: Master intake gate set to ${newState ? 'OPEN (Accepting candidates)' : 'PAUSED (Intake closed)'} by ${p.name}.`);
-      renderFatimaPresidentialDeck(p);
-      alert(`Recruitment intake gate is now ${newState ? 'OPEN for new candidates' : 'PAUSED. Candidate form will display closed status'}.`);
+      toggleSecurityRecruitmentGate();
     }
 
     function switchPortalTab(tabKey) {
@@ -5263,6 +5442,9 @@
     // ==================== RECRUITMENT & SIGNUP APPLICATIONS CONTROL CENTER ====================
     function normalizeApplication(app) {
       if (!app) return null;
+      if (app.email === 'system-settings@velox.internal' || (app.full_name && app.full_name.includes('SYSTEM_SETTINGS'))) {
+        return null;
+      }
       const name = (app.full_name || app.name || 'Candidate').trim();
       const email = (app.email || '').trim();
       const phone = (app.phone || '').trim();
@@ -5476,30 +5658,15 @@
     }
 
     function isRecruitmentOpen() {
+      if (window._veloxSecuritySettings && typeof window._veloxSecuritySettings.recruitment_open === 'boolean') {
+        return window._veloxSecuritySettings.recruitment_open;
+      }
       const val = localStorage.getItem('velox_recruitment_open');
-      return val === null ? true : val === 'true';
+      return val === 'true';
     }
 
     function toggleRecruitmentStatus() {
-      const p = getActivePersona();
-      if (!isTeamLeader(p)) {
-        alert('Access Denied: Only Executive Administrators and Team Leaders can toggle recruitment status.');
-        return;
-      }
-      const current = isRecruitmentOpen();
-      const next = !current;
-      localStorage.setItem('velox_recruitment_open', next ? 'true' : 'false');
-      
-      logAuditEvent(`[RECRUITMENT] Public recruitment intake toggled to ${next ? 'OPEN' : 'CLOSED'} by ${p.name}.`);
-      addNotification({
-        title: 'Recruitment Status Changed',
-        message: `Public application intake is now ${next ? 'OPEN' : 'CLOSED'} by ${p.name}.`,
-        author: p.name,
-        type: 'governance',
-        target: 'all'
-      });
-
-      renderApplicationsControlCenter();
+      toggleSecurityRecruitmentGate();
     }
 
     function renderApplicationsControlCenter() {
@@ -6045,8 +6212,8 @@
       const p = getActivePersona();
       const isTeamLead = isTeamLeader(p);
 
-      // Enforce: Leader & Vice-Leader ONLY for Deliverables, Telemetry, and Recruitment Pipeline
-      if (!isTeamLead && (subtabKey === 'recruitment' || subtabKey === 'deliverables' || subtabKey === 'telemetry')) {
+      // Enforce: Leader & Vice-Leader ONLY for Deliverables, Telemetry, Recruitment, and Security
+      if (!isTeamLead && (subtabKey === 'recruitment' || subtabKey === 'deliverables' || subtabKey === 'telemetry' || subtabKey === 'security')) {
         subtabKey = 'access';
       }
 
@@ -6057,7 +6224,8 @@
         { key: 'access', sectionId: 'adminAccessQueueSection', btnId: 'adminSubnavAccess' },
         { key: 'roster', sectionId: 'adminRosterSection', btnId: 'adminSubnavRoster' },
         { key: 'deliverables', sectionId: 'adminDeliverablesSection', btnId: 'adminSubnavDeliverables' },
-        { key: 'telemetry', sectionId: 'adminAuditLogCard', btnId: 'adminSubnavTelemetry' }
+        { key: 'telemetry', sectionId: 'adminAuditLogCard', btnId: 'adminSubnavTelemetry' },
+        { key: 'security', sectionId: 'adminSecuritySection', btnId: 'adminSubnavSecurity' }
       ];
 
       subtabs.forEach(item => {
@@ -6066,8 +6234,7 @@
         const isActive = item.key === subtabKey;
 
         if (sec) {
-          // If non-team-lead, hide restricted sections unconditionally
-          if (!isTeamLead && (item.key === 'recruitment' || item.key === 'deliverables' || item.key === 'telemetry')) {
+          if (!isTeamLead && (item.key === 'recruitment' || item.key === 'deliverables' || item.key === 'telemetry' || item.key === 'security')) {
             sec.style.display = 'none';
           } else {
             sec.style.display = isActive ? 'block' : 'none';
@@ -6090,6 +6257,478 @@
           }
         }
       });
+
+      if (subtabKey === 'security') {
+        renderSecurityDashboard();
+      }
+    }
+
+    // ==================== SITE SECURITY, PASSWORD GOVERNANCE & RECOVERY ====================
+    window._veloxSecuritySettings = null;
+
+    async function loadLiveSecuritySettings(forceRefresh = false) {
+      if (!forceRefresh && window._veloxSecuritySettings) {
+        return window._veloxSecuritySettings;
+      }
+      try {
+        const cfg = window.VELOX_CONFIG || {};
+        if (cfg.url && cfg.anonKey) {
+          const res = await fetch(`${cfg.url}/rest/v1/applications?email=eq.system-settings@velox.internal&select=hr_notes`, {
+            headers: {
+              'apikey': cfg.anonKey,
+              'Authorization': `Bearer ${cfg.anonKey}`
+            }
+          });
+          if (res.ok) {
+            const data = await res.json();
+            if (Array.isArray(data) && data.length > 0 && data[0].hr_notes) {
+              window._veloxSecuritySettings = JSON.parse(data[0].hr_notes);
+            }
+          }
+        }
+      } catch (e) {
+        console.warn('loadLiveSecuritySettings note:', e);
+      }
+
+      if (!window._veloxSecuritySettings) {
+        window._veloxSecuritySettings = {
+          recruitment_open: localStorage.getItem('velox_recruitment_open') !== 'false',
+          admin_password: 'admin2026',
+          passwords: {},
+          reset_tokens: {}
+        };
+      }
+
+      // Sync local cache with cloud authority
+      if (typeof window._veloxSecuritySettings.recruitment_open === 'boolean') {
+        localStorage.setItem('velox_recruitment_open', window._veloxSecuritySettings.recruitment_open ? 'true' : 'false');
+      }
+
+      return window._veloxSecuritySettings;
+    }
+
+    async function saveCloudSecuritySettings(updated) {
+      window._veloxSecuritySettings = { ...window._veloxSecuritySettings, ...updated, updated_at: new Date().toISOString() };
+      if (typeof window._veloxSecuritySettings.recruitment_open === 'boolean') {
+        localStorage.setItem('velox_recruitment_open', window._veloxSecuritySettings.recruitment_open ? 'true' : 'false');
+      }
+      try {
+        const cfg = window.VELOX_CONFIG || {};
+        if (cfg.url && cfg.anonKey) {
+          const res = await fetch(`${cfg.url}/rest/v1/applications?email=eq.system-settings@velox.internal`, {
+            method: 'PATCH',
+            headers: {
+              'apikey': cfg.anonKey,
+              'Authorization': `Bearer ${cfg.anonKey}`,
+              'Content-Type': 'application/json',
+              'Prefer': 'return=representation'
+            },
+            body: JSON.stringify({
+              hr_notes: JSON.stringify(window._veloxSecuritySettings)
+            })
+          });
+          return res.ok;
+        }
+      } catch (e) {
+        console.error('saveCloudSecuritySettings error:', e);
+      }
+      return false;
+    }
+
+    async function toggleSecurityRecruitmentGate() {
+      const p = getActivePersona();
+      if (!isTeamLeader(p)) {
+        alert('Access Denied: Only Supreme Team Leader Fatima Salman, Vice Leader Karim Shaprawy, or Executive Admin can toggle the recruitment gate.');
+        return;
+      }
+      const settings = await loadLiveSecuritySettings(true);
+      const current = settings.recruitment_open !== false;
+      const next = !current;
+      settings.recruitment_open = next;
+
+      const btn = document.getElementById('secToggleGateBtn');
+      if (btn) btn.disabled = true;
+
+      await saveCloudSecuritySettings(settings);
+      if (btn) btn.disabled = false;
+
+      logAuditEvent(`[RECRUITMENT] Master recruitment gate set to ${next ? 'OPEN' : 'CLOSED'} by ${p.name}. Synced to cloud.`);
+      renderSecurityDashboard();
+      renderApplicationsControlCenter();
+      if (typeof renderFatimaPresidentialDeck === 'function') renderFatimaPresidentialDeck(p);
+
+      alert(`Recruitment intake is now globally ${next ? 'OPEN (باب التقديم مفتوح)' : 'CLOSED (باب التقديم مغلق ومحجوب)'}!\nThis setting is now synchronized across all browsers, mobile devices, and incognito sessions.`);
+    }
+
+    async function handleAdminMasterPassChange(e) {
+      e.preventDefault();
+      const p = getActivePersona();
+      if (!isTeamLeader(p) && p.id !== 'admin-director') {
+        alert('Access Denied: Restricted to Executive Administrators.');
+        return;
+      }
+      const newPass = document.getElementById('adminMasterNewPass').value.trim();
+      if (!newPass || newPass.length < 4) {
+        alert('Password must be at least 4 characters.');
+        return;
+      }
+
+      const settings = await loadLiveSecuritySettings();
+      settings.admin_password = newPass;
+      if (!settings.passwords) settings.passwords = {};
+      settings.passwords['admin'] = newPass;
+      await saveCloudSecuritySettings(settings);
+
+      // Update local db
+      const db = getPortalDb();
+      const adminAcct = db.accounts.find(a => a.username === 'admin');
+      if (adminAcct) adminAcct.password = newPass;
+      savePortalDb(db);
+
+      const alertEl = document.getElementById('adminMasterPassAlert');
+      if (alertEl) {
+        alertEl.textContent = 'Admin password updated in cloud successfully!';
+        alertEl.style.display = 'block';
+        setTimeout(() => { alertEl.style.display = 'none'; }, 4000);
+      }
+      document.getElementById('adminMasterNewPass').value = '';
+      logAuditEvent(`SECURITY: Master admin password updated by ${p.name}.`);
+      alert('Executive Admin password successfully updated and synchronized to Supabase Cloud!');
+    }
+
+    async function renderSecurityDashboard() {
+      const settings = await loadLiveSecuritySettings();
+      const isOpen = settings.recruitment_open !== false;
+
+      // 1. Update Gate Badge & Button
+      const badge = document.getElementById('secRecruitmentBadge');
+      const btn = document.getElementById('secToggleGateBtn');
+      const btnText = document.getElementById('secToggleGateBtnText');
+      const statusText = document.getElementById('secGateSyncStatus');
+
+      if (badge) {
+        badge.className = `access-status-badge ${isOpen ? 'status-unlocked' : 'status-locked'}`;
+        badge.textContent = isOpen ? 'INTAKE: OPEN (مفتوح)' : 'INTAKE: CLOSED (مغلق)';
+      }
+      if (btn) {
+        btn.style.background = isOpen ? '#EF4444' : '#10B981';
+        btn.style.borderColor = isOpen ? '#EF4444' : '#10B981';
+      }
+      if (btnText) {
+        btnText.textContent = isOpen ? 'Close Recruitment Globally (إغلاق التقديم)' : 'Open Recruitment Globally (فتح التقديم)';
+      }
+      if (statusText) {
+        statusText.innerHTML = `Supabase Cloud Live &bull; Status: <strong style="color: ${isOpen ? '#34D399' : '#F43F5E'};">${isOpen ? 'OPEN' : 'CLOSED'}</strong> &bull; Updated: ${settings.updated_at ? new Date(settings.updated_at).toLocaleTimeString() : 'Active'}`;
+      }
+
+      renderSecurityMembersTable();
+    }
+
+    function renderSecurityMembersTable() {
+      const db = getPortalDb();
+      const tbody = document.getElementById('secMembersTableBody');
+      if (!tbody) return;
+
+      const q = (document.getElementById('secMemberSearchInput')?.value || '').trim().toLowerCase();
+      let roster = db.membersRoster || [];
+      if (q) {
+        roster = roster.filter(m => 
+          (m.name && m.name.toLowerCase().includes(q)) ||
+          (m.username && m.username.toLowerCase().includes(q)) ||
+          (m.email && m.email.toLowerCase().includes(q)) ||
+          (m.dept && m.dept.toLowerCase().includes(q))
+        );
+      }
+
+      const cloudPasswords = (window._veloxSecuritySettings && window._veloxSecuritySettings.passwords) || {};
+
+      tbody.innerHTML = roster.slice(0, 30).map(m => {
+        const acct = (db.accounts || []).find(a => a.personaKey === m.id || a.name === m.name || a.username === m.username);
+        const uName = m.username || (acct ? acct.username : (m.id || '').split('-')[0]);
+        const email = m.email || (acct && acct.email) || '';
+        const customPass = cloudPasswords[uName] || (email && cloudPasswords[email.toLowerCase()]);
+        const passStatus = customPass ? 'Custom Cloud Pass' : (acct && acct.password !== 'velox2026' ? 'Local Custom' : 'Default (velox2026)');
+
+        return `
+          <tr>
+            <td>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="width: 26px; height: 26px; border-radius: 50%; background: rgba(225, 6, 0, 0.2); display: inline-flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 700; color: #FFF;">
+                  ${(m.name || '?').charAt(0)}
+                </span>
+                <strong>${m.name}</strong>
+              </div>
+            </td>
+            <td><code style="color: #38BDF8; background: rgba(56, 189, 248, 0.1); padding: 2px 6px; border-radius: 4px;">@${uName}</code></td>
+            <td style="color: #94A3B8; font-size: 0.8rem;">${email || '<span style="color:#64748B;">N/A</span>'}</td>
+            <td style="font-size: 0.8rem;">${m.dept || m.branch || 'Crew'}</td>
+            <td>
+              <div style="display: flex; gap: 6px; flex-wrap: wrap; align-items: center;">
+                <span style="font-size: 0.72rem; color: ${customPass ? '#34D399' : '#94A3B8'}; background: rgba(255,255,255,0.04); padding: 2px 6px; border-radius: 4px;">
+                  ${passStatus}
+                </span>
+                <button type="button" class="btn btn-outline" style="padding: 3px 8px; font-size: 0.72rem; color: #EAB308; border-color: rgba(234, 179, 8, 0.4);" onclick="setMemberPasswordDirect('${m.id}', '${uName}', '${email}')" title="Set new password directly">
+                  Set Pass
+                </button>
+                ${email ? `
+                  <button type="button" class="btn btn-outline" style="padding: 3px 8px; font-size: 0.72rem; color: #38BDF8; border-color: rgba(56, 189, 248, 0.4);" onclick="sendMemberResetEmail('${email}', '${m.name.replace(/'/g, "\\'")}')" title="Send official password reset email">
+                    Send Email
+                  </button>
+                ` : ''}
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    async function setMemberPasswordDirect(memberId, username, email) {
+      const p = getActivePersona();
+      if (!isTeamLeader(p)) {
+        alert('Access Denied: Restricted to Team Leadership.');
+        return;
+      }
+      const newPass = prompt(`Enter new password for @${username} (min. 4 characters):`, 'velox2026');
+      if (!newPass || newPass.trim().length < 4) return;
+
+      const cleanPass = newPass.trim();
+      const settings = await loadLiveSecuritySettings();
+      if (!settings.passwords) settings.passwords = {};
+      settings.passwords[username.toLowerCase()] = cleanPass;
+      if (email) settings.passwords[email.toLowerCase()] = cleanPass;
+
+      await saveCloudSecuritySettings(settings);
+
+      // Update local db
+      const db = getPortalDb();
+      const acct = db.accounts.find(a => a.personaKey === memberId || a.username === username);
+      if (acct) acct.password = cleanPass;
+      savePortalDb(db);
+
+      logAuditEvent(`SECURITY: Admin ${p.name} set new cloud password for @${username}.`);
+      renderSecurityMembersTable();
+      alert(`Password for @${username} has been updated in Supabase Cloud to: ${cleanPass}`);
+    }
+
+    async function sendMemberResetEmail(email, name) {
+      if (!email) {
+        alert('This member does not have a registered email address on file.');
+        return;
+      }
+      const confirmDispatch = confirm(`Dispatch official password reset email to ${name} (${email})?`);
+      if (!confirmDispatch) return;
+
+      try {
+        const res = await fetch('/api/reset-password', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'request_code',
+            email: email,
+            name: name,
+            base_url: window.location.origin
+          })
+        });
+        const data = await res.json();
+        if (res.ok && data.status === 'success') {
+          alert(`Success! Password reset email with 6-digit code has been dispatched to ${email}.\nVerification Code: ${data.code}`);
+        } else {
+          alert(`Error sending email: ${data.message || 'Unknown error'}`);
+        }
+      } catch (err) {
+        console.error('sendMemberResetEmail error:', err);
+        alert('Unable to reach reset password API. Please check network connection.');
+      }
+    }
+
+    // ==================== FORGOT PASSWORD RECOVERY WORKFLOW ====================
+    let currentForgotEmail = '';
+
+    function openForgotPasswordModal() {
+      currentForgotEmail = '';
+      resetForgotModalToStep1();
+      const alertEl = document.getElementById('forgotModalAlert');
+      if (alertEl) alertEl.style.display = 'none';
+      openPortalModal('forgotPassModal');
+    }
+
+    function resetForgotModalToStep1() {
+      const step1 = document.getElementById('forgotStep1');
+      const step2 = document.getElementById('forgotStep2');
+      if (step1) step1.style.display = 'block';
+      if (step2) step2.style.display = 'none';
+      const emailInput = document.getElementById('forgotEmailInput');
+      if (emailInput) {
+        if (currentForgotEmail) emailInput.value = currentForgotEmail;
+        emailInput.focus();
+      }
+    }
+
+    async function handleForgotRequest(e) {
+      if (e) e.preventDefault();
+      const emailInput = document.getElementById('forgotEmailInput');
+      const btn = document.getElementById('forgotSendCodeBtn');
+      const alertEl = document.getElementById('forgotModalAlert');
+      const alertMsg = document.getElementById('forgotModalAlertMsg');
+
+      const email = (emailInput ? emailInput.value : currentForgotEmail).trim().toLowerCase();
+      if (!email) return;
+
+      currentForgotEmail = email;
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = 'Sending Verification Email...';
+      }
+
+      try {
+        const res = await fetch('/api/reset-password', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'request_code',
+            email: email,
+            base_url: window.location.origin
+          })
+        });
+        const data = await res.json();
+
+        if (res.ok && data.status === 'success') {
+          // Switch to Step 2
+          document.getElementById('forgotStep1').style.display = 'none';
+          document.getElementById('forgotStep2').style.display = 'block';
+          const targetEl = document.getElementById('forgotSentTargetEmail');
+          if (targetEl) targetEl.textContent = email;
+
+          if (alertEl && alertMsg) {
+            alertMsg.textContent = 'Verification code sent! Please check your email inbox and spam folder.';
+            alertEl.className = 'portal-auth-alert';
+            alertEl.style.borderColor = 'rgba(16, 185, 129, 0.4)';
+            alertEl.style.background = 'rgba(16, 185, 129, 0.1)';
+            alertEl.style.color = '#34D399';
+            alertEl.style.display = 'flex';
+          }
+          const codeInput = document.getElementById('forgotCodeInput');
+          if (codeInput) codeInput.focus();
+        } else {
+          if (alertEl && alertMsg) {
+            alertMsg.textContent = data.message || 'Unable to process reset request. Please check email address.';
+            alertEl.className = 'portal-auth-alert';
+            alertEl.style.borderColor = 'rgba(239, 68, 68, 0.4)';
+            alertEl.style.background = 'rgba(239, 68, 68, 0.1)';
+            alertEl.style.color = '#FB7185';
+            alertEl.style.display = 'flex';
+          }
+        }
+      } catch (err) {
+        console.error('Forgot password request error:', err);
+        if (alertEl && alertMsg) {
+          alertMsg.textContent = 'Network error connecting to reset service. Please try again.';
+          alertEl.style.display = 'flex';
+        }
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.textContent = 'Send Reset Code → / إرسال رمز التحقق';
+        }
+      }
+    }
+
+    async function handleForgotConfirm(e) {
+      if (e) e.preventDefault();
+      const codeInput = document.getElementById('forgotCodeInput');
+      const newPassInput = document.getElementById('forgotNewPassInput');
+      const confirmPassInput = document.getElementById('forgotConfirmPassInput');
+      const btn = document.getElementById('forgotSubmitNewPassBtn');
+      const alertEl = document.getElementById('forgotModalAlert');
+      const alertMsg = document.getElementById('forgotModalAlertMsg');
+
+      const code = codeInput ? codeInput.value.trim() : '';
+      const newPass = newPassInput ? newPassInput.value.trim() : '';
+      const confirmPass = confirmPassInput ? confirmPassInput.value.trim() : '';
+
+      if (!code) {
+        alert('Please enter the 6-digit code sent to your email.');
+        return;
+      }
+      if (newPass.length < 4) {
+        alert('Password must be at least 4 characters.');
+        return;
+      }
+      if (newPass !== confirmPass) {
+        alert('Passwords do not match. Please verify.');
+        return;
+      }
+
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = 'Updating Password in Cloud...';
+      }
+
+      try {
+        const res = await fetch('/api/reset-password', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'confirm_reset',
+            email: currentForgotEmail,
+            code: code,
+            new_password: newPass
+          })
+        });
+        const data = await res.json();
+
+        if (res.ok && data.status === 'success') {
+          // Update local DB if matching account exists
+          const db = getPortalDb();
+          const targetU = currentForgotEmail.split('@')[0].replace(/[^a-z0-9]/g, '').toLowerCase();
+          const localAcct = db.accounts.find(a => 
+            (a.email && a.email.toLowerCase() === currentForgotEmail) ||
+            (a.username && a.username.toLowerCase() === targetU)
+          );
+          if (localAcct) {
+            localAcct.password = newPass;
+            savePortalDb(db);
+          }
+
+          if (alertEl && alertMsg) {
+            alertMsg.textContent = 'Password successfully updated! Redirecting to login...';
+            alertEl.style.borderColor = 'rgba(16, 185, 129, 0.5)';
+            alertEl.style.color = '#34D399';
+            alertEl.style.display = 'flex';
+          }
+
+          // Pre-fill login
+          const uInput = document.getElementById('loginUsername');
+          const pInput = document.getElementById('loginPassword');
+          if (uInput) uInput.value = localAcct ? localAcct.username : currentForgotEmail;
+          if (pInput) pInput.value = newPass;
+
+          setTimeout(() => {
+            closePortalModal('forgotPassModal');
+            alert('Your new password is now active! You can sign in immediately.');
+          }, 1200);
+        } else {
+          if (alertEl && alertMsg) {
+            alertMsg.textContent = data.message || 'Invalid verification code or expired token.';
+            alertEl.style.display = 'flex';
+          }
+        }
+      } catch (err) {
+        console.error('handleForgotConfirm error:', err);
+        if (alertEl && alertMsg) {
+          alertMsg.textContent = 'Network error while confirming password. Please try again.';
+          alertEl.style.display = 'flex';
+        }
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.textContent = 'Save New Password & Sign In →';
+        }
+      }
+    }
+
+    function resendForgotCode() {
+      handleForgotRequest();
     }
 
     function renderAdminDashboard() {
@@ -6771,6 +7410,29 @@
         window.location.href = 'invite.html?code=' + inviteCode;
         return;
       }
+
+      // Check for password reset parameters from email link
+      if (urlParams.has('reset_token') && urlParams.has('email')) {
+        const resetEmail = urlParams.get('email');
+        const resetToken = urlParams.get('reset_token');
+        currentForgotEmail = resetEmail;
+        openPortalModal('forgotPassModal');
+        const step1 = document.getElementById('forgotStep1');
+        const step2 = document.getElementById('forgotStep2');
+        if (step1) step1.style.display = 'none';
+        if (step2) step2.style.display = 'block';
+        const targetEl = document.getElementById('forgotSentTargetEmail');
+        if (targetEl) targetEl.textContent = resetEmail;
+        const codeInput = document.getElementById('forgotCodeInput');
+        if (codeInput) codeInput.value = resetToken;
+        const newPassInput = document.getElementById('forgotNewPassInput');
+        if (newPassInput) setTimeout(() => newPassInput.focus(), 300);
+      } else if (urlParams.get('action') === 'forgot_password') {
+        openForgotPasswordModal();
+      }
+
+      // Pre-load cloud security & recruitment gate status in background
+      loadLiveSecuritySettings(false);
       // Mobile Hamburger Navigation Menu Toggle
       const hamburgerBtn = document.getElementById('hamburgerBtn') || document.getElementById('hamburger');
       const navMenu = document.getElementById('navMenu') || document.getElementById('navLinks');

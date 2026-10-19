@@ -62,6 +62,25 @@ class handler(BaseHTTPRequestHandler):
             self._send_json(400, {"error": "invalid_payload", "message": "Invalid JSON format."})
             return
 
+        # 2.5 Verify Recruitment Status in Cloud
+        try:
+            import urllib.request
+            supabase_url = os.environ.get('SUPABASE_URL', 'https://mmkeybgkqkoepmyuispa.supabase.co')
+            supabase_key = os.environ.get('SUPABASE_ANON_KEY', 'sb_publishable_bCEY9L5ztgVxQU2BXkXwIA_OqE9o4ga')
+            check_req = urllib.request.Request(f"{supabase_url}/rest/v1/applications?email=eq.system-settings@velox.internal&select=hr_notes", headers={
+                'apikey': supabase_key,
+                'Authorization': f'Bearer {supabase_key}'
+            })
+            with urllib.request.urlopen(check_req, timeout=4) as check_res:
+                c_data = json.loads(check_res.read().decode('utf-8'))
+                if c_data and len(c_data) > 0 and c_data[0].get('hr_notes'):
+                    c_settings = json.loads(c_data[0]['hr_notes'])
+                    if c_settings.get('recruitment_open') is False:
+                        self._send_json(403, {"error": "recruitment_closed", "message": "Recruitment is currently closed by team administration."})
+                        return
+        except Exception as gate_err:
+            print("apply.py recruitment check note:", gate_err)
+
         # 3. Honeypot check (Spam Protection)
         if data.get('hp_field', '').strip():
             self._send_json(400, {"error": "spam_detected", "message": "Spam detected."})
