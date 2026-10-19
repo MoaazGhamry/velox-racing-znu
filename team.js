@@ -495,7 +495,9 @@ function getDynamicTeamData() {
       );
       if (alreadyExists) return;
 
-      const isLead = member.role.toLowerCase().includes('leader') || member.roleType === 'subteam_lead';
+      const rLower = (member.role || '').toLowerCase();
+      const isExplicitMember = rLower === 'team member' || rLower === 'member' || member.roleType === 'member';
+      const isLead = !isExplicitMember && (rLower.includes('leader') || rLower.includes('lead') || member.roleType === 'subteam_lead');
       const resolvedPhoto = member.photo || member.avatar || '';
       targetDept.subteamCrew[matchedSub].push({
         id: member.id,
@@ -655,16 +657,21 @@ async function syncCloudAcceptedMembers() {
       );
 
       const existingRosterItem = existingIdx !== -1 ? db.membersRoster[existingIdx] : null;
-      let assignedRole = (existingRosterItem && existingRosterItem.role && existingRosterItem.role !== 'Team Member') 
+      let assignedRole = (existingRosterItem && existingRosterItem.role) 
         ? existingRosterItem.role 
         : 'Team Member';
       let assignedRoleType = (existingRosterItem && existingRosterItem.roleType) ? existingRosterItem.roleType : '';
 
       // Check if app was a direct invitation with an appointed role in hr_notes / subteam_second / why_join
-      const noteBlob = `${app.hr_notes || ''} ${app.subteam_second || ''} ${app.why_join || ''}`;
-      const roleMatch = noteBlob.match(/Role:\s*([^\n|•,]+)/i);
-      if (roleMatch && roleMatch[1]) {
-        assignedRole = roleMatch[1].trim();
+      if (!existingRosterItem || !existingRosterItem.role || existingRosterItem.role === 'Team Member') {
+        const noteBlob = `${app.hr_notes || ''} ${app.subteam_second || ''} ${app.why_join || ''}`;
+        const roleMatch = noteBlob.match(/Role:\s*([A-Za-z0-9&/ ]+?)(?:\s*\(|\s*\.|\s*\||\s*•|\s*,|\s*\n|$)/i);
+        if (roleMatch && roleMatch[1]) {
+          const matchedR = roleMatch[1].trim();
+          if (matchedR.length > 0 && matchedR.length < 50 && !matchedR.toLowerCase().includes('authorized by') && !matchedR.toLowerCase().includes('enlisted on')) {
+            assignedRole = matchedR;
+          }
+        }
       }
 
       if (normName === 'ali elgohary') {
@@ -678,7 +685,7 @@ async function syncCloudAcceptedMembers() {
         const lowerR = assignedRole.toLowerCase();
         if (lowerR.includes('department leader') || lowerR.includes('electrical leader') || lowerR.includes('powertrain leader') || (lowerR.includes('leader') && !parsed.subteam)) {
           assignedRoleType = 'dept_lead';
-        } else if (lowerR.includes('leader')) {
+        } else if (lowerR.includes('leader') || lowerR.includes('lead')) {
           assignedRoleType = 'subteam_lead';
         } else {
           assignedRoleType = 'member';

@@ -4091,9 +4091,14 @@
       if (!deck) return;
       if (!p || !isTeamLeader(p)) {
         deck.style.display = 'none';
+        const banner = document.getElementById('userScopeBanner');
+        if (banner) banner.style.display = 'flex';
         return;
       }
       deck.style.display = 'block';
+      // Hide the redundant static scope banner for Team Leaders who already have the command console
+      const scopeBanner = document.getElementById('userScopeBanner');
+      if (scopeBanner) scopeBanner.style.display = 'none';
 
       const db = getPortalDb();
       const rosterCountEl = document.getElementById('deckRosterCount');
@@ -5882,8 +5887,17 @@
               </div>
             </td>
             <td>
-              <span class="portal-role-pill ${m.branch === 'Executive' ? 'role-executive' : (m.branch === 'Technical' ? 'role-tech' : 'role-ops')}">
-                ${m.role}
+              <span class="portal-role-pill ${m.branch === 'Executive' ? 'role-executive' : (m.branch === 'Technical' ? 'role-tech' : 'role-ops')}" title="${m.role || ''}">
+                ${(() => {
+                  let r = (m.role || 'Team Member').trim();
+                  if (r.toLowerCase().includes('authorized by') || r.toLowerCase().includes('enlisted on') || r.length > 35) {
+                    const match = r.match(/Role:\s*([A-Za-z0-9&/ ]+?)(?:\s*\(|\s*\.|\s*\||\s*•|\s*,|\s*\n|$)/i);
+                    if (match && match[1]) return match[1].trim();
+                    if (r.toLowerCase().includes('leader')) return 'Subteam Leader';
+                    return 'Team Member';
+                  }
+                  return r;
+                })()}
               </span>
             </td>
             <td>${m.branch}</td>
@@ -6715,10 +6729,28 @@
         }
 
         const oldRole = member.role;
+        const newRole = document.getElementById('editMemberRole').value;
+        const newBranch = document.getElementById('editMemberBranch').value;
+        const newDept = document.getElementById('editMemberSubteam').value.trim();
+
         member.name = document.getElementById('editMemberName').value.trim();
-        member.role = document.getElementById('editMemberRole').value;
-        member.branch = document.getElementById('editMemberBranch').value;
-        member.dept = document.getElementById('editMemberSubteam').value.trim();
+        member.role = newRole;
+        member.branch = newBranch;
+        member.dept = newDept;
+
+        // Compute and assign exact roleType
+        const lowerR = newRole.toLowerCase();
+        let computedRoleType = 'member';
+        if (newRole === 'Team Leader' || newRole === 'Vice Team Leader' || lowerR.includes('executive')) {
+          computedRoleType = 'executive';
+        } else if (newRole === 'Technical Leader' || lowerR.includes('chief engineer')) {
+          computedRoleType = 'technical_lead';
+        } else if (newRole === 'Managerial Leader' || lowerR.includes('operations management')) {
+          computedRoleType = 'managerial_lead';
+        } else if (lowerR.includes('subteam leader') || lowerR.includes('leader') || lowerR.includes('lead')) {
+          computedRoleType = 'subteam_lead';
+        }
+        member.roleType = computedRoleType;
 
         // Also update linked account and persona
         const acct = db.accounts.find(a => a.personaKey === id || a.name === member.name);
@@ -6727,11 +6759,12 @@
         if (db.personas[id]) {
           db.personas[id].name = member.name;
           db.personas[id].role = member.role;
+          db.personas[id].roleType = computedRoleType;
           db.personas[id].branch = member.branch;
           db.personas[id].departments = [member.dept];
         }
 
-        logAuditEvent(`GOVERNANCE: Member ${member.name} details updated by ${p.name}.`);
+        logAuditEvent(`GOVERNANCE: Member ${member.name} details updated by ${p.name} (Role: ${newRole}, Type: ${computedRoleType}).`);
 
         // If updated by a sub-leader (Romy, Moaaz, Ali, Hassan), automatically notify Fatima & Karim!
         if (!isTeamLeader(p)) {
@@ -7184,9 +7217,15 @@
             const username = (app.email ? app.email.split('@')[0] : normName).replace(/[^a-z0-9]/g, '');
             const memberId = 'mem-' + normName.replace(/[^a-z0-9]/g, '-');
 
+            let assignedRole = normName === 'ali elgohary' ? 'Team Leader of Electrical' : 'Team Member';
             const noteBlob = `${app.hr_notes || ''} ${app.subteam_second || ''} ${app.why_join || ''}`;
-            const roleMatch = noteBlob.match(/Role:\s*([^\n|•,]+)/i);
-            let assignedRole = (roleMatch && roleMatch[1]) ? roleMatch[1].trim() : (normName === 'ali elgohary' ? 'Team Leader of Electrical' : 'Team Member');
+            const roleMatch = noteBlob.match(/Role:\s*([A-Za-z0-9&/ ]+?)(?:\s*\(|\s*\.|\s*\||\s*•|\s*,|\s*\n|$)/i);
+            if (roleMatch && roleMatch[1]) {
+              const matchedR = roleMatch[1].trim();
+              if (matchedR.length > 0 && matchedR.length < 50 && !matchedR.toLowerCase().includes('authorized by') && !matchedR.toLowerCase().includes('enlisted on')) {
+                assignedRole = matchedR;
+              }
+            }
             let rawDept = app.subteam_first || 'General';
             let dept = rawDept.includes('—') ? rawDept.split('—')[0].trim() : rawDept.trim();
             let subteam = rawDept.includes('—') ? rawDept.split('—')[1].trim() : '';
@@ -7201,7 +7240,7 @@
               const lowerR = assignedRole.toLowerCase();
               if (lowerR.includes('department leader') || lowerR.includes('electrical leader') || lowerR.includes('team leader of electrical') || lowerR.includes('powertrain leader') || (lowerR.includes('leader') && !app.subteam_first.includes('—'))) {
                 roleType = 'dept_lead';
-              } else if (lowerR.includes('leader')) {
+              } else if (lowerR.includes('leader') || lowerR.includes('lead')) {
                 roleType = 'subteam_lead';
               }
             }
