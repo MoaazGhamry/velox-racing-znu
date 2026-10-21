@@ -29,7 +29,7 @@ load_env()
 
 CLOUDINARY_CLOUD_NAME = os.environ.get('CLOUDINARY_CLOUD_NAME', 'dhoqtr0se')
 CLOUDINARY_API_KEY = os.environ.get('CLOUDINARY_API_KEY', '136622815234859')
-CLOUDINARY_API_SECRET = os.environ.get('CLOUDINARY_API_SECRET', 'TgtkL77kl99G6GXBztLkgFTrQ3E')
+CLOUDINARY_API_SECRET = os.environ.get('CLOUDINARY_API_SECRET', '')
 
 class handler(BaseHTTPRequestHandler):
     def _send_cors_headers(self):

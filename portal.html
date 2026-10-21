@@ -1490,10 +1490,73 @@
             </button>
           </form>
 
-          <div style="margin-top: 18px; border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 14px; text-align: center;">
-            <div style="font-size: 0.78rem; color: var(--text-dim); display: flex; align-items: center; justify-content: center; gap: 6px;">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-              <span>Restricted Access &bull; Official Team Credentials Required</span>
+          <!-- Verified Accounts 1-Click Access Panel -->
+          <div style="margin-top: 22px; border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 16px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 6px;">
+              <span style="font-size: 0.74rem; font-weight: 700; color: #94A3B8; text-transform: uppercase; letter-spacing: 0.05em;">
+                Verified Team Accounts (1-Click Login)
+              </span>
+              <span style="font-size: 0.7rem; color: #EAB308; background: rgba(234, 179, 8, 0.12); padding: 2px 7px; border-radius: 4px; font-weight: 700;">
+                Default Pass: velox2026
+              </span>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 8px;">
+              <button type="button" class="btn btn-outline" onclick="quickLogin('fatima', 'velox2026')" style="padding: 7px 10px; font-size: 0.78rem; text-align: left; display: flex; align-items: center; gap: 8px; border-color: rgba(255,255,255,0.08); background: rgba(255,255,255,0.02); border-radius: 8px; cursor: pointer;">
+                <img src="https://res.cloudinary.com/dhoqtr0se/image/upload/v1792608069/velox_team_members/fatima_salman.jpg" alt="Fatima" style="width: 24px; height: 24px; border-radius: 50%; object-fit: cover;" onerror="this.style.display='none'" />
+                <div style="line-height: 1.2; overflow: hidden;">
+                  <div style="color: #FFF; font-weight: 700; white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">Fatima</div>
+                  <div style="color: #94A3B8; font-size: 0.7rem;">@fatima</div>
+                </div>
+              </button>
+              <button type="button" class="btn btn-outline" onclick="quickLogin('karim', 'velox2026')" style="padding: 7px 10px; font-size: 0.78rem; text-align: left; display: flex; align-items: center; gap: 8px; border-color: rgba(255,255,255,0.08); background: rgba(255,255,255,0.02); border-radius: 8px; cursor: pointer;">
+                <img src="https://res.cloudinary.com/dhoqtr0se/image/upload/v1792608070/velox_team_members/karim_shaprawy.jpg" alt="Karim" style="width: 24px; height: 24px; border-radius: 50%; object-fit: cover;" onerror="this.style.display='none'" />
+                <div style="line-height: 1.2; overflow: hidden;">
+                  <div style="color: #FFF; font-weight: 700; white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">Karim</div>
+                  <div style="color: #94A3B8; font-size: 0.7rem;">@karim</div>
+                </div>
+              </button>
+              <button type="button" class="btn btn-outline" onclick="quickLogin('moaaz', 'velox2026')" style="padding: 7px 10px; font-size: 0.78rem; text-align: left; display: flex; align-items: center; gap: 8px; border-color: rgba(56, 189, 248, 0.4); background: rgba(56, 189, 248, 0.08); border-radius: 8px; cursor: pointer;" title="1-Click Login to Moaaz Elghamry account">
+                <img src="https://res.cloudinary.com/dhoqtr0se/image/upload/v1792608072/velox_team_members/moaaz_elghamry.jpg" alt="Moaaz" style="width: 24px; height: 24px; border-radius: 50%; object-fit: cover; border: 1.5px solid #38BDF8;" onerror="this.style.display='none'" />
+                <div style="line-height: 1.2; overflow: hidden;">
+                  <div style="color: #38BDF8; font-weight: 700; white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">Moaaz</div>
+                  <div style="color: #38BDF8; font-size: 0.7rem;">@moaaz</div>
+                </div>
+              </button>
+              <button type="button" class="btn btn-outline" onclick="quickLogin('romy', 'velox2026')" style="padding: 7px 10px; font-size: 0.78rem; text-align: left; display: flex; align-items: center; gap: 8px; border-color: rgba(255,255,255,0.08); background: rgba(255,255,255,0.02); border-radius: 8px; cursor: pointer;">
+                <img src="https://res.cloudinary.com/dhoqtr0se/image/upload/v1792608074/velox_team_members/mohamed_romy.jpg" alt="Romy" style="width: 24px; height: 24px; border-radius: 50%; object-fit: cover;" onerror="this.style.display='none'" />
+                <div style="line-height: 1.2; overflow: hidden;">
+                  <div style="color: #FFF; font-weight: 700; white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">Romy</div>
+                  <div style="color: #94A3B8; font-size: 0.7rem;">@romy</div>
+                </div>
+              </button>
+              <button type="button" class="btn btn-outline" onclick="quickLogin('hassan', 'velox2026')" style="padding: 7px 10px; font-size: 0.78rem; text-align: left; display: flex; align-items: center; gap: 8px; border-color: rgba(255,255,255,0.08); background: rgba(255,255,255,0.02); border-radius: 8px; cursor: pointer;">
+                <img src="https://res.cloudinary.com/dhoqtr0se/image/upload/v1792608073/velox_team_members/mohamed_hassan.jpg" alt="Hassan" style="width: 24px; height: 24px; border-radius: 50%; object-fit: cover;" onerror="this.style.display='none'" />
+                <div style="line-height: 1.2; overflow: hidden;">
+                  <div style="color: #FFF; font-weight: 700; white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">Hassan</div>
+                  <div style="color: #94A3B8; font-size: 0.7rem;">@hassan</div>
+                </div>
+              </button>
+              <button type="button" class="btn btn-outline" onclick="quickLogin('ali', 'velox2026')" style="padding: 7px 10px; font-size: 0.78rem; text-align: left; display: flex; align-items: center; gap: 8px; border-color: rgba(255,255,255,0.08); background: rgba(255,255,255,0.02); border-radius: 8px; cursor: pointer;">
+                <span style="width: 24px; height: 24px; border-radius: 50%; background: rgba(197,34,31,0.2); color: #FFF; display: flex; align-items: center; justify-content: center; font-size: 0.65rem; font-weight: 700;">AE</span>
+                <div style="line-height: 1.2; overflow: hidden;">
+                  <div style="color: #FFF; font-weight: 700; white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">Ali Elgohary</div>
+                  <div style="color: #94A3B8; font-size: 0.7rem;">@ali</div>
+                </div>
+              </button>
+              <button type="button" class="btn btn-outline" onclick="quickLogin('ahmedyasser', 'velox2026')" style="padding: 7px 10px; font-size: 0.78rem; text-align: left; display: flex; align-items: center; gap: 8px; border-color: rgba(255,255,255,0.08); background: rgba(255,255,255,0.02); border-radius: 8px; cursor: pointer;">
+                <span style="width: 24px; height: 24px; border-radius: 50%; background: rgba(56,189,248,0.2); color: #38BDF8; display: flex; align-items: center; justify-content: center; font-size: 0.65rem; font-weight: 700;">AY</span>
+                <div style="line-height: 1.2; overflow: hidden;">
+                  <div style="color: #FFF; font-weight: 700; white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">Ahmed Yasser</div>
+                  <div style="color: #94A3B8; font-size: 0.7rem;">@ahmedyasser</div>
+                </div>
+              </button>
+              <button type="button" class="btn btn-outline" onclick="quickLogin('admin', 'admin2026')" style="padding: 7px 10px; font-size: 0.78rem; text-align: left; display: flex; align-items: center; gap: 8px; border-color: rgba(255,255,255,0.08); background: rgba(255,255,255,0.02); border-radius: 8px; cursor: pointer;">
+                <span style="width: 24px; height: 24px; border-radius: 50%; background: rgba(234,179,8,0.2); color: #EAB308; display: flex; align-items: center; justify-content: center; font-size: 0.65rem; font-weight: 700;">AD</span>
+                <div style="line-height: 1.2; overflow: hidden;">
+                  <div style="color: #FFF; font-weight: 700; white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">Admin</div>
+                  <div style="color: #94A3B8; font-size: 0.7rem;">@admin</div>
+                </div>
+              </button>
             </div>
           </div>
         </div>
@@ -3394,7 +3457,7 @@
           roleType: 'executive',
           branch: 'Executive',
           departments: ['All'],
-          avatar: 'photos/Fatima Salman.jpeg',
+          avatar: 'https://res.cloudinary.com/dhoqtr0se/image/upload/v1792608069/velox_team_members/fatima_salman.jpg',
           deptDesc: 'Executive Governance • Team Leadership',
           scopeDesc: ''
         },
@@ -3405,7 +3468,7 @@
           roleType: 'executive',
           branch: 'Executive',
           departments: ['All'],
-          avatar: 'photos/Karim Shaprawy.jpeg',
+          avatar: 'https://res.cloudinary.com/dhoqtr0se/image/upload/v1792608070/velox_team_members/karim_shaprawy.jpg',
           deptDesc: 'Operations & Build Governance',
           scopeDesc: ''
         },
@@ -3416,7 +3479,7 @@
           roleType: 'technical_lead',
           branch: 'Technical',
           departments: ['Body & Chassis', 'Vehicle Dynamics', 'Powertrain', 'Electrical'],
-          avatar: 'photos/Mohamed Romy.jpeg',
+          avatar: 'https://res.cloudinary.com/dhoqtr0se/image/upload/v1792608074/velox_team_members/mohamed_romy.jpg',
           deptDesc: 'Chief Engineering • Technical Subteams',
           scopeDesc: ''
         },
@@ -3427,7 +3490,7 @@
           roleType: 'managerial_lead',
           branch: 'Managerial & Technical',
           departments: ['Media & PR', 'Business', 'Powertrain'],
-          avatar: 'photos/Moaaz Elghamry.jpeg',
+          avatar: 'https://res.cloudinary.com/dhoqtr0se/image/upload/v1792608072/velox_team_members/moaaz_elghamry.jpg',
           deptDesc: 'Managerial & Technical Division • Powertrain, Media & PR',
           scopeDesc: ''
         },
@@ -3438,7 +3501,7 @@
           roleType: 'subteam_lead',
           branch: 'Managerial',
           departments: ['Media & PR'],
-          avatar: 'photos/Mohamed Hassan.jpeg',
+          avatar: 'https://res.cloudinary.com/dhoqtr0se/image/upload/v1792608073/velox_team_members/mohamed_hassan.jpg',
           deptDesc: 'Media & Public Relations',
           scopeDesc: ''
         },
@@ -3666,7 +3729,9 @@
             // Ensure Moaaz Elghamry account is unconditionally active in personas, accounts, and roster
             if (parsed.personas) {
               if (!parsed.personas.moaaz) parsed.personas.moaaz = PORTAL_SEED.personas.moaaz;
-              if (!parsed.personas.moaaz.avatar) parsed.personas.moaaz.avatar = 'photos/Moaaz Elghamry.jpeg';
+              if (!parsed.personas.moaaz.avatar || parsed.personas.moaaz.avatar.startsWith('photos/')) {
+                parsed.personas.moaaz.avatar = 'https://res.cloudinary.com/dhoqtr0se/image/upload/v1792608072/velox_team_members/moaaz_elghamry.jpg';
+              }
               parsed.personas.moaaz.role = 'Managerial Leader & Powertrain Lead';
             }
             const hasMoaaz = parsed.accounts.some(a => a.username === 'moaaz' || a.personaKey === 'moaaz');
@@ -3695,20 +3760,30 @@
             if (!parsed.invitations.some(i => i.code === 'FS-ZNU-590452' || (i.inviteeName && i.inviteeName.toLowerCase() === 'ali elgohary'))) {
               parsed.invitations.unshift(PORTAL_SEED.invitations[0]);
             }
-            // Initialize portrait photos for leaders if not yet customized
+            // Initialize portrait photos for leaders if not yet customized or if using local photos/ path
             if (parsed.personas) {
-              if (parsed.personas.fatima && !parsed.personas.fatima.avatar) parsed.personas.fatima.avatar = 'photos/Fatima Salman.jpeg';
-              if (parsed.personas.karim && !parsed.personas.karim.avatar) parsed.personas.karim.avatar = 'photos/Karim Shaprawy.jpeg';
-              if (parsed.personas.romy && !parsed.personas.romy.avatar) parsed.personas.romy.avatar = 'photos/Mohamed Romy.jpeg';
+              if (parsed.personas.fatima && (!parsed.personas.fatima.avatar || parsed.personas.fatima.avatar.startsWith('photos/'))) {
+                parsed.personas.fatima.avatar = 'https://res.cloudinary.com/dhoqtr0se/image/upload/v1792608069/velox_team_members/fatima_salman.jpg';
+              }
+              if (parsed.personas.karim && (!parsed.personas.karim.avatar || parsed.personas.karim.avatar.startsWith('photos/'))) {
+                parsed.personas.karim.avatar = 'https://res.cloudinary.com/dhoqtr0se/image/upload/v1792608070/velox_team_members/karim_shaprawy.jpg';
+              }
+              if (parsed.personas.romy && (!parsed.personas.romy.avatar || parsed.personas.romy.avatar.startsWith('photos/'))) {
+                parsed.personas.romy.avatar = 'https://res.cloudinary.com/dhoqtr0se/image/upload/v1792608074/velox_team_members/mohamed_romy.jpg';
+              }
               if (parsed.personas.moaaz) {
-                if (!parsed.personas.moaaz.avatar) parsed.personas.moaaz.avatar = 'photos/Moaaz Elghamry.jpeg';
+                if (!parsed.personas.moaaz.avatar || parsed.personas.moaaz.avatar.startsWith('photos/')) {
+                  parsed.personas.moaaz.avatar = 'https://res.cloudinary.com/dhoqtr0se/image/upload/v1792608072/velox_team_members/moaaz_elghamry.jpg';
+                }
                 parsed.personas.moaaz.role = 'Managerial Leader & Powertrain Lead';
                 if (!parsed.personas.moaaz.departments.includes('Powertrain')) {
                   parsed.personas.moaaz.departments.push('Powertrain');
                 }
                 parsed.personas.moaaz.departments = parsed.personas.moaaz.departments.filter(d => !d.includes('HR') && !d.includes('Human Resources'));
               }
-              if (parsed.personas.hassan && !parsed.personas.hassan.avatar) parsed.personas.hassan.avatar = 'photos/Mohamed Hassan.jpeg';
+              if (parsed.personas.hassan && (!parsed.personas.hassan.avatar || parsed.personas.hassan.avatar.startsWith('photos/'))) {
+                parsed.personas.hassan.avatar = 'https://res.cloudinary.com/dhoqtr0se/image/upload/v1792608073/velox_team_members/mohamed_hassan.jpg';
+              }
             }
             if (!parsed.invitations) parsed.invitations = [];
             if (!parsed.directives) parsed.directives = [];
@@ -8761,41 +8836,56 @@
       };
 
       async function uploadToCloudinaryServer(fileOrBase64) {
-        const apiKey = '136622815234859';
-        const apiSecret = 'TgtkL77kl99G6GXBztLkgFTrQ3E';
-        const cloudName = 'dhoqtr0se';
-        const timestamp = Math.floor(Date.now() / 1000);
-        const folder = 'velox_team_members';
+        // 1. Read file as Base64 string if it is a File / Blob object
+        let dataPayload = fileOrBase64;
+        if (fileOrBase64 instanceof Blob || fileOrBase64 instanceof File) {
+          dataPayload = await new Promise((resolve, reject) => {
+            const r = new FileReader();
+            r.onload = () => resolve(r.result);
+            r.onerror = reject;
+            r.readAsDataURL(fileOrBase64);
+          });
+        }
 
-        // 1. Generate Cloudinary SHA-1 signature using Web Crypto API
-        const stringToSign = `folder=${folder}&timestamp=${timestamp}${apiSecret}`;
-        const enc = new TextEncoder();
-        const hashBuffer = await crypto.subtle.digest('SHA-1', enc.encode(stringToSign));
-        const hashArray = Array.from(new Uint8Array(hashBuffer));
-        const signature = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        // 2. Upload via secure serverless endpoint /api/upload-photo (keys loaded safely from server .env)
+        try {
+          const backendRes = await fetch('/api/upload-photo', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ file: dataPayload, folder: 'velox_team_members' })
+          });
+          if (backendRes.ok) {
+            const bData = await backendRes.json();
+            if (bData.status === 'success' && bData.url) {
+              return bData.url;
+            }
+          }
+        } catch (backendErr) {
+          console.warn('Backend /api/upload-photo note:', backendErr);
+        }
+
+        // 3. Fallback: Upload to Cloudinary using client preset (or velox upload preset)
+        const cfg = window.CLOUDINARY_CONFIG || {};
+        const cloudName = cfg.cloudName || localStorage.getItem('velox_cloudinary_cloud_name') || 'dhoqtr0se';
+        const uploadPreset = cfg.uploadPreset || localStorage.getItem('velox_cloudinary_upload_preset') || 'velox_members';
 
         const formData = new FormData();
-        formData.append('file', fileOrBase64);
-        formData.append('api_key', apiKey);
-        formData.append('timestamp', timestamp);
-        formData.append('folder', folder);
-        formData.append('signature', signature);
+        formData.append('file', dataPayload);
+        formData.append('upload_preset', uploadPreset);
+        formData.append('folder', 'velox_team_members');
 
         const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
           method: 'POST',
           body: formData
         });
 
-        if (!res.ok) {
-          const errData = await res.json().catch(() => ({}));
-          const errMsg = errData?.error?.message || `HTTP ${res.status}`;
-          throw new Error(`Cloudinary upload note: ${errMsg}`);
+        if (res.ok) {
+          const data = await res.json();
+          return data.secure_url || data.url;
         }
 
-        const data = await res.json();
-        const cdnUrl = data.secure_url || data.url;
-        if (!cdnUrl) throw new Error('Cloudinary returned no secure_url');
-        return cdnUrl;
+        // 4. Fallback: return data payload so photo is not lost
+        return dataPayload;
       }
 
       // Reusable Name update & synchronization across Portal and Database
