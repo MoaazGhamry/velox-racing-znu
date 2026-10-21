@@ -2,6 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="robots" content="noindex, nofollow" />
   <title>Inside Portal — Velox Racing | Zagazig National University</title>
@@ -3434,6 +3437,18 @@
       return fallback || key;
     }
 
+    // Unregister any active Service Workers and eliminate browser CacheStorage
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(registrations => {
+        for (const reg of registrations) reg.unregister();
+      }).catch(() => {});
+    }
+    if ('caches' in window) {
+      caches.keys().then(keys => {
+        for (const key of keys) caches.delete(key);
+      }).catch(() => {});
+    }
+
     const DB_KEY = 'velox_portal_db_v8';
 
     // Production Seed Data — Zero Points, Zero Mockup Files, Zero Mockup Tasks
@@ -6605,10 +6620,12 @@
       try {
         const cfg = window.VELOX_CONFIG || {};
         if (cfg.url && cfg.anonKey) {
-          const res = await fetch(`${cfg.url}/rest/v1/applications?email=eq.system-settings@velox.internal&select=hr_notes`, {
+          const res = await fetch(`${cfg.url}/rest/v1/applications?email=eq.system-settings@velox.internal&select=hr_notes&_t=${Date.now()}`, {
+            cache: 'no-store',
             headers: {
               'apikey': cfg.anonKey,
-              'Authorization': `Bearer ${cfg.anonKey}`
+              'Authorization': `Bearer ${cfg.anonKey}`,
+              'Cache-Control': 'no-cache, no-store'
             }
           });
           if (res.ok) {

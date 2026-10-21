@@ -1,129 +1,23 @@
 /**
- * VELOX RACING PWA SERVICE WORKER
- * Network-First Strategy + Live Connection Bypass
+ * VELOX RACING — CACHE PURGE & SERVICE WORKER DECOMMISSION
+ * Immediately unregisters service workers and wipes all CacheStorage.
+ * Ensures the browser ALWAYS updates live data from the server.
  */
 
-const CACHE_NAME = 'velox-live-v8.0';
-const PRECACHE_ASSETS = [
-  '/',
-  '/index.html',
-  '/join.html',
-  '/hr.html',
-  '/portal.html',
-  '/sponsorship.html',
-  '/style.css?v=8.0',
-  '/i18n.js?v=8.0',
-  '/config.js',
-  '/manifest.json',
-  '/pwa-icon-192.png',
-  '/pwa-icon-512.png',
-  '/pwa-icon-maskable.png',
-  '/apple-touch-icon.png',
-  '/VeloxLogoWeb.png',
-  '/VeloxForWeb_dark.png',
-  '/znu_logo_light.png',
-  '/znu text logo dark.png',
-  '/logo_eng.png',
-  '/velox_car_render.jpg',
-  '/photos/Karim Shaprawy.jpeg',
-  '/photos/Moaaz Elghamry.jpeg',
-  '/photos/Mohamed Romy.jpeg'
-];
-
-// Install: pre-cache static assets & force instant activation
 self.addEventListener('install', (event) => {
   self.skipWaiting();
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(PRECACHE_ASSETS).catch((err) => {
-        console.warn('Pre-cache item warning:', err);
-      });
-    })
-  );
 });
 
-// Activate: PURGE ALL OLD CACHES immediately
 self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then((keys) => {
-      return Promise.all(
-        keys.map((key) => {
-          if (key !== CACHE_NAME) {
-            console.log('Purging legacy cache:', key);
-            return caches.delete(key);
-          }
-        })
-      );
-    }).then(() => self.clients.claim())
+    caches.keys()
+      .then((keys) => Promise.all(keys.map((k) => caches.delete(k))))
+      .then(() => self.registration.unregister())
+      .then(() => self.clients.claim())
   );
 });
 
-// Fetch: NEVER cache team structure, stylesheets, or live database connections
+// Pass-through without caching anything
 self.addEventListener('fetch', (event) => {
-  if (event.request.method !== 'GET' || !event.request.url.startsWith('http')) {
-    return;
-  }
-
-  // Let browser natively handle third-party requests (e.g. LinkedIn, Google, external sites)
-  try {
-    const urlObj = new URL(event.request.url);
-    if (urlObj.origin !== self.location.origin && !urlObj.hostname.includes('supabase.co')) {
-      return;
-    }
-  } catch (e) {
-    return;
-  }
-
-  // Large video streaming handled directly by browser
-  if (event.request.url.includes('.mp4')) {
-    return;
-  }
-
-  // ALWAYS BYPASS CACHE for live endpoints, forms, portals, and database APIs
-  const url = event.request.url;
-  if (
-    url.includes('/api/') ||
-    url.includes('join.html') ||
-    url.includes('/join') ||
-    url.includes('portal.html') ||
-    url.includes('/portal') ||
-    url.includes('style.css') ||
-    url.includes('i18n.js') ||
-    url.includes('team.js') ||
-    url.includes('team.html') ||
-    url.includes('supabase.co') ||
-    url.includes('/team')
-  ) {
-    event.respondWith(
-      fetch(event.request, { cache: 'no-store' }).catch(async () => {
-        const cached = await caches.match(event.request);
-        if (cached) return cached;
-        return new Response('', { status: 408, statusText: 'Network request failed' });
-      })
-    );
-    return;
-  }
-
-  // Standard Network-First strategy for remaining static pages
-  event.respondWith(
-    fetch(event.request)
-      .then((networkResponse) => {
-        if (networkResponse && networkResponse.status === 200) {
-          const responseToCache = networkResponse.clone();
-          caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, responseToCache);
-          });
-        }
-        return networkResponse;
-      })
-      .catch(async () => {
-        const cachedResponse = await caches.match(event.request);
-        if (cachedResponse) return cachedResponse;
-        if (event.request.headers.get('accept')?.includes('text/html')) {
-          const fallback = await caches.match('/index.html');
-          if (fallback) return fallback;
-        }
-        return new Response('', { status: 408, statusText: 'Resource unavailable offline' });
-      })
-  );
+  event.respondWith(fetch(event.request, { cache: 'no-store' }));
 });

@@ -855,13 +855,16 @@
       }
     }
 
-    // PWA Service Worker Registration & Cache Management
+    // Purge Service Worker & Wipes All Browser Caches
     if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/service-worker.js')
-          .then(reg => reg.update())
-          .catch(() => {});
-      });
+      navigator.serviceWorker.getRegistrations().then(registrations => {
+        for (const reg of registrations) reg.unregister();
+      }).catch(() => {});
+    }
+    if ('caches' in window) {
+      caches.keys().then(keys => {
+        for (const key of keys) caches.delete(key);
+      }).catch(() => {});
     }
   </script>
 

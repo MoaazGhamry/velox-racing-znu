@@ -1328,15 +1328,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
 });
 
-// 18. Service Worker Registration for PWA
+// 18. Service Worker Unregister & Cache Elimination
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/service-worker.js')
-      .then(registration => {
-        console.log('PWA ServiceWorker registered with scope:', registration.scope);
-      })
-      .catch(error => {
-        console.error('PWA ServiceWorker registration failed:', error);
-      });
-  });
+  navigator.serviceWorker.getRegistrations().then(registrations => {
+    for (const reg of registrations) {
+      reg.unregister();
+    }
+  }).catch(() => {});
+}
+if ('caches' in window) {
+  caches.keys().then(keys => {
+    for (const key of keys) {
+      caches.delete(key);
+    }
+  }).catch(() => {});
 }

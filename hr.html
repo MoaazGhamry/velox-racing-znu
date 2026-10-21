@@ -2,6 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="robots" content="noindex, nofollow" />
   <title>HR Portal — Velox Racing | Zagazig National University</title>
@@ -2526,13 +2529,16 @@ velox.racing.znu@gmail.com`;
       }
     }
 
-    // PWA Service Worker Registration & Cache Management
+    // Purge Service Worker & Wipes All Browser Caches
     if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/service-worker.js')
-          .then(reg => reg.update())
-          .catch(() => {});
-      });
+      navigator.serviceWorker.getRegistrations().then(registrations => {
+        for (const reg of registrations) reg.unregister();
+      }).catch(() => {});
+    }
+    if ('caches' in window) {
+      caches.keys().then(keys => {
+        for (const key of keys) caches.delete(key);
+      }).catch(() => {});
     }
   </script>
 </body>
