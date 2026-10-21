@@ -8566,8 +8566,26 @@
       };
 
       async function uploadToCloudinaryServer(fileOrBase64) {
+        // 1. Try secure backend serverless endpoint first (signs with API Key & Secret)
+        try {
+          const backendRes = await fetch('/api/upload-photo', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ file: fileOrBase64, folder: 'velox_team_members' })
+          });
+          if (backendRes.ok) {
+            const bData = await backendRes.json();
+            if (bData.status === 'success' && bData.url) {
+              return bData.url;
+            }
+          }
+        } catch (backendErr) {
+          console.warn('Backend /api/upload-photo unavailable, attempting direct upload:', backendErr);
+        }
+
+        // 2. Direct Cloudinary upload fallback
         const cfg = window.CLOUDINARY_CONFIG || {};
-        const cloudName = cfg.cloudName || localStorage.getItem('velox_cloudinary_cloud_name') || 'velox-racing';
+        const cloudName = cfg.cloudName || localStorage.getItem('velox_cloudinary_cloud_name') || 'dhoqtr0se';
         const uploadPreset = cfg.uploadPreset || localStorage.getItem('velox_cloudinary_upload_preset') || 'velox_members';
 
         const formData = new FormData();

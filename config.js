@@ -16,8 +16,8 @@ window.VELOX_CONFIG = SUPABASE_CONFIG;
 
 // Cloudinary Cloud Storage Configuration for Public Photo Uploads
 const CLOUDINARY_CONFIG = {
-  cloudName: window.CLOUDINARY_CLOUD_NAME || localStorage.getItem('velox_cloudinary_cloud_name') || "",
-  uploadPreset: window.CLOUDINARY_UPLOAD_PRESET || localStorage.getItem('velox_cloudinary_upload_preset') || ""
+  cloudName: window.CLOUDINARY_CLOUD_NAME || localStorage.getItem('velox_cloudinary_cloud_name') || "dhoqtr0se",
+  uploadPreset: window.CLOUDINARY_UPLOAD_PRESET || localStorage.getItem('velox_cloudinary_upload_preset') || "velox_members"
 };
 window.CLOUDINARY_CONFIG = CLOUDINARY_CONFIG;
 
