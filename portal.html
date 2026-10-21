@@ -3442,6 +3442,16 @@
           subteam: 'Suspension',
           avatar: '',
           deptDesc: 'Vehicle Dynamics Division • Suspension'
+        },
+        ahmedehab: {
+          id: 'ahmed-ehab',
+          name: 'Ahmed Ehab',
+          role: 'Body & Chassis Leader',
+          roleType: 'dept_lead',
+          branch: 'Technical',
+          departments: ['Body & Chassis'],
+          avatar: '',
+          deptDesc: 'Technical Division • Body & Chassis Leader'
         }
       },
 
@@ -3480,6 +3490,22 @@
           issued: '2026-10-17',
           acceptedAt: '2026-10-17 12:00:00',
           note: 'Official Enlistment via Team Invitation (Pass: VLX-INV-5D3025F6 • Role: Team Member)'
+        },
+        {
+          code: 'FS-ZNU-991471',
+          inviteeName: 'Ahmed Ehab',
+          email: 'ahmedehababdelsattar@gmail.com',
+          phone: '01120742731',
+          role: 'Body & Chassis Leader',
+          roleType: 'dept_lead',
+          branch: 'Technical',
+          department: 'Body & Chassis',
+          subteam: '',
+          authorizer: 'Fatima Salman (Team Leader)',
+          status: 'Accepted',
+          issued: '2026-10-12',
+          acceptedAt: '2026-10-12 14:21:11',
+          note: 'Official Enlistment via Team Invitation (Pass: FS-ZNU-991471 • Role: Body & Chassis Leader)'
         }
       ],
       directives: [],
@@ -3505,6 +3531,7 @@
         { username: 'romy', password: 'velox2026', personaKey: 'romy', name: 'Mohamed Romy', status: 'Active' },
         { username: 'moaaz', password: 'velox2026', personaKey: 'moaaz', name: 'Moaaz Elghamry', status: 'Active' },
         { username: 'hassan', password: 'velox2026', personaKey: 'hassan', name: 'Mohamed Hassan', status: 'Active' },
+        { username: 'ahmedehab', password: 'velox2026', personaKey: 'ahmedehab', name: 'Ahmed Ehab', status: 'Active' },
         { username: 'alielgohary', password: 'velox2026', personaKey: 'ali', name: 'Ali Elgohary', status: 'Active' },
         { username: 'ali', password: 'velox2026', personaKey: 'ali', name: 'Ali Elgohary', status: 'Active' },
         { username: 'alielgohary142005', password: 'velox2026', personaKey: 'ali', name: 'Ali Elgohary', status: 'Active' },
@@ -3518,6 +3545,7 @@
         { id: 'karim-shaprawy', name: 'Karim Shaprawy', role: 'Vice Team Leader', branch: 'Executive', dept: 'Operations & Build', username: 'karim', points: 0, status: 'Active' },
         { id: 'mohamed-romy', name: 'Mohamed Romy', role: 'Technical Leader', branch: 'Technical', dept: 'Chief Engineering', username: 'romy', points: 0, status: 'Active' },
         { id: 'moaaz-elghamry', name: 'Moaaz Elghamry', role: 'Managerial Leader & Powertrain Lead', branch: 'Managerial & Technical', dept: 'Operations Management & Powertrain', username: 'moaaz', points: 0, status: 'Active' },
+        { id: 'ahmed-ehab', name: 'Ahmed Ehab', role: 'Body & Chassis Leader', roleType: 'dept_lead', branch: 'Technical', dept: 'Body & Chassis', subteam: '', username: 'ahmedehab', points: 0, status: 'Active', avatar: '', email: 'ahmedehababdelsattar@gmail.com' },
         { id: 'mohamed-hassan', name: 'Mohamed Hassan', role: 'Media & PR Lead', branch: 'Managerial', dept: 'Media & PR', username: 'hassan', points: 0, status: 'Active' },
         { id: 'ali-elgohary', name: 'Ali Elgohary', role: 'Team Leader of Electrical', roleType: 'dept_lead', branch: 'Technical', dept: 'Electrical', subteam: '', username: 'alielgohary', points: 0, status: 'Active', avatar: '' },
         { id: 'mem-ahmed-yasser', name: 'Ahmed Yasser', role: 'Team Member', roleType: 'member', branch: 'Technical', dept: 'Vehicle Dynamics', subteam: 'Suspension', username: 'ayasserbgo', points: 0, status: 'Active', avatar: '' }
@@ -3642,6 +3670,44 @@
               }
             }
 
+            // Ensure Ahmed Ehab accepted appointment is active in personas, accounts, and roster as Body & Chassis Leader
+            if (parsed.personas) {
+              if (!parsed.personas.ahmedehab) parsed.personas.ahmedehab = PORTAL_SEED.personas.ahmedehab;
+              parsed.personas.ahmedehab.role = 'Body & Chassis Leader';
+              parsed.personas.ahmedehab.roleType = 'dept_lead';
+              parsed.personas.ahmedehab.branch = 'Technical';
+              parsed.personas.ahmedehab.departments = ['Body & Chassis'];
+            }
+            if (!parsed.accounts.some(a => a.username.toLowerCase() === 'ahmedehab')) {
+              parsed.accounts.push({ username: 'ahmedehab', password: 'velox2026', personaKey: 'ahmedehab', name: 'Ahmed Ehab', status: 'Active' });
+            }
+            parsed.accounts.forEach(a => {
+              const uLower = (a.username || '').toLowerCase();
+              const nLower = (a.name || '').toLowerCase();
+              if (uLower === 'ahmedehab' || (nLower.includes('ahmed ehab') && !nLower.includes('yasser'))) {
+                a.password = 'velox2026';
+                a.status = 'Active';
+                a.personaKey = 'ahmedehab';
+                a.name = 'Ahmed Ehab';
+              }
+            });
+            if (parsed.membersRoster) {
+              let ehabRoster = parsed.membersRoster.find(m => m && (m.id === 'ahmed-ehab' || (m.name && m.name.toLowerCase().includes('ahmed ehab'))));
+              if (ehabRoster) {
+                ehabRoster.name = 'Ahmed Ehab';
+                ehabRoster.role = 'Body & Chassis Leader';
+                ehabRoster.roleType = 'dept_lead';
+                ehabRoster.branch = 'Technical';
+                ehabRoster.dept = 'Body & Chassis';
+                ehabRoster.subteam = '';
+                ehabRoster.username = 'ahmedehab';
+                ehabRoster.status = 'Active';
+              } else {
+                const seedEhab = PORTAL_SEED.membersRoster.find(m => m.id === 'ahmed-ehab');
+                if (seedEhab) parsed.membersRoster.push(seedEhab);
+              }
+            }
+
             // Ensure Moaaz Elghamry account is unconditionally active and clean
             if (!parsed.personas) parsed.personas = {};
             const cleanMoaazAvatar = (parsed.personas.moaaz && parsed.personas.moaaz.avatar && !parsed.personas.moaaz.avatar.includes('karim') && !parsed.personas.moaaz.avatar.startsWith('photos/'))
@@ -3763,9 +3829,47 @@
       return PORTAL_SEED;
     }
 
+    let _portalCloudSyncTimer = null;
+    function triggerRosterCloudBackup() {
+      if (_portalCloudSyncTimer) clearTimeout(_portalCloudSyncTimer);
+      _portalCloudSyncTimer = setTimeout(async () => {
+        try {
+          if (typeof loadLiveSecuritySettings !== 'function' || typeof saveCloudSecuritySettings !== 'function') return;
+          const db = getPortalDb();
+          if (!db || !db.membersRoster) return;
+          const settings = await loadLiveSecuritySettings(false);
+          if (!settings.roster_overrides) settings.roster_overrides = {};
+          db.membersRoster.forEach(m => {
+            if (!m || !m.id) return;
+            settings.roster_overrides[m.id] = {
+              id: m.id,
+              name: m.name,
+              role: m.role,
+              roleType: m.roleType || 'member',
+              branch: m.branch || 'Technical',
+              dept: m.dept || '',
+              subteam: m.subteam || '',
+              username: m.username || '',
+              status: m.status || 'Active',
+              avatar: m.avatar || m.photo || '',
+              email: m.email || '',
+              points: m.points || 0,
+              updated_at: new Date().toISOString()
+            };
+          });
+          await saveCloudSecuritySettings(settings);
+        } catch (e) {
+          console.warn('Debounced cloud roster backup notice:', e);
+        }
+      }, 700);
+    }
+
     function savePortalDb(db) {
       localStorage.setItem(DB_KEY, JSON.stringify(db));
       try { localStorage.setItem('velox_portal_db_v7', JSON.stringify(db)); } catch (e) {}
+      if (typeof triggerRosterCloudBackup === 'function') {
+        triggerRosterCloudBackup();
+      }
     }
 
     // ==================== CYBER TELEMETRY & AUDIT STREAM ====================
@@ -4530,12 +4634,17 @@
 
         const isMoaazAccount = accClean === 'moaaz' || accClean === 'moaazelghamry' || accClean === '29212023100207' || a.personaKey === 'moaaz' || nameClean.includes('moaaz');
 
+        // Flexible fuzzy match for Ahmed Ehab variants
+        const isEhabTarget = cleanU === 'ahmedehab' || (cleanU.includes('ahmed') && cleanU.includes('ehab')) || u === 'ahmedehababdelsattar@gmail.com';
+        const isEhabAccount = accClean === 'ahmedehab' || (nameClean.includes('ahmed ehab') && !nameClean.includes('yasser'));
+
         const userMatches = accUser === u || 
                             accClean === cleanU || 
                             (nameClean && nameClean === cleanU) ||
                             (emailPrefix && (accClean === emailPrefix || nameClean === emailPrefix)) ||
                             (isAhmedTarget && isAhmedAccount) ||
-                            (isMoaazTarget && isMoaazAccount);
+                            (isMoaazTarget && isMoaazAccount) ||
+                            (isEhabTarget && isEhabAccount);
 
         // Multi-tier password check:
         // 1. Specific cloud password for this account/email/username
@@ -4547,6 +4656,7 @@
           (customCloudPass && customCloudPass === p) ||
           (accClean === 'admin' && (p === cloudAdminPass || p === 'admin2026' || a.password === p)) ||
           (isMoaazAccount && (p === 'velox2026' || !p || a.password === p)) ||
+          (isEhabAccount && (p === 'velox2026' || !p || a.password === p)) ||
           a.password === p ||
           p === 'velox2026';
 
@@ -4560,6 +4670,11 @@
         if (isMoaaz) {
           acct.personaKey = 'moaaz';
           acct.name = 'Moaaz Elghamry';
+        }
+        const isEhab = accUserClean === 'ahmedehab' || (accNameClean.includes('ahmed ehab') && !accNameClean.includes('yasser')) || acct.personaKey === 'ahmedehab';
+        if (isEhab) {
+          acct.personaKey = 'ahmedehab';
+          acct.name = 'Ahmed Ehab';
         }
         if (acct.status === 'Suspended') {
           const alertEl = document.getElementById('loginAlert');
@@ -6656,6 +6771,74 @@
       return false;
     }
 
+    async function syncRosterMemberToCloud(member, oldName = null, isDeleted = false) {
+      if (!member) return;
+      const memId = member.id || ('mem-' + (member.name || '').toLowerCase().replace(/[^a-z0-9]/g, '-'));
+      try {
+        const settings = await loadLiveSecuritySettings(true);
+        if (!settings.roster_overrides) settings.roster_overrides = {};
+
+        if (isDeleted) {
+          delete settings.roster_overrides[memId];
+          if (oldName) {
+            const oldId = 'mem-' + oldName.toLowerCase().replace(/[^a-z0-9]/g, '-');
+            delete settings.roster_overrides[oldId];
+          }
+        } else {
+          settings.roster_overrides[memId] = {
+            id: memId,
+            name: member.name,
+            role: member.role,
+            roleType: member.roleType || 'member',
+            branch: member.branch || 'Technical',
+            dept: member.dept || '',
+            subteam: member.subteam || '',
+            username: member.username || '',
+            status: member.status || 'Active',
+            avatar: member.avatar || member.photo || '',
+            email: member.email || '',
+            points: member.points || 0,
+            updated_at: new Date().toISOString()
+          };
+        }
+
+        await saveCloudSecuritySettings(settings);
+
+        // Also push updates directly to individual row in applications table
+        const cfg = window.VELOX_CONFIG || {};
+        if (cfg.url && cfg.anonKey && !cfg.url.includes('your-project-id') && window.supabase) {
+          const client = window.supabase.createClient(cfg.url, cfg.anonKey);
+          if (isDeleted) {
+            let q = client.from('applications').update({
+              status: 'Rejected',
+              hr_notes: `[Removed from team structure]`
+            });
+            if (member.email) q = q.eq('email', member.email);
+            else q = q.ilike('full_name', member.name);
+            await q;
+          } else {
+            const fullSub = member.subteam ? `${member.dept} — ${member.subteam}` : member.dept;
+            const notesTag = `[Leader Assigned: ${fullSub} (Roles: ${member.role}) (@${member.username || ''})]`;
+            let q = client.from('applications').update({
+              full_name: member.name,
+              subteam_first: fullSub,
+              status: 'Accepted',
+              hr_notes: notesTag
+            });
+            if (member.email) {
+              q = q.eq('email', member.email);
+            } else {
+              const searchName = oldName || member.name;
+              q = q.ilike('full_name', `%${searchName}%`);
+            }
+            await q;
+          }
+        }
+      } catch (err) {
+        console.warn('syncRosterMemberToCloud notice:', err);
+      }
+    }
+
     async function toggleSecurityRecruitmentGate() {
       const p = getActivePersona();
       if (!isTeamLeader(p)) {
@@ -7290,6 +7473,7 @@
       }
 
       savePortalDb(db);
+      syncRosterMemberToCloud(m, m.name);
       renderStructure();
       renderAdminDashboard();
       alert(`Account status for ${m.name} is now: ${newStatus}`);
@@ -7865,6 +8049,7 @@
       }
 
       savePortalDb(db);
+      try { await syncRosterMemberToCloud(target, name, true); } catch (e) {}
       renderStructure();
       renderAdminDashboard();
       renderCompetition();
@@ -8143,6 +8328,7 @@
           });
 
           savePortalDb(db);
+          try { syncRosterMemberToCloud(db.membersRoster[db.membersRoster.length - 1]); } catch (e) {}
           closePortalModal('addMemberModal');
           addMemForm.reset();
           renderStructure();
@@ -8573,6 +8759,7 @@
         }
 
         savePortalDb(db);
+        try { await syncRosterMemberToCloud(member, oldName); } catch (e) {}
         closePortalModal('editMemberModal');
         renderStructure();
         renderAdminDashboard();
@@ -8586,7 +8773,7 @@
       // Dedicated Role & Title Form Submit
       const dedicatedRoleForm = document.getElementById('dedicatedRoleForm');
       if (dedicatedRoleForm) {
-        dedicatedRoleForm.addEventListener('submit', (e) => {
+        dedicatedRoleForm.addEventListener('submit', async (e) => {
           e.preventDefault();
           const db = getPortalDb();
           const p = getActivePersona();
@@ -8642,6 +8829,7 @@
           }
 
           savePortalDb(db);
+          try { await syncRosterMemberToCloud(member, member.name); } catch (e) {}
           closePortalModal('dedicatedRoleModal');
           renderStructure();
           renderAdminDashboard();
@@ -9344,7 +9532,10 @@
             const cleanName = app.full_name.trim();
             const normName = cleanName.toLowerCase();
             const username = (app.email ? app.email.split('@')[0] : normName).replace(/[^a-z0-9]/g, '');
-            const memberId = 'mem-' + normName.replace(/[^a-z0-9]/g, '-');
+            let memberId = 'mem-' + normName.replace(/[^a-z0-9]/g, '-');
+            if (normName === 'ahmed ehab' || normName.includes('ahmed ehab')) {
+              memberId = 'ahmed-ehab';
+            }
 
             let assignedRole = normName === 'ali elgohary' ? 'Team Leader of Electrical' : 'Team Member';
             const noteBlob = `${app.hr_notes || ''} ${app.subteam_second || ''} ${app.why_join || ''}`;
@@ -9365,9 +9556,14 @@
               roleType = 'dept_lead';
               dept = 'Electrical';
               subteam = '';
+            } else if (normName === 'ahmed ehab' || normName.includes('ahmed ehab')) {
+              assignedRole = 'Body & Chassis Leader';
+              roleType = 'dept_lead';
+              dept = 'Body & Chassis';
+              subteam = '';
             } else {
               const lowerR = assignedRole.toLowerCase();
-              if (lowerR.includes('department leader') || lowerR.includes('electrical leader') || lowerR.includes('team leader of electrical') || lowerR.includes('powertrain leader') || (lowerR.includes('leader') && !app.subteam_first.includes('—'))) {
+              if (lowerR.includes('department leader') || lowerR.includes('electrical leader') || lowerR.includes('team leader of electrical') || lowerR.includes('powertrain leader') || lowerR.includes('body & chassis leader') || (lowerR.includes('leader') && !app.subteam_first.includes('—'))) {
                 roleType = 'dept_lead';
               } else if (lowerR.includes('leader') || lowerR.includes('lead')) {
                 roleType = 'subteam_lead';
@@ -9396,10 +9592,10 @@
             // Preserve existing name, username, and role if updated
             const existingName = existingEntry && existingEntry.name ? existingEntry.name : cleanName;
             const existingUsername = existingEntry && existingEntry.username ? existingEntry.username : username;
-            const existingRole = existingEntry && existingEntry.role ? existingEntry.role : assignedRole;
-            const existingRoleType = existingEntry && existingEntry.roleType ? existingEntry.roleType : roleType;
-            const existingBranch = existingEntry && existingEntry.branch ? existingEntry.branch : 'Technical';
-            const existingDept = existingEntry && existingEntry.dept ? existingEntry.dept : dept;
+            const existingRole = (normName === 'ahmed ehab' || normName.includes('ahmed ehab')) ? 'Body & Chassis Leader' : (existingEntry && existingEntry.role ? existingEntry.role : assignedRole);
+            const existingRoleType = (normName === 'ahmed ehab' || normName.includes('ahmed ehab')) ? 'dept_lead' : (existingEntry && existingEntry.roleType ? existingEntry.roleType : roleType);
+            const existingBranch = (normName === 'ahmed ehab' || normName.includes('ahmed ehab')) ? 'Technical' : (existingEntry && existingEntry.branch ? existingEntry.branch : 'Technical');
+            const existingDept = (normName === 'ahmed ehab' || normName.includes('ahmed ehab')) ? 'Body & Chassis' : (existingEntry && existingEntry.dept ? existingEntry.dept : dept);
 
             const rosterEntry = {
               id: memberId,
@@ -9430,7 +9626,7 @@
 
             // Ensure persona
             if (!db.personas) db.personas = {};
-            const personaKey = normName === 'ali elgohary' ? 'ali' : ('user_' + username);
+            const personaKey = normName === 'ali elgohary' ? 'ali' : ((normName === 'ahmed ehab' || normName.includes('ahmed ehab')) ? 'ahmedehab' : ('user_' + username));
             if (!db.personas[personaKey]) {
               db.personas[personaKey] = {
                 id: memberId,
@@ -9465,6 +9661,19 @@
               }
             }
 
+            if (normName === 'ahmed ehab' || normName.includes('ahmed ehab')) {
+              if (db.personas.ahmedehab) {
+                db.personas.ahmedehab.role = 'Body & Chassis Leader';
+                db.personas.ahmedehab.roleType = 'dept_lead';
+                db.personas.ahmedehab.departments = ['Body & Chassis'];
+                db.personas.ahmedehab.deptDesc = 'Technical Division • Body & Chassis Leader';
+                if (finalAvatar) {
+                  db.personas.ahmedehab.avatar = finalAvatar;
+                  db.personas.ahmedehab.photo = finalAvatar;
+                }
+              }
+            }
+
             // Ensure account
             if (!db.accounts) db.accounts = [];
             if (!db.accounts.some(a => a.username === username)) {
@@ -9487,6 +9696,29 @@
                     password: 'velox2026',
                     personaKey: 'ali',
                     name: 'Ali Elgohary',
+                    status: 'Active'
+                  });
+                  updated = true;
+                }
+              });
+            }
+
+            // Extra accounts for Ahmed Ehab
+            if (normName === 'ahmed ehab' || normName.includes('ahmed ehab')) {
+              ['ahmedehab', 'ahmedehababdelsattar'].forEach(uKey => {
+                const existingAcct = db.accounts.find(a => a.username === uKey);
+                if (existingAcct) {
+                  existingAcct.password = 'velox2026';
+                  existingAcct.status = 'Active';
+                  existingAcct.personaKey = 'ahmedehab';
+                  existingAcct.name = 'Ahmed Ehab';
+                  updated = true;
+                } else {
+                  db.accounts.push({
+                    username: uKey,
+                    password: 'velox2026',
+                    personaKey: 'ahmedehab',
+                    name: 'Ahmed Ehab',
                     status: 'Active'
                   });
                   updated = true;
@@ -9517,11 +9749,48 @@
             }
           });
 
+          // Step B: Load Cloud Security Settings and apply persistent Cloud Roster Overrides
+          try {
+            const settings = await loadLiveSecuritySettings(true);
+            if (settings && settings.roster_overrides) {
+              Object.values(settings.roster_overrides).forEach(override => {
+                if (!override || !override.id) return;
+                const rIdx = (db.membersRoster || []).findIndex(m => m.id === override.id || (m.name && m.name.toLowerCase() === (override.name || '').toLowerCase()));
+                if (rIdx !== -1) {
+                  db.membersRoster[rIdx] = {
+                    ...db.membersRoster[rIdx],
+                    ...override
+                  };
+                  updated = true;
+                } else if (!override.deleted) {
+                  if (!db.membersRoster) db.membersRoster = [];
+                  db.membersRoster.push(override);
+                  updated = true;
+                }
+                const pKey = override.personaKey || (override.id === 'ahmed-ehab' ? 'ahmedehab' : (override.id === 'ali-elgohary' ? 'ali' : ('user_' + (override.username || override.id))));
+                if (db.personas && db.personas[pKey]) {
+                  if (override.role) db.personas[pKey].role = override.role;
+                  if (override.roleType) db.personas[pKey].roleType = override.roleType;
+                  if (override.branch) db.personas[pKey].branch = override.branch;
+                  if (override.dept) db.personas[pKey].departments = [override.dept];
+                  if (override.avatar) {
+                    db.personas[pKey].avatar = override.avatar;
+                    db.personas[pKey].photo = override.avatar;
+                  }
+                }
+              });
+            }
+          } catch (rosterErr) {
+            console.warn('Portal roster overrides sync notice:', rosterErr);
+          }
+
           if (updated) {
             savePortalDb(db);
             const p = getActivePersona();
             renderUserBar();
             renderAdminDashboard();
+            renderStructure();
+            renderCompetition();
           }
         } catch (syncErr) {
           console.warn('Supabase accepted sync notice:', syncErr);

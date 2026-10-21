@@ -135,7 +135,32 @@ const VELOX_TEAM = {
     {
       id: "body-chassis",
       name: "Body & Chassis",
-      leader: null,
+      name_ar: "الهيكل والشاسيه",
+      leader: {
+        id: "ahmed-ehab",
+        name: "Ahmed Ehab",
+        role: "Body & Chassis Leader",
+        role_ar: "قائد قسم الهيكل والشاسيه",
+        photo: "",
+        department: "Body & Chassis Division",
+        department_ar: "قسم الهيكل الخارجي والشاسيه",
+        bio: "Commands aerodynamic packaging, CFD downforce optimization, and 4130 tubular steel spaceframe chassis fabrication.",
+        bio_ar: "يقود الحزم الديناميكية الهوائية، ومحاكاة قوى التماسك بالـ CFD، وتصنيع شاسيه الهيكل الأنبوبي ومطابقة لوائح الأمان الدولية.",
+        responsibilities: [
+          "4130 chromoly tubular spaceframe chassis structural packaging and welding compliance",
+          "SES structural equivalency spreadsheet validation and cockpit impact attenuation",
+          "Aerodynamics CFD downforce mapping, body panel fabrication, and composite vacuum bagging",
+          "Torsional stiffness testing and driver ergonomics packaging envelope"
+        ],
+        responsibilities_ar: [
+          "التصميم الهيكلي وتصنيع ولحام شاسيه الكرومولي 4130 ومطابقة لوائح الأمان الدولية",
+          "تقديم تقرير الأمان الهيكلي SES وممتصات الصدمات الأمامية لصندوق القيادة",
+          "محاكاة قوى التماسك والانسيابية الهوائية بالـ CFD وتصنيع ألياف الكربون للهيكل الخارجي",
+          "اختبارات الصلابة الالتوائية للشاسيه وأبعاد راحة السائق داخل قمرة القيادة"
+        ],
+        quote: "Rigidity, aerodynamics, and lightweight engineering are the foundation upon which every fast lap is built.",
+        quote_ar: "الصلابة الهيكلية، والديناميكا الهوائية، وتقليل الوزن هم الأساس الذي يُبنى عليه كل زمن قياسي على الحلبة."
+      },
       subteams: ["Body", "Chassis"],
       description: "Aerodynamic packaging, CFD downforce optimization, and 4130 tubular steel spaceframe chassis fabrication.",
       description_ar: "الحزم الديناميكية الهوائية، محاكاة قوى التماسك بالـ CFD، وتصنيع شاسيه الهيكل الأنبوبي من سبيكة 4130 كرومولي."
@@ -511,21 +536,27 @@ function getDynamicTeamData() {
     const dept = allDepts.find(d => d.id === deptId || d.name.toLowerCase().includes(deptId));
     if (!dept) return;
     const resolvedPhoto = targetMember.photo || targetMember.avatar || findAvatarForPerson(targetMember.id, targetMember.name) || (dept.leader ? dept.leader.photo : '');
+    const oldLead = dept.leader || {};
     dept.leader = {
-      id: targetMember.id || ('lead-' + deptId),
+      ...oldLead,
+      id: targetMember.id || oldLead.id || ('lead-' + deptId),
       name: targetMember.name,
       role: roleTitle,
+      role_ar: oldLead.role_ar || (roleTitle === 'Body & Chassis Leader' ? 'قائد قسم الهيكل والشاسيه' : roleTitle),
       photo: resolvedPhoto,
       avatar: resolvedPhoto,
       department: dept.name,
       department_ar: dept.name_ar || dept.name,
-      bio: `Appointed Department Leader of ${dept.name} Division at Velox Racing Formula Student Team.`,
-      responsibilities: [
+      bio: oldLead.bio || `Appointed Department Leader of ${dept.name} Division at Velox Racing Formula Student Team.`,
+      bio_ar: oldLead.bio_ar || '',
+      responsibilities: oldLead.responsibilities || [
         `Executive engineering coordination and delivery milestones for ${dept.name}`,
         `Direct technical supervision over ${dept.subteams.join(', ')} subteams`,
         `Rules compliance and technical inspection preparation for Formula Student UK`
       ],
-      quote: "Engineering precision, relentless testing, and disciplined teamwork drive our car to the podium."
+      responsibilities_ar: oldLead.responsibilities_ar || [],
+      quote: oldLead.quote || "Engineering precision, relentless testing, and disciplined teamwork drive our car to the podium.",
+      quote_ar: oldLead.quote_ar || ''
     };
   }
 
@@ -568,7 +599,7 @@ function getDynamicTeamData() {
         if (data.managerialLeader) { data.managerialLeader.name = member.name; data.managerialLeader.photo = member.photo || member.avatar || data.managerialLeader.photo; }
       }
       // Check if this role is a Department Leader Role
-      else if (rLower.includes('body & chassis leader') || rLower === 'body & chassis leader') {
+      else if (rLower.includes('body & chassis leader') || rLower.includes('body and chassis leader') || rLower.includes('chassis leader') || (member.name && member.name.toLowerCase().includes('ahmed ehab'))) {
         assignDeptLeader(member, 'body-chassis', 'Body & Chassis Leader');
       } else if (rLower.includes('vehicle dynamics leader') || rLower === 'vehicle dynamics leader') {
         assignDeptLeader(member, 'vehicle-dynamics', 'Vehicle Dynamics Leader');
@@ -687,6 +718,23 @@ async function syncCloudAcceptedMembers() {
       return;
     }
 
+    // Also fetch cloud roster overrides from system-settings
+    let cloudRosterOverrides = {};
+    try {
+      const { data: setRes } = await client
+        .from('applications')
+        .select('hr_notes')
+        .eq('email', 'system-settings@velox.internal');
+      if (Array.isArray(setRes) && setRes.length > 0 && setRes[0].hr_notes) {
+        const sObj = JSON.parse(setRes[0].hr_notes);
+        if (sObj && sObj.roster_overrides) {
+          cloudRosterOverrides = sObj.roster_overrides;
+        }
+      }
+    } catch (e) {
+      console.warn('[VELOX Cloud] Note fetching overrides:', e);
+    }
+
     const liveList = [];
     const seenNames = new Set();
     const seenIds = new Set();
@@ -728,9 +776,16 @@ async function syncCloudAcceptedMembers() {
           assignedRoleType = 'dept_lead';
         }
 
+        if (normName === 'ahmed ehab' || normName.includes('ahmed ehab')) {
+          parsed.dept = 'Body & Chassis';
+          parsed.subteam = '';
+          assignedRole = 'Body & Chassis Leader';
+          assignedRoleType = 'dept_lead';
+        }
+
         if (!assignedRoleType) {
           const lowerR = assignedRole.toLowerCase();
-          if (lowerR.includes('department leader') || lowerR.includes('electrical leader') || lowerR.includes('powertrain leader') || (lowerR.includes('leader') && !parsed.subteam)) {
+          if (lowerR.includes('department leader') || lowerR.includes('electrical leader') || lowerR.includes('powertrain leader') || lowerR.includes('body & chassis leader') || (lowerR.includes('leader') && !parsed.subteam)) {
             assignedRoleType = 'dept_lead';
           } else if (lowerR.includes('leader') || lowerR.includes('lead')) {
             assignedRoleType = 'subteam_lead';
@@ -751,6 +806,18 @@ async function syncCloudAcceptedMembers() {
             }
           }
         }
+
+        // Apply cloud roster override if available
+        const ov = cloudRosterOverrides[memberId] || Object.values(cloudRosterOverrides).find(o => o.name && o.name.toLowerCase() === normName);
+        if (ov) {
+          if (ov.role) assignedRole = ov.role;
+          if (ov.roleType) assignedRoleType = ov.roleType;
+          if (ov.dept) parsed.dept = ov.dept;
+          if (ov.subteam !== undefined) parsed.subteam = ov.subteam;
+          if (ov.branch) parsed.branch = ov.branch;
+          if (ov.avatar && isSafeImageAvatar(ov.avatar)) avatar = ov.avatar;
+        }
+
         if (!avatar || !isSafeImageAvatar(avatar)) {
           avatar = '';
           if (typeof findAvatarForPerson === 'function') {
@@ -781,6 +848,49 @@ async function syncCloudAcceptedMembers() {
       });
     }
 
+    // Ensure any extra members from cloudRosterOverrides are included
+    Object.values(cloudRosterOverrides).forEach(ov => {
+      if (!ov || !ov.name || ov.deleted) return;
+      const nName = ov.name.trim().toLowerCase();
+      if (!seenNames.has(nName)) {
+        seenNames.add(nName);
+        liveList.push({
+          id: ov.id || ('mem-' + nName.replace(/[^a-z0-9]/g, '-')),
+          name: ov.name,
+          role: ov.role || 'Team Member',
+          roleType: ov.roleType || 'member',
+          branch: ov.branch || 'Technical',
+          department: ov.dept || 'General',
+          subteam: ov.subteam || '',
+          avatar: ov.avatar || '',
+          photo: ov.avatar || '',
+          email: ov.email || ''
+        });
+      }
+    });
+
+    // Guarantee Ahmed Ehab is permanently in liveList as Body & Chassis Leader
+    const ehabEntry = liveList.find(m => m.name && m.name.toLowerCase().includes('ahmed ehab'));
+    if (ehabEntry) {
+      ehabEntry.role = 'Body & Chassis Leader';
+      ehabEntry.roleType = 'dept_lead';
+      ehabEntry.department = 'Body & Chassis';
+      ehabEntry.subteam = '';
+    } else {
+      liveList.push({
+        id: 'ahmed-ehab',
+        name: 'Ahmed Ehab',
+        role: 'Body & Chassis Leader',
+        roleType: 'dept_lead',
+        branch: 'Technical',
+        department: 'Body & Chassis',
+        subteam: '',
+        avatar: '',
+        photo: '',
+        email: 'ahmedehababdelsattar@gmail.com'
+      });
+    }
+
     // Assign live in-memory list (Source of Truth)
     window._liveCloudAcceptedMembers = liveList;
     window._isCloudConnected = true;
@@ -796,7 +906,7 @@ async function syncCloudAcceptedMembers() {
       if (dbRaw) {
         const db = JSON.parse(dbRaw);
         if (db && db.membersRoster) {
-          const staticLeadIds = new Set(['admin-director', 'fatima-salman', 'karim-shaprawy', 'mohamed-romy', 'moaaz-elghamry', 'mohamed-hassan', 'ali-elgohary']);
+          const staticLeadIds = new Set(['admin-director', 'fatima-salman', 'karim-shaprawy', 'mohamed-romy', 'moaaz-elghamry', 'ahmed-ehab', 'mohamed-hassan', 'ali-elgohary']);
           db.membersRoster = db.membersRoster.filter(m => staticLeadIds.has(m.id) || m.manualOverride || seenNames.has((m.name || '').trim().toLowerCase()));
           localStorage.setItem('velox_portal_db_v8', JSON.stringify(db));
         }
