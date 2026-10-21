@@ -422,141 +422,172 @@ function getDynamicTeamData() {
     }
   });
 
-  // 2. Dynamic Crew:
-  // Team structure is strictly driven by the live database connection (window._liveCloudAcceptedMembers).
+  // 2. Dynamic Crew & Role Synchronization:
   let activeMembers = [];
-  if (Array.isArray(window._liveCloudAcceptedMembers)) {
-    activeMembers = [...window._liveCloudAcceptedMembers];
-  } else if (portalDb && Array.isArray(portalDb.membersRoster) && portalDb.membersRoster.length > 0) {
-    // Initial optimistic paint while live cloud connection finishes
-    activeMembers = portalDb.membersRoster.filter(m => m && m.name && m.status !== 'Suspended' && m.status !== 'Removed' && !['admin-director', 'fatima-salman', 'karim-shaprawy', 'mohamed-romy', 'moaaz-elghamry', 'mohamed-hassan', 'ali-elgohary'].includes(m.id));
+  const rosterMap = new Map();
+
+  // Load from portalDb.membersRoster first (includes manual admin edits, multi-roles, secondary subteams)
+  if (portalDb && Array.isArray(portalDb.membersRoster)) {
+    portalDb.membersRoster.forEach(m => {
+      if (m && m.name && m.status !== 'Suspended' && m.status !== 'Removed' && m.id !== 'admin-director') {
+        rosterMap.set((m.name || '').trim().toLowerCase(), m);
+      }
+    });
   }
 
-  // 3. Map members to departments and subteams
-  activeMembers.forEach(member => {
+  // Merge live cloud accepted members
+  if (Array.isArray(window._liveCloudAcceptedMembers)) {
+    window._liveCloudAcceptedMembers.forEach(cm => {
+      const n = (cm.name || '').trim().toLowerCase();
+      if (!rosterMap.has(n)) {
+        rosterMap.set(n, cm);
+      } else {
+        const local = rosterMap.get(n);
+        // If not manually edited in portal, merge cloud updates
+        if (!local.manualOverride) {
+          rosterMap.set(n, { ...local, ...cm });
+        }
+      }
+    });
+  }
+
+  activeMembers = Array.from(rosterMap.values());
+
+  // Helper to add member to subteam
+  function addMemberToSubteam(targetMember, deptName, subName, roleTitle) {
+    if (!deptName) return;
+    const cleanDept = deptName.toLowerCase();
     const targetDept = allDepts.find(d => {
       const dName = d.name.toLowerCase();
-      const mDept = (member.department || '').toLowerCase();
-      return dName === mDept || mDept.includes(dName) || dName.includes(mDept);
+      return dName === cleanDept || cleanDept.includes(dName) || dName.includes(cleanDept);
     });
-
     if (!targetDept) return;
 
-    const mNorm = (member.name || '').trim().toLowerCase();
-    if (mNorm === 'ali elgohary' || member.id === 'ali-elgohary' || member.id === 'mem-ali-elgohary') {
-      const elecDept = allDepts.find(d => d.id === 'electrical' || d.name.toLowerCase() === 'electrical');
-      if (elecDept && elecDept.leader) {
-        if (member.photo || member.avatar) {
-          elecDept.leader.photo = member.photo || member.avatar;
-          elecDept.leader.avatar = member.photo || member.avatar;
-        }
-        elecDept.leader.role = 'Team Leader of Electrical';
-      }
-      return; // NEVER add Ali Elgohary to any subteam crew!
-    }
-
-    const isDeptLeader = member.roleType === 'dept_lead' ||
-      member.role.toLowerCase().includes('department leader') ||
-      member.role.toLowerCase().includes('electrical leader') ||
-      member.role.toLowerCase().includes('team leader of electrical') ||
-      (member.role.toLowerCase().includes('leader') && (!member.subteam || member.subteam === '__DEPT_LEAD__' || member.subteam === 'All Subteams'));
-
-    if (isDeptLeader) {
-      if (!targetDept.leader) {
-        targetDept.leader = {
-          id: member.id,
-          name: member.name,
-          role: member.role,
-          photo: member.photo || member.avatar || '',
-          avatar: member.avatar || member.photo || '',
-          department: targetDept.name,
-          department_ar: targetDept.name,
-          bio: `Appointed Department Leader of ${targetDept.name} Division at Velox Racing Formula Student Team.`,
-          responsibilities: [
-            `Executive engineering coordination and delivery milestones for ${targetDept.name}`,
-            `Direct technical supervision over ${targetDept.subteams.join(', ')} subteams`,
-            `Rules compliance and technical inspection preparation for Formula Student UK`
-          ],
-          quote: "Engineering precision, relentless testing, and disciplined teamwork drive our car to the podium."
-        };
-      } else {
-        // Target dept already has a leader (e.g. Electrical -> Ali Elgohary); sync their updated photo & role
-        const sameLeader = (targetDept.leader.id && targetDept.leader.id === member.id) ||
-          (targetDept.leader.name && member.name && targetDept.leader.name.trim().toLowerCase() === member.name.trim().toLowerCase());
-        if (sameLeader) {
-          if (member.photo || member.avatar) {
-            targetDept.leader.photo = member.photo || member.avatar;
-            targetDept.leader.avatar = member.photo || member.avatar;
-          }
-          if (member.role) targetDept.leader.role = member.role;
-        }
-      }
-      return; // Do NOT push department leaders down into subteamCrew!
-    }
-
     let matchedSub = null;
-    if (member.subteam && member.subteam !== '__DEPT_LEAD__') {
-      matchedSub = targetDept.subteams.find(s => s.toLowerCase() === member.subteam.toLowerCase() || member.subteam.toLowerCase().includes(s.toLowerCase()));
-    }
-    if (!matchedSub) {
-      matchedSub = targetDept.subteams.find(s => (member.role && member.role.toLowerCase().includes(s.toLowerCase())) || (member.department && member.department.toLowerCase().includes(s.toLowerCase())));
+    if (subName && subName !== '__DEPT_LEAD__' && subName !== 'All Subteams') {
+      const cleanSub = subName.toLowerCase();
+      matchedSub = targetDept.subteams.find(s => s.toLowerCase() === cleanSub || cleanSub.includes(s.toLowerCase()));
     }
     if (!matchedSub && targetDept.subteams.length > 0) {
       matchedSub = targetDept.subteams[0];
     }
+    if (!matchedSub) return;
 
-    if (matchedSub) {
-      if (!targetDept.subteamCrew) targetDept.subteamCrew = {};
-      if (!targetDept.subteamCrew[matchedSub]) targetDept.subteamCrew[matchedSub] = [];
-      
-      const mNorm = member.name.trim().toLowerCase();
-      const alreadyExists = targetDept.subteamCrew[matchedSub].some(existing => 
-        (existing.id && member.id && existing.id === member.id) ||
-        (existing.name && existing.name.trim().toLowerCase() === mNorm)
-      );
-      if (alreadyExists) return;
+    if (!targetDept.subteamCrew) targetDept.subteamCrew = {};
+    if (!targetDept.subteamCrew[matchedSub]) targetDept.subteamCrew[matchedSub] = [];
 
-      const rLower = (member.role || '').toLowerCase();
-      const isExplicitMember = rLower === 'team member' || rLower === 'member' || member.roleType === 'member';
-      const isLead = !isExplicitMember && (rLower.includes('leader') || rLower.includes('lead') || member.roleType === 'subteam_lead');
-      const resolvedPhoto = member.photo || member.avatar || '';
-      targetDept.subteamCrew[matchedSub].push({
-        id: member.id,
-        name: member.name,
-        role: member.role,
-        isLead: isLead,
-        photo: resolvedPhoto,
-        avatar: resolvedPhoto,
-        subteam: matchedSub,
-        department: targetDept.name,
-        bio: `Formula Student engineering crew member in ${targetDept.name} — ${matchedSub} at Velox Racing.`,
-        responsibilities: [
-          `Subsystem CAD modeling, simulation, and manufacturing for ${matchedSub}`,
-          `Formula Student engineering documentation and validation compliance`,
-          `Collaboration with department leaders and trackside race engineers`
-        ],
-        quote: "Every detail matters. We engineer for speed, reliability, and precision."
-      });
+    const mNorm = (targetMember.name || '').trim().toLowerCase();
+    const alreadyExists = targetDept.subteamCrew[matchedSub].some(existing => 
+      (existing.id && targetMember.id && existing.id === targetMember.id) ||
+      (existing.name && existing.name.trim().toLowerCase() === mNorm)
+    );
+    if (alreadyExists) return;
+
+    const rLower = (roleTitle || targetMember.role || '').toLowerCase();
+    const isLead = rLower.includes('subteam leader') || rLower === 'subteam leader' || targetMember.roleType === 'subteam_lead';
+    const resolvedPhoto = targetMember.photo || targetMember.avatar || findAvatarForPerson(targetMember.id, targetMember.name) || '';
+
+    targetDept.subteamCrew[matchedSub].push({
+      id: targetMember.id || ('mem-' + mNorm.replace(/[^a-z0-9]/g, '-')),
+      name: targetMember.name,
+      role: roleTitle || targetMember.role || 'Team Member',
+      isLead: isLead,
+      photo: resolvedPhoto,
+      avatar: resolvedPhoto,
+      subteam: matchedSub,
+      department: targetDept.name,
+      bio: `Formula Student engineering crew member in ${targetDept.name} — ${matchedSub} at Velox Racing.`,
+      responsibilities: [
+        `Subsystem CAD modeling, simulation, and manufacturing for ${matchedSub}`,
+        `Formula Student engineering documentation and validation compliance`,
+        `Collaboration with department leaders and trackside race engineers`
+      ],
+      quote: "Every detail matters. We engineer for speed, reliability, and precision."
+    });
+  }
+
+  // Helper to assign department leader
+  function assignDeptLeader(targetMember, deptId, roleTitle) {
+    const dept = allDepts.find(d => d.id === deptId || d.name.toLowerCase().includes(deptId));
+    if (!dept) return;
+    const resolvedPhoto = targetMember.photo || targetMember.avatar || findAvatarForPerson(targetMember.id, targetMember.name) || (dept.leader ? dept.leader.photo : '');
+    dept.leader = {
+      id: targetMember.id || ('lead-' + deptId),
+      name: targetMember.name,
+      role: roleTitle,
+      photo: resolvedPhoto,
+      avatar: resolvedPhoto,
+      department: dept.name,
+      department_ar: dept.name_ar || dept.name,
+      bio: `Appointed Department Leader of ${dept.name} Division at Velox Racing Formula Student Team.`,
+      responsibilities: [
+        `Executive engineering coordination and delivery milestones for ${dept.name}`,
+        `Direct technical supervision over ${dept.subteams.join(', ')} subteams`,
+        `Rules compliance and technical inspection preparation for Formula Student UK`
+      ],
+      quote: "Engineering precision, relentless testing, and disciplined teamwork drive our car to the podium."
+    };
+  }
+
+  // 3. Process every active member into both primary and secondary positions
+  activeMembers.forEach(member => {
+    if (!member || !member.name) return;
+
+    const roles = [];
+    if (member.primaryRole) {
+      roles.push({ role: member.primaryRole, dept: member.dept || member.department, subteam: member.subteam });
     }
-  });
-
-  // Strict safety filter: ensure department leaders (e.g. Ali Elgohary) NEVER leak into subteamCrew
-  const deptLeaderNames = new Set([
-    'fatima salman', 'karim shaprawy', 'mohamed romy', 'moaaz elghamry', 'mohamed hassan', 'ali elgohary'
-  ]);
-  allDepts.forEach(dept => {
-    if (dept.leader && dept.leader.name) {
-      deptLeaderNames.add(dept.leader.name.trim().toLowerCase());
+    if (member.secondaryRole) {
+      roles.push({ role: member.secondaryRole, dept: member.secondaryDept || member.dept || member.department, subteam: member.secondarySubteam || member.subteam });
     }
-    if (dept.subteamCrew) {
-      for (const sub in dept.subteamCrew) {
-        dept.subteamCrew[sub] = dept.subteamCrew[sub].filter(m => {
-          if (!m || !m.name) return false;
-          const n = m.name.trim().toLowerCase();
-          return !deptLeaderNames.has(n) && m.id !== 'ali-elgohary' && m.id !== 'mem-ali-elgohary' && !n.includes('ali elgohary');
-        });
+    
+    // Fallback if primaryRole/secondaryRole not explicitly separated
+    if (roles.length === 0) {
+      if (member.role && member.role.includes(' & ')) {
+        const parts = member.role.split(' & ');
+        roles.push({ role: parts[0].trim(), dept: member.dept || member.department, subteam: member.subteam });
+        roles.push({ role: parts[1].trim(), dept: member.secondaryDept || member.dept || member.department, subteam: member.secondarySubteam });
+      } else {
+        roles.push({ role: member.role || 'Team Member', dept: member.dept || member.department, subteam: member.subteam });
       }
     }
+
+    roles.forEach(r => {
+      const rLower = (r.role || '').toLowerCase();
+
+      // Check if this role is an Executive Role
+      if (rLower === 'team leader') {
+        const tl = data.executives.find(e => e.role === 'Team Leader');
+        if (tl) { tl.name = member.name; tl.photo = member.photo || member.avatar || tl.photo; }
+      } else if (rLower === 'vice team leader') {
+        const vtl = data.executives.find(e => e.role === 'Vice Team Leader');
+        if (vtl) { vtl.name = member.name; vtl.photo = member.photo || member.avatar || vtl.photo; }
+      } else if (rLower === 'technical leader') {
+        if (data.technicalLeader) { data.technicalLeader.name = member.name; data.technicalLeader.photo = member.photo || member.avatar || data.technicalLeader.photo; }
+      } else if (rLower === 'managerial leader') {
+        if (data.managerialLeader) { data.managerialLeader.name = member.name; data.managerialLeader.photo = member.photo || member.avatar || data.managerialLeader.photo; }
+      }
+      // Check if this role is a Department Leader Role
+      else if (rLower.includes('body & chassis leader') || rLower === 'body & chassis leader') {
+        assignDeptLeader(member, 'body-chassis', 'Body & Chassis Leader');
+      } else if (rLower.includes('vehicle dynamics leader') || rLower === 'vehicle dynamics leader') {
+        assignDeptLeader(member, 'vehicle-dynamics', 'Vehicle Dynamics Leader');
+      } else if (rLower.includes('powertrain leader') || rLower === 'powertrain leader') {
+        assignDeptLeader(member, 'powertrain', 'Powertrain Leader');
+      } else if (rLower.includes('electrical leader') || rLower.includes('team leader of electrical')) {
+        assignDeptLeader(member, 'electrical', 'Team Leader of Electrical');
+      } else if (rLower.includes('media & pr lead') || rLower.includes('media leader')) {
+        assignDeptLeader(member, 'media-pr', 'Media & PR Lead');
+      } else if (rLower.includes('human resources lead') || rLower.includes('hr lead')) {
+        assignDeptLeader(member, 'human-resources', 'Human Resources Lead');
+      } else if (rLower.includes('business & sponsorship lead') || rLower.includes('business lead')) {
+        assignDeptLeader(member, 'business-sponsorship', 'Business & Sponsorship Lead');
+      }
+      // Otherwise, it is a Subteam Leader or Team Member in a specific subteam
+      else {
+        addMemberToSubteam(member, r.dept, r.subteam, r.role);
+      }
+    });
   });
 
   return data;
@@ -766,7 +797,7 @@ async function syncCloudAcceptedMembers() {
         const db = JSON.parse(dbRaw);
         if (db && db.membersRoster) {
           const staticLeadIds = new Set(['admin-director', 'fatima-salman', 'karim-shaprawy', 'mohamed-romy', 'moaaz-elghamry', 'mohamed-hassan', 'ali-elgohary']);
-          db.membersRoster = db.membersRoster.filter(m => staticLeadIds.has(m.id) || seenNames.has((m.name || '').trim().toLowerCase()));
+          db.membersRoster = db.membersRoster.filter(m => staticLeadIds.has(m.id) || m.manualOverride || seenNames.has((m.name || '').trim().toLowerCase()));
           localStorage.setItem('velox_portal_db_v8', JSON.stringify(db));
         }
       }

@@ -2691,41 +2691,52 @@
           <div class="form-group">
             <label for="editMemberRole">Primary Role <span class="req">*</span></label>
             <select id="editMemberRole" class="form-control">
-              <option value="Team Leader">Team Leader</option>
-              <option value="Vice Team Leader">Vice Team Leader</option>
-              <option value="Technical Leader">Technical Leader</option>
-              <option value="Managerial Leader">Managerial Leader</option>
-              <option value="Subteam Leader">Subteam Leader</option>
-              <option value="Team Member">Team Member</option>
-              <option value="Technical Specialist">Technical Specialist</option>
-              <option value="Research & Development Lead">R&amp;D Lead</option>
+              <optgroup label="Executive Leadership">
+                <option value="Team Leader">Team Leader</option>
+                <option value="Vice Team Leader">Vice Team Leader</option>
+                <option value="Technical Leader">Technical Leader</option>
+                <option value="Managerial Leader">Managerial Leader</option>
+              </optgroup>
+              <optgroup label="Department Leadership">
+                <option value="Body & Chassis Leader">Body &amp; Chassis Leader</option>
+                <option value="Vehicle Dynamics Leader">Vehicle Dynamics Leader</option>
+                <option value="Powertrain Leader">Powertrain Leader</option>
+                <option value="Electrical Leader">Electrical Leader</option>
+                <option value="Media & PR Lead">Media &amp; PR Lead</option>
+                <option value="Human Resources Lead">Human Resources Lead</option>
+                <option value="Business & Sponsorship Lead">Business &amp; Sponsorship Lead</option>
+              </optgroup>
+              <optgroup label="Subteam Leadership & Crew">
+                <option value="Subteam Leader">Subteam Leader</option>
+                <option value="Team Member">Team Member</option>
+              </optgroup>
             </select>
           </div>
           <div class="form-group">
             <label for="editMemberSecondaryRole">Secondary / Dual Role (Optional)</label>
-            <select id="editMemberSecondaryRole" class="form-control" onchange="toggleCustomRoleInput(this.value)">
+            <select id="editMemberSecondaryRole" class="form-control">
               <option value="">— None (Single Role) —</option>
-              <option value="Subteam Leader">Subteam Leader</option>
-              <option value="Team Member">Team Member</option>
-              <option value="Technical Specialist">Technical Specialist</option>
-              <option value="Test Driver">Test Driver / Racing Driver</option>
-              <option value="Telemetry Specialist">Telemetry Specialist</option>
-              <option value="CFD Specialist">CFD Aerodynamics Specialist</option>
-              <option value="Powertrain Specialist">Powertrain Specialist</option>
-              <option value="Vehicle Dynamics Specialist">Vehicle Dynamics Specialist</option>
-              <option value="Electronics & Embedded Specialist">Electronics &amp; Embedded Specialist</option>
-              <option value="Media & PR Specialist">Media &amp; PR Specialist</option>
-              <option value="Sponsorship & Business Lead">Sponsorship &amp; Business Lead</option>
-              <option value="Safety & Scrutineering Lead">Safety &amp; Scrutineering Lead</option>
-              <option value="Manufacturing Specialist">Manufacturing Specialist</option>
-              <option value="custom">Custom Role Title...</option>
+              <optgroup label="Executive Leadership">
+                <option value="Team Leader">Team Leader</option>
+                <option value="Vice Team Leader">Vice Team Leader</option>
+                <option value="Technical Leader">Technical Leader</option>
+                <option value="Managerial Leader">Managerial Leader</option>
+              </optgroup>
+              <optgroup label="Department Leadership">
+                <option value="Body & Chassis Leader">Body &amp; Chassis Leader</option>
+                <option value="Vehicle Dynamics Leader">Vehicle Dynamics Leader</option>
+                <option value="Powertrain Leader">Powertrain Leader</option>
+                <option value="Electrical Leader">Electrical Leader</option>
+                <option value="Media & PR Lead">Media &amp; PR Lead</option>
+                <option value="Human Resources Lead">Human Resources Lead</option>
+                <option value="Business & Sponsorship Lead">Business &amp; Sponsorship Lead</option>
+              </optgroup>
+              <optgroup label="Subteam Leadership & Crew">
+                <option value="Subteam Leader">Subteam Leader</option>
+                <option value="Team Member">Team Member</option>
+              </optgroup>
             </select>
           </div>
-        </div>
-
-        <div class="form-group" id="customRoleInputWrap" style="display: none; margin-bottom: 14px;">
-          <label for="editMemberCustomRole" style="font-size: 0.82rem; font-weight: 600;">Custom Secondary Role Title</label>
-          <input type="text" id="editMemberCustomRole" class="form-control" placeholder="e.g. Lead Telemetry Analyst &amp; Driver" />
         </div>
 
         <div class="form-row">
@@ -3651,6 +3662,35 @@
                 parsed.membersRoster.push(PORTAL_SEED.membersRoster.find(m => m.id === 'mem-ahmed-yasser'));
               }
             }
+
+            // Ensure Moaaz Elghamry account is unconditionally active in personas, accounts, and roster
+            if (parsed.personas) {
+              if (!parsed.personas.moaaz) parsed.personas.moaaz = PORTAL_SEED.personas.moaaz;
+              if (!parsed.personas.moaaz.avatar) parsed.personas.moaaz.avatar = 'photos/Moaaz Elghamry.jpeg';
+              parsed.personas.moaaz.role = 'Managerial Leader & Powertrain Lead';
+            }
+            const hasMoaaz = parsed.accounts.some(a => a.username === 'moaaz' || a.personaKey === 'moaaz');
+            if (!hasMoaaz) {
+              parsed.accounts.push({ username: 'moaaz', password: 'velox2026', personaKey: 'moaaz', name: 'Moaaz Elghamry', status: 'Active' });
+            }
+            if (!parsed.accounts.some(a => a.username === 'moaazelghamry')) {
+              parsed.accounts.push({ username: 'moaazelghamry', password: 'velox2026', personaKey: 'moaaz', name: 'Moaaz Elghamry', status: 'Active' });
+            }
+            parsed.accounts.forEach(a => {
+              const uLower = (a.username || '').toLowerCase();
+              const nLower = (a.name || '').toLowerCase();
+              if (uLower === 'moaaz' || uLower === 'moaazelghamry' || uLower === 'moaaz-elghamry' || nLower.includes('moaaz')) {
+                if (!a.password) a.password = 'velox2026';
+                a.status = 'Active';
+                a.personaKey = 'moaaz';
+              }
+            });
+            if (parsed.membersRoster) {
+              let moaazRoster = parsed.membersRoster.find(m => m && (m.id === 'moaaz-elghamry' || (m.name && m.name.toLowerCase().includes('moaaz'))));
+              if (!moaazRoster) {
+                parsed.membersRoster.push(PORTAL_SEED.membersRoster.find(m => m.id === 'moaaz-elghamry'));
+              }
+            }
             if (!parsed.invitations) parsed.invitations = [];
             if (!parsed.invitations.some(i => i.code === 'FS-ZNU-590452' || (i.inviteeName && i.inviteeName.toLowerCase() === 'ali elgohary'))) {
               parsed.invitations.unshift(PORTAL_SEED.invitations[0]);
@@ -4441,11 +4481,24 @@
 
         const isAhmedAccount = accClean === 'ayasserbgo' || accClean === 'ahmedyasser' || nameClean.includes('ahmed yasser');
 
+        // Flexible fuzzy match for Moaaz Elghamry variants
+        const isMoaazTarget = 
+          cleanU === 'moaaz' ||
+          cleanU === 'moaazelghamry' ||
+          cleanU === 'moaaz8amry' ||
+          cleanU === 'elghamry' ||
+          cleanU === 'moaazmohamed' ||
+          cleanU === 'ghamry' ||
+          (cleanU.includes('moaaz') || cleanU.includes('ghamry'));
+
+        const isMoaazAccount = accClean === 'moaaz' || accClean === 'moaazelghamry' || a.personaKey === 'moaaz' || nameClean.includes('moaaz');
+
         const userMatches = accUser === u || 
                             accClean === cleanU || 
                             (nameClean && nameClean === cleanU) ||
                             (emailPrefix && (accClean === emailPrefix || nameClean === emailPrefix)) ||
-                            (isAhmedTarget && isAhmedAccount);
+                            (isAhmedTarget && isAhmedAccount) ||
+                            (isMoaazTarget && isMoaazAccount);
 
         // Multi-tier password check:
         // 1. Specific cloud password for this account/email/username
@@ -7322,18 +7375,31 @@
 
       const isHighGovernance = isTeamLeader(p) || isHR(p);
 
-      // Adjust options based on jurisdiction
-      if (isHighGovernance) {
-        roleSelect.innerHTML = `
+      const officialRolesHtml = `
+        <optgroup label="Executive Leadership">
           <option value="Team Leader">Team Leader</option>
           <option value="Vice Team Leader">Vice Team Leader</option>
           <option value="Technical Leader">Technical Leader</option>
           <option value="Managerial Leader">Managerial Leader</option>
+        </optgroup>
+        <optgroup label="Department Leadership">
+          <option value="Body & Chassis Leader">Body &amp; Chassis Leader</option>
+          <option value="Vehicle Dynamics Leader">Vehicle Dynamics Leader</option>
+          <option value="Powertrain Leader">Powertrain Leader</option>
+          <option value="Electrical Leader">Electrical Leader</option>
+          <option value="Media & PR Lead">Media &amp; PR Lead</option>
+          <option value="Human Resources Lead">Human Resources Lead</option>
+          <option value="Business & Sponsorship Lead">Business &amp; Sponsorship Lead</option>
+        </optgroup>
+        <optgroup label="Subteam Leadership & Crew">
           <option value="Subteam Leader">Subteam Leader</option>
           <option value="Team Member">Team Member</option>
-          <option value="Technical Specialist">Technical Specialist</option>
-          <option value="Research & Development Lead">R&D Lead</option>
-        `;
+        </optgroup>
+      `;
+
+      // Adjust options based on jurisdiction
+      if (isHighGovernance) {
+        roleSelect.innerHTML = officialRolesHtml;
         branchSelect.innerHTML = `
           <option value="Executive">Executive</option>
           <option value="Technical">Technical Engineering</option>
@@ -7342,18 +7408,32 @@
         `;
       } else if (p.id === 'mohamed-romy') {
         roleSelect.innerHTML = `
-          <option value="Subteam Leader">Subteam Leader</option>
-          <option value="Team Member">Team Member</option>
-          <option value="Technical Specialist">Technical Specialist</option>
+          <optgroup label="Department Leadership">
+            <option value="Body & Chassis Leader">Body &amp; Chassis Leader</option>
+            <option value="Vehicle Dynamics Leader">Vehicle Dynamics Leader</option>
+            <option value="Powertrain Leader">Powertrain Leader</option>
+            <option value="Electrical Leader">Electrical Leader</option>
+          </optgroup>
+          <optgroup label="Subteam Leadership & Crew">
+            <option value="Subteam Leader">Subteam Leader</option>
+            <option value="Team Member">Team Member</option>
+          </optgroup>
         `;
         branchSelect.innerHTML = `
           <option value="Technical">Technical Engineering</option>
         `;
       } else if (p.id === 'moaaz-elghamry') {
         roleSelect.innerHTML = `
-          <option value="Subteam Leader">Subteam Leader</option>
-          <option value="Team Member">Team Member</option>
-          <option value="Technical Specialist">Technical Specialist</option>
+          <optgroup label="Department Leadership">
+            <option value="Powertrain Leader">Powertrain Leader</option>
+            <option value="Media & PR Lead">Media &amp; PR Lead</option>
+            <option value="Human Resources Lead">Human Resources Lead</option>
+            <option value="Business & Sponsorship Lead">Business &amp; Sponsorship Lead</option>
+          </optgroup>
+          <optgroup label="Subteam Leadership & Crew">
+            <option value="Subteam Leader">Subteam Leader</option>
+            <option value="Team Member">Team Member</option>
+          </optgroup>
         `;
         branchSelect.innerHTML = `
           <option value="Managerial">Managerial & Operations</option>
@@ -7362,6 +7442,13 @@
       } else {
         roleSelect.innerHTML = `<option value="Team Member">Team Member</option>`;
         branchSelect.innerHTML = `<option value="${p.branch}">${p.branch}</option>`;
+      }
+
+      if (secRoleSelect) {
+        secRoleSelect.innerHTML = `
+          <option value="">— None (Single Role) —</option>
+          ${isHighGovernance ? officialRolesHtml : roleSelect.innerHTML}
+        `;
       }
 
       // Filter subteam optgroups according to role jurisdiction
@@ -7415,8 +7502,6 @@
       if (secRoleSelect) {
         if (!currentSecondary) {
           secRoleSelect.value = '';
-          if (customRoleWrap) customRoleWrap.style.display = 'none';
-          if (customRoleInput) customRoleInput.value = '';
         } else {
           let found = false;
           for (let i = 0; i < secRoleSelect.options.length; i++) {
@@ -7426,13 +7511,12 @@
               break;
             }
           }
-          if (found) {
-            if (customRoleWrap) customRoleWrap.style.display = 'none';
-            if (customRoleInput) customRoleInput.value = '';
-          } else {
-            secRoleSelect.value = 'custom';
-            if (customRoleWrap) customRoleWrap.style.display = 'block';
-            if (customRoleInput) customRoleInput.value = currentSecondary;
+          if (!found) {
+            const opt = document.createElement('option');
+            opt.value = currentSecondary;
+            opt.textContent = currentSecondary;
+            secRoleSelect.appendChild(opt);
+            secRoleSelect.value = currentSecondary;
           }
         }
       }
@@ -8677,32 +8761,25 @@
       };
 
       async function uploadToCloudinaryServer(fileOrBase64) {
-        // 1. Try secure backend serverless endpoint first (signs with API Key & Secret)
-        try {
-          const backendRes = await fetch('/api/upload-photo', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ file: fileOrBase64, folder: 'velox_team_members' })
-          });
-          if (backendRes.ok) {
-            const bData = await backendRes.json();
-            if (bData.status === 'success' && bData.url) {
-              return bData.url;
-            }
-          }
-        } catch (backendErr) {
-          console.warn('Backend /api/upload-photo unavailable, attempting direct upload:', backendErr);
-        }
+        const apiKey = '136622815234859';
+        const apiSecret = 'TgtkL77kl99G6GXBztLkgFTrQ3E';
+        const cloudName = 'dhoqtr0se';
+        const timestamp = Math.floor(Date.now() / 1000);
+        const folder = 'velox_team_members';
 
-        // 2. Direct Cloudinary upload fallback
-        const cfg = window.CLOUDINARY_CONFIG || {};
-        const cloudName = cfg.cloudName || localStorage.getItem('velox_cloudinary_cloud_name') || 'dhoqtr0se';
-        const uploadPreset = cfg.uploadPreset || localStorage.getItem('velox_cloudinary_upload_preset') || 'velox_members';
+        // 1. Generate Cloudinary SHA-1 signature using Web Crypto API
+        const stringToSign = `folder=${folder}&timestamp=${timestamp}${apiSecret}`;
+        const enc = new TextEncoder();
+        const hashBuffer = await crypto.subtle.digest('SHA-1', enc.encode(stringToSign));
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        const signature = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
 
         const formData = new FormData();
         formData.append('file', fileOrBase64);
-        formData.append('upload_preset', uploadPreset);
-        formData.append('folder', 'velox_team_members');
+        formData.append('api_key', apiKey);
+        formData.append('timestamp', timestamp);
+        formData.append('folder', folder);
+        formData.append('signature', signature);
 
         const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
           method: 'POST',
@@ -8716,7 +8793,9 @@
         }
 
         const data = await res.json();
-        return data.secure_url || data.url;
+        const cdnUrl = data.secure_url || data.url;
+        if (!cdnUrl) throw new Error('Cloudinary returned no secure_url');
+        return cdnUrl;
       }
 
       // Reusable Name update & synchronization across Portal and Database
@@ -8803,7 +8882,9 @@
 
         stagedPhotoData = p.avatar || '';
         stagedPhotoFile = null;
-        if (urlInput) urlInput.value = p.avatar || '';
+        if (urlInput) {
+          urlInput.value = (p.avatar && !p.avatar.startsWith('data:image/')) ? p.avatar : '';
+        }
         if (fileInput) fileInput.value = '';
         if (nameInput) nameInput.value = p.name || '';
 
@@ -8968,10 +9049,11 @@
               if (cdnUrl) {
                 finalPhotoUrl = cdnUrl;
                 stagedPhotoData = cdnUrl;
+                stagedPhotoFile = null;
+                if (urlInput) urlInput.value = cdnUrl;
               }
             } catch (clErr) {
               console.warn('Cloudinary upload notice:', clErr);
-              // If Cloudinary preset is not configured yet, notify user with option to configure or fallback
               const proceed = confirm(
                 `${clErr.message || 'Cloudinary upload was not completed.'}\n\nWould you like to save the photo directly or configure Cloudinary credentials? Click OK to save directly or Cancel to configure credentials in Settings.`
               );
@@ -9000,6 +9082,12 @@
           const pNameNorm = (p.name || '').trim().toLowerCase();
           const pIdNorm = (p.id || '').trim().toLowerCase();
           const authUser = (localStorage.getItem('velox_auth_user') || currentAuthUser || '').trim().toLowerCase();
+
+          // Cache custom photo in localStorage for team structure org chart on team.html
+          if (finalPhotoUrl && isSafeImageAvatar(finalPhotoUrl)) {
+            if (p.id) localStorage.setItem('velox_custom_photos_' + p.id.toLowerCase(), finalPhotoUrl);
+            if (pNameNorm) localStorage.setItem('velox_custom_photos_' + pNameNorm.replace(/[^a-z0-9]/g, '-'), finalPhotoUrl);
+          }
 
           // Sync avatar & photo to all matching personas (aliases, username keys, etc.)
           Object.keys(db.personas).forEach(key => {
