@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -1568,6 +1568,11 @@
                   <span>Change Password</span>
                 </button>
                 
+                <button type="button" class="dropdown-item-btn" id="openEditSocialsBtn" onclick="openEditSocialLinksModal(); closeUserDropdown();">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                  <span>Edit Social Links</span>
+                </button>
+                
                 <div style="height: 1px; background: rgba(255,255,255,0.06); margin: 6px 0;"></div>
                 
                 <button type="button" class="dropdown-item-btn item-danger" id="portalLogoutBtn" onclick="portalLogout()">
@@ -2833,6 +2838,34 @@
             </optgroup>
           </select>
         </div>
+        <!-- Social Media Profiles (Optional) -->
+        <div style="margin: 18px 0 16px 0; padding: 14px 16px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px;">
+          <div style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--portal-text-muted); margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+            Social Profiles (Optional)
+          </div>
+          <div class="form-group" style="margin-bottom: 10px;">
+            <label for="editMemberLinkedin" style="display: flex; align-items: center; gap: 6px;">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="#0A66C2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+              LinkedIn Profile URL
+            </label>
+            <input type="url" id="editMemberLinkedin" class="form-control" placeholder="https://linkedin.com/in/yourname" />
+          </div>
+          <div class="form-group" style="margin-bottom: 10px;">
+            <label for="editMemberInstagram" style="display: flex; align-items: center; gap: 6px;">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#E1306C" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+              Instagram Profile URL
+            </label>
+            <input type="url" id="editMemberInstagram" class="form-control" placeholder="https://instagram.com/yourhandle" />
+          </div>
+          <div class="form-group" style="margin-bottom: 0;">
+            <label for="editMemberFacebook" style="display: flex; align-items: center; gap: 6px;">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="#1877F2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+              Facebook Profile URL
+            </label>
+            <input type="url" id="editMemberFacebook" class="form-control" placeholder="https://facebook.com/yourname" />
+          </div>
+        </div>
         <button type="submit" class="btn btn-primary btn-full">Save Changes to Roster</button>
       </form>
     </div>
@@ -3012,7 +3045,25 @@
             <input type="text" id="newMemPass" class="form-control" value="velox2026" required />
           </div>
         </div>
-        <button type="submit" class="btn btn-primary btn-full">Register Member & Issue Credentials</button>
+        <!-- Social Media Profiles (Optional) -->
+        <div style="margin: 14px 0 16px 0; padding: 12px 16px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px;">
+          <div style="font-size: 0.74rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--portal-text-muted); margin-bottom: 10px;">Social Profiles (Optional)</div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="newMemLinkedin">LinkedIn URL</label>
+              <input type="url" id="newMemLinkedin" class="form-control" placeholder="https://linkedin.com/in/..." />
+            </div>
+            <div class="form-group">
+              <label for="newMemInstagram">Instagram URL</label>
+              <input type="url" id="newMemInstagram" class="form-control" placeholder="https://instagram.com/..." />
+            </div>
+          </div>
+          <div class="form-group" style="margin-bottom:0;">
+            <label for="newMemFacebook">Facebook URL</label>
+            <input type="url" id="newMemFacebook" class="form-control" placeholder="https://facebook.com/..." />
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-full">Register Member &amp; Issue Credentials</button>
       </form>
     </div>
   </div>
@@ -3198,12 +3249,41 @@
           <input type="text" id="editPhotoUrlInput" class="form-control" placeholder="https://res.cloudinary.com/... or https://..." style="padding: 10px 14px; font-size: 0.88rem;" />
         </div>
 
-        <div class="form-group" style="margin-bottom: 20px;">
+        <div class="form-group" style="margin-bottom: 16px;">
           <label for="editPhotoNameInput" style="font-size: 0.84rem; font-weight: 600; display: flex; align-items: center; gap: 6px; margin-bottom: 6px;">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
             <span>Full Name / Display Name</span>
           </label>
           <input type="text" id="editPhotoNameInput" class="form-control" placeholder="Your Full Name" style="padding: 10px 14px; font-size: 0.88rem;" />
+        </div>
+
+        <!-- Social Media Profiles (Optional) -->
+        <div style="margin: 0 0 18px 0; padding: 12px 14px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px;">
+          <div style="font-size: 0.74rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--portal-text-muted); margin-bottom: 10px;">Personal Social Links (Optional)</div>
+          
+          <div class="form-group" style="margin-bottom: 10px;">
+            <label for="editPhotoLinkedinInput" style="display: flex; align-items: center; gap: 6px; font-size: 0.8rem; margin-bottom: 4px;">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="#0A66C2"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+              LinkedIn Profile URL
+            </label>
+            <input type="url" id="editPhotoLinkedinInput" class="form-control" placeholder="https://linkedin.com/in/yourprofile" style="padding: 8px 12px; font-size: 0.85rem;" />
+          </div>
+
+          <div class="form-group" style="margin-bottom: 10px;">
+            <label for="editPhotoInstagramInput" style="display: flex; align-items: center; gap: 6px; font-size: 0.8rem; margin-bottom: 4px;">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#E1306C" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+              Instagram Profile URL
+            </label>
+            <input type="url" id="editPhotoInstagramInput" class="form-control" placeholder="https://instagram.com/yourhandle" style="padding: 8px 12px; font-size: 0.85rem;" />
+          </div>
+
+          <div class="form-group" style="margin-bottom: 0;">
+            <label for="editPhotoFacebookInput" style="display: flex; align-items: center; gap: 6px; font-size: 0.8rem; margin-bottom: 4px;">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="#1877F2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+              Facebook Profile URL
+            </label>
+            <input type="url" id="editPhotoFacebookInput" class="form-control" placeholder="https://facebook.com/yourname" style="padding: 8px 12px; font-size: 0.85rem;" />
+          </div>
         </div>
 
         <div style="display: flex; gap: 10px; flex-wrap: wrap;">
@@ -3241,6 +3321,54 @@
         <div style="display: flex; gap: 10px;">
           <button type="submit" class="btn btn-primary" style="flex: 1; padding: 10px 16px; font-weight: 700;">Save Name &amp; Sync Everywhere</button>
           <button type="button" class="btn btn-outline" onclick="closePortalModal('changeNameModal')" style="padding: 10px 16px;">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 14. Dedicated Member Social Profiles Modal -->
+  <div class="portal-modal-backdrop" id="editSocialLinksModal">
+    <div class="portal-modal-box" style="max-width: 480px;">
+      <div class="portal-modal-header">
+        <h3 style="margin: 0; font-size: 1.2rem; display: flex; align-items: center; gap: 8px;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+          Manage Social Profiles &amp; Links
+        </h3>
+        <button type="button" class="portal-modal-close" onclick="closePortalModal('editSocialLinksModal')">&times;</button>
+      </div>
+
+      <p style="font-size: 0.82rem; color: var(--portal-text-dim); margin-top: 10px; margin-bottom: 16px;">
+        Add or update your personal LinkedIn, Instagram, and Facebook profile URLs so team members, leaders, and motorsport recruiters can connect with you.
+      </p>
+
+      <form id="editSocialLinksForm">
+        <div class="form-group" style="margin-bottom: 14px;">
+          <label for="selfLinkedinInput" style="font-size: 0.84rem; font-weight: 600; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="#0A66C2"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+            LinkedIn Profile URL
+          </label>
+          <input type="url" id="selfLinkedinInput" class="form-control" placeholder="https://linkedin.com/in/yourprofile" style="padding: 10px 14px; font-size: 0.9rem;" />
+        </div>
+
+        <div class="form-group" style="margin-bottom: 14px;">
+          <label for="selfInstagramInput" style="font-size: 0.84rem; font-weight: 600; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#E1306C" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            Instagram Profile URL
+          </label>
+          <input type="url" id="selfInstagramInput" class="form-control" placeholder="https://instagram.com/yourhandle" style="padding: 10px 14px; font-size: 0.9rem;" />
+        </div>
+
+        <div class="form-group" style="margin-bottom: 20px;">
+          <label for="selfFacebookInput" style="font-size: 0.84rem; font-weight: 600; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="#1877F2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+            Facebook Profile URL
+          </label>
+          <input type="url" id="selfFacebookInput" class="form-control" placeholder="https://facebook.com/yourname" style="padding: 10px 14px; font-size: 0.9rem;" />
+        </div>
+
+        <div style="display: flex; gap: 10px;">
+          <button type="submit" class="btn btn-primary" id="saveSelfSocialsBtn" style="flex: 1; padding: 10px 16px; font-weight: 700;">Save Social Links</button>
+          <button type="button" class="btn btn-outline" onclick="closePortalModal('editSocialLinksModal')" style="padding: 10px 16px;">Cancel</button>
         </div>
       </form>
     </div>
@@ -6802,6 +6930,9 @@
             avatar: member.avatar || member.photo || '',
             email: member.email || '',
             points: member.points || 0,
+            linkedin: member.linkedin || '',
+            instagram: member.instagram || '',
+            facebook: member.facebook || '',
             updated_at: new Date().toISOString()
           };
         }
@@ -7396,7 +7527,15 @@
             <td>
               <div style="display:flex;align-items:center;gap:8px;">
                 ${avatarHtml}
-                <strong style="color: var(--text);">${m.name}</strong>
+                <div>
+                  <strong style="color: var(--text);">${m.name}</strong>
+                  ${ (() => {
+                    const li = m.linkedin ? `<a href="${m.linkedin}" target="_blank" rel="noopener" title="LinkedIn" style="color:#0A66C2;display:flex;align-items:center;"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>` : '';
+                    const ig = m.instagram ? `<a href="${m.instagram}" target="_blank" rel="noopener" title="Instagram" style="color:#E1306C;display:flex;align-items:center;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>` : '';
+                    const fb = m.facebook ? `<a href="${m.facebook}" target="_blank" rel="noopener" title="Facebook" style="color:#1877F2;display:flex;align-items:center;"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>` : '';
+                    return (li || ig || fb) ? `<div style="display:flex;gap:6px;margin-top:3px;">${li}${ig}${fb}</div>` : '';
+                  })() }
+                </div>
               </div>
             </td>
             <td>
@@ -7856,6 +7995,14 @@
       if (m.branch) branchSelect.value = m.branch;
       if (subteamInput && !subteamInput.value) subteamInput.value = m.dept;
 
+      // Populate social media fields
+      const liInput = document.getElementById('editMemberLinkedin');
+      const igInput = document.getElementById('editMemberInstagram');
+      const fbInput = document.getElementById('editMemberFacebook');
+      if (liInput) liInput.value = m.linkedin || m.linkedinUrl || '';
+      if (igInput) igInput.value = m.instagram || m.instagramUrl || '';
+      if (fbInput) fbInput.value = m.facebook || m.facebookUrl || '';
+
       openPortalModal('editMemberModal');
     }
 
@@ -8311,7 +8458,10 @@
             deptDesc: `${branch} • ${dept}`
           };
 
-          db.membersRoster.push({
+          const newMemLi = (document.getElementById('newMemLinkedin') ? document.getElementById('newMemLinkedin').value : '').trim();
+          const newMemIg = (document.getElementById('newMemInstagram') ? document.getElementById('newMemInstagram').value : '').trim();
+          const newMemFb = (document.getElementById('newMemFacebook') ? document.getElementById('newMemFacebook').value : '').trim();
+          const newMemberObj = {
             id: newId,
             name: name,
             role: role,
@@ -8320,7 +8470,11 @@
             username: user,
             points: 0,
             status: 'Active'
-          });
+          };
+          if (newMemLi) newMemberObj.linkedin = newMemLi;
+          if (newMemIg) newMemberObj.instagram = newMemIg;
+          if (newMemFb) newMemberObj.facebook = newMemFb;
+          db.membersRoster.push(newMemberObj);
 
           logAuditEvent(`GOVERNANCE: Executive ${p.name} registered member ${name} (@${user}) in ${dept}.`);
           addNotification({
@@ -8332,7 +8486,7 @@
           });
 
           savePortalDb(db);
-          try { syncRosterMemberToCloud(db.membersRoster[db.membersRoster.length - 1]); } catch (e) {}
+          try { syncRosterMemberToCloud(newMemberObj); } catch (e) {}
           closePortalModal('addMemberModal');
           addMemForm.reset();
           renderStructure();
@@ -8665,6 +8819,14 @@
         member.secondaryDept = secDept;
         member.secondarySubteam = secSubteam;
         member.manualOverride = true; // Protect from raw cloud sync overwrite
+
+        // Save social media profiles
+        const liVal = (document.getElementById('editMemberLinkedin') ? document.getElementById('editMemberLinkedin').value : '').trim();
+        const igVal = (document.getElementById('editMemberInstagram') ? document.getElementById('editMemberInstagram').value : '').trim();
+        const fbVal = (document.getElementById('editMemberFacebook') ? document.getElementById('editMemberFacebook').value : '').trim();
+        if (liVal) member.linkedin = liVal; else delete member.linkedin;
+        if (igVal) member.instagram = igVal; else delete member.instagram;
+        if (fbVal) member.facebook = fbVal; else delete member.facebook;
 
         // Compute and assign exact roleType
         const lowerR = combinedRole.toLowerCase();
@@ -9151,6 +9313,16 @@
         if (fileInput) fileInput.value = '';
         if (nameInput) nameInput.value = p.name || '';
 
+        const currentDb = getPortalDb();
+        const pNorm = (p.name || '').trim().toLowerCase();
+        const currentMem = (currentDb.membersRoster || []).find(m => (m.username && p.username && m.username.toLowerCase() === p.username.toLowerCase()) || (m.name && m.name.trim().toLowerCase() === pNorm) || (m.id && p.id && m.id === p.id));
+        const photoLi = document.getElementById('editPhotoLinkedinInput');
+        const photoIg = document.getElementById('editPhotoInstagramInput');
+        const photoFb = document.getElementById('editPhotoFacebookInput');
+        if (photoLi) photoLi.value = (currentMem && currentMem.linkedin) || p.linkedin || '';
+        if (photoIg) photoIg.value = (currentMem && currentMem.instagram) || p.instagram || '';
+        if (photoFb) photoFb.value = (currentMem && currentMem.facebook) || p.facebook || '';
+
         window.updatePhotoPreviewCircle(stagedPhotoData, p.name);
         openPortalModal('editPhotoModal');
       };
@@ -9189,6 +9361,112 @@
           }
           closePortalModal('changeNameModal');
           alert(`Name successfully changed to "${newName}" across your portal and team structure!`);
+        });
+      }
+
+      window.openEditSocialLinksModal = function() {
+        const p = getActivePersona();
+        const db = getPortalDb();
+        const pNorm = (p.name || '').trim().toLowerCase();
+        let mem = (db.membersRoster || []).find(m => (m.username && p.username && m.username.toLowerCase() === p.username.toLowerCase()) || (m.name && m.name.trim().toLowerCase() === pNorm) || (m.id && p.id && m.id === p.id));
+        
+        const liInput = document.getElementById('selfLinkedinInput');
+        const igInput = document.getElementById('selfInstagramInput');
+        const fbInput = document.getElementById('selfFacebookInput');
+
+        if (liInput) liInput.value = (mem && mem.linkedin) || p.linkedin || '';
+        if (igInput) igInput.value = (mem && mem.instagram) || p.instagram || '';
+        if (fbInput) fbInput.value = (mem && mem.facebook) || p.facebook || '';
+
+        openPortalModal('editSocialLinksModal');
+      };
+
+      const editSocialLinksForm = document.getElementById('editSocialLinksForm');
+      if (editSocialLinksForm) {
+        editSocialLinksForm.addEventListener('submit', async function(e) {
+          e.preventDefault();
+          const p = getActivePersona();
+          const db = getPortalDb();
+          const liVal = (document.getElementById('selfLinkedinInput') ? document.getElementById('selfLinkedinInput').value : '').trim();
+          const igVal = (document.getElementById('selfInstagramInput') ? document.getElementById('selfInstagramInput').value : '').trim();
+          const fbVal = (document.getElementById('selfFacebookInput') ? document.getElementById('selfFacebookInput').value : '').trim();
+
+          const submitBtn = document.getElementById('saveSelfSocialsBtn');
+          const origHtml = submitBtn ? submitBtn.innerHTML : 'Save Social Links';
+          if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span>Saving & Syncing...</span>';
+          }
+
+          p.linkedin = liVal;
+          p.instagram = igVal;
+          p.facebook = fbVal;
+
+          if (!db.personas) db.personas = {};
+          if (db.personas[currentPersonaKey]) {
+            db.personas[currentPersonaKey].linkedin = liVal;
+            db.personas[currentPersonaKey].instagram = igVal;
+            db.personas[currentPersonaKey].facebook = fbVal;
+          }
+
+          const pNameNorm = (p.name || '').trim().toLowerCase();
+          const pIdNorm = (p.id || '').trim().toLowerCase();
+          const authUser = (localStorage.getItem('velox_auth_user') || currentAuthUser || '').trim().toLowerCase();
+
+          let targetMember = null;
+          (db.membersRoster || []).forEach(m => {
+            const mUser = (m.username || '').toLowerCase();
+            const mName = (m.name || '').trim().toLowerCase();
+            const mId = (m.id || '').toLowerCase();
+            if ((authUser && mUser === authUser) || (pIdNorm && (mUser === pIdNorm || mId === pIdNorm)) || (pNameNorm && mName === pNameNorm)) {
+              m.linkedin = liVal;
+              m.instagram = igVal;
+              m.facebook = fbVal;
+              m.manualOverride = true;
+              targetMember = m;
+            }
+          });
+
+          if (db.registeredCredentials && Array.isArray(db.registeredCredentials)) {
+            const cred = db.registeredCredentials.find(c => (c.username && p.username && c.username.toLowerCase() === p.username.toLowerCase()) || (c.name && p.name && c.name.toLowerCase() === pNameNorm));
+            if (cred) {
+              cred.linkedin = liVal;
+              cred.instagram = igVal;
+              cred.facebook = fbVal;
+            }
+          }
+
+          savePortalDb(db);
+
+          try {
+            const authUserRaw = localStorage.getItem('velox_auth_user');
+            if (authUserRaw) {
+              const u = JSON.parse(authUserRaw);
+              u.linkedin = liVal;
+              u.instagram = igVal;
+              u.facebook = fbVal;
+              localStorage.setItem('velox_auth_user', JSON.stringify(u));
+            }
+          } catch(err) {}
+
+          if (targetMember) {
+            try {
+              await syncRosterMemberToCloud(targetMember);
+            } catch(e) {
+              console.warn('Sync social profiles note:', e);
+            }
+          }
+
+          logAuditEvent(`PROFILE: Member ${p.name} updated their social profile links.`);
+          window.dispatchEvent(new Event('storage'));
+          if (typeof renderStructure === 'function') renderStructure();
+
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = origHtml;
+          }
+          closePortalModal('editSocialLinksModal');
+          alert('Social links saved successfully! They are now visible on your team profile.');
         });
       }
 
@@ -9361,7 +9639,18 @@
             if ((authUser && mUser === authUser) || (pIdNorm && (mUser === pIdNorm || mId === pIdNorm)) || (pNameNorm && mName === pNameNorm)) {
               m.avatar = finalPhotoUrl;
               m.photo = finalPhotoUrl;
+              const pLiVal = (document.getElementById('editPhotoLinkedinInput') ? document.getElementById('editPhotoLinkedinInput').value : '').trim();
+              const pIgVal = (document.getElementById('editPhotoInstagramInput') ? document.getElementById('editPhotoInstagramInput').value : '').trim();
+              const pFbVal = (document.getElementById('editPhotoFacebookInput') ? document.getElementById('editPhotoFacebookInput').value : '').trim();
+              m.linkedin = pLiVal;
+              m.instagram = pIgVal;
+              m.facebook = pFbVal;
+              p.linkedin = pLiVal;
+              p.instagram = pIgVal;
+              p.facebook = pFbVal;
+              m.manualOverride = true;
               if (m.email) targetRosterEmail = m.email;
+              try { syncRosterMemberToCloud(m); } catch (e) {}
             }
           });
 
@@ -9618,7 +9907,10 @@
               points: (existingEntry && existingEntry.points) || 0,
               status: 'Active',
               avatar: finalAvatar,
-              photo: finalAvatar
+              photo: finalAvatar,
+              linkedin: member.linkedin || '',
+              instagram: member.instagram || '',
+              facebook: member.facebook || ''
             };
 
             if (rosterIdx !== -1) {

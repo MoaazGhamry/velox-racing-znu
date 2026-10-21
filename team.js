@@ -11,9 +11,10 @@ const VELOX_TEAM = {
     id: "tharwat-osman",
     role: "Academic Advisor",
     name: "Prof. Dr. Tharwat Osman",
-    photo: "",
+    photo: "photos/dr tharwat.jpeg",
     department: "Academic & Institutional Advisory Board",
     department_ar: "هيئة الإشراف الأكاديمي والاستشاري",
+    facebook: "https://www.facebook.com/tharwat.osman.7",
     bio: "Commands academic mentorship, engineering faculty coordination, advanced manufacturing laboratory access, and university institutional sponsorship for Formula Student Silverstone 2026.",
     bio_ar: "يقود الإشراف الأكاديمي العام والتنسيق المؤسسي مع إدارة الجامعة وكلية الهندسة، وتسهيل الوصول للورش والمعامل الهندسية المتطورة لدعم مشاركة الفريق في سيلفرستون.",
     responsibilities: [
@@ -533,7 +534,10 @@ function getDynamicTeamData() {
         `Formula Student engineering documentation and validation compliance`,
         `Collaboration with department leaders and trackside race engineers`
       ],
-      quote: "Every detail matters. We engineer for speed, reliability, and precision."
+      quote: "Every detail matters. We engineer for speed, reliability, and precision.",
+      linkedin: targetMember.linkedin || '',
+      instagram: targetMember.instagram || '',
+      facebook: targetMember.facebook || ''
     });
   }
 
@@ -562,7 +566,10 @@ function getDynamicTeamData() {
       ],
       responsibilities_ar: oldLead.responsibilities_ar || [],
       quote: oldLead.quote || "Engineering precision, relentless testing, and disciplined teamwork drive our car to the podium.",
-      quote_ar: oldLead.quote_ar || ''
+      quote_ar: oldLead.quote_ar || '',
+      linkedin: targetMember.linkedin || oldLead.linkedin || '',
+      instagram: targetMember.instagram || oldLead.instagram || '',
+      facebook: targetMember.facebook || oldLead.facebook || ''
     };
   }
 
@@ -595,14 +602,38 @@ function getDynamicTeamData() {
       // Check if this role is an Executive Role
       if (rLower === 'team leader') {
         const tl = data.executives.find(e => e.role === 'Team Leader');
-        if (tl) { tl.name = member.name; tl.photo = member.photo || member.avatar || tl.photo; }
+        if (tl) { 
+          tl.name = member.name; 
+          tl.photo = member.photo || member.avatar || tl.photo;
+          if (member.linkedin) tl.linkedin = member.linkedin;
+          if (member.instagram) tl.instagram = member.instagram;
+          if (member.facebook) tl.facebook = member.facebook;
+        }
       } else if (rLower === 'vice team leader') {
         const vtl = data.executives.find(e => e.role === 'Vice Team Leader');
-        if (vtl) { vtl.name = member.name; vtl.photo = member.photo || member.avatar || vtl.photo; }
+        if (vtl) { 
+          vtl.name = member.name; 
+          vtl.photo = member.photo || member.avatar || vtl.photo;
+          if (member.linkedin) vtl.linkedin = member.linkedin;
+          if (member.instagram) vtl.instagram = member.instagram;
+          if (member.facebook) vtl.facebook = member.facebook;
+        }
       } else if (rLower === 'technical leader') {
-        if (data.technicalLeader) { data.technicalLeader.name = member.name; data.technicalLeader.photo = member.photo || member.avatar || data.technicalLeader.photo; }
+        if (data.technicalLeader) { 
+          data.technicalLeader.name = member.name; 
+          data.technicalLeader.photo = member.photo || member.avatar || data.technicalLeader.photo;
+          if (member.linkedin) data.technicalLeader.linkedin = member.linkedin;
+          if (member.instagram) data.technicalLeader.instagram = member.instagram;
+          if (member.facebook) data.technicalLeader.facebook = member.facebook;
+        }
       } else if (rLower === 'managerial leader') {
-        if (data.managerialLeader) { data.managerialLeader.name = member.name; data.managerialLeader.photo = member.photo || member.avatar || data.managerialLeader.photo; }
+        if (data.managerialLeader) { 
+          data.managerialLeader.name = member.name; 
+          data.managerialLeader.photo = member.photo || member.avatar || data.managerialLeader.photo;
+          if (member.linkedin) data.managerialLeader.linkedin = member.linkedin;
+          if (member.instagram) data.managerialLeader.instagram = member.instagram;
+          if (member.facebook) data.managerialLeader.facebook = member.facebook;
+        }
       }
       // Check if this role is a Department Leader Role
       else if (rLower.includes('body & chassis leader') || rLower.includes('body and chassis leader') || rLower.includes('chassis leader') || (member.name && member.name.toLowerCase().includes('ahmed ehab'))) {
@@ -849,7 +880,10 @@ async function syncCloudAcceptedMembers() {
           subteam: parsed.subteam,
           avatar: avatar,
           photo: avatar,
-          email: app.email || ''
+          email: app.email || '',
+          linkedin: (ov && ov.linkedin) || '',
+          instagram: (ov && ov.instagram) || '',
+          facebook: (ov && ov.facebook) || ''
         });
       });
     }
@@ -870,7 +904,10 @@ async function syncCloudAcceptedMembers() {
           subteam: ov.subteam || '',
           avatar: ov.avatar || '',
           photo: ov.avatar || '',
-          email: ov.email || ''
+          email: ov.email || '',
+          linkedin: ov.linkedin || '',
+          instagram: ov.instagram || '',
+          facebook: ov.facebook || ''
         });
       }
     });

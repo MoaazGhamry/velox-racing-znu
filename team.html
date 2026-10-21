@@ -415,6 +415,14 @@
               <span class="person-role advisor-role">${tRole(adv.role)}</span>
               <h3 class="person-name advisor-name">${adv.name}</h3>
               <p class="person-bio advisor-bio">${(currentLang === 'ar' && adv.bio_ar) ? adv.bio_ar : (adv.bio || '')}</p>
+              ${adv.facebook ? `
+                <div style="margin-top: 8px;">
+                  <a href="${adv.facebook}" target="_blank" rel="noopener" onclick="event.stopPropagation();" title="Facebook Profile" style="display:inline-flex;align-items:center;gap:6px;font-size:0.75rem;color:#1877F2;text-decoration:none;font-weight:600;background:rgba(24,119,242,0.1);padding:4px 10px;border-radius:20px;border:1px solid rgba(24,119,242,0.25);">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="#1877F2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                    <span>Facebook</span>
+                  </a>
+                </div>
+              ` : ''}
               <div class="person-view-cue advisor-cue">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                 <span data-i18n="modal.viewProfile">${dict['modal.viewProfile'] || 'Click to view overview'}</span>
@@ -650,8 +658,10 @@
       const bio = (currentLang === 'ar' && member.bio_ar) ? member.bio_ar : (member.bio || '');
       const resps = (currentLang === 'ar' && member.responsibilities_ar) ? member.responsibilities_ar : (member.responsibilities || []);
       const quote = (currentLang === 'ar' && member.quote_ar) ? member.quote_ar : (member.quote || '');
-      const igUrl = member.instagram || (window.VELOX_TEAM && window.VELOX_TEAM.instagramUrl) || "https://www.instagram.com/velox_racing_znu?srtk=MWl2azlianJlZ3J3bg==";
-      const liUrl = member.linkedin || (window.VELOX_TEAM && window.VELOX_TEAM.linkedinUrl) || "https://www.linkedin.com/company/velox-racing-team/";
+      const isAdvisor = (member.id === 'tharwat-osman' || (member.name && member.name.toLowerCase().includes('tharwat')));
+      const fbUrl = member.facebook || (isAdvisor ? 'https://www.facebook.com/tharwat.osman.7' : '');
+      const igUrl = isAdvisor ? '' : (member.instagram || (window.VELOX_TEAM && window.VELOX_TEAM.instagramUrl) || "https://www.instagram.com/velox_racing_znu?srtk=MWl2azlianJlZ3J3bg==");
+      const liUrl = isAdvisor ? '' : (member.linkedin || (window.VELOX_TEAM && window.VELOX_TEAM.linkedinUrl) || "https://www.linkedin.com/company/velox-racing-team/");
 
       const scrollContainer = document.getElementById('memberModalScroll');
       if (!scrollContainer) return;
@@ -721,17 +731,29 @@
 
         <!-- Actions -->
         <div class="member-modal-actions">
-          <a href="${igUrl}" target="_blank" rel="noopener" class="member-modal-btn member-modal-btn-outline" title="Instagram">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-            <span>${member.instagram ? (currentLang === 'ar' ? 'إنستغرام الشخصي' : 'Personal Instagram') : (dict['modal.followIg'] || 'Instagram Profile')}</span>
-          </a>
-          <a href="${liUrl}" target="_blank" rel="noopener" class="member-modal-btn member-modal-btn-outline" title="LinkedIn">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
-            <span>${member.linkedin ? (currentLang === 'ar' ? 'لينكد إن الشخصي' : 'Personal LinkedIn') : (dict['modal.followLi'] || 'Team LinkedIn')}</span>
-          </a>
-          <a href="/join" class="member-modal-btn member-modal-btn-primary">
-            <span>${dict['modal.apply'] || 'Join the Crew &rarr;'}</span>
-          </a>
+          ${fbUrl ? `
+            <a href="${fbUrl}" target="_blank" rel="noopener" class="member-modal-btn member-modal-btn-outline" title="Facebook" style="border-color: rgba(24, 119, 242, 0.45); color: #1877F2;">
+              <svg viewBox="0 0 24 24" fill="#1877F2" width="16" height="16"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+              <span>${member.facebook ? (currentLang === 'ar' ? 'فيسبوك الشخصي' : 'Personal Facebook') : 'Facebook'}</span>
+            </a>
+          ` : ''}
+          ${igUrl ? `
+            <a href="${igUrl}" target="_blank" rel="noopener" class="member-modal-btn member-modal-btn-outline" title="Instagram">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+              <span>${member.instagram ? (currentLang === 'ar' ? 'إنستغرام الشخصي' : 'Personal Instagram') : (dict['modal.followIg'] || 'Instagram Profile')}</span>
+            </a>
+          ` : ''}
+          ${liUrl ? `
+            <a href="${liUrl}" target="_blank" rel="noopener" class="member-modal-btn member-modal-btn-outline" title="LinkedIn">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+              <span>${member.linkedin ? (currentLang === 'ar' ? 'لينكد إن الشخصي' : 'Personal LinkedIn') : (dict['modal.followLi'] || 'Team LinkedIn')}</span>
+            </a>
+          ` : ''}
+          ${!isAdvisor ? `
+            <a href="/join" class="member-modal-btn member-modal-btn-primary">
+              <span>${dict['modal.apply'] || 'Join the Crew &rarr;'}</span>
+            </a>
+          ` : ''}
         </div>
       `;
 
