@@ -335,6 +335,19 @@
       return name.split(" ").map(n => n[0]).slice(0, 2).join("").toUpperCase();
     }
 
+    function safeAvatarSrc(av) {
+      if (!av) return '';
+      if (typeof isSafeImageAvatar === 'function') {
+        return isSafeImageAvatar(av) ? av : '';
+      }
+      if (typeof window !== 'undefined' && typeof window.isSafeImageAvatar === 'function') {
+        return window.isSafeImageAvatar(av) ? av : '';
+      }
+      const s = String(av).trim().toLowerCase();
+      if (s.startsWith('data:image/') || s.startsWith('photos/') || (s.startsWith('http') && !s.includes('linkedin.com') && !s.includes('docs.google.com'))) return av;
+      return '';
+    }
+
     // Render Dual-Branch Org Chart Tree from VELOX_TEAM with bilingual localization
     function renderOrgChart() {
       const root = document.getElementById('orgChartRoot');
@@ -363,7 +376,7 @@
           ${karim ? `
             <div class="person-card vice-leader-card clickable-member" data-member-id="${karim.id}" role="button" tabindex="0" title="${dict['modal.viewProfile'] || 'Click to view overview'}">
               <div class="avatar-circle">
-                ${(karim.photo || karim.avatar) ? `<img src="${karim.photo || karim.avatar}" alt="${karim.name}" class="avatar-img" onerror="this.onerror=null;this.parentElement.innerHTML='${getInitials(karim.name)}';" />` : getInitials(karim.name)}
+                ${safeAvatarSrc(karim.photo || karim.avatar) ? `<img src="${safeAvatarSrc(karim.photo || karim.avatar)}" alt="${karim.name}" class="avatar-img" onerror="this.onerror=null;this.parentElement.innerHTML='${getInitials(karim.name)}';" />` : getInitials(karim.name)}
               </div>
               <span class="person-role">${tRole(karim.role)}</span>
               <h3 class="person-name">${karim.name}</h3>
@@ -378,7 +391,7 @@
           ${fatima ? `
             <div class="person-card team-leader-card clickable-member" data-member-id="${fatima.id}" role="button" tabindex="0" title="${dict['modal.viewProfile'] || 'Click to view overview'}">
               <div class="avatar-circle">
-                ${(fatima.photo || fatima.avatar) ? `<img src="${fatima.photo || fatima.avatar}" alt="${fatima.name}" class="avatar-img" onerror="this.onerror=null;this.parentElement.innerHTML='${getInitials(fatima.name)}';" />` : getInitials(fatima.name)}
+                ${safeAvatarSrc(fatima.photo || fatima.avatar) ? `<img src="${safeAvatarSrc(fatima.photo || fatima.avatar)}" alt="${fatima.name}" class="avatar-img" onerror="this.onerror=null;this.parentElement.innerHTML='${getInitials(fatima.name)}';" />` : getInitials(fatima.name)}
               </div>
               <span class="person-role">${tRole(fatima.role)}</span>
               <h3 class="person-name">${fatima.name}</h3>
@@ -397,7 +410,7 @@
                 <span>${dict['role.AcademicAdvisorKicker'] || 'Institutional Academic Advisory'}</span>
               </div>
               <div class="avatar-circle advisor-avatar">
-                ${(adv.photo || adv.avatar) ? `<img src="${adv.photo || adv.avatar}" alt="${adv.name}" class="avatar-img" onerror="this.onerror=null;this.parentElement.innerHTML='${getInitials(adv.name)}';" />` : getInitials(adv.name)}
+                ${safeAvatarSrc(adv.photo || adv.avatar) ? `<img src="${safeAvatarSrc(adv.photo || adv.avatar)}" alt="${adv.name}" class="avatar-img" onerror="this.onerror=null;this.parentElement.innerHTML='${getInitials(adv.name)}';" />` : getInitials(adv.name)}
               </div>
               <span class="person-role advisor-role">${tRole(adv.role)}</span>
               <h3 class="person-name advisor-name">${adv.name}</h3>
@@ -444,7 +457,7 @@
             <div class="tree-tier tree-tier-lead" style="width: 100%;">
               <div class="person-card clickable-member" data-member-id="${data.technicalLeader.id}" role="button" tabindex="0" title="${dict['modal.viewProfile'] || 'Click to view overview'}" style="width: 100%;">
                 <div class="avatar-circle">
-                  ${(data.technicalLeader.photo || data.technicalLeader.avatar) ? `<img src="${data.technicalLeader.photo || data.technicalLeader.avatar}" alt="${data.technicalLeader.name}" class="avatar-img" onerror="this.onerror=null;this.parentElement.innerHTML='${getInitials(data.technicalLeader.name)}';" />` : getInitials(data.technicalLeader.name)}
+                  ${safeAvatarSrc(data.technicalLeader.photo || data.technicalLeader.avatar) ? `<img src="${safeAvatarSrc(data.technicalLeader.photo || data.technicalLeader.avatar)}" alt="${data.technicalLeader.name}" class="avatar-img" onerror="this.onerror=null;this.parentElement.innerHTML='${getInitials(data.technicalLeader.name)}';" />` : getInitials(data.technicalLeader.name)}
                 </div>
                 <span class="person-role">${tRole(data.technicalLeader.role)}</span>
                 <h3 class="person-name">${data.technicalLeader.name}</h3>
@@ -469,7 +482,7 @@
                   ${dept.leader ? `
                     <div class="dept-lead clickable-member" data-member-id="${dept.leader.id}" role="button" tabindex="0" title="${dict['modal.viewProfile'] || 'Click to view overview'}">
                       <div class="dept-lead-avatar-wrap">
-                        ${(dept.leader.photo || dept.leader.avatar) ? `<img src="${dept.leader.photo || dept.leader.avatar}" alt="${dept.leader.name}" class="dept-lead-avatar" onerror="this.onerror=null;this.parentElement.innerHTML='${getInitials(dept.leader.name)}';" />` : getInitials(dept.leader.name)}
+                        ${safeAvatarSrc(dept.leader.photo || dept.leader.avatar) ? `<img src="${safeAvatarSrc(dept.leader.photo || dept.leader.avatar)}" alt="${dept.leader.name}" class="dept-lead-avatar" onerror="this.onerror=null;this.parentElement.innerHTML='${getInitials(dept.leader.name)}';" />` : getInitials(dept.leader.name)}
                       </div>
                       <div class="dept-lead-text">
                         <span class="dept-lead-badge">${tLeader} &bull; <span data-i18n="modal.viewProfile">${dict['modal.viewProfile'] || 'Overview'}</span> &rarr;</span>
@@ -496,7 +509,7 @@
                               ${crew.map(m => `
                                 <div class="subteam-crew-chip clickable-member ${m.isLead ? 'is-leader' : ''}" data-member-id="${m.id}" role="button" tabindex="0" title="${dict['modal.viewProfile'] || 'Click to view overview'}">
                                   <div class="subteam-chip-avatar">
-                                    ${(m.photo || m.avatar) ? `<img src="${m.photo || m.avatar}" alt="${m.name}" onerror="this.onerror=null;this.parentElement.innerHTML='${getInitials(m.name)}';" />` : getInitials(m.name)}
+                                    ${safeAvatarSrc(m.photo || m.avatar) ? `<img src="${safeAvatarSrc(m.photo || m.avatar)}" alt="${m.name}" onerror="this.onerror=null;this.parentElement.innerHTML='${getInitials(m.name)}';" />` : getInitials(m.name)}
                                   </div>
                                   <span class="subteam-chip-role">${m.isLead ? (dict['role.Subteam Leader'] || 'Lead') : (dict['role.Team Member'] || 'Member')}:</span>
                                   <span class="subteam-chip-name">${m.name}</span>
@@ -524,7 +537,7 @@
             <div class="tree-tier tree-tier-lead" style="width: 100%;">
               <div class="person-card clickable-member" data-member-id="${data.managerialLeader.id}" role="button" tabindex="0" title="${dict['modal.viewProfile'] || 'Click to view overview'}" style="width: 100%;">
                 <div class="avatar-circle">
-                  ${(data.managerialLeader.photo || data.managerialLeader.avatar) ? `<img src="${data.managerialLeader.photo || data.managerialLeader.avatar}" alt="${data.managerialLeader.name}" class="avatar-img" onerror="this.onerror=null;this.parentElement.innerHTML='${getInitials(data.managerialLeader.name)}';" />` : getInitials(data.managerialLeader.name)}
+                  ${safeAvatarSrc(data.managerialLeader.photo || data.managerialLeader.avatar) ? `<img src="${safeAvatarSrc(data.managerialLeader.photo || data.managerialLeader.avatar)}" alt="${data.managerialLeader.name}" class="avatar-img" onerror="this.onerror=null;this.parentElement.innerHTML='${getInitials(data.managerialLeader.name)}';" />` : getInitials(data.managerialLeader.name)}
                 </div>
                 <span class="person-role" style="color: #38BDF8;">${tRole(data.managerialLeader.role)}</span>
                 <h3 class="person-name">${data.managerialLeader.name}</h3>
@@ -549,7 +562,7 @@
                   ${dept.leader ? `
                     <div class="dept-lead clickable-member" data-member-id="${dept.leader.id}" role="button" tabindex="0" title="${dict['modal.viewProfile'] || 'Click to view overview'}" style="border-color: rgba(56, 189, 248, 0.25);">
                       <div class="dept-lead-avatar-wrap" style="border-color: #38BDF8; color: #38BDF8;">
-                        ${(dept.leader.photo || dept.leader.avatar) ? `<img src="${dept.leader.photo || dept.leader.avatar}" alt="${dept.leader.name}" class="dept-lead-avatar" onerror="this.onerror=null;this.parentElement.innerHTML='${getInitials(dept.leader.name)}';" />` : getInitials(dept.leader.name)}
+                        ${safeAvatarSrc(dept.leader.photo || dept.leader.avatar) ? `<img src="${safeAvatarSrc(dept.leader.photo || dept.leader.avatar)}" alt="${dept.leader.name}" class="dept-lead-avatar" onerror="this.onerror=null;this.parentElement.innerHTML='${getInitials(dept.leader.name)}';" />` : getInitials(dept.leader.name)}
                       </div>
                       <div class="dept-lead-text">
                         <span class="dept-lead-badge" style="color: #38BDF8;">${tLeader} &bull; <span data-i18n="modal.viewProfile">${dict['modal.viewProfile'] || 'Overview'}</span> &rarr;</span>
@@ -576,7 +589,7 @@
                               ${crew.map(m => `
                                 <div class="subteam-crew-chip clickable-member ${m.isLead ? 'is-leader' : ''}" data-member-id="${m.id}" role="button" tabindex="0" title="${dict['modal.viewProfile'] || 'Click to view overview'}">
                                   <div class="subteam-chip-avatar">
-                                    ${(m.photo || m.avatar) ? `<img src="${m.photo || m.avatar}" alt="${m.name}" onerror="this.onerror=null;this.parentElement.innerHTML='${getInitials(m.name)}';" />` : getInitials(m.name)}
+                                    ${safeAvatarSrc(m.photo || m.avatar) ? `<img src="${safeAvatarSrc(m.photo || m.avatar)}" alt="${m.name}" onerror="this.onerror=null;this.parentElement.innerHTML='${getInitials(m.name)}';" />` : getInitials(m.name)}
                                   </div>
                                   <span class="subteam-chip-role">${m.isLead ? (dict['role.Subteam Leader'] || 'Lead') : (dict['role.Team Member'] || 'Member')}:</span>
                                   <span class="subteam-chip-name">${m.name}</span>
@@ -659,7 +672,7 @@
         <!-- Hero Row: Avatar + Name + Role -->
         <div class="member-modal-hero">
           <div class="member-modal-avatar-box">
-            ${(member.photo || member.avatar) ? `<img src="${member.photo || member.avatar}" alt="${name}" class="member-modal-avatar-img" onerror="this.onerror=null;this.parentElement.innerHTML='${getInitials(name)}';" />` : getInitials(name)}
+            ${safeAvatarSrc(member.photo || member.avatar) ? `<img src="${safeAvatarSrc(member.photo || member.avatar)}" alt="${name}" class="member-modal-avatar-img" onerror="this.onerror=null;this.parentElement.innerHTML='${getInitials(name)}';" />` : getInitials(name)}
           </div>
           <div class="member-modal-hero-info">
             <span class="member-modal-role-badge">${role}</span>

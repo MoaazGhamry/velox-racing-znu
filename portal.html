@@ -2674,9 +2674,18 @@
       </div>
       <form id="editMemberForm">
         <input type="hidden" id="editMemberId" />
-        <div class="form-group">
-          <label for="editMemberName">Full Name</label>
-          <input type="text" id="editMemberName" class="form-control" required />
+        <div class="form-row">
+          <div class="form-group">
+            <label for="editMemberName">Full Name <span class="req">*</span></label>
+            <input type="text" id="editMemberName" class="form-control" required />
+          </div>
+          <div class="form-group">
+            <label for="editMemberUsername">Portal Username (@login handle) <span class="req">*</span></label>
+            <div style="position: relative;">
+              <span style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #38BDF8; font-weight: 700; font-size: 0.95rem;">@</span>
+              <input type="text" id="editMemberUsername" class="form-control" style="padding-left: 28px; font-weight: 600;" placeholder="username" required />
+            </div>
+          </div>
         </div>
         <div class="form-row">
           <div class="form-group">
@@ -3526,6 +3535,47 @@
       ]
     };
 
+    function isSafeImageAvatar(url) {
+      if (!url || typeof url !== 'string') return false;
+      const u = url.trim();
+      if (!u) return false;
+      if (u.startsWith('data:image/')) return true;
+      if (u.startsWith('photos/') || u.startsWith('/photos/')) return true;
+      if (!u.startsWith('http://') && !u.startsWith('https://')) return false;
+
+      const lower = u.toLowerCase();
+      if (
+        lower.includes('linkedin.com') ||
+        lower.includes('docs.google.com') ||
+        lower.includes('facebook.com') ||
+        lower.includes('instagram.com') ||
+        lower.includes('twitter.com') ||
+        lower.includes('x.com') ||
+        lower.includes('youtube.com') ||
+        (lower.includes('github.com/') && !lower.includes('avatars.githubusercontent.com'))
+      ) {
+        return false;
+      }
+      return true;
+    }
+    window.isSafeImageAvatar = isSafeImageAvatar;
+
+    function sanitizePortalDbAvatars(parsed) {
+      if (!parsed) return;
+      if (Array.isArray(parsed.membersRoster)) {
+        parsed.membersRoster.forEach(m => {
+          if (m && m.avatar && !isSafeImageAvatar(m.avatar)) m.avatar = '';
+          if (m && m.photo && !isSafeImageAvatar(m.photo)) m.photo = '';
+        });
+      }
+      if (parsed.personas) {
+        Object.values(parsed.personas).forEach(p => {
+          if (p && p.avatar && !isSafeImageAvatar(p.avatar)) p.avatar = '';
+          if (p && p.photo && !isSafeImageAvatar(p.photo)) p.photo = '';
+        });
+      }
+    }
+
     // Load or Initialize Local Storage Database
     function getPortalDb() {
       // Clear legacy/cached mockup databases
@@ -3625,6 +3675,7 @@
                 `[${new Date().toISOString().replace('T', ' ').substring(0, 19)}] SYSTEM: VELOX Inside Portal initialized.`
               ];
             }
+            sanitizePortalDbAvatars(parsed);
             return parsed;
           }
         } catch (e) { console.warn(e); }
@@ -7027,7 +7078,8 @@
 
         // Resolve member photo from persona or roster entry
         const mPersona = db.personas && Object.values(db.personas).find(per => per && (per.id === m.id || (per.name && per.name.trim().toLowerCase() === (m.name || '').trim().toLowerCase())));
-        const mPhoto = m.avatar || m.photo || (mPersona && (mPersona.avatar || mPersona.photo)) || '';
+        const mPhotoRaw = m.avatar || m.photo || (mPersona && (mPersona.avatar || mPersona.photo)) || '';
+        const mPhoto = isSafeImageAvatar(mPhotoRaw) ? mPhotoRaw : '';
         const avatarHtml = mPhoto
           ? `<img src="${mPhoto}" alt="${m.name}" style="width:32px;height:32px;border-radius:50%;object-fit:cover;border:1.5px solid rgba(197,34,31,0.5);flex-shrink:0;" onerror="this.style.display='none'" />`
           : `<span style="width:32px;height:32px;border-radius:50%;background:rgba(197,34,31,0.18);border:1.5px solid rgba(197,34,31,0.4);display:inline-flex;align-items:center;justify-content:center;font-weight:800;font-size:0.72rem;color:#FFF;flex-shrink:0;">${(m.name||'?').split(' ').map(n=>n[0]).slice(0,2).join('').toUpperCase()}</span>`;
@@ -7234,7 +7286,27 @@
       }
 
       document.getElementById('editMemberId').value = m.id;
-      document.getElementById('editMemberName').value = m.name;
+      const nameInput = document.getElementById('editMemberName');
+      nameInput.value = m.name;
+
+      const mAcct = (db.accounts || []).find(a => a.personaKey === m.id || a.name === m.name || a.username === m.username);
+      const currUsername = m.username || (mAcct ? mAcct.username : (m.id || '').replace(/^member-/, '').replace(/-\d+$/, ''));
+      const uInput = document.getElementById('editMemberUsername');
+      if (uInput) {
+        uInput.value = currUsername || '';
+        delete uInput.dataset.manualEdit;
+      }
+
+      if (nameInput && uInput) {
+        nameInput.oninput = function() {
+          if (!uInput.dataset.manualEdit) {
+            uInput.value = nameInput.value.trim().toLowerCase().replace(/[^a-z0-9]/g, '').slice(0, 20);
+          }
+        };
+        uInput.oninput = function() {
+          uInput.dataset.manualEdit = 'true';
+        };
+      }
 
       const roleSelect = document.getElementById('editMemberRole');
       const secRoleSelect = document.getElementById('editMemberSecondaryRole');
@@ -8182,7 +8254,12 @@
         }
 
         const oldRole = member.role;
+        const oldName = member.name;
+        const oldUsername = member.username || '';
         const newName = document.getElementById('editMemberName').value.trim();
+        const rawUsername = (document.getElementById('editMemberUsername') ? document.getElementById('editMemberUsername').value : '').trim().replace(/^@+/, '').toLowerCase();
+        const newUsername = rawUsername || newName.toLowerCase().replace(/[^a-z0-9]/g, '');
+
         const primaryRole = document.getElementById('editMemberRole').value;
         const secRoleSelect = document.getElementById('editMemberSecondaryRole');
         let secondaryRole = secRoleSelect ? secRoleSelect.value : '';
@@ -8235,6 +8312,7 @@
         }
 
         member.name = newName;
+        member.username = newUsername;
         member.primaryRole = primaryRole;
         member.secondaryRole = secondaryRole;
         member.role = combinedRole;
@@ -8261,12 +8339,36 @@
         }
         member.roleType = computedRoleType;
 
-        // Also update linked account and persona
-        const acct = db.accounts.find(a => a.personaKey === id || a.name === member.name);
-        if (acct) acct.name = member.name;
+        // Also update linked account in db.accounts
+        let acct = (db.accounts || []).find(a => 
+          a.personaKey === id || 
+          (oldUsername && a.username && a.username.toLowerCase() === oldUsername.toLowerCase()) ||
+          (a.name && (a.name.toLowerCase() === oldName.toLowerCase() || a.name.toLowerCase() === newName.toLowerCase()))
+        );
+        if (acct) {
+          acct.name = newName;
+          acct.username = newUsername;
+        } else {
+          acct = {
+            username: newUsername,
+            password: 'velox2026',
+            personaKey: id,
+            name: newName,
+            status: member.status || 'Active'
+          };
+          db.accounts.push(acct);
+        }
+
+        // If currently logged-in user is this member, update active user session
+        const authUser = (localStorage.getItem('velox_auth_user') || currentAuthUser || '').toLowerCase();
+        if (authUser && (authUser === (oldUsername || '').toLowerCase() || authUser === (oldName || '').toLowerCase() || authUser === (id || '').toLowerCase())) {
+          localStorage.setItem('velox_auth_user', newUsername);
+          currentAuthUser = newUsername;
+        }
 
         if (db.personas[id]) {
-          db.personas[id].name = member.name;
+          db.personas[id].name = newName;
+          db.personas[id].username = newUsername;
           db.personas[id].role = member.role;
           db.personas[id].primaryRole = primaryRole;
           db.personas[id].secondaryRole = secondaryRole;
@@ -8278,14 +8380,20 @@
           db.personas[id].secondarySubteam = secSubteam;
           db.personas[id].deptDesc = `${member.branch} Division • ${fullSubString}`;
         }
+        if (oldUsername && db.personas['user_' + oldUsername]) {
+          db.personas['user_' + newUsername] = db.personas['user_' + oldUsername];
+          db.personas['user_' + newUsername].name = newName;
+          db.personas['user_' + newUsername].username = newUsername;
+        }
 
         // Live Cloud Synchronization with Supabase
         try {
           const cfg = window.VELOX_CONFIG || {};
           if (cfg.url && cfg.anonKey && !cfg.url.includes('your-project-id') && window.supabase) {
             const client = window.supabase.createClient(cfg.url, cfg.anonKey);
-            const notesTag = `[Leader Assigned: ${fullSubString} (Roles: ${combinedRole})]`;
+            const notesTag = `[Leader Assigned: ${fullSubString} (Roles: ${combinedRole}) (@${newUsername})]`;
             let cloudQuery = client.from('applications').update({
+              full_name: newName,
               subteam_first: fullSubString,
               status: 'Accepted',
               hr_notes: notesTag
@@ -8293,14 +8401,14 @@
             if (member.email) {
               await cloudQuery.eq('email', member.email);
             } else {
-              await cloudQuery.ilike('full_name', `%${member.name}%`);
+              await cloudQuery.ilike('full_name', `%${oldName}%`);
             }
           }
         } catch (cloudErr) {
           console.warn('Supabase member live sync notice:', cloudErr);
         }
 
-        logAuditEvent(`GOVERNANCE: Member ${member.name} details updated by ${p.name} (Role: ${combinedRole}, Division: ${fullSubString}, Branch: ${newBranch}).`);
+        logAuditEvent(`GOVERNANCE: Member ${oldName} updated to "${newName}" (@${newUsername}) by ${p.name} (Role: ${combinedRole}, Division: ${fullSubString}, Branch: ${newBranch}).`);
 
         // If updated by a sub-leader (Romy, Moaaz, Ali, Hassan), automatically notify Fatima & Karim!
         if (!isTeamLeader(p)) {
@@ -9129,25 +9237,23 @@
             let cloudAvatar = '';
             if (app.portfolio_url) {
               const u = app.portfolio_url.trim();
-              if (u.startsWith('data:image/') || u.startsWith('photos/') || u.includes('cloudinary.com') || u.includes('res.cloudinary.com')) {
+              if (isSafeImageAvatar(u)) {
                 cloudAvatar = u;
               } else if (u.includes('drive.google.com')) {
                 const driveMatch = u.match(/\/d\/([a-zA-Z0-9_-]+)/) || u.match(/id=([a-zA-Z0-9_-]+)/);
                 if (driveMatch && driveMatch[1]) {
                   cloudAvatar = `https://drive.google.com/thumbnail?id=${driveMatch[1]}&sz=w400`;
                 }
-              } else if (u.startsWith('http://') || u.startsWith('https://')) {
-                const isNonImageDoc = u.includes('docs.google.com') || u.includes('linkedin.com') || (u.includes('github.com/') && !u.includes('avatars.githubusercontent.com'));
-                if (!isNonImageDoc) {
-                  cloudAvatar = u;
-                }
               }
             }
             const existingEntry = rosterIdx !== -1 ? db.membersRoster[rosterIdx] : null;
-            const existingAvatar = existingEntry ? (existingEntry.avatar || existingEntry.photo || '') : '';
-            const finalAvatar = cloudAvatar || existingAvatar || '';
+            const rawExisting = existingEntry ? (existingEntry.avatar || existingEntry.photo || '') : '';
+            const existingAvatar = isSafeImageAvatar(rawExisting) ? rawExisting : '';
+            const finalAvatar = isSafeImageAvatar(cloudAvatar) ? cloudAvatar : existingAvatar;
 
-            // Preserve existing role/branch if leader already manually set it
+            // Preserve existing name, username, and role if updated
+            const existingName = existingEntry && existingEntry.name ? existingEntry.name : cleanName;
+            const existingUsername = existingEntry && existingEntry.username ? existingEntry.username : username;
             const existingRole = existingEntry && existingEntry.role ? existingEntry.role : assignedRole;
             const existingRoleType = existingEntry && existingEntry.roleType ? existingEntry.roleType : roleType;
             const existingBranch = existingEntry && existingEntry.branch ? existingEntry.branch : 'Technical';
@@ -9155,14 +9261,14 @@
 
             const rosterEntry = {
               id: memberId,
-              name: cleanName,
+              name: existingName,
               email: app.email || '',
               role: existingRole,
               roleType: existingRoleType,
               branch: existingBranch,
               dept: existingDept,
               subteam: subteam,
-              username: username,
+              username: existingUsername,
               points: (existingEntry && existingEntry.points) || 0,
               status: 'Active',
               avatar: finalAvatar,

@@ -290,6 +290,33 @@ function getPortalDb() {
   try { return JSON.parse(raw); } catch (e) { return null; }
 }
 
+// Strict validator to ensure only authentic images are ever loaded in <img> tags
+function isSafeImageAvatar(url) {
+  if (!url || typeof url !== 'string') return false;
+  const u = url.trim();
+  if (!u) return false;
+  if (u.startsWith('data:image/')) return true;
+  if (u.startsWith('photos/') || u.startsWith('/photos/')) return true;
+  if (!u.startsWith('http://') && !u.startsWith('https://')) return false;
+
+  const lower = u.toLowerCase();
+  // Filter out any social profiles, documents, or non-image web pages
+  if (
+    lower.includes('linkedin.com') ||
+    lower.includes('docs.google.com') ||
+    lower.includes('facebook.com') ||
+    lower.includes('instagram.com') ||
+    lower.includes('twitter.com') ||
+    lower.includes('x.com') ||
+    lower.includes('youtube.com') ||
+    (lower.includes('github.com/') && !lower.includes('avatars.githubusercontent.com'))
+  ) {
+    return false;
+  }
+  return true;
+}
+if (typeof window !== 'undefined') window.isSafeImageAvatar = isSafeImageAvatar;
+
 // Universal avatar resolution helper across personas, membersRoster, and accounts
 function findAvatarForPerson(id, name) {
   if (!id && !name) return '';
@@ -304,8 +331,9 @@ function findAvatarForPerson(id, name) {
       const mName = (m.name || '').trim().toLowerCase();
       return (normId && mId === normId) || (normName && mName === normName);
     });
-    if (foundCloud && (foundCloud.photo || foundCloud.avatar)) {
-      return foundCloud.photo || foundCloud.avatar;
+    if (foundCloud) {
+      const cand = foundCloud.photo || foundCloud.avatar;
+      if (isSafeImageAvatar(cand)) return cand;
     }
   }
 
@@ -319,7 +347,8 @@ function findAvatarForPerson(id, name) {
       const pId = (p.id || '').trim().toLowerCase();
       const pName = (p.name || '').trim().toLowerCase();
       if ((normId && pId === normId) || (normName && pName === normName)) {
-        if (p.avatar || p.photo) return p.avatar || p.photo;
+        const cand = p.avatar || p.photo;
+        if (isSafeImageAvatar(cand)) return cand;
       }
     }
   }
@@ -332,7 +361,10 @@ function findAvatarForPerson(id, name) {
       const mName = (m.name || '').trim().toLowerCase();
       return (normId && mId === normId) || (normName && mName === normName);
     });
-    if (found && (found.avatar || found.photo)) return found.avatar || found.photo;
+    if (found) {
+      const cand = found.avatar || found.photo;
+      if (isSafeImageAvatar(cand)) return cand;
+    }
   }
 
   // 3. Check portalDb.accounts
@@ -342,7 +374,10 @@ function findAvatarForPerson(id, name) {
       const aName = (a.name || '').trim().toLowerCase();
       return normName && aName === normName;
     });
-    if (foundAcc && (foundAcc.avatar || foundAcc.photo)) return foundAcc.avatar || foundAcc.photo;
+    if (foundAcc) {
+      const cand = foundAcc.avatar || foundAcc.photo;
+      if (isSafeImageAvatar(cand)) return cand;
+    }
   }
 
   return '';
@@ -676,26 +711,25 @@ async function syncCloudAcceptedMembers() {
         let avatar = '';
         if (app.portfolio_url) {
           const u = app.portfolio_url.trim();
-          if (u.startsWith('data:image/') || u.startsWith('photos/')) {
+          if (isSafeImageAvatar(u)) {
             avatar = u;
           } else if (u.includes('drive.google.com')) {
             const driveMatch = u.match(/\/d\/([a-zA-Z0-9_-]+)/) || u.match(/id=([a-zA-Z0-9_-]+)/);
             if (driveMatch && driveMatch[1]) {
               avatar = `https://drive.google.com/thumbnail?id=${driveMatch[1]}&sz=w400`;
             }
-          } else if (u.startsWith('http://') || u.startsWith('https://')) {
-            const isNonImageDoc = u.includes('docs.google.com') || u.includes('linkedin.com') || (u.includes('github.com/') && !u.includes('avatars.githubusercontent.com'));
-            if (!isNonImageDoc) {
-              avatar = u;
-            }
           }
         }
-        if (!avatar) {
+        if (!avatar || !isSafeImageAvatar(avatar)) {
+          avatar = '';
           if (typeof findAvatarForPerson === 'function') {
             avatar = findAvatarForPerson(memberId, cleanName);
           } else if (typeof window !== 'undefined' && typeof window.findAvatarForPerson === 'function') {
             avatar = window.findAvatarForPerson(memberId, cleanName);
           }
+        }
+        if (!isSafeImageAvatar(avatar)) {
+          avatar = '';
         }
 
         seenNames.add(normName);
