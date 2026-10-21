@@ -1,6 +1,5 @@
 /**
- * VELOX RACING — HAIRLINE LIBRARY INTEGRATION
- * Library: @lucasmarkes/hairline by Lucas Marques
+ * VELOX RACING — INTERACTIVE ENGINEERING FIGURES INTEGRATION
  * Interactive, pointer-responsive isometric SVG figures for engineering & telemetry
  * Zagazig National University | Formula Student
  */

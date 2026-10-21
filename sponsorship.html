@@ -111,21 +111,37 @@
           </div>
 
           <div style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-top: 8px;">
-            <span class="telemetry-chip" style="font-size: 0.8rem;" data-i18n="univ.chip1">🏛️ Faculty of Engineering</span>
-            <span class="telemetry-chip" style="font-size: 0.8rem;" data-i18n="univ.chip2">🔬 Advanced Dynamics Labs</span>
-            <span class="telemetry-chip" style="font-size: 0.8rem;" data-i18n="univ.chip3">🏁 Formula Student 2026</span>
+            <span class="telemetry-chip" style="font-size: 0.8rem; display: inline-flex; align-items: center; gap: 6px;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M3 10h18M5 10v11M9 10v11M15 10v11M19 10v11M12 2L2 7h20L12 2z"/></svg>
+              <span data-i18n="univ.chip1">Faculty of Engineering</span>
+            </span>
+            <span class="telemetry-chip" style="font-size: 0.8rem; display: inline-flex; align-items: center; gap: 6px;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v7.31L4.69 19.3A2 2 0 0 0 6.44 22h11.12a2 2 0 0 0 1.75-2.7L14 9.31V2M8.5 2h7M7 16h10"/></svg>
+              <span data-i18n="univ.chip2">Advanced Dynamics Labs</span>
+            </span>
+            <span class="telemetry-chip" style="font-size: 0.8rem; display: inline-flex; align-items: center; gap: 6px;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1zM4 22v-7"/></svg>
+              <span data-i18n="univ.chip3">Formula Student 2026</span>
+            </span>
           </div>
         </div>
 
         <!-- Official Technology & Digital Infrastructure Partner (Cortex Web Systems) -->
         <div class="univ-partner-card" id="cortex" style="margin-top: 24px; border: 1px solid rgba(197, 34, 31, 0.4); background: radial-gradient(circle at 50% 0%, rgba(197, 34, 31, 0.12) 0%, rgba(18, 18, 24, 0.75) 100%);">
-          <span class="section-kicker" style="color: #EAB308;">★ Official Digital Infrastructure Partner ★</span>
+          <span class="section-kicker" style="color: #EAB308; display: inline-flex; align-items: center; gap: 6px;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="#EAB308" stroke="#EAB308" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            Official Digital Infrastructure Partner
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="#EAB308" stroke="#EAB308" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </span>
           <h2 style="font-size: 1.5rem; margin-top: 4px;">Cortex Web Systems</h2>
           <p class="text-muted" style="max-width: 720px; margin-inline: auto; font-size: 0.95rem; margin-top: 8px;">
             Cortex Web Systems is the official software engineering and digital technology studio behind the Velox Racing web platform, high-security internal portal, recruitment pipeline, and real-time Formula Student telemetry architecture.
           </p>
 
-          <div class="univ-logo-wrap" style="padding: 16px 0;">
+          <!-- Interactive Digital Architecture & Telemetry Terminal figure -->
+          <div class="hairline-figure-wrap" data-hairline="terminal" data-intensity="0.85" style="max-width: 440px; height: 160px; margin: 18px auto; border-radius: 10px; background: rgba(0, 0, 0, 0.35); border: 1px solid rgba(197, 34, 31, 0.25); overflow: hidden;" title="Cortex Digital Infrastructure & Telemetry Terminal"></div>
+
+          <div class="univ-logo-wrap" style="padding: 12px 0;">
             <img src="cortex_logo_dark.png" alt="Cortex Web Systems" class="cortex-logo-img" style="max-height: 80px; width: auto; object-fit: contain; filter: drop-shadow(0 6px 18px rgba(0,0,0,0.6));" onerror="this.src='cortex_logo_light.png'" />
           </div>
 
@@ -159,7 +175,9 @@
 
         <div class="highlights-grid">
           <div class="highlight-card">
-            <div style="font-size: 2rem; margin-bottom: 8px;">🌍</div>
+            <div class="why-icon-wrap">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+            </div>
             <h3 class="highlight-label" style="font-size: 1.15rem;" data-i18n="why.card1.title">International Silverstone Arena</h3>
             <p class="highlight-detail" style="font-size: 0.88rem; line-height: 1.6;" data-i18n="why.card1.desc">
               Formula Student is judged and scrutinized by Formula 1 technical directors and top European automotive manufacturers at the iconic Silverstone Circuit.
@@ -167,7 +185,9 @@
           </div>
 
           <div class="highlight-card">
-            <div style="font-size: 2rem; margin-bottom: 8px;">⚡</div>
+            <div class="why-icon-wrap">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#EAB308" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+            </div>
             <h3 class="highlight-label" style="font-size: 1.15rem;" data-i18n="why.card1.title2">Direct STEM Talent Pipeline</h3>
             <p class="highlight-detail" style="font-size: 0.88rem; line-height: 1.6;" data-i18n="why.card2.desc">
               Exclusive priority access to recruitment resume books from Egypt's sharpest students across Mechatronics, Mechanical, Embedded Systems, and Business.
@@ -175,7 +195,9 @@
           </div>
 
           <div class="highlight-card">
-            <div style="font-size: 2rem; margin-bottom: 8px;">🎯</div>
+            <div class="why-icon-wrap">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="22" y1="12" x2="18" y2="12"></line><line x1="6" y1="12" x2="2" y2="12"></line><line x1="12" y1="6" x2="12" y2="2"></line><line x1="12" y1="22" x2="12" y2="18"></line></svg>
+            </div>
             <h3 class="highlight-label" style="font-size: 1.15rem;" data-i18n="why.card3.title">High-Contrast Brand Visibility</h3>
             <p class="highlight-detail" style="font-size: 0.88rem; line-height: 1.6;" data-i18n="why.card3.desc">
               Your company branding showcased on the race car's aerodynamic livery, driver race suits, garage pit wall, event roll-ups, and cinematic social documentaries.
@@ -183,7 +205,9 @@
           </div>
 
           <div class="highlight-card">
-            <div style="font-size: 2rem; margin-bottom: 8px;">🚀</div>
+            <div class="why-icon-wrap">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"></path><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"></path><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"></path><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"></path></svg>
+            </div>
             <h3 class="highlight-label" style="font-size: 1.15rem;" data-i18n="why.card4.title">Clean Tech CSR &amp; EV R&amp;D</h3>
             <p class="highlight-detail" style="font-size: 0.88rem; line-height: 1.6;" data-i18n="why.card4.desc">
               Demonstrate corporate social responsibility by fostering national electric mobility innovation and hands-on applied engineering within Egyptian higher education.
@@ -212,6 +236,7 @@
             <p class="tier-desc" data-i18n="tiers.titlePartner.desc">
               The premier co-branding package with dominant vehicle livery placement and international Silverstone paddock access.
             </p>
+            <div class="tier-hairline-embed" data-hairline="vault" data-intensity="0.8" title="Strategic Title Investment Vault"></div>
             <ul class="tier-perks">
               <li class="tier-perk-item" data-i18n="tiers.titlePartner.p1">Dominant branding on front nosecone, sidepods &amp; rear wing</li>
               <li class="tier-perk-item" data-i18n="tiers.titlePartner.p2">Official team co-naming rights in press releases &amp; interviews</li>
@@ -228,6 +253,7 @@
             <p class="tier-desc" data-i18n="tiers.plat.desc">
               Extensive vehicle visibility, prominent uniform placement, and prioritized graduate recruitment.
             </p>
+            <div class="tier-hairline-embed" data-hairline="plot" data-intensity="0.8" title="Telemetry & Aerodynamic Performance Plot"></div>
             <ul class="tier-perks">
               <li class="tier-perk-item" data-i18n="tiers.plat.p1">Prominent front wing aerodynamic endplate branding</li>
               <li class="tier-perk-item" data-i18n="tiers.plat.p2">Featured logo on driver race suits &amp; team crew gear</li>
@@ -244,8 +270,9 @@
             <p class="tier-desc" data-i18n="tiers.gold.desc">
               Strong brand positioning on the vehicle chassis spaceframe and digital engineering publications.
             </p>
+            <div class="tier-hairline-embed" data-hairline="dish" data-intensity="0.8" title="Broadcasting & Telemetry Ground Uplink"></div>
             <ul class="tier-perks">
-              <li class="tier-perk-item" data-i18n="tiers.gold.p1">Branding on chassis side panels &amp; cockpit cockpit area</li>
+              <li class="tier-perk-item" data-i18n="tiers.gold.p1">Branding on chassis side panels &amp; cockpit area</li>
               <li class="tier-perk-item" data-i18n="tiers.gold.p2">Recognition in competition engineering design report</li>
               <li class="tier-perk-item" data-i18n="tiers.gold.p3">Sponsor highlight posts on LinkedIn, Instagram &amp; Facebook</li>
               <li class="tier-perk-item" data-i18n="tiers.gold.p4">Logo on official website and pit garage banners</li>
@@ -260,6 +287,7 @@
             <p class="tier-desc" data-i18n="tiers.inkind.desc">
               For manufacturing facilities, CNC machinists, carbon fiber suppliers, software licenses, or logistics providers.
             </p>
+            <div class="tier-hairline-embed" data-hairline="cabinet" data-intensity="0.8" title="Precision Fabrication & Component Housing"></div>
             <ul class="tier-perks">
               <li class="tier-perk-item" data-i18n="tiers.inkind.p1">Custom component fabrication, CNC milling or 3D printing</li>
               <li class="tier-perk-item" data-i18n="tiers.inkind.p2">Raw materials, wiring harness, or safety equipment supply</li>
@@ -350,8 +378,9 @@
             <p class="text-muted" style="font-size: 0.88rem; margin-bottom: 8px;" data-i18n="form.directContact">
               Prefer direct executive contact? Reach our sponsorship desk directly:
             </p>
-            <a href="mailto:velox.racing.znu@gmail.com" class="btn btn-outline" style="font-size: 0.88rem; padding: 8px 18px;">
-              ✉️ velox.racing.znu@gmail.com
+            <a href="mailto:velox.racing.znu@gmail.com" class="btn btn-outline" style="font-size: 0.88rem; padding: 8px 18px; display: inline-flex; align-items: center; gap: 8px;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+              <span>velox.racing.znu@gmail.com</span>
             </a>
           </div>
         </div>
@@ -453,9 +482,9 @@
         'univ.kicker': 'Institutional Academic Patron',
         'univ.title': 'Zagazig National University & Faculty of Engineering',
         'univ.desc': 'Velox Racing is officially endorsed, hosted, and academically mentored under the patronage of Zagazig National University (ZNU) and the Faculty of Engineering, with direct access to advanced campus laboratories, manufacturing machine shops, and faculty guidance.',
-        'univ.chip1': '🏛️ Faculty of Engineering',
-        'univ.chip2': '🔬 Advanced Dynamics Labs',
-        'univ.chip3': '🏁 Formula Student 2026',
+        'univ.chip1': 'Faculty of Engineering',
+        'univ.chip2': 'Advanced Dynamics Labs',
+        'univ.chip3': 'Formula Student 2026',
         'why.kicker': 'Strategic Return On Investment',
         'why.title': 'Why Partner With Velox Racing?',
         'why.desc': 'Align your organization with technological excellence, university youth empowerment, and international motorsport prestige.',
@@ -533,9 +562,9 @@
         'univ.kicker': 'الشريك والمظلة الأكاديمية الرسمية',
         'univ.title': 'جامعة الزقازيق الأهلية وكلية الهندسة',
         'univ.desc': 'يعمل فريق فيلوكس للسباقات تحت الرعاية الكاملة والدعم الأكاديمي والتقني المباشر من إدارة جامعة الزقازيق الأهلية وكلية الهندسة، مع الاستفادة من المعامل الهندسية المتطورة ومرافق التصنيع وإشراف الأساتذة.',
-        'univ.chip1': '🏛️ كلية الهندسة',
-        'univ.chip2': '🔬 معامل الديناميكا والتصنيع',
-        'univ.chip3': '🏁 فورمولا ستيودنت 2026',
+        'univ.chip1': 'كلية الهندسة',
+        'univ.chip2': 'معامل الديناميكا والتصنيع',
+        'univ.chip3': 'فورمولا ستيودنت 2026',
         'why.kicker': 'العائد الاستثماري الاستراتيجي',
         'why.title': 'لماذا ترعى فريق فيلوكس للسباقات؟',
         'why.desc': 'اربط علامتك التجارية بالتميز الهندسي، وتمكين الكفاءات الجامعية الشابة، والظهور في أرقى محافل رياضة السيارات الدولية.',
@@ -723,5 +752,7 @@
       });
     }
   </script>
+  <!-- Interactive Engineering Figures Integration -->
+  <script type="module" src="hairline-integration.js"></script>
 </body>
 </html>
