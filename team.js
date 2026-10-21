@@ -308,7 +308,13 @@ if (typeof window !== 'undefined' && !window._liveCloudAcceptedMembers) {
   } catch (e) {}
 }
 
-function getPortalDb() {
+function getTeamPortalDb() {
+  if (typeof window !== 'undefined' && typeof window.getPortalDb === 'function') {
+    try {
+      const res = window.getPortalDb();
+      if (res) return res;
+    } catch (e) {}
+  }
   if (typeof localStorage === 'undefined') return null;
   const raw = localStorage.getItem('velox_portal_db_v8');
   if (!raw) return null;
@@ -362,7 +368,7 @@ function findAvatarForPerson(id, name) {
     }
   }
 
-  const portalDb = getPortalDb();
+  const portalDb = getTeamPortalDb();
 
   // 1. Check portalDb.personas
   if (portalDb && portalDb.personas) {
@@ -411,7 +417,7 @@ if (typeof window !== 'undefined') window.findAvatarForPerson = findAvatarForPer
 
 function getDynamicTeamData() {
   const data = JSON.parse(JSON.stringify(VELOX_TEAM));
-  const portalDb = getPortalDb();
+  const portalDb = getTeamPortalDb();
 
   // If live cloud members haven't been fetched yet, trigger cloud sync immediately
   if (typeof window !== 'undefined' && !Array.isArray(window._liveCloudAcceptedMembers)) {

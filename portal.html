@@ -14,6 +14,7 @@
   <!-- PWA & Mobile Web App Meta -->
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#0A0A0A" />
+  <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Velox Portal" />
@@ -3828,6 +3829,7 @@
       localStorage.setItem(DB_KEY, JSON.stringify(PORTAL_SEED));
       return PORTAL_SEED;
     }
+    window.getPortalDb = getPortalDb;
 
     let _portalCloudSyncTimer = null;
     function triggerRosterCloudBackup() {
@@ -4545,12 +4547,13 @@
     }
 
     function checkAuth() {
-      const db = getPortalDb();
+      let db = getPortalDb();
+      if (!db || !db.accounts) db = PORTAL_SEED;
       const loginSection = document.getElementById('portalLoginSection');
       const mainSection = document.getElementById('portalMainSection');
 
       if (currentAuthUser) {
-        const acct = db.accounts.find(a => a.username.toLowerCase() === currentAuthUser.toLowerCase());
+        const acct = (db.accounts || []).find(a => a.username.toLowerCase() === currentAuthUser.toLowerCase());
         if (acct) {
           if (acct.status === 'Suspended') {
             portalLogout();
@@ -4588,7 +4591,8 @@
     }
 
     async function portalLogin(username, password) {
-      const db = getPortalDb();
+      let db = getPortalDb();
+      if (!db || !db.accounts) db = PORTAL_SEED;
       const u = (username || '').trim().toLowerCase();
       const cleanU = u.replace(/[^a-z0-9]/g, '');
       const p = (password || '').trim();
@@ -6707,7 +6711,7 @@
       try {
         const cfg = window.VELOX_CONFIG || {};
         if (cfg.url && cfg.anonKey) {
-          const res = await fetch(`${cfg.url}/rest/v1/applications?email=eq.system-settings@velox.internal&select=hr_notes&_t=${Date.now()}`, {
+          const res = await fetch(`${cfg.url}/rest/v1/applications?email=eq.system-settings@velox.internal&select=hr_notes`, {
             cache: 'no-store',
             headers: {
               'apikey': cfg.anonKey,
@@ -9524,7 +9528,11 @@
 
           if (error || !Array.isArray(data) || data.length === 0) return;
 
-          const db = getPortalDb();
+          let db = getPortalDb();
+          if (!db) db = JSON.parse(JSON.stringify(PORTAL_SEED));
+          if (!db.membersRoster) db.membersRoster = JSON.parse(JSON.stringify(PORTAL_SEED.membersRoster));
+          if (!db.accounts) db.accounts = JSON.parse(JSON.stringify(PORTAL_SEED.accounts));
+          if (!db.personas) db.personas = JSON.parse(JSON.stringify(PORTAL_SEED.personas));
           let updated = false;
 
           data.forEach(app => {
