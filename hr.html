@@ -308,10 +308,11 @@
                     </select>
                   </div>
                   <div>
-                    <label class="drawer-field-lbl" for="drawerAcceptChoiceSelect">Accept Into Subteam:</label>
+                    <label class="drawer-field-lbl" for="drawerAcceptChoiceSelect">Accept Into Subteam / Role:</label>
                     <select id="drawerAcceptChoiceSelect" class="form-control" style="font-weight: 700; width: 100%; border-color: rgba(34, 197, 94, 0.5); color: #4ADE80; background: rgba(34, 197, 94, 0.06);">
                       <option value="1">Option 1: 1st Choice</option>
                       <option value="2">Option 2: 2nd Choice</option>
+                      <option value="both">Option 3: Dual Roles (Both Options 1 &amp; 2)</option>
                     </select>
                   </div>
                 </div>
@@ -818,12 +819,14 @@
       document.getElementById('statRejected').textContent = applications.filter(a => a.status === 'Rejected').length;
     }
 
-    // Helper to determine the chosen subteam (Option 1 vs Option 2)
+    // Helper to determine the chosen subteam (Option 1 vs Option 2 vs Dual Roles)
     function getSelectedSubteam(applicant) {
       if (!applicant) return 'General Engineering';
       let choice = applicant.accepted_choice;
       if (!choice && applicant.hr_notes) {
-        if (applicant.hr_notes.includes('[Accepted: Option 2') || applicant.hr_notes.includes('Option 2: 2nd Choice')) {
+        if (applicant.hr_notes.includes('Dual Roles') || applicant.hr_notes.includes('Option both')) {
+          choice = 'both';
+        } else if (applicant.hr_notes.includes('[Accepted: Option 2') || applicant.hr_notes.includes('Option 2: 2nd Choice')) {
           choice = '2';
         }
       }
@@ -831,6 +834,14 @@
       const choiceSelect = document.getElementById('drawerAcceptChoiceSelect');
       if (choiceSelect && currentApplicant && currentApplicant.id === applicant.id) {
         choice = choiceSelect.value || choice;
+      }
+      if (choice === 'both') {
+        const s1 = (applicant.subteam_first || '').trim();
+        const s2 = (applicant.subteam_second || '').trim();
+        if (s1 && s2 && s1 !== s2) {
+          return `${s1} & ${s2}`;
+        }
+        return s1 || s2 || 'General Engineering';
       }
       if (choice === '2' && applicant.subteam_second && applicant.subteam_second.trim()) {
         return applicant.subteam_second.trim();
@@ -843,21 +854,26 @@
       currentApplicant = applications.find(a => a.id === id);
       if (!currentApplicant) return;
 
-      // Populate Option 1 and Option 2 into drawer acceptance dropdown
+      // Populate Option 1, Option 2, and Dual Roles into drawer acceptance dropdown
       const choiceSelect = document.getElementById('drawerAcceptChoiceSelect');
       if (choiceSelect) {
         const sub1 = (currentApplicant.subteam_first || '1st Choice').trim();
         const sub2 = (currentApplicant.subteam_second || '2nd Choice').trim();
         choiceSelect.options[0].text = `Option 1 (1st Choice): ${sub1}`;
         choiceSelect.options[1].text = `Option 2 (2nd Choice): ${sub2}`;
+        if (choiceSelect.options[2]) {
+          choiceSelect.options[2].text = `Dual Roles (Both Choices): ${sub1} & ${sub2}`;
+        }
 
         let savedChoice = currentApplicant.accepted_choice;
         if (!savedChoice && currentApplicant.hr_notes) {
-          if (currentApplicant.hr_notes.includes('[Accepted: Option 2') || currentApplicant.hr_notes.includes('Option 2: 2nd Choice')) {
+          if (currentApplicant.hr_notes.includes('Dual Roles') || currentApplicant.hr_notes.includes('Option both')) {
+            savedChoice = 'both';
+          } else if (currentApplicant.hr_notes.includes('[Accepted: Option 2') || currentApplicant.hr_notes.includes('Option 2: 2nd Choice')) {
             savedChoice = '2';
           }
         }
-        choiceSelect.value = (savedChoice === '2') ? '2' : '1';
+        choiceSelect.value = (savedChoice === 'both') ? 'both' : ((savedChoice === '2') ? '2' : '1');
       }
 
       const dateStr = currentApplicant.created_at ? new Date(currentApplicant.created_at).toLocaleDateString() : 'Recent';
@@ -1626,9 +1642,11 @@ velox.racing.znu@gmail.com`;
 
       let finalNotes = notes;
       if (newStatus === 'Accepted') {
-        const choiceTag = `[Accepted: Option ${chosenChoice} - ${getSelectedSubteam(currentApplicant)}]`;
+        const choiceTag = (chosenChoice === 'both')
+          ? `[Accepted: Dual Roles - ${getSelectedSubteam(currentApplicant)}]`
+          : `[Accepted: Option ${chosenChoice} - ${getSelectedSubteam(currentApplicant)}]`;
         if (!finalNotes.includes(choiceTag)) {
-          finalNotes = finalNotes.replace(/\[Accepted: Option \d[^\]]*\]/g, '').trim();
+          finalNotes = finalNotes.replace(/\[Accepted: (Option \d|Dual Roles)[^\]]*\]/g, '').trim();
           finalNotes = finalNotes ? `${finalNotes}\n${choiceTag}` : choiceTag;
         }
         document.getElementById('drawerNotes').value = finalNotes;

@@ -64,6 +64,16 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
+  // Let browser natively handle third-party requests (e.g. LinkedIn, Google, external sites)
+  try {
+    const urlObj = new URL(event.request.url);
+    if (urlObj.origin !== self.location.origin && !urlObj.hostname.includes('supabase.co')) {
+      return;
+    }
+  } catch (e) {
+    return;
+  }
+
   // Large video streaming handled directly by browser
   if (event.request.url.includes('.mp4')) {
     return;
@@ -85,8 +95,10 @@ self.addEventListener('fetch', (event) => {
     url.includes('/team')
   ) {
     event.respondWith(
-      fetch(event.request, { cache: 'no-store' }).catch(() => {
-        return caches.match(event.request);
+      fetch(event.request, { cache: 'no-store' }).catch(async () => {
+        const cached = await caches.match(event.request);
+        if (cached) return cached;
+        return new Response('', { status: 408, statusText: 'Network request failed' });
       })
     );
     return;
@@ -104,13 +116,14 @@ self.addEventListener('fetch', (event) => {
         }
         return networkResponse;
       })
-      .catch(() => {
-        return caches.match(event.request).then((cachedResponse) => {
-          if (cachedResponse) return cachedResponse;
-          if (event.request.headers.get('accept')?.includes('text/html')) {
-            return caches.match('/index.html');
-          }
-        });
+      .catch(async () => {
+        const cachedResponse = await caches.match(event.request);
+        if (cachedResponse) return cachedResponse;
+        if (event.request.headers.get('accept')?.includes('text/html')) {
+          const fallback = await caches.match('/index.html');
+          if (fallback) return fallback;
+        }
+        return new Response('', { status: 408, statusText: 'Resource unavailable offline' });
       })
   );
 });

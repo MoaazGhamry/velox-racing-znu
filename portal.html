@@ -1561,6 +1561,11 @@
                   <span>Edit Profile Photo</span>
                 </button>
                 
+                <button type="button" class="dropdown-item-btn" id="openChangeNameBtn" onclick="openChangeNameModal(); closeUserDropdown();">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                  <span>Change Name</span>
+                </button>
+                
                 <button type="button" class="dropdown-item-btn" id="openChangePassBtn" onclick="openChangePasswordModal(); closeUserDropdown();">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
                   <span>Change Password</span>
@@ -2675,7 +2680,7 @@
         </div>
         <div class="form-row">
           <div class="form-group">
-            <label for="editMemberRole">Role</label>
+            <label for="editMemberRole">Primary Role <span class="req">*</span></label>
             <select id="editMemberRole" class="form-control">
               <option value="Team Leader">Team Leader</option>
               <option value="Vice Team Leader">Vice Team Leader</option>
@@ -2683,20 +2688,51 @@
               <option value="Managerial Leader">Managerial Leader</option>
               <option value="Subteam Leader">Subteam Leader</option>
               <option value="Team Member">Team Member</option>
+              <option value="Technical Specialist">Technical Specialist</option>
+              <option value="Research & Development Lead">R&amp;D Lead</option>
             </select>
           </div>
           <div class="form-group">
-            <label for="editMemberBranch">Branch</label>
+            <label for="editMemberSecondaryRole">Secondary / Dual Role (Optional)</label>
+            <select id="editMemberSecondaryRole" class="form-control" onchange="toggleCustomRoleInput(this.value)">
+              <option value="">— None (Single Role) —</option>
+              <option value="Subteam Leader">Subteam Leader</option>
+              <option value="Team Member">Team Member</option>
+              <option value="Technical Specialist">Technical Specialist</option>
+              <option value="Test Driver">Test Driver / Racing Driver</option>
+              <option value="Telemetry Specialist">Telemetry Specialist</option>
+              <option value="CFD Specialist">CFD Aerodynamics Specialist</option>
+              <option value="Powertrain Specialist">Powertrain Specialist</option>
+              <option value="Vehicle Dynamics Specialist">Vehicle Dynamics Specialist</option>
+              <option value="Electronics & Embedded Specialist">Electronics &amp; Embedded Specialist</option>
+              <option value="Media & PR Specialist">Media &amp; PR Specialist</option>
+              <option value="Sponsorship & Business Lead">Sponsorship &amp; Business Lead</option>
+              <option value="Safety & Scrutineering Lead">Safety &amp; Scrutineering Lead</option>
+              <option value="Manufacturing Specialist">Manufacturing Specialist</option>
+              <option value="custom">Custom Role Title...</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group" id="customRoleInputWrap" style="display: none; margin-bottom: 14px;">
+          <label for="editMemberCustomRole" style="font-size: 0.82rem; font-weight: 600;">Custom Secondary Role Title</label>
+          <input type="text" id="editMemberCustomRole" class="form-control" placeholder="e.g. Lead Telemetry Analyst &amp; Driver" />
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="editMemberBranch">Branch Division</label>
             <select id="editMemberBranch" class="form-control">
               <option value="Executive">Executive</option>
               <option value="Technical">Technical Engineering</option>
               <option value="Managerial">Managerial & Operations</option>
-              <option value="Shared">Shared Multi-Group</option>
+              <option value="Shared">Shared Multi-Group (Cross-Disciplinary)</option>
             </select>
           </div>
         </div>
-        <div class="form-group">
-          <label for="editMemberSubteamSelect">Department / Subteam Division <span class="req">*</span></label>
+
+        <div class="form-group" style="margin-bottom: 14px;">
+          <label for="editMemberSubteamSelect">Primary Department / Subteam Division <span class="req">*</span></label>
           <select id="editMemberSubteamSelect" class="form-control" required style="font-size: 0.88rem; font-weight: 600; background: rgba(15, 23, 42, 0.85); color: #FFF; border: 1px solid var(--border);">
             <optgroup label="Technical: Body & Chassis">
               <option value="Body & Chassis — Body" data-dept="Body & Chassis" data-sub="Body" data-branch="Technical">Body &amp; Chassis — Body (Aerodynamics &amp; Fairings)</option>
@@ -2738,6 +2774,47 @@
             </optgroup>
           </select>
           <input type="hidden" id="editMemberSubteam" />
+        </div>
+
+        <div class="form-group" style="margin-bottom: 18px;">
+          <label for="editMemberSecondarySubteamSelect">Secondary Subteam Division (Optional Dual Placement)</label>
+          <select id="editMemberSecondarySubteamSelect" class="form-control" style="font-size: 0.88rem; font-weight: 600; background: rgba(15, 23, 42, 0.85); color: #FFF; border: 1px solid var(--border);">
+            <option value="">— None (Single Division) —</option>
+            <optgroup label="Technical: Body & Chassis">
+              <option value="Body & Chassis — Body" data-dept="Body & Chassis" data-sub="Body" data-branch="Technical">Body &amp; Chassis — Body (Aerodynamics &amp; Fairings)</option>
+              <option value="Body & Chassis — Chassis" data-dept="Body & Chassis" data-sub="Chassis" data-branch="Technical">Body &amp; Chassis — Chassis (Tubular Spaceframe)</option>
+              <option value="Body & Chassis" data-dept="Body & Chassis" data-sub="" data-branch="Technical">Body &amp; Chassis (General / Department Lead)</option>
+            </optgroup>
+            <optgroup label="Technical: Vehicle Dynamics">
+              <option value="Vehicle Dynamics — Suspension" data-dept="Vehicle Dynamics" data-sub="Suspension" data-branch="Technical">Vehicle Dynamics — Suspension (Double-Wishbone Kinematics)</option>
+              <option value="Vehicle Dynamics — Steering" data-dept="Vehicle Dynamics" data-sub="Steering" data-branch="Technical">Vehicle Dynamics — Steering (Ackermann Geometry)</option>
+              <option value="Vehicle Dynamics — Brakes" data-dept="Vehicle Dynamics" data-sub="Brakes" data-branch="Technical">Vehicle Dynamics — Brakes (Hydraulic &amp; Balance Bar)</option>
+              <option value="Vehicle Dynamics" data-dept="Vehicle Dynamics" data-sub="" data-branch="Technical">Vehicle Dynamics (General / Department Lead)</option>
+            </optgroup>
+            <optgroup label="Technical: Powertrain">
+              <option value="Powertrain — Motor" data-dept="Powertrain" data-sub="Motor" data-branch="Technical">Powertrain — Motor (Mounting, Thermal &amp; Cooling)</option>
+              <option value="Powertrain — Transmission" data-dept="Powertrain" data-sub="Transmission" data-branch="Technical">Powertrain — Transmission (Reduction Ratio &amp; Differential)</option>
+              <option value="Powertrain" data-dept="Powertrain" data-sub="" data-branch="Technical">Powertrain (General / Department Lead)</option>
+            </optgroup>
+            <optgroup label="Technical: Electrical">
+              <option value="Electrical — Wiring & Harness" data-dept="Electrical" data-sub="Wiring & Harness" data-branch="Technical">Electrical — Wiring &amp; Harness (Motorsport Loom &amp; IP67)</option>
+              <option value="Electrical — Control & Embedded System" data-dept="Electrical" data-sub="Control & Embedded System" data-branch="Technical">Electrical — Control &amp; Embedded System (ECU, CAN-bus &amp; Telemetry)</option>
+              <option value="Electrical" data-dept="Electrical" data-sub="" data-branch="Technical">Electrical (General / Department Lead)</option>
+            </optgroup>
+            <optgroup label="Managerial: Media & PR">
+              <option value="Media & PR — Photography & Video" data-dept="Media & PR" data-sub="Photography & Video" data-branch="Managerial">Media &amp; PR — Photography &amp; Video (Cinematic Documentation)</option>
+              <option value="Media & PR — Social Media & Public Relations" data-dept="Media & PR" data-sub="Social Media & Public Relations" data-branch="Managerial">Media &amp; PR — Social Media &amp; PR (Brand Architecture)</option>
+              <option value="Media & PR" data-dept="Media & PR" data-sub="" data-branch="Managerial">Media &amp; PR (General / Department Lead)</option>
+            </optgroup>
+            <optgroup label="Managerial: Business (Team Director)">
+              <option value="Business (Team Director) — Pitch Presenters & Market Analysis" data-dept="Business (Team Director)" data-sub="Pitch Presenters & Market Analysis" data-branch="Managerial">Business (Team Director) — Pitch Presenters &amp; Market Analysis</option>
+              <option value="Business (Team Director) — Financial Modeling & Cost Analysis" data-dept="Business (Team Director)" data-sub="Financial Modeling & Cost Analysis" data-branch="Managerial">Business (Team Director) — Financial Modeling &amp; Cost Analysis</option>
+              <option value="Business (Team Director) — Cost & Manufacturing Specialist" data-dept="Business (Team Director)" data-sub="Cost & Manufacturing Specialist" data-branch="Managerial">Business (Team Director) — Cost &amp; Manufacturing Specialist (CBOM)</option>
+              <option value="Business (Team Director) — Corporate Relations & Sponsorship" data-dept="Business (Team Director)" data-sub="Corporate Relations & Sponsorship" data-branch="Managerial">Business (Team Director) — Corporate Relations &amp; Sponsorship</option>
+              <option value="Business (Team Director) — Media & Brand Specialist" data-dept="Business (Team Director)" data-sub="Media & Brand Specialist" data-branch="Managerial">Business (Team Director) — Media &amp; Brand Specialist</option>
+              <option value="Business (Team Director)" data-dept="Business (Team Director)" data-sub="" data-branch="Managerial">Business (Team Director) (General / Department Lead)</option>
+            </optgroup>
+          </select>
         </div>
         <button type="submit" class="btn btn-primary btn-full">Save Changes to Roster</button>
       </form>
@@ -3060,11 +3137,11 @@
 
   <!-- 12. Edit Profile Photo Modal -->
   <div class="portal-modal-backdrop" id="editPhotoModal">
-    <div class="portal-modal-box" style="max-width: 490px;">
+    <div class="portal-modal-box" style="max-width: 500px;">
       <div class="portal-modal-header">
         <h3 style="margin: 0; font-size: 1.2rem; display: flex; align-items: center; gap: 8px;">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
-          Update Profile Photo
+          Update Profile Photo &amp; Info
         </h3>
         <button type="button" class="portal-modal-close" onclick="closePortalModal('editPhotoModal')">&times;</button>
       </div>
@@ -3074,8 +3151,37 @@
           <!-- Populated from JS -->
         </div>
         <p style="font-size: 0.82rem; color: var(--text-muted); margin: 0;">
-          Upload a personal picture or provide an image link. Your photo automatically updates in your portal session and on the <a href="team.html" target="_blank" style="color: #38BDF8; text-decoration: underline;">Team Structure Org Chart</a>!
+          Upload a personal photo to the server. Your photo synchronizes automatically to the <a href="team.html" target="_blank" style="color: #38BDF8; text-decoration: underline;">Team Structure Org Chart</a>!
         </p>
+      </div>
+
+      <!-- Cloudinary Server Hosting Badge & Quick Config -->
+      <div style="margin-bottom: 16px; padding: 10px 14px; background: rgba(56, 189, 248, 0.08); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 8px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;" onclick="toggleCloudinarySettings()">
+          <span style="font-size: 0.8rem; font-weight: 700; color: #38BDF8; display: flex; align-items: center; gap: 6px;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path></svg>
+            Cloudinary Server CDN: <span id="cloudinaryStatusText" style="color: #4ADE80; font-weight: 600;">Active</span>
+          </span>
+          <span id="cloudinaryToggleLabel" style="font-size: 0.75rem; color: #38BDF8; text-decoration: underline;">Settings &#9662;</span>
+        </div>
+        <div id="cloudinarySettingsPanel" style="display: none; margin-top: 10px; border-top: 1px solid rgba(56, 189, 248, 0.15); padding-top: 10px;">
+          <p style="font-size: 0.74rem; color: var(--text-dim); margin-bottom: 8px;">
+            Enter your Cloudinary cloud credentials to host member photos directly on the global CDN:
+          </p>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+            <div>
+              <label style="font-size: 0.72rem; color: var(--text-dim); display: block; margin-bottom: 2px;">Cloud Name</label>
+              <input type="text" id="modalCloudinaryCloudName" class="form-control" style="padding: 6px 10px; font-size: 0.8rem;" placeholder="e.g. velox-racing" />
+            </div>
+            <div>
+              <label style="font-size: 0.72rem; color: var(--text-dim); display: block; margin-bottom: 2px;">Upload Preset</label>
+              <input type="text" id="modalCloudinaryPreset" class="form-control" style="padding: 6px 10px; font-size: 0.8rem;" placeholder="e.g. velox_members" />
+            </div>
+          </div>
+          <button type="button" class="btn btn-outline" onclick="saveCloudinarySettingsFromModal()" style="padding: 5px 12px; font-size: 0.75rem; width: 100%;">
+            Save Server Settings
+          </button>
+        </div>
       </div>
 
       <form id="editPhotoForm">
@@ -3087,28 +3193,63 @@
           <input type="file" id="editPhotoFileInput" accept="image/png, image/jpeg, image/webp" class="form-control" style="padding: 8px 12px; font-size: 0.85rem;" />
         </div>
 
-        <div style="display: flex; align-items: center; margin: 16px 0; gap: 10px;">
+        <div style="display: flex; align-items: center; margin: 14px 0; gap: 10px;">
           <div style="flex: 1; height: 1px; background: rgba(255, 255, 255, 0.1);"></div>
-          <span style="font-size: 0.72rem; color: var(--text-dim); text-transform: uppercase;">or paste url</span>
+          <span style="font-size: 0.72rem; color: var(--text-dim); text-transform: uppercase;">or paste hosted image url</span>
           <div style="flex: 1; height: 1px; background: rgba(255, 255, 255, 0.1);"></div>
         </div>
 
-        <div class="form-group" style="margin-bottom: 20px;">
+        <div class="form-group" style="margin-bottom: 16px;">
           <label for="editPhotoUrlInput" style="font-size: 0.84rem; font-weight: 600; display: flex; align-items: center; gap: 6px; margin-bottom: 6px;">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
-            <span>Image URL or Local Path</span>
+            <span>Image URL (Cloudinary / CDN / Web)</span>
           </label>
-          <input type="text" id="editPhotoUrlInput" class="form-control" placeholder="e.g. photos/Fatima Salman.jpeg or https://..." style="padding: 10px 14px; font-size: 0.88rem;" />
+          <input type="text" id="editPhotoUrlInput" class="form-control" placeholder="https://res.cloudinary.com/... or https://..." style="padding: 10px 14px; font-size: 0.88rem;" />
+        </div>
+
+        <div class="form-group" style="margin-bottom: 20px;">
+          <label for="editPhotoNameInput" style="font-size: 0.84rem; font-weight: 600; display: flex; align-items: center; gap: 6px; margin-bottom: 6px;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <span>Full Name / Display Name</span>
+          </label>
+          <input type="text" id="editPhotoNameInput" class="form-control" placeholder="Your Full Name" style="padding: 10px 14px; font-size: 0.88rem;" />
         </div>
 
         <div style="display: flex; gap: 10px; flex-wrap: wrap;">
           <button type="submit" class="btn btn-primary" style="flex: 1; padding: 10px 16px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; gap: 7px;">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-            <span data-i18n="btn.savePhoto">Save Profile Photo</span>
+            <span id="savePhotoBtnText">Save Profile &amp; Sync to Server</span>
           </button>
           <button type="button" class="btn btn-outline" onclick="removeProfilePhoto()" style="padding: 10px 14px; font-size: 0.85rem; color: #FF4D4D; border-color: rgba(255, 77, 77, 0.4);" title="Remove photo and use initials">
             Reset to Initials
           </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 13. Dedicated Change Name Modal -->
+  <div class="portal-modal-backdrop" id="changeNameModal">
+    <div class="portal-modal-box" style="max-width: 440px;">
+      <div class="portal-modal-header">
+        <h3 style="margin: 0; font-size: 1.2rem; display: flex; align-items: center; gap: 8px;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+          Change Display Name
+        </h3>
+        <button type="button" class="portal-modal-close" onclick="closePortalModal('changeNameModal')">&times;</button>
+      </div>
+
+      <form id="changeNameForm" style="margin-top: 16px;">
+        <div class="form-group" style="margin-bottom: 16px;">
+          <label for="changeNameInput" style="font-size: 0.84rem; font-weight: 600; margin-bottom: 6px; display: block;">Full Name</label>
+          <input type="text" id="changeNameInput" class="form-control" required minlength="2" maxlength="60" placeholder="e.g. Fatima Salman" style="padding: 10px 14px; font-size: 0.95rem;" />
+        </div>
+        <p style="font-size: 0.8rem; color: var(--portal-text-dim); margin-bottom: 20px;">
+          Your name will be updated live across your portal dashboard, member roster, team structure org chart, and database.
+        </p>
+        <div style="display: flex; gap: 10px;">
+          <button type="submit" class="btn btn-primary" style="flex: 1; padding: 10px 16px; font-weight: 700;">Save Name &amp; Sync Everywhere</button>
+          <button type="button" class="btn btn-outline" onclick="closePortalModal('changeNameModal')" style="padding: 10px 16px;">Cancel</button>
         </div>
       </form>
     </div>
@@ -3947,14 +4088,23 @@
       return persona.roleType === 'executive' || persona.id === 'admin-director' || persona.id === 'fatima-salman' || persona.id === 'karim-shaprawy';
     }
 
+    function isHR(persona) {
+      if (!persona) return false;
+      const r = (persona.role || '').toLowerCase();
+      const d = (persona.dept || '').toLowerCase();
+      const s = (persona.subteam || '').toLowerCase();
+      const id = (persona.id || '').toLowerCase();
+      return isTeamLeader(persona) || r.includes('hr') || r.includes('human resources') || d.includes('hr') || s.includes('hr') || id.includes('hr');
+    }
+
     function canManageMember(persona, targetMember) {
       if (!persona || !targetMember) return false;
       // Regular members have NO authority to change anyone or themselves
       if (persona.roleType === 'member') return false;
-      // No member can change themselves unless they are Fatima or Karim
-      if (persona.id === targetMember.id && !isTeamLeader(persona)) return false;
-      // Team Leader and Vice Team Leader change anything
-      if (isTeamLeader(persona)) return true;
+      // No member can change themselves unless they are Fatima, Karim, or HR
+      if (persona.id === targetMember.id && !isTeamLeader(persona) && !isHR(persona)) return false;
+      // Team Leader (Fatima), Vice Team Leader (Karim), and HR have full authority across all departments & roles
+      if (isTeamLeader(persona) || isHR(persona)) return true;
 
       // Mohamed Romy can change what is under him (Technical branch, non-exec)
       if (persona.id === 'mohamed-romy') {
@@ -4410,7 +4560,7 @@
       if (p.id === 'moaaz-elghamry' && (displayName.toLowerCase().includes('managerial') || displayName.toLowerCase().includes('lead'))) {
         displayName = 'Moaaz Elghamry';
       }
-      nameEl.innerHTML = `${displayName} <span class="portal-role-pill ${badgeClass}">${p.role}</span>`;
+      nameEl.innerHTML = `<span>${displayName}</span> <button type="button" onclick="openChangeNameModal()" class="edit-name-inline-btn" title="Change your display name" style="background: none; border: none; padding: 2px 5px; cursor: pointer; color: var(--portal-text-dim); display: inline-flex; align-items: center; vertical-align: middle; border-radius: 4px; transition: color 0.2s;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg></button> <span class="portal-role-pill ${badgeClass}">${p.role}</span>`;
 
       let cleanDept = p.deptDesc || (p.branch + ' • ' + (p.departments ? p.departments.join(', ') : p.dept));
       if (cleanDept.includes('• Dual Operational & Powertrain Authority') || cleanDept.includes('Dual Operational')) {
@@ -5558,7 +5708,7 @@
     }
 
     // Cloud Synchronization between Supabase and Local Intake Cache
-    async function syncApplicationsFromCloud() {
+    async function syncApplicationsFromCloud(showToast = false) {
       const cfg = window.VELOX_CONFIG || {};
       let cloudApps = [];
       if (cfg.url && cfg.anonKey && !cfg.url.includes('your-project-id') && window.supabase) {
@@ -7061,6 +7211,17 @@
       alert(`Task returned to "In Progress" for revisions.`);
     }
 
+    window.toggleCustomRoleInput = function(val) {
+      const wrap = document.getElementById('customRoleInputWrap');
+      if (wrap) {
+        wrap.style.display = (val === 'custom') ? 'block' : 'none';
+        if (val === 'custom') {
+          const inp = document.getElementById('editMemberCustomRole');
+          if (inp) inp.focus();
+        }
+      }
+    };
+
     function openEditMemberModal(memberId) {
       const db = getPortalDb();
       const p = getActivePersona();
@@ -7076,12 +7237,18 @@
       document.getElementById('editMemberName').value = m.name;
 
       const roleSelect = document.getElementById('editMemberRole');
+      const secRoleSelect = document.getElementById('editMemberSecondaryRole');
+      const customRoleWrap = document.getElementById('customRoleInputWrap');
+      const customRoleInput = document.getElementById('editMemberCustomRole');
       const branchSelect = document.getElementById('editMemberBranch');
       const subteamSelect = document.getElementById('editMemberSubteamSelect');
+      const secSubSelect = document.getElementById('editMemberSecondarySubteamSelect');
       const subteamInput = document.getElementById('editMemberSubteam');
 
+      const isHighGovernance = isTeamLeader(p) || isHR(p);
+
       // Adjust options based on jurisdiction
-      if (isTeamLeader(p)) {
+      if (isHighGovernance) {
         roleSelect.innerHTML = `
           <option value="Team Leader">Team Leader</option>
           <option value="Vice Team Leader">Vice Team Leader</option>
@@ -7089,17 +7256,20 @@
           <option value="Managerial Leader">Managerial Leader</option>
           <option value="Subteam Leader">Subteam Leader</option>
           <option value="Team Member">Team Member</option>
+          <option value="Technical Specialist">Technical Specialist</option>
+          <option value="Research & Development Lead">R&D Lead</option>
         `;
         branchSelect.innerHTML = `
           <option value="Executive">Executive</option>
           <option value="Technical">Technical Engineering</option>
           <option value="Managerial">Managerial & Operations</option>
-          <option value="Shared">Shared Multi-Group</option>
+          <option value="Shared">Shared Multi-Group (Cross-Disciplinary)</option>
         `;
       } else if (p.id === 'mohamed-romy') {
         roleSelect.innerHTML = `
           <option value="Subteam Leader">Subteam Leader</option>
           <option value="Team Member">Team Member</option>
+          <option value="Technical Specialist">Technical Specialist</option>
         `;
         branchSelect.innerHTML = `
           <option value="Technical">Technical Engineering</option>
@@ -7108,6 +7278,7 @@
         roleSelect.innerHTML = `
           <option value="Subteam Leader">Subteam Leader</option>
           <option value="Team Member">Team Member</option>
+          <option value="Technical Specialist">Technical Specialist</option>
         `;
         branchSelect.innerHTML = `
           <option value="Managerial">Managerial & Operations</option>
@@ -7119,11 +7290,12 @@
       }
 
       // Filter subteam optgroups according to role jurisdiction
-      if (subteamSelect) {
-        const groups = subteamSelect.querySelectorAll('optgroup');
+      [subteamSelect, secSubSelect].forEach(selectEl => {
+        if (!selectEl) return;
+        const groups = selectEl.querySelectorAll('optgroup');
         groups.forEach(g => {
           const lbl = (g.label || '').toLowerCase();
-          if (isTeamLeader(p)) {
+          if (isHighGovernance) {
             g.style.display = '';
             Array.from(g.children).forEach(c => c.disabled = false);
           } else if (p.id === 'mohamed-romy') {
@@ -7144,8 +7316,54 @@
             Array.from(g.children).forEach(c => c.disabled = !isElec);
           }
         });
+      });
 
-        // Resolve existing member's division in select
+      // Parse Primary and Secondary Roles
+      let currentPrimary = m.primaryRole || m.role || 'Team Member';
+      let currentSecondary = m.secondaryRole || '';
+      if (!currentSecondary && currentPrimary.includes(' & ')) {
+        const parts = currentPrimary.split(' & ');
+        currentPrimary = parts[0].trim();
+        currentSecondary = parts.slice(1).join(' & ').trim();
+      }
+
+      roleSelect.value = currentPrimary;
+      if (!roleSelect.value) {
+        // Fallback if currentPrimary is custom
+        const opt = document.createElement('option');
+        opt.value = currentPrimary;
+        opt.textContent = currentPrimary;
+        roleSelect.appendChild(opt);
+        roleSelect.value = currentPrimary;
+      }
+
+      if (secRoleSelect) {
+        if (!currentSecondary) {
+          secRoleSelect.value = '';
+          if (customRoleWrap) customRoleWrap.style.display = 'none';
+          if (customRoleInput) customRoleInput.value = '';
+        } else {
+          let found = false;
+          for (let i = 0; i < secRoleSelect.options.length; i++) {
+            if (secRoleSelect.options[i].value.toLowerCase() === currentSecondary.toLowerCase()) {
+              secRoleSelect.selectedIndex = i;
+              found = true;
+              break;
+            }
+          }
+          if (found) {
+            if (customRoleWrap) customRoleWrap.style.display = 'none';
+            if (customRoleInput) customRoleInput.value = '';
+          } else {
+            secRoleSelect.value = 'custom';
+            if (customRoleWrap) customRoleWrap.style.display = 'block';
+            if (customRoleInput) customRoleInput.value = currentSecondary;
+          }
+        }
+      }
+
+      // Resolve primary subteam selection
+      if (subteamSelect) {
         const mDept = (m.dept || '').toLowerCase();
         const mSub = (m.subteam || '').toLowerCase();
         let matchedIndex = -1;
@@ -7181,7 +7399,7 @@
         const selOpt = subteamSelect.selectedOptions[0];
         if (selOpt) {
           const b = selOpt.getAttribute('data-branch');
-          if (b && (!branchSelect.value || isTeamLeader(p))) branchSelect.value = b;
+          if (b && (!branchSelect.value || isHighGovernance)) branchSelect.value = b;
           if (subteamInput) subteamInput.value = selOpt.value;
         }
 
@@ -7189,18 +7407,47 @@
           const cur = subteamSelect.selectedOptions[0];
           if (cur) {
             const b = cur.getAttribute('data-branch');
-            if (b) branchSelect.value = b;
+            if (b && !branchSelect.value) branchSelect.value = b;
             if (subteamInput) subteamInput.value = cur.value;
           }
         };
       }
 
-      roleSelect.value = m.role;
+      // Resolve secondary subteam selection
+      if (secSubSelect) {
+        let secDept = (m.secondaryDept || '').toLowerCase();
+        let secSub = (m.secondarySubteam || '').toLowerCase();
+        if (!secDept && (m.dept || '').includes(' & ')) {
+          secDept = (m.dept || '').split(' & ')[1].trim().toLowerCase();
+        }
+        if (!secSub && (m.subteam || '').includes(' & ')) {
+          secSub = (m.subteam || '').split(' & ')[1].trim().toLowerCase();
+        }
+
+        let secMatchedIdx = -1;
+        if (secDept || secSub) {
+          for (let i = 1; i < secSubSelect.options.length; i++) {
+            const opt = secSubSelect.options[i];
+            if (opt.disabled) continue;
+            const optDept = (opt.getAttribute('data-dept') || '').toLowerCase();
+            const optSub = (opt.getAttribute('data-sub') || '').toLowerCase();
+            if (secSub && optSub && (secSub === optSub || secSub.includes(optSub) || optSub.includes(secSub))) {
+              secMatchedIdx = i;
+              break;
+            } else if (secDept && optDept && (secDept === optDept || optDept.includes(secDept))) {
+              if (secMatchedIdx === -1) secMatchedIdx = i;
+            }
+          }
+        }
+        secSubSelect.selectedIndex = secMatchedIdx !== -1 ? secMatchedIdx : 0;
+      }
+
       if (m.branch) branchSelect.value = m.branch;
       if (subteamInput && !subteamInput.value) subteamInput.value = m.dept;
 
       openPortalModal('editMemberModal');
     }
+
 
     function openResetPasswordModal(memberId, username) {
       const db = getPortalDb();
@@ -7936,8 +8183,13 @@
 
         const oldRole = member.role;
         const newName = document.getElementById('editMemberName').value.trim();
-        const newRole = document.getElementById('editMemberRole').value;
-        const newBranch = document.getElementById('editMemberBranch').value;
+        const primaryRole = document.getElementById('editMemberRole').value;
+        const secRoleSelect = document.getElementById('editMemberSecondaryRole');
+        let secondaryRole = secRoleSelect ? secRoleSelect.value : '';
+        if (secondaryRole === 'custom') {
+          secondaryRole = (document.getElementById('editMemberCustomRole') ? document.getElementById('editMemberCustomRole').value : '').trim();
+        }
+        let newBranch = document.getElementById('editMemberBranch').value;
 
         const subSelect = document.getElementById('editMemberSubteamSelect');
         const chosenOpt = subSelect ? subSelect.selectedOptions[0] : null;
@@ -7954,22 +8206,55 @@
           newSubteam = parsed.subteam;
         }
 
+        const secSubSelect = document.getElementById('editMemberSecondarySubteamSelect');
+        const chosenSecOpt = (secSubSelect && secSubSelect.selectedIndex > 0) ? secSubSelect.selectedOptions[0] : null;
+        let secDept = '';
+        let secSubteam = '';
+        let secBranch = '';
+        if (chosenSecOpt && chosenSecOpt.value) {
+          secDept = chosenSecOpt.getAttribute('data-dept') || chosenSecOpt.value;
+          secSubteam = chosenSecOpt.getAttribute('data-sub') || '';
+          secBranch = chosenSecOpt.getAttribute('data-branch') || '';
+        }
+
+        // If cross-branch assignment (e.g. Technical + Managerial), categorize as Shared Multi-Group
+        if (secBranch && secBranch !== newBranch && newBranch !== 'Executive') {
+          newBranch = 'Shared';
+        }
+
+        // Combine multiple roles
+        const combinedRole = (secondaryRole && secondaryRole !== primaryRole)
+          ? `${primaryRole} & ${secondaryRole}`
+          : primaryRole;
+
+        // Compute combined subteam display string
+        let fullSubString = newSubteam ? `${newDept} — ${newSubteam}` : newDept;
+        if (secDept) {
+          const secFormatted = secSubteam ? `${secDept} — ${secSubteam}` : secDept;
+          fullSubString = `${fullSubString} & ${secFormatted}`;
+        }
+
         member.name = newName;
-        member.role = newRole;
+        member.primaryRole = primaryRole;
+        member.secondaryRole = secondaryRole;
+        member.role = combinedRole;
+        member.roles = secondaryRole ? [primaryRole, secondaryRole] : [primaryRole];
         member.branch = newBranch;
-        member.dept = newDept;
-        member.subteam = newSubteam;
-        member.department = newDept;
+        member.dept = secDept ? `${newDept} & ${secDept}` : newDept;
+        member.subteam = secSubteam ? `${newSubteam} & ${secSubteam}` : newSubteam;
+        member.department = member.dept;
+        member.secondaryDept = secDept;
+        member.secondarySubteam = secSubteam;
         member.manualOverride = true; // Protect from raw cloud sync overwrite
 
         // Compute and assign exact roleType
-        const lowerR = newRole.toLowerCase();
+        const lowerR = combinedRole.toLowerCase();
         let computedRoleType = 'member';
-        if (newRole === 'Team Leader' || newRole === 'Vice Team Leader' || lowerR.includes('executive')) {
+        if (combinedRole.includes('Team Leader') || combinedRole.includes('Vice Team Leader') || lowerR.includes('executive')) {
           computedRoleType = 'executive';
-        } else if (newRole === 'Technical Leader' || lowerR.includes('chief engineer')) {
+        } else if (combinedRole.includes('Technical Leader') || lowerR.includes('chief engineer')) {
           computedRoleType = 'technical_lead';
-        } else if (newRole === 'Managerial Leader' || lowerR.includes('operations management')) {
+        } else if (combinedRole.includes('Managerial Leader') || lowerR.includes('operations management')) {
           computedRoleType = 'managerial_lead';
         } else if (lowerR.includes('subteam leader') || lowerR.includes('leader') || lowerR.includes('lead')) {
           computedRoleType = (!newSubteam || lowerR.includes('team leader of') || lowerR.includes('department leader')) ? 'dept_lead' : 'subteam_lead';
@@ -7983,21 +8268,23 @@
         if (db.personas[id]) {
           db.personas[id].name = member.name;
           db.personas[id].role = member.role;
+          db.personas[id].primaryRole = primaryRole;
+          db.personas[id].secondaryRole = secondaryRole;
+          db.personas[id].roles = member.roles;
           db.personas[id].roleType = computedRoleType;
           db.personas[id].branch = member.branch;
-          db.personas[id].departments = [member.dept];
+          db.personas[id].departments = secDept ? [newDept, secDept] : [newDept];
           db.personas[id].subteam = member.subteam;
-          db.personas[id].deptDesc = `${member.branch} Division • ${member.dept}${member.subteam ? ' — ' + member.subteam : ''}`;
+          db.personas[id].secondarySubteam = secSubteam;
+          db.personas[id].deptDesc = `${member.branch} Division • ${fullSubString}`;
         }
-
-        const fullSubString = newSubteam ? `${newDept} — ${newSubteam}` : newDept;
 
         // Live Cloud Synchronization with Supabase
         try {
           const cfg = window.VELOX_CONFIG || {};
           if (cfg.url && cfg.anonKey && !cfg.url.includes('your-project-id') && window.supabase) {
             const client = window.supabase.createClient(cfg.url, cfg.anonKey);
-            const notesTag = `[Leader Assigned: ${fullSubString} (${newRole})]`;
+            const notesTag = `[Leader Assigned: ${fullSubString} (Roles: ${combinedRole})]`;
             let cloudQuery = client.from('applications').update({
               subteam_first: fullSubString,
               status: 'Accepted',
@@ -8013,13 +8300,13 @@
           console.warn('Supabase member live sync notice:', cloudErr);
         }
 
-        logAuditEvent(`GOVERNANCE: Member ${member.name} details updated by ${p.name} (Role: ${newRole}, Division: ${fullSubString}, Branch: ${newBranch}).`);
+        logAuditEvent(`GOVERNANCE: Member ${member.name} details updated by ${p.name} (Role: ${combinedRole}, Division: ${fullSubString}, Branch: ${newBranch}).`);
 
         // If updated by a sub-leader (Romy, Moaaz, Ali, Hassan), automatically notify Fatima & Karim!
         if (!isTeamLeader(p)) {
           addNotification({
-            title: 'Subteam Roster Update',
-            message: `${p.name} (${p.role}) updated ${member.name}'s division to "${fullSubString}" (${member.role}).`,
+            title: 'Subteam Multi-Role Roster Update',
+            message: `${p.name} (${p.role}) assigned ${member.name} to "${combinedRole}" in "${fullSubString}".`,
             author: p.name,
             type: 'governance',
             target: ['fatima', 'karim']
@@ -8034,7 +8321,7 @@
         if (typeof window.renderOrgChart === 'function') {
           window.renderOrgChart();
         }
-        alert(`✓ Member ${member.name} successfully updated!\n\n• Role: ${newRole}\n• Division: ${fullSubString}\n• Branch: ${newBranch}`);
+        alert(`✓ Member ${member.name} successfully updated!\n\n• Role(s): ${combinedRole}\n• Division: ${fullSubString}\n• Branch: ${newBranch}`);
       });
 
       // Dedicated Role & Title Form Submit
@@ -8243,23 +8530,203 @@
         });
       }
 
-      // 13. Edit Profile Photo Feature & Dynamic Storage
+      // 13. Edit Profile Photo Feature & Cloudinary Server CDN Upload
       let stagedPhotoData = '';
+      let stagedPhotoFile = null;
+
+      // Cloudinary configuration helpers
+      window.toggleCloudinarySettings = function() {
+        const panel = document.getElementById('cloudinarySettingsPanel');
+        const label = document.getElementById('cloudinaryToggleLabel');
+        if (!panel) return;
+        const isHidden = panel.style.display === 'none' || !panel.style.display;
+        panel.style.display = isHidden ? 'block' : 'none';
+        if (label) label.innerHTML = isHidden ? 'Hide &#9652;' : 'Settings &#9662;';
+      };
+
+      window.saveCloudinarySettingsFromModal = function() {
+        const cNameInput = document.getElementById('modalCloudinaryCloudName');
+        const cPresetInput = document.getElementById('modalCloudinaryPreset');
+        const nameVal = (cNameInput ? cNameInput.value : '').trim();
+        const presetVal = (cPresetInput ? cPresetInput.value : '').trim();
+        
+        if (nameVal) localStorage.setItem('velox_cloudinary_cloud_name', nameVal);
+        if (presetVal) localStorage.setItem('velox_cloudinary_upload_preset', presetVal);
+        
+        if (!window.CLOUDINARY_CONFIG) window.CLOUDINARY_CONFIG = {};
+        window.CLOUDINARY_CONFIG.cloudName = nameVal;
+        window.CLOUDINARY_CONFIG.uploadPreset = presetVal;
+
+        const statusText = document.getElementById('cloudinaryStatusText');
+        if (statusText) {
+          statusText.textContent = (nameVal && presetVal) ? 'Configured (Active)' : 'Active (Ready)';
+          statusText.style.color = '#4ADE80';
+        }
+        alert('Cloudinary Server Settings saved successfully!');
+      };
+
+      async function uploadToCloudinaryServer(fileOrBase64) {
+        const cfg = window.CLOUDINARY_CONFIG || {};
+        const cloudName = cfg.cloudName || localStorage.getItem('velox_cloudinary_cloud_name') || 'velox-racing';
+        const uploadPreset = cfg.uploadPreset || localStorage.getItem('velox_cloudinary_upload_preset') || 'velox_members';
+
+        const formData = new FormData();
+        formData.append('file', fileOrBase64);
+        formData.append('upload_preset', uploadPreset);
+        formData.append('folder', 'velox_team_members');
+
+        const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
+          method: 'POST',
+          body: formData
+        });
+
+        if (!res.ok) {
+          const errData = await res.json().catch(() => ({}));
+          const errMsg = errData?.error?.message || `HTTP ${res.status}`;
+          throw new Error(`Cloudinary upload note: ${errMsg}`);
+        }
+
+        const data = await res.json();
+        return data.secure_url || data.url;
+      }
+
+      // Reusable Name update & synchronization across Portal and Database
+      async function applyAndSyncUserName(newName) {
+        if (!newName) return;
+        const p = getActivePersona();
+        const oldName = p.name || '';
+        const db = getPortalDb();
+
+        p.name = newName;
+        if (!db.personas) db.personas = {};
+        if (db.personas[currentPersonaKey]) {
+          db.personas[currentPersonaKey].name = newName;
+        }
+
+        const oldNorm = oldName.trim().toLowerCase();
+        const pIdNorm = (p.id || '').trim().toLowerCase();
+        const authUser = (localStorage.getItem('velox_auth_user') || currentAuthUser || '').trim().toLowerCase();
+
+        Object.keys(db.personas).forEach(key => {
+          const per = db.personas[key];
+          if (!per) return;
+          if ((pIdNorm && (per.id || '').toLowerCase() === pIdNorm) || (oldNorm && (per.name || '').toLowerCase() === oldNorm)) {
+            per.name = newName;
+          }
+        });
+
+        let targetEmail = p.email || '';
+        (db.membersRoster || []).forEach(m => {
+          const mUser = (m.username || '').toLowerCase();
+          const mName = (m.name || '').trim().toLowerCase();
+          const mId = (m.id || '').toLowerCase();
+          if ((authUser && mUser === authUser) || (pIdNorm && (mUser === pIdNorm || mId === pIdNorm)) || (oldNorm && mName === oldNorm)) {
+            m.name = newName;
+            if (m.email) targetEmail = m.email;
+          }
+        });
+
+        if (db.accounts) {
+          db.accounts.forEach(a => {
+            const aUser = (a.username || '').toLowerCase();
+            const aName = (a.name || '').trim().toLowerCase();
+            if ((authUser && aUser === authUser) || (pIdNorm && aUser === pIdNorm) || (oldNorm && aName === oldNorm)) {
+              a.name = newName;
+            }
+          });
+        }
+
+        savePortalDb(db);
+        renderUserBar();
+        if (typeof renderStructure === 'function') renderStructure();
+        if (typeof renderCompetition === 'function') renderCompetition();
+
+        try {
+          const cfg = window.VELOX_CONFIG || {};
+          if (cfg.url && cfg.anonKey && !cfg.url.includes('your-project-id') && window.supabase) {
+            const client = window.supabase.createClient(cfg.url, cfg.anonKey);
+            if (targetEmail) {
+              await client.from('applications').update({ full_name: newName }).ilike('email', targetEmail.trim());
+            }
+            if (oldName) {
+              await client.from('applications').update({ full_name: newName }).ilike('full_name', oldName.trim());
+            }
+          }
+        } catch (syncErr) {
+          console.warn('Supabase name sync note:', syncErr);
+        }
+
+        logAuditEvent(`PROFILE: User updated their name to "${newName}".`);
+        window.dispatchEvent(new Event('storage'));
+      }
 
       window.openEditPhotoModal = function() {
         const p = getActivePersona();
         const preview = document.getElementById('photoPreviewCircle');
         const urlInput = document.getElementById('editPhotoUrlInput');
         const fileInput = document.getElementById('editPhotoFileInput');
+        const nameInput = document.getElementById('editPhotoNameInput');
+        const cNameInput = document.getElementById('modalCloudinaryCloudName');
+        const cPresetInput = document.getElementById('modalCloudinaryPreset');
+        const statusText = document.getElementById('cloudinaryStatusText');
+
         if (!preview) return;
 
         stagedPhotoData = p.avatar || '';
+        stagedPhotoFile = null;
         if (urlInput) urlInput.value = p.avatar || '';
         if (fileInput) fileInput.value = '';
+        if (nameInput) nameInput.value = p.name || '';
+
+        const cfg = window.CLOUDINARY_CONFIG || {};
+        const currentCloud = cfg.cloudName || localStorage.getItem('velox_cloudinary_cloud_name') || '';
+        const currentPreset = cfg.uploadPreset || localStorage.getItem('velox_cloudinary_upload_preset') || '';
+        if (cNameInput) cNameInput.value = currentCloud;
+        if (cPresetInput) cPresetInput.value = currentPreset;
+        if (statusText) {
+          statusText.textContent = (currentCloud && currentPreset) ? 'Configured (Live)' : 'Ready';
+        }
 
         window.updatePhotoPreviewCircle(stagedPhotoData, p.name);
         openPortalModal('editPhotoModal');
       };
+
+      window.openChangeNameModal = function() {
+        const p = getActivePersona();
+        const input = document.getElementById('changeNameInput');
+        if (input) input.value = p.name || '';
+        openPortalModal('changeNameModal');
+      };
+
+      // Dedicated Change Name Form Handler
+      const changeNameForm = document.getElementById('changeNameForm');
+      if (changeNameForm) {
+        changeNameForm.addEventListener('submit', async function(e) {
+          e.preventDefault();
+          const input = document.getElementById('changeNameInput');
+          const newName = (input ? input.value : '').trim();
+          if (!newName || newName.length < 2) {
+            alert('Please enter a valid full name (at least 2 characters).');
+            return;
+          }
+
+          const submitBtn = changeNameForm.querySelector('button[type="submit"]');
+          const origHtml = submitBtn ? submitBtn.innerHTML : 'Save Name';
+          if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span>Saving & Syncing Name...</span>';
+          }
+
+          await applyAndSyncUserName(newName);
+
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = origHtml;
+          }
+          closePortalModal('changeNameModal');
+          alert(`Name successfully changed to "${newName}" across your portal and team structure!`);
+        });
+      }
 
       window.updatePhotoPreviewCircle = function(src, name) {
         const preview = document.getElementById('photoPreviewCircle');
@@ -8274,6 +8741,7 @@
       window.removeProfilePhoto = function() {
         const p = getActivePersona();
         stagedPhotoData = '';
+        stagedPhotoFile = null;
         const urlInput = document.getElementById('editPhotoUrlInput');
         const fileInput = document.getElementById('editPhotoFileInput');
         if (urlInput) urlInput.value = '';
@@ -8287,11 +8755,13 @@
           const file = e.target.files && e.target.files[0];
           if (!file) return;
 
+          stagedPhotoFile = file;
+
           const reader = new FileReader();
           reader.onload = function(evt) {
             const img = new Image();
             img.onload = function() {
-              const maxDim = 240;
+              const maxDim = 320;
               let width = img.width;
               let height = img.height;
               if (width > height) {
@@ -8311,7 +8781,7 @@
               canvas.height = height;
               const ctx = canvas.getContext('2d');
               ctx.drawImage(img, 0, 0, width, height);
-              stagedPhotoData = canvas.toDataURL('image/jpeg', 0.78);
+              stagedPhotoData = canvas.toDataURL('image/jpeg', 0.85);
 
               const p = getActivePersona();
               window.updatePhotoPreviewCircle(stagedPhotoData, p.name);
@@ -8329,6 +8799,7 @@
         photoUrlInput.addEventListener('input', function(e) {
           const val = e.target.value.trim();
           stagedPhotoData = val;
+          stagedPhotoFile = null;
           const p = getActivePersona();
           window.updatePhotoPreviewCircle(val, p.name);
         });
@@ -8339,6 +8810,8 @@
         photoForm.addEventListener('submit', async function(e) {
           e.preventDefault();
           const urlInput = document.getElementById('editPhotoUrlInput');
+          const nameInput = document.getElementById('editPhotoNameInput');
+
           if (!stagedPhotoData && urlInput && urlInput.value.trim()) {
             stagedPhotoData = urlInput.value.trim();
           }
@@ -8347,20 +8820,53 @@
           const originalBtnHtml = submitBtn ? submitBtn.innerHTML : 'Save Profile Photo';
           if (submitBtn) {
             submitBtn.disabled = true;
-            submitBtn.innerHTML = `<span>Saving & Syncing to Cloud Database...</span>`;
+            submitBtn.innerHTML = `<span>Uploading to Server & Syncing...</span>`;
           }
 
+          // Check if name changed in this modal
+          const newNameVal = nameInput ? nameInput.value.trim() : '';
           const p = getActivePersona();
+          if (newNameVal && newNameVal !== p.name) {
+            await applyAndSyncUserName(newNameVal);
+          }
+
+          // If a file or data URL was selected, upload it to Cloudinary CDN server!
+          let finalPhotoUrl = stagedPhotoData;
+          if (stagedPhotoFile || (stagedPhotoData && stagedPhotoData.startsWith('data:image/'))) {
+            try {
+              if (submitBtn) submitBtn.innerHTML = `<span>Uploading photo to Cloudinary CDN...</span>`;
+              const cdnUrl = await uploadToCloudinaryServer(stagedPhotoFile || stagedPhotoData);
+              if (cdnUrl) {
+                finalPhotoUrl = cdnUrl;
+                stagedPhotoData = cdnUrl;
+              }
+            } catch (clErr) {
+              console.warn('Cloudinary upload notice:', clErr);
+              // If Cloudinary preset is not configured yet, notify user with option to configure or fallback
+              const proceed = confirm(
+                `${clErr.message || 'Cloudinary upload was not completed.'}\n\nWould you like to save the photo directly or configure Cloudinary credentials? Click OK to save directly or Cancel to configure credentials in Settings.`
+              );
+              if (!proceed) {
+                if (submitBtn) {
+                  submitBtn.disabled = false;
+                  submitBtn.innerHTML = originalBtnHtml;
+                }
+                toggleCloudinarySettings();
+                return;
+              }
+            }
+          }
+
           const db = getPortalDb();
 
-          p.avatar = stagedPhotoData;
-          p.photo = stagedPhotoData;
+          p.avatar = finalPhotoUrl;
+          p.photo = finalPhotoUrl;
           if (!db.personas) db.personas = {};
           if (!db.personas[currentPersonaKey]) {
             db.personas[currentPersonaKey] = { ...p };
           }
-          db.personas[currentPersonaKey].avatar = stagedPhotoData;
-          db.personas[currentPersonaKey].photo = stagedPhotoData;
+          db.personas[currentPersonaKey].avatar = finalPhotoUrl;
+          db.personas[currentPersonaKey].photo = finalPhotoUrl;
 
           const pNameNorm = (p.name || '').trim().toLowerCase();
           const pIdNorm = (p.id || '').trim().toLowerCase();
@@ -8373,16 +8879,16 @@
             const perId = (per.id || '').trim().toLowerCase();
             const perName = (per.name || '').trim().toLowerCase();
             if ((pIdNorm && perId === pIdNorm) || (pNameNorm && perName === pNameNorm)) {
-              per.avatar = stagedPhotoData;
-              per.photo = stagedPhotoData;
+              per.avatar = finalPhotoUrl;
+              per.photo = finalPhotoUrl;
             }
           });
 
           // Dedicated safety sync for Ali Elgohary
           if (pNameNorm.includes('ali') && pNameNorm.includes('gohary')) {
             if (db.personas.ali) {
-              db.personas.ali.avatar = stagedPhotoData;
-              db.personas.ali.photo = stagedPhotoData;
+              db.personas.ali.avatar = finalPhotoUrl;
+              db.personas.ali.photo = finalPhotoUrl;
             }
           }
 
@@ -8393,8 +8899,8 @@
             const mName = (m.name || '').trim().toLowerCase();
             const mId = (m.id || '').toLowerCase();
             if ((authUser && mUser === authUser) || (pIdNorm && (mUser === pIdNorm || mId === pIdNorm)) || (pNameNorm && mName === pNameNorm)) {
-              m.avatar = stagedPhotoData;
-              m.photo = stagedPhotoData;
+              m.avatar = finalPhotoUrl;
+              m.photo = finalPhotoUrl;
               if (m.email) targetRosterEmail = m.email;
             }
           });
@@ -8404,8 +8910,8 @@
               const aUser = (a.username || '').toLowerCase();
               const aName = (a.name || '').trim().toLowerCase();
               if ((authUser && aUser === authUser) || (pIdNorm && aUser === pIdNorm) || (pNameNorm && aName === pNameNorm)) {
-                a.avatar = stagedPhotoData;
-                a.photo = stagedPhotoData;
+                a.avatar = finalPhotoUrl;
+                a.photo = finalPhotoUrl;
               }
             });
           }
@@ -8482,7 +8988,7 @@
               if (matchedId) {
                 const { error: upErr } = await client
                   .from('applications')
-                  .update({ portfolio_url: stagedPhotoData })
+                  .update({ portfolio_url: finalPhotoUrl })
                   .eq('id', matchedId);
                 if (!upErr) isSuccess = true;
                 else console.warn('Supabase update returned error:', upErr);
@@ -8492,7 +8998,7 @@
               if (!isSuccess && targetEmail) {
                 const { error: emErr } = await client
                   .from('applications')
-                  .update({ portfolio_url: stagedPhotoData })
+                  .update({ portfolio_url: finalPhotoUrl })
                   .ilike('email', targetEmail.trim());
                 if (!emErr) isSuccess = true;
               }
@@ -8501,7 +9007,7 @@
               if (!isSuccess && p.name) {
                 const { error: nmErr } = await client
                   .from('applications')
-                  .update({ portfolio_url: stagedPhotoData })
+                  .update({ portfolio_url: finalPhotoUrl })
                   .ilike('full_name', `%${p.name.trim()}%`);
                 if (!nmErr) isSuccess = true;
               }
@@ -8522,10 +9028,10 @@
           }
 
           closePortalModal('editPhotoModal');
-          logAuditEvent(`PROFILE: ${p.name} updated their profile photo.`);
+          logAuditEvent(`PROFILE: ${p.name} updated their profile info.`);
           // Trigger storage event so other open pages (e.g. team.html) immediately update
           window.dispatchEvent(new Event('storage'));
-          alert('Profile photo successfully updated and saved to the database! Your photo is now live on your Portal and the Team Structure Org Chart.');
+          alert('Profile photo and details successfully updated and saved to the database! Your updates are now live on your Portal and the Team Structure Org Chart.');
         });
       }
 
@@ -8602,7 +9108,23 @@
 
             // Check if in roster
             const rosterIdx = (db.membersRoster || []).findIndex(m => m.id === memberId || (m.name && m.name.toLowerCase() === normName));
-            const cloudAvatar = (app.portfolio_url && (app.portfolio_url.startsWith('data:image/') || app.portfolio_url.startsWith('http') || app.portfolio_url.startsWith('photos/'))) ? app.portfolio_url : '';
+            let cloudAvatar = '';
+            if (app.portfolio_url) {
+              const u = app.portfolio_url.trim();
+              if (u.startsWith('data:image/') || u.startsWith('photos/') || u.includes('cloudinary.com') || u.includes('res.cloudinary.com')) {
+                cloudAvatar = u;
+              } else if (u.includes('drive.google.com')) {
+                const driveMatch = u.match(/\/d\/([a-zA-Z0-9_-]+)/) || u.match(/id=([a-zA-Z0-9_-]+)/);
+                if (driveMatch && driveMatch[1]) {
+                  cloudAvatar = `https://drive.google.com/thumbnail?id=${driveMatch[1]}&sz=w400`;
+                }
+              } else if (u.startsWith('http://') || u.startsWith('https://')) {
+                const isNonImageDoc = u.includes('docs.google.com') || u.includes('linkedin.com') || (u.includes('github.com/') && !u.includes('avatars.githubusercontent.com'));
+                if (!isNonImageDoc) {
+                  cloudAvatar = u;
+                }
+              }
+            }
             const existingEntry = rosterIdx !== -1 ? db.membersRoster[rosterIdx] : null;
             const existingAvatar = existingEntry ? (existingEntry.avatar || existingEntry.photo || '') : '';
             const finalAvatar = cloudAvatar || existingAvatar || '';
@@ -8743,5 +9265,7 @@
       syncPortalWithSupabaseAcceptedMembers();
     });
   </script>
+  <!-- Hairline Library (Lucas Marques) Interactive Integration -->
+  <script type="module" src="hairline-integration.js"></script>
 </body>
 </html>
