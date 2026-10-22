@@ -516,7 +516,8 @@ function getDynamicTeamData() {
     if (alreadyExists) return;
 
     const rLower = (roleTitle || targetMember.role || '').toLowerCase();
-    const isLead = rLower.includes('subteam leader') || rLower === 'subteam leader' || targetMember.roleType === 'subteam_lead';
+    const isExplicitMember = rLower.startsWith('team member') || rLower === 'member' || targetMember.roleType === 'member';
+    const isLead = !isExplicitMember && (rLower.includes('subteam leader') || rLower.includes('subteam lead') || targetMember.roleType === 'subteam_lead');
     const resolvedPhoto = targetMember.photo || targetMember.avatar || findAvatarForPerson(targetMember.id, targetMember.name) || '';
 
     targetDept.subteamCrew[matchedSub].push({
@@ -806,29 +807,28 @@ async function syncCloudAcceptedMembers() {
           }
         }
 
+        const cleanAssignedRole = assignedRole.replace(/\bauthorized by.*$/i, '').replace(/\benlisted on.*$/i, '').trim();
+        const lowerR = cleanAssignedRole.toLowerCase();
+
         if (normName === 'ali elgohary') {
           parsed.dept = 'Electrical';
           parsed.subteam = '';
           assignedRole = 'Team Leader of Electrical';
           assignedRoleType = 'dept_lead';
-        }
-
-        if (normName === 'ahmed ehab' || normName.includes('ahmed ehab')) {
+        } else if (normName === 'ahmed ehab' || normName.includes('ahmed ehab')) {
           parsed.dept = 'Body & Chassis';
           parsed.subteam = '';
           assignedRole = 'Body & Chassis Leader';
           assignedRoleType = 'dept_lead';
-        }
-
-        if (!assignedRoleType) {
-          const lowerR = assignedRole.toLowerCase();
-          if (lowerR.includes('department leader') || lowerR.includes('electrical leader') || lowerR.includes('powertrain leader') || lowerR.includes('body & chassis leader') || (lowerR.includes('leader') && !parsed.subteam)) {
-            assignedRoleType = 'dept_lead';
-          } else if (lowerR.includes('leader') || lowerR.includes('lead')) {
-            assignedRoleType = 'subteam_lead';
-          } else {
-            assignedRoleType = 'member';
-          }
+        } else if (lowerR.startsWith('team member') || lowerR === 'member') {
+          assignedRole = 'Team Member';
+          assignedRoleType = 'member';
+        } else if (lowerR.includes('department leader') || lowerR.includes('electrical leader') || lowerR.includes('powertrain leader') || lowerR.includes('body & chassis leader') || (lowerR.includes('leader') && !parsed.subteam)) {
+          assignedRoleType = 'dept_lead';
+        } else if (lowerR.includes('subteam leader') || lowerR.includes('subteam lead')) {
+          assignedRoleType = 'subteam_lead';
+        } else {
+          assignedRoleType = 'member';
         }
 
         let avatar = '';
@@ -853,6 +853,11 @@ async function syncCloudAcceptedMembers() {
           if (ov.subteam !== undefined) parsed.subteam = ov.subteam;
           if (ov.branch) parsed.branch = ov.branch;
           if (ov.avatar && isSafeImageAvatar(ov.avatar)) avatar = ov.avatar;
+
+          const ovRoleLower = (assignedRole || '').toLowerCase();
+          if (ovRoleLower.startsWith('team member') || ovRoleLower === 'member' || ov.roleType === 'member') {
+            assignedRoleType = 'member';
+          }
         }
 
         if (!avatar || !isSafeImageAvatar(avatar)) {

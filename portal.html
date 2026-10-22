@@ -33,7 +33,7 @@
   <!-- Localization Engine (Deferred) -->
   <script src="i18n.js?v=4.0" defer></script>
   <!-- Team Data (Deferred) — Always live from connection -->
-  <script src="team.js?v=5.0" defer></script>
+  <script src="team.js?v=8.0" defer></script>
   <style>
     /* ==========================================================================
        VELOX RACING INSIDE PORTAL — MODERN MOTORSPORT ENGINEERING DESIGN SYSTEM
@@ -8441,11 +8441,14 @@
             status: 'Active'
           });
 
+          const cleanRoleStr = (role || '').replace(/\bauthorized by.*$/i, '').replace(/\benlisted on.*$/i, '').trim();
+          const cleanRoleLower = cleanRoleStr.toLowerCase();
           let roleType = 'member';
-          if (role === 'Technical Leader') roleType = 'technical_lead';
+          if (cleanRoleLower.startsWith('team member') || cleanRoleLower === 'member') roleType = 'member';
+          else if (role === 'Technical Leader') roleType = 'technical_lead';
           else if (role === 'Managerial Leader') roleType = 'managerial_lead';
           else if (role.includes('Vice Team Leader') || role.includes('Team Leader')) roleType = 'executive';
-          else if (role.includes('Leader')) roleType = 'subteam_lead';
+          else if (cleanRoleLower.includes('subteam leader') || cleanRoleLower.includes('subteam lead')) roleType = 'subteam_lead';
 
           db.personas[personaKey] = {
             id: newId,
@@ -8829,15 +8832,18 @@
         if (fbVal) member.facebook = fbVal; else delete member.facebook;
 
         // Compute and assign exact roleType
-        const lowerR = combinedRole.toLowerCase();
+        const cleanCombinedRole = (combinedRole || '').replace(/\bauthorized by.*$/i, '').replace(/\benlisted on.*$/i, '').trim();
+        const lowerR = cleanCombinedRole.toLowerCase();
         let computedRoleType = 'member';
-        if (combinedRole.includes('Team Leader') || combinedRole.includes('Vice Team Leader') || lowerR.includes('executive')) {
+        if (lowerR.startsWith('team member') || lowerR === 'member') {
+          computedRoleType = 'member';
+        } else if (combinedRole.includes('Team Leader') || combinedRole.includes('Vice Team Leader') || lowerR.includes('executive')) {
           computedRoleType = 'executive';
         } else if (combinedRole.includes('Technical Leader') || lowerR.includes('chief engineer')) {
           computedRoleType = 'technical_lead';
         } else if (combinedRole.includes('Managerial Leader') || lowerR.includes('operations management')) {
           computedRoleType = 'managerial_lead';
-        } else if (lowerR.includes('subteam leader') || lowerR.includes('leader') || lowerR.includes('lead')) {
+        } else if (lowerR.includes('subteam leader') || lowerR.includes('subteam lead')) {
           computedRoleType = (!newSubteam || lowerR.includes('team leader of') || lowerR.includes('department leader')) ? 'dept_lead' : 'subteam_lead';
         }
         member.roleType = computedRoleType;
@@ -8962,15 +8968,18 @@
           member.dept = newDept;
 
           // Compute roleType
-          const lowerR = newRole.toLowerCase();
+          const cleanNewRole = (newRole || '').replace(/\bauthorized by.*$/i, '').replace(/\benlisted on.*$/i, '').trim();
+          const lowerR = cleanNewRole.toLowerCase();
           let computedRoleType = 'member';
-          if (newRole === 'Team Leader' || newRole === 'Vice Team Leader' || lowerR.includes('executive')) {
+          if (lowerR.startsWith('team member') || lowerR === 'member') {
+            computedRoleType = 'member';
+          } else if (newRole === 'Team Leader' || newRole === 'Vice Team Leader' || lowerR.includes('executive')) {
             computedRoleType = 'executive';
           } else if (newRole === 'Technical Leader' || lowerR.includes('chief engineer')) {
             computedRoleType = 'technical_lead';
           } else if (newRole === 'Managerial Leader' || lowerR.includes('operations management')) {
             computedRoleType = 'managerial_lead';
-          } else if (lowerR.includes('subteam leader') || lowerR.includes('leader') || lowerR.includes('lead')) {
+          } else if (lowerR.includes('subteam leader') || lowerR.includes('subteam lead')) {
             computedRoleType = 'subteam_lead';
           }
           member.roleType = computedRoleType;
@@ -9859,11 +9868,16 @@
               dept = 'Body & Chassis';
               subteam = '';
             } else {
-              const lowerR = assignedRole.toLowerCase();
-              if (lowerR.includes('department leader') || lowerR.includes('electrical leader') || lowerR.includes('team leader of electrical') || lowerR.includes('powertrain leader') || lowerR.includes('body & chassis leader') || (lowerR.includes('leader') && !app.subteam_first.includes('—'))) {
+              const cleanR = assignedRole.replace(/\bauthorized by.*$/i, '').replace(/\benlisted on.*$/i, '').trim();
+              const lowerR = cleanR.toLowerCase();
+              if (lowerR.startsWith('team member') || lowerR === 'member') {
+                roleType = 'member';
+              } else if (lowerR.includes('department leader') || lowerR.includes('electrical leader') || lowerR.includes('team leader of electrical') || lowerR.includes('powertrain leader') || lowerR.includes('body & chassis leader') || (lowerR.includes('leader') && !app.subteam_first.includes('—'))) {
                 roleType = 'dept_lead';
-              } else if (lowerR.includes('leader') || lowerR.includes('lead')) {
+              } else if (lowerR.includes('subteam leader') || lowerR.includes('subteam lead')) {
                 roleType = 'subteam_lead';
+              } else {
+                roleType = 'member';
               }
             }
 
